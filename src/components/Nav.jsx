@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-const links = ['Home', 'My Plan', 'Progress', 'Support']
+const links = ['Today', 'Track', 'Learn', 'Prepare']
 
 export default function Nav() {
-  const [active, setActive] = useState('Home')
+  const [active, setActive] = useState('Today')
 
   return (
     <header className="nav">
