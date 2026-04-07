@@ -177,7 +177,23 @@ svg { display: block; }
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+.hero__tagline {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-4);
+}
+.hero__tagline em {
+  font-style: italic;
+  color: var(--color-teal);
+}
+.hero__headline--greeting {
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
 }
 .hero__headline em {
   font-style: italic;
