@@ -19,11 +19,8 @@ export default function App() {
         <div className="today-wrap">
           <TodayCard />
         </div>
-        <StatusStrip />
-        <section className="grid">
+<section className="grid">
           <InsightCard />
-          <CareTeamCard />
-          <ProgressCard />
           <ProgramCard />
         </section>
         <WatchNow />
