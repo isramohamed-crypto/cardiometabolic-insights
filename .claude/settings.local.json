@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(command -v node npx python3)",
+      "Read(//usr/local/bin/**)",
+      "Read(//Users/sarahpage/.nvm/versions/**)",
+      "Read(//usr/bin/**)",
+      "Bash(/usr/bin/python3 --version)",
+      "Bash(/usr/bin/python3 -c \"import http.server; print\\(''ok''\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/)",
+      "Bash(curl -v http://127.0.0.1:8080/)",
+      "Bash(/tmp/prerx_serve.py:*)",
+      "Bash(npm install:*)",
+      "Read(//Users/sarahpage/.volta/bin/**)",
+      "Read(//Applications/**)",
+      "Bash(echo $PATH)",
+      "Bash(zsh -l -c \"which node npm 2>/dev/null; node --version; npm --version\")",
+      "Bash(/opt/homebrew/bin/brew --version)",
+      "Bash(/tmp/vite_dev.sh:*)",
+      "Bash(chmod +x /tmp/vite_dev.sh)"
+    ]
+  }
+}
