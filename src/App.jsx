@@ -16,9 +16,11 @@ export default function App() {
       <Nav />
       <main className="main">
         <Hero />
+        <div className="today-wrap">
+          <TodayCard />
+        </div>
         <StatusStrip />
         <section className="grid">
-          <TodayCard />
           <InsightCard />
           <CareTeamCard />
           <ProgressCard />

@@ -133,6 +133,7 @@ svg { display: block; }
 }
 .nav__link--active,
 .nav__link:hover { color: var(--color-teal); }
+.nav__link--active { font-weight: 700; }
 
 .nav__avatar {
   width: 32px; height: 32px;
@@ -313,6 +314,12 @@ svg { display: block; }
   font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--color-teal);
+}
+
+/* ── TODAY WRAP ─────────────────────────────────────────────── */
+.today-wrap {
+  padding: 0 var(--space-5);
+  margin-bottom: var(--space-3);
 }
 
 /* ── GRID ───────────────────────────────────────────────────── */
@@ -552,7 +559,8 @@ svg { display: block; }
   transition: color .15s;
 }
 .bottom-nav__item svg { width: 20px; height: 20px; }
-.bottom-nav__item--active { color: var(--color-teal); }
+.bottom-nav__item--active { color: var(--color-teal); font-weight: 700; }
+.bottom-nav__item--active svg { fill: var(--color-teal); stroke: var(--color-teal); }
 .bottom-nav__item:hover   { color: var(--color-teal); }
 
 /* ── WATCH NOW ──────────────────────────────────────────────── */
