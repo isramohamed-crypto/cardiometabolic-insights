@@ -22,7 +22,7 @@ export default function Nav() {
           </a>
         ))}
       </nav>
-      <button className="nav__avatar" aria-label="Profile">SP</button>
+      <button className="nav__avatar" aria-label="Profile">D</button>
     </header>
   )
 }

@@ -3,7 +3,7 @@ import React from 'react'
 export default function Hero() {
   return (
     <section className="hero">
-      <p className="hero__eyebrow">Good morning, Sarah</p>
+      <p className="hero__eyebrow">Good morning, Diane</p>
       <h1 className="hero__headline">
         Before the prescription, <em>the person.</em>
       </h1>
