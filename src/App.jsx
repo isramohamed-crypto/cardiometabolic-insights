@@ -37,8 +37,8 @@ export default function App() {
             </div> */}
             <ForYouNow />
           </div>
-          <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
           <Breathe />
+          <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
           <QuickAnswers />
           <DupixentAd />
           <WatchNow />
