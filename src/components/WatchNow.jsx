@@ -99,7 +99,7 @@ export default function WatchNow() {
         {/* Section header */}
         <div className="watch-head">
           <div>
-            <h2 className="watch-title">Watch <em>now</em></h2>
+            <h2 className="watch-title">Reel <em>stories</em></h2>
           </div>
           <a
             className="watch-saved"

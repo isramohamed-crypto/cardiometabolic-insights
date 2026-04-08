@@ -33,7 +33,7 @@ export default function QuickAnswers() {
 
   return (
     <section className="quick-answers">
-      <h2 className="quick-answers__title">Quick answers</h2>
+      <h2 className="quick-answers__title">Did you know?</h2>
       <div className="qa-scroll">
         {cards.map(card => (
           <div

@@ -8,6 +8,7 @@ import InsightCard from './components/InsightCard'
 import CareTeamCard from './components/CareTeamCard'
 import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
+import SwipeLearn from './components/SwipeLearn'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
@@ -23,6 +24,7 @@ export default function App() {
         <div className="today-wrap">
           <TodayCard />
         </div>
+        <SwipeLearn />
         <QuickAnswers />
         <DupixentAd />
         <WatchNow />
