@@ -8,6 +8,7 @@ import InsightCard from './components/InsightCard'
 import CareTeamCard from './components/CareTeamCard'
 import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
+import AskAI from './components/AskAI'
 import ForYouNow from './components/ForYouNow'
 import SwipeLearn from './components/SwipeLearn'
 import Breathe from './components/Breathe'
@@ -31,6 +32,7 @@ export default function App() {
         <main className="main">
           <div className="hero-wrap">
             <Hero />
+            <AskAI />
             <DailyCheckin />
             {/* <div className="today-wrap">
               <TodayCard />
