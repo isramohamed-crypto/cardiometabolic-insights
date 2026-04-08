@@ -42,7 +42,7 @@ const cards = [
 export default function ForYouNow() {
   return (
     <div className="for-you-now">
-      <h2 className="for-you-now__title">For you right now</h2>
+      <h2 className="for-you-now__title">Things to try</h2>
       <div className="for-you-now__scroll">
         {cards.map(card => (
           <div

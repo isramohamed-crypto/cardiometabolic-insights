@@ -1589,7 +1589,7 @@ svg { display: block; }
 /* ── QUICK ANSWERS ──────────────────────────────────────────── */
 .quick-answers {
   padding: var(--space-6) 0 var(--space-4);
-  background: #2D4A3E;
+  background: var(--color-sage);
   margin: var(--space-4) 0;
 }
 .quick-answers__title {
