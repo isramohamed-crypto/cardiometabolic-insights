@@ -9,6 +9,7 @@ import CareTeamCard from './components/CareTeamCard'
 import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
 import SwipeLearn from './components/SwipeLearn'
+import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
@@ -25,6 +26,7 @@ export default function App() {
           <TodayCard />
         </div>
         <SwipeLearn />
+        <Breathe />
         <QuickAnswers />
         <DupixentAd />
         <WatchNow />
