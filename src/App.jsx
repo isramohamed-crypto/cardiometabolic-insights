@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
@@ -14,26 +14,37 @@ import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
+import LearnPage from './components/LearnPage'
 import BottomNav from './components/BottomNav'
 
 export default function App() {
+  const [activePage, setActivePage] = useState('Today')
+
   return (
     <>
-      <Nav />
-      <main className="main">
-        <Hero />
-        <DailyCheckin />
-        <div className="today-wrap">
-          <TodayCard />
-        </div>
-        <SwipeLearn />
-        <Breathe />
-        <QuickAnswers />
-        <DupixentAd />
-        <WatchNow />
-        <InsightSection />
-      </main>
-      <BottomNav />
+      <Nav activePage={activePage} setActivePage={setActivePage} />
+
+      {activePage === 'Learn' ? (
+        <LearnPage />
+      ) : (
+        <main className="main">
+          <div className="hero-wrap">
+            <Hero />
+            <DailyCheckin />
+            <div className="today-wrap">
+              <TodayCard />
+            </div>
+          </div>
+          <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
+          <Breathe />
+          <QuickAnswers />
+          <DupixentAd />
+          <WatchNow />
+          <InsightSection />
+        </main>
+      )}
+
+      <BottomNav activePage={activePage} setActivePage={setActivePage} />
     </>
   )
 }

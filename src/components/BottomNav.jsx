@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const items = [
   {
@@ -38,17 +38,15 @@ const items = [
   },
 ]
 
-export default function BottomNav() {
-  const [active, setActive] = useState('Today')
-
+export default function BottomNav({ activePage, setActivePage }) {
   return (
     <nav className="bottom-nav">
       {items.map(item => (
         <a
           key={item.label}
           href="#"
-          className={`bottom-nav__item${active === item.label ? ' bottom-nav__item--active' : ''}`}
-          onClick={e => { e.preventDefault(); setActive(item.label) }}
+          className={`bottom-nav__item${activePage === item.label ? ' bottom-nav__item--active' : ''}`}
+          onClick={e => { e.preventDefault(); setActivePage(item.label) }}
         >
           {item.icon}
           <span>{item.label}</span>

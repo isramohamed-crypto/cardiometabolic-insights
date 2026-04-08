@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const links = ['Today', 'Track', 'Learn', 'Prepare']
 
-export default function Nav() {
-  const [active, setActive] = useState('Today')
-
+export default function Nav({ activePage, setActivePage }) {
   return (
     <header className="nav">
       <div className="nav__brand">
@@ -15,8 +13,8 @@ export default function Nav() {
           <a
             key={link}
             href="#"
-            className={`nav__link${active === link ? ' nav__link--active' : ''}`}
-            onClick={e => { e.preventDefault(); setActive(link) }}
+            className={`nav__link${activePage === link ? ' nav__link--active' : ''}`}
+            onClick={e => { e.preventDefault(); setActivePage(link) }}
           >
             {link}
           </a>

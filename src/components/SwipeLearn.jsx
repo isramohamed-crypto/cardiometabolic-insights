@@ -49,7 +49,7 @@ const cards = [
   },
 ]
 
-export default function SwipeLearn() {
+export default function SwipeLearn({ onLearnClick }) {
   const [idx, setIdx] = useState(0)
   const [complete, setComplete] = useState(false)
   const touchStartX = useRef(null)
@@ -74,7 +74,11 @@ export default function SwipeLearn() {
       <section className="swipe-learn">
         <div className="swipe-learn__head">
           <h2 className="swipe-learn__title">Stress + Skin</h2>
-          <a href="#" className="swipe-learn__link">Full Journey</a>
+          <a
+            href="#"
+            className="swipe-learn__link"
+            onClick={e => { e.preventDefault(); onLearnClick && onLearnClick() }}
+          >Full Journey</a>
         </div>
 
         <div

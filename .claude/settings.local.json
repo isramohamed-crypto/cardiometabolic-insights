@@ -19,7 +19,9 @@
       "Bash(/opt/homebrew/bin/brew --version)",
       "Bash(/tmp/vite_dev.sh:*)",
       "Bash(chmod +x /tmp/vite_dev.sh)",
-      "WebFetch(domain:claude.ai)"
+      "WebFetch(domain:claude.ai)",
+      "Bash(ls -t /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.jpeg /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.webp)",
+      "Bash(ls -t /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.webp)"
     ]
   }
 }
