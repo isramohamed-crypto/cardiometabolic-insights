@@ -21,6 +21,7 @@ import BottomNav from './components/BottomNav'
 
 export default function App() {
   const [activePage, setActivePage] = useState('Today')
+  const [showBreathe, setShowBreathe] = useState(false)
 
   return (
     <>
@@ -37,9 +38,9 @@ export default function App() {
             {/* <div className="today-wrap">
               <TodayCard />
             </div> */}
-            <ForYouNow />
           </div>
-          <Breathe />
+          <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
+          {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
           <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
           <QuickAnswers />
           <DupixentAd />

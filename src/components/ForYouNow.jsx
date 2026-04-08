@@ -39,7 +39,7 @@ const cards = [
   },
 ]
 
-export default function ForYouNow() {
+export default function ForYouNow({ onStartBreathe }) {
   return (
     <div className="for-you-now">
       <h2 className="for-you-now__title">Things to try</h2>
@@ -58,7 +58,11 @@ export default function ForYouNow() {
               <p className="fyn-card__title">{card.title}</p>
               <p className="fyn-card__desc">{card.body}</p>
               {card.cta && (
-                <button className="fyn-card__cta" style={{ background: card.cta.bg }}>
+                <button
+                  className="fyn-card__cta"
+                  style={{ background: card.cta.bg }}
+                  onClick={card.id === 1 ? onStartBreathe : undefined}
+                >
                   {card.cta.label}
                 </button>
               )}

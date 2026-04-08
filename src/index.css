@@ -235,13 +235,13 @@ svg { display: block; }
 
 /* ── For You Now ─────────────────────────────────────────────── */
 .for-you-now {
-  padding: var(--space-4) 0 0;
+  padding: var(--space-5) 0 0;
 }
 .for-you-now__title {
   font-family: var(--font-serif);
   font-size: var(--font-size-xl);
   font-weight: 600;
-  color: rgba(255,255,255,0.75);
+  color: var(--color-text-primary);
   letter-spacing: 0.01em;
   padding: 0 var(--space-5);
   margin-bottom: var(--space-3);
@@ -2680,4 +2680,70 @@ svg { display: block; }
   text-align: center;
   margin: 0;
   line-height: 1.4;
+}
+
+/* ── BREATHE OVERLAY ────────────────────────────────────────── */
+.breathe-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(253, 251, 248, 0.97);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 30px;
+  animation: slOverlayIn 0.3s ease both;
+}
+.breathe-overlay__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: var(--space-4);
+  flex-shrink: 0;
+}
+.breathe-overlay__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-surface-2);
+  border: none;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.breathe-overlay__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.breathe-overlay__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  gap: var(--space-4);
+}
+.breathe-overlay__title {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+.breathe-overlay__sub {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 300px;
+  line-height: 1.6;
+  margin: 0;
 }
