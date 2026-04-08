@@ -18,7 +18,8 @@
       "Bash(zsh -l -c \"which node npm 2>/dev/null; node --version; npm --version\")",
       "Bash(/opt/homebrew/bin/brew --version)",
       "Bash(/tmp/vite_dev.sh:*)",
-      "Bash(chmod +x /tmp/vite_dev.sh)"
+      "Bash(chmod +x /tmp/vite_dev.sh)",
+      "WebFetch(domain:claude.ai)"
     ]
   }
 }

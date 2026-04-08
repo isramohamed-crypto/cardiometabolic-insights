@@ -1498,7 +1498,12 @@ svg { display: block; }
   text-transform: uppercase;
 }
 .qa-label--front { color: var(--color-teal); }
-.qa-label--back  { color: var(--color-sage); }
+.qa-label--back  { color: var(--color-teal); }
+.qa-cta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: auto;
+}
 .qa-question {
   font-family: var(--font-serif);
   font-size: var(--font-size-base);
