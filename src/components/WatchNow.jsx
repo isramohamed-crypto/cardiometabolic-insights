@@ -83,19 +83,6 @@ export default function WatchNow() {
   return (
     <>
       <section className="watch-now">
-        {/* Chip row */}
-        <div className="chip-row">
-          {CHIPS.map(chip => (
-            <button
-              key={chip}
-              className={`chip${activeChip === chip ? ' chip--active' : ''}`}
-              onClick={() => setActiveChip(chip)}
-            >
-              {chip}
-            </button>
-          ))}
-        </div>
-
         {/* Section header */}
         <div className="watch-head">
           <div>
@@ -108,6 +95,19 @@ export default function WatchNow() {
           >
             Saved
           </a>
+        </div>
+
+        {/* Chip row */}
+        <div className="chip-row">
+          {CHIPS.map(chip => (
+            <button
+              key={chip}
+              className={`chip${activeChip === chip ? ' chip--active' : ''}`}
+              onClick={() => setActiveChip(chip)}
+            >
+              {chip}
+            </button>
+          ))}
         </div>
 
         {/* Carousel */}

@@ -13,6 +13,7 @@ import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
+import InsightSection from './components/InsightSection'
 import BottomNav from './components/BottomNav'
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
         <QuickAnswers />
         <DupixentAd />
         <WatchNow />
+        <InsightSection />
       </main>
       <BottomNav />
     </>
