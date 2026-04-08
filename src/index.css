@@ -2,45 +2,45 @@
 :root {
   /* Brand palette — accessible lifestyle, premium + approachable */
 
-  /* Primary — dark forest green (large swatch 1) — more saturated */
-  --color-teal:          #2A6B54;
-  --color-teal-mid:      #3D8A6A;
-  --color-teal-light:    #E2EFE9;
+  /* Primary — deep purple */
+  --color-teal:          #5D2DE6;
+  --color-teal-mid:      #7445F0;
+  --color-teal-light:    #EDE8FD;
 
-  /* Secondary — medium sage (small swatch 2) */
-  --color-sage:          #7D9E8E;
-  --color-sage-light:    #EAF1ED;
+  /* Secondary — teal/cyan */
+  --color-sage:          #2ED1CB;
+  --color-sage-light:    #E0F9F8;
 
-  /* Warm accent — copper/brown (large swatch 3) */
-  --color-warm:          #B5784A;
-  --color-warm-light:    #F5EAE0;
+  /* Warm accent — orange */
+  --color-warm:          #F64C22;
+  --color-warm-light:    #FEE9E3;
 
-  /* Accent — coral/salmon (small swatch 4) · stress, alert states */
-  --color-coral:         #F09080;
-  --color-coral-light:   #FDECEA;
+  /* Accent — coral · stress, alert states */
+  --color-coral:         #F64C22;
+  --color-coral-light:   #FEE9E3;
 
-  /* Accent — electric blue (small swatch 5) · high-contrast CTAs, links */
-  --color-blue:          #2060D4;
-  --color-blue-light:    #E6EEFB;
+  /* Accent — electric blue · high-contrast CTAs, links */
+  --color-blue:          #1C5FF1;
+  --color-blue-light:    #E4ECFE;
 
-  /* Accent — lime (small swatch 6) · achievement, success */
-  --color-lime:          #C8E030;
-  --color-lime-light:    #F4FAD6;
+  /* Accent — yellow · achievement, success */
+  --color-lime:          #FDDA3C;
+  --color-lime-light:    #FFFAE6;
 
   /* Neutrals */
-  --color-bg:            #F5F3F0;   /* off-white (small swatch 1) */
+  --color-bg:            #F5F0FE;   /* lavender tint */
   --color-surface:       #FFFFFF;
-  --color-surface-2:     #F5F3F0;
-  --color-border:        #E2DDD8;
-  --color-border-light:  #EDEAE6;
-  --color-text-primary:  #1A1E1C;
-  --color-text-secondary:#546560;
-  --color-text-muted:    #B0A69A;   /* warm taupe (small swatch 3) */
+  --color-surface-2:     #F5F0FE;
+  --color-border:        #E4DDF5;
+  --color-border-light:  #EDE8F8;
+  --color-text-primary:  #1A1520;
+  --color-text-secondary:#5A4E72;
+  --color-text-muted:    #9B8BB8;
   --color-text-inverse:  #FFFFFF;
 
   /* Type */
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: 'Plus Jakarta Sans', sans-serif;
+  --font-sans:  'Plus Jakarta Sans', sans-serif;
 
   --font-size-xs:   0.6875rem; /* 11px */
   --font-size-sm:   0.8125rem; /* 13px */
@@ -101,13 +101,18 @@ svg { display: block; }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--nav-height);
-  background: var(--color-teal);
+  background: transparent;
   border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--space-5);
   z-index: 100;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease;
+}
+.nav--scrolled {
+  background: var(--color-teal);
+  backdrop-filter: blur(12px);
 }
 
 .nav__brand {
@@ -169,7 +174,7 @@ svg { display: block; }
 
 /* ── MAIN ───────────────────────────────────────────────────── */
 .main {
-  margin-top: var(--nav-height);
+  margin-top: 0;
   margin-bottom: var(--bottom-nav-height);
   padding: 0 0 var(--space-8);
   max-width: var(--max-width);
@@ -180,7 +185,8 @@ svg { display: block; }
 /* ── HERO WRAP ──────────────────────────────────────────────── */
 .hero-wrap {
   background: var(--color-teal);
-  border-bottom: 2px solid var(--color-sage);
+  border-bottom: 2px solid #7241FC;
+  padding-top: var(--nav-height);
   padding-bottom: var(--space-5);
   margin-bottom: var(--space-5);
   position: relative;
@@ -195,8 +201,8 @@ svg { display: block; }
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/teal-texture.jpg') center center / cover no-repeat;
-  opacity: 0.3;
+  background: url('/purple-gradient.jpg') center center / cover no-repeat;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 0;
 }
@@ -293,8 +299,8 @@ svg { display: block; }
   font-size: var(--font-size-xs);
   font-weight: 700;
   padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  color: #fff;
+  border-radius: var(--radius-full);
+  color: #000;
   border: none;
   cursor: pointer;
   width: fit-content;
@@ -627,7 +633,7 @@ svg { display: block; }
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  background: rgba(125,158,142,0.2);
+  background: #2ED1CB;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -770,7 +776,7 @@ svg { display: block; }
   background: var(--color-blue);
   color: #fff;
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   padding: var(--space-4) var(--space-5);
   font-size: var(--font-size-base);
   font-weight: 600;
@@ -1076,7 +1082,7 @@ svg { display: block; }
   bottom: 0; left: 0; right: 0;
   height: var(--bottom-nav-height);
   background: var(--color-teal);
-  border-top: 2px solid var(--color-sage);
+  border-top: 2px solid #7241FC;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -1168,7 +1174,7 @@ svg { display: block; }
 .dupixent-ad__cta {
   background: rgba(255,255,255,0.15);
   border: 1.5px solid rgba(255,255,255,0.5);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -1281,7 +1287,7 @@ svg { display: block; }
   padding: var(--space-3) var(--space-5);
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.25);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   color: #fff;
   font-size: var(--font-size-sm);
   font-weight: 600;
@@ -1380,7 +1386,7 @@ svg { display: block; }
   padding: 14px 32px;
   background: var(--color-blue);
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-full);
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 700;
@@ -2319,7 +2325,7 @@ svg { display: block; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 3px 8px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
 }
 .lp-journey__meta {
   font-size: var(--font-size-xs);
