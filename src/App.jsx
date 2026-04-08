@@ -8,6 +8,7 @@ import InsightCard from './components/InsightCard'
 import CareTeamCard from './components/CareTeamCard'
 import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
+import ForYouNow from './components/ForYouNow'
 import SwipeLearn from './components/SwipeLearn'
 import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
@@ -31,9 +32,10 @@ export default function App() {
           <div className="hero-wrap">
             <Hero />
             <DailyCheckin />
-            <div className="today-wrap">
+            {/* <div className="today-wrap">
               <TodayCard />
-            </div>
+            </div> */}
+            <ForYouNow />
           </div>
           <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
           <Breathe />

@@ -221,6 +221,97 @@ svg { display: block; }
   background: rgba(255,255,255,0.95);
 }
 
+/* ── For You Now ─────────────────────────────────────────────── */
+.for-you-now {
+  padding: var(--space-4) 0 0;
+}
+.for-you-now__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.01em;
+  padding: 0 var(--space-5);
+  margin-bottom: var(--space-3);
+}
+.for-you-now__scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--space-5);
+  padding: 0 var(--space-5) var(--space-5);
+  scrollbar-width: none;
+}
+.for-you-now__scroll::-webkit-scrollbar { display: none; }
+.for-you-now__card {
+  flex: 0 0 78vw;
+  scroll-snap-align: start;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: rgba(255,255,255,0.95);
+}
+.fyn-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.fyn-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.fyn-card__tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.fyn-card__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+.fyn-card__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.fyn-card__cta {
+  display: inline-block;
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+@media (min-width: 640px) {
+  .for-you-now__scroll {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+  .for-you-now__card {
+    flex: none;
+    width: auto;
+  }
+}
+
 /* ── HERO ───────────────────────────────────────────────────── */
 .hero {
   padding: var(--space-6) var(--space-5) var(--space-4);
