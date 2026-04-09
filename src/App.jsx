@@ -17,6 +17,7 @@ import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
 import CommunityPoll from './components/CommunityPoll'
+import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
 import BottomNav from './components/BottomNav'
 
@@ -47,6 +48,7 @@ export default function App() {
           <WatchNow />
           <CommunityPoll />
           <QuickAnswers />
+          <PeerStories />
           {/* <InsightSection /> */}
         </main>
       )}
