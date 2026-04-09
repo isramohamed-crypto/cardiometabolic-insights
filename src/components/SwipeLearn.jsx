@@ -1,48 +1,48 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 
 const cards = [
   {
     step: '1 of 5',
     emoji: '🧠',
-    title: 'The stress–flare connection',
-    body: "When you're stressed, your body releases cortisol. Within hours, cortisol weakens your skin barrier — the same barrier that keeps irritants out and moisture in.",
-    cite: 'Verywell Health · Dermatology research',
+    title: 'Stress can trigger and worsen eczema flare-ups',
+    body: 'When you experience stress, your body releases cortisol. This hormone increases inflammation and suppresses your immune system — triggering redness, itching, and dry patches.',
+    cite: 'Verywell Mind · The Impact of Stress on Eczema',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(139,107,142,.3),transparent 60%)',
   },
   {
     step: '2 of 5',
-    emoji: '📊',
-    title: 'Your data: the 48-hour lag',
-    body: 'Your tracking shows a clear signal — Wednesday stress spikes lead to Friday skin flares. That 48-hour delay is typical. Cortisol damage is slow but predictable.',
-    cite: 'Based on your Oura + skin score data',
+    emoji: '🔄',
+    title: 'The stress–flare cycle feeds itself',
+    body: 'Visible eczema symptoms often create more stress, which fuels more flare-ups. Emotional responses like scratching from anxiety make matters worse — a frustrating loop many people experience.',
+    cite: 'Verywell Mind · The Impact of Stress on Eczema',
     bg: 'linear-gradient(150deg,#3a2a45,#1e1428)',
     glow: 'radial-gradient(circle at 20% 75%,rgba(232,134,106,.2),transparent 55%)',
   },
   {
     step: '3 of 5',
-    emoji: '🔬',
-    title: 'What cortisol does to your skin',
-    body: 'Cortisol degrades the lipid layer that holds your skin cells together. It also suppresses the immune repair that happens during sleep — a double hit on flare nights.',
-    cite: 'Verywell Health · Clinical dermatology',
+    emoji: '⚡',
+    title: 'Common stress triggers to watch for',
+    body: 'Work pressure, financial strain, and family conflicts are among the most common stressful life events linked to eczema flares. Recognizing your personal triggers is the first step.',
+    cite: 'Verywell Mind · The Impact of Stress on Eczema',
     bg: 'linear-gradient(150deg,#0D7C8F,#064a55)',
     glow: 'radial-gradient(circle at 70% 25%,rgba(212,168,83,.25),transparent 55%)',
   },
   {
     step: '4 of 5',
-    emoji: '🌬️',
-    title: 'The 3-minute reset',
-    body: 'Slow diaphragmatic breathing activates your parasympathetic nervous system. Just 3 minutes can measurably reduce cortisol. Your skin barrier starts recovering.',
-    cite: 'Verywell Mind · Clinical evidence',
+    emoji: '🛡️',
+    title: 'Your skin barrier takes the hit',
+    body: 'Cortisol weakens the skin barrier that normally keeps irritants out and moisture in. A compromised barrier means your skin is more vulnerable to the triggers that cause flares.',
+    cite: 'Verywell Mind · The Impact of Stress on Eczema',
     bg: 'linear-gradient(150deg,#4a3a28,#2a1c10)',
     glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.3),transparent 55%)',
   },
   {
     step: '5 of 5',
     emoji: '✨',
-    title: 'Your plan for tonight',
-    body: 'Your Oura flagged elevated stress. Break the cycle: breathing exercise before bed, heavy moisturizer on hands + cotton gloves, humidifier on.',
-    cite: null,
+    title: 'Managing stress is managing eczema',
+    body: 'Experts emphasize that managing stress is key to managing eczema — not just for how you feel, but for what happens to your skin. Breaking the cycle starts with recognizing the connection.',
+    cite: 'Verywell Mind · The Impact of Stress on Eczema',
     cta: 'Complete this topic →',
     bg: 'linear-gradient(150deg,#2a1a38,#140e1e)',
     glow: 'radial-gradient(circle at 50% 50%,rgba(91,107,191,.25),transparent 55%)',
@@ -52,20 +52,33 @@ const cards = [
 export default function SwipeLearn({ onLearnClick }) {
   const [idx, setIdx] = useState(0)
   const [complete, setComplete] = useState(false)
-  const touchStartX = useRef(null)
+  const dragStartX = useRef(null)
+  const isDragging = useRef(false)
 
   function goTo(i) {
     setIdx(Math.max(0, Math.min(i, cards.length - 1)))
   }
 
-  function onTouchStart(e) {
-    touchStartX.current = e.changedTouches[0].screenX
+  function onDragStart(clientX) {
+    dragStartX.current = clientX
+    isDragging.current = false
   }
 
-  function onTouchEnd(e) {
-    const diff = touchStartX.current - e.changedTouches[0].screenX
-    if (Math.abs(diff) > 50) goTo(idx + (diff > 0 ? 1 : -1))
+  function onDragEnd(clientX) {
+    const diff = dragStartX.current - clientX
+    if (Math.abs(diff) > 40) {
+      isDragging.current = true
+      goTo(idx + (diff > 0 ? 1 : -1))
+    }
   }
+
+  // Touch
+  function onTouchStart(e) { onDragStart(e.changedTouches[0].clientX) }
+  function onTouchEnd(e) { onDragEnd(e.changedTouches[0].clientX) }
+
+  // Mouse / pointer
+  function onPointerDown(e) { onDragStart(e.clientX) }
+  function onPointerUp(e) { onDragEnd(e.clientX) }
 
   const card = cards[idx]
 
@@ -85,6 +98,9 @@ export default function SwipeLearn({ onLearnClick }) {
           className="swipe-learn__wrap"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          style={{ cursor: 'grab' }}
         >
           <div
             className="swipe-learn__card"
@@ -110,10 +126,6 @@ export default function SwipeLearn({ onLearnClick }) {
         </div>
 
         <div className="swipe-learn__controls">
-          <button
-            className={`swipe-learn__btn${idx === 0 ? ' swipe-learn__btn--off' : ''}`}
-            onClick={() => goTo(idx - 1)}
-          >← Back</button>
           <div className="swipe-learn__dots">
             {cards.map((_, i) => (
               <div
@@ -123,10 +135,6 @@ export default function SwipeLearn({ onLearnClick }) {
               />
             ))}
           </div>
-          <button
-            className={`swipe-learn__btn${idx === cards.length - 1 ? ' swipe-learn__btn--off' : ''}`}
-            onClick={() => goTo(idx + 1)}
-          >Next →</button>
         </div>
       </section>
 

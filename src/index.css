@@ -306,21 +306,18 @@ svg { display: block; }
   font-weight: 700;
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  color: #000;
   border: none;
   cursor: pointer;
   width: fit-content;
 }
+.fyn-card__src {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
 @media (min-width: 640px) {
-  .for-you-now__scroll {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    overflow-x: visible;
-    scroll-snap-type: none;
-  }
   .for-you-now__card {
-    flex: none;
-    width: auto;
+    flex: 0 0 calc(33.333% - 12px);
   }
 }
 
@@ -1223,13 +1220,15 @@ svg { display: block; }
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-sage);
-  border-bottom: 1px solid var(--color-sage);
+  color: var(--color-teal);
+  border-bottom: 1px solid var(--color-teal);
   padding-bottom: 2px;
   white-space: nowrap;
   text-decoration: none;
 }
 .swipe-learn__wrap {
+  user-select: none;
+  -webkit-user-select: none;
   margin: 0 var(--space-5);
   border-radius: var(--radius-xl);
   overflow: hidden;
@@ -1561,7 +1560,7 @@ svg { display: block; }
 .swipe-learn__controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: var(--space-3) var(--space-5) var(--space-4);
 }
 .swipe-learn__dots {
@@ -1762,8 +1761,8 @@ svg { display: block; }
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-sage);
-  border-bottom: 1px solid var(--color-sage);
+  color: var(--color-teal);
+  border-bottom: 1px solid var(--color-teal);
   padding-bottom: 2px;
   white-space: nowrap;
 }
