@@ -114,6 +114,9 @@ svg { display: block; }
   background: var(--color-teal);
   backdrop-filter: blur(12px);
 }
+.nav--secondary {
+  background: var(--color-teal);
+}
 
 .nav__brand {
   display: flex;
@@ -2867,7 +2870,8 @@ svg { display: block; }
 }
 
 /* ── LEARN PAGE ─────────────────────────────────────────────── */
-.learn-page { padding-bottom: var(--space-12); padding-left: var(--space-4); padding-right: var(--space-4); }
+.learn-page { padding-top: var(--nav-height); padding-bottom: var(--space-12); padding-left: var(--space-4); padding-right: var(--space-4); }
+.learn-page p { color: var(--color-text-secondary); }
 .lp-hero {
   background: var(--color-teal);
   margin-left: calc(50% - 50vw);
@@ -2900,6 +2904,7 @@ svg { display: block; }
   overflow: hidden;
 }
 .lp-journey--locked { opacity: 0.7; }
+.lp-journey--open { box-shadow: 0 0 0 2px rgba(93,45,230,0.25), 0 8px 32px rgba(93,45,230,0.15); }
 .lp-journey__top {
   display: flex;
   align-items: center;

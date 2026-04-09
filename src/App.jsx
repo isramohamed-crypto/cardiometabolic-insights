@@ -43,7 +43,7 @@ export default function App() {
           </div>
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-          <SwipeLearn onLearnClick={() => setActivePage('Learn')} onStartBreathe={() => setShowBreathe(true)} />
+          <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <DupixentAd />
           <WatchNow />
           <CommunityPoll />
