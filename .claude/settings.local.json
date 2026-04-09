@@ -25,7 +25,10 @@
       "WebFetch(domain:www.verywellmind.com)",
       "Bash(ls /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png)",
       "Bash(ls /Users/sarahpage/Downloads/Screenshot*)",
-      "Bash(find /Users/sarahpage/Downloads -name \"eczema-female-face*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/eczema-female-face.jpg' \\\\;)"
+      "Bash(find /Users/sarahpage/Downloads -name \"eczema-female-face*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/eczema-female-face.jpg' \\\\;)",
+      "Bash(find /Users/sarahpage/Downloads -name \"house-interior*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/house-interior.jpg' \\\\;)",
+      "Bash(ls -lt /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.jpg)",
+      "Bash(find /Users/sarahpage/Downloads -name \"Screenshot 2026-04-09 at 2*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/video-placeholder-2.png' \\\\;)"
     ]
   }
 }

@@ -1390,8 +1390,8 @@ svg { display: block; }
   backdrop-filter: blur(8px);
 }
 .swipe-learn__next-card--placeholder {
-  background: linear-gradient(150deg, #1e1e2e, #12121c) !important;
-  border: 2px dashed rgba(255,255,255,0.15);
+  background: linear-gradient(160deg, rgba(42,26,56,0.68) 0%, rgba(20,14,30,0.78) 100%), url('/house-interior.jpg') center/cover no-repeat !important;
+  border: none;
 }
 .swipe-learn__next-src {
   font-size: var(--font-size-xs);

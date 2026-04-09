@@ -55,6 +55,8 @@ export default function SwipeLearn({ onLearnClick, onStartBreathe }) {
   const [phase, setPhase] = useState('cards')
   const [showVideo, setShowVideo] = useState(false)
   const [videoWatched, setVideoWatched] = useState(false)
+  const [showVideo2, setShowVideo2] = useState(false)
+  const [video2Watched, setVideo2Watched] = useState(false)
   const dragStartX = useRef(null)
   const isDragging = useRef(false)
 
@@ -101,15 +103,15 @@ export default function SwipeLearn({ onLearnClick, onStartBreathe }) {
           <div className="swipe-learn__wrap swipe-learn__wrap--next">
             <div className="swipe-learn__next-card swipe-learn__next-card--placeholder">
 
-              <div className="swipe-learn__next-emoji">🧩</div>
-              <h2 className="swipe-learn__next-title">Placeholder title</h2>
+              <div className="swipe-learn__next-emoji">💡</div>
+              <h2 className="swipe-learn__next-title">How do environmental and lifestyle factors impact skin conditions?</h2>
               <p className="swipe-learn__next-body">
-                Placeholder body copy. Fill in with real content.
+                An expert explains how stress, diet, obesity, sun exposure, and specific nutritional choices can worsen or accelerate a range of skin conditions.
               </p>
-              <button className="swipe-learn__next-cta">
-                Start now →
+              <button className="swipe-learn__next-cta" onClick={() => setShowVideo2(true)}>
+                {video2Watched ? 'Keep learning →' : 'Start now →'}
               </button>
-              <p className="swipe-learn__next-src">Source · Citation</p>
+              <p className="swipe-learn__next-src">Verywell Health · Ask an Expert Series</p>
             </div>
           </div>
         ) : phase === 'completing2' ? (
@@ -207,6 +209,18 @@ export default function SwipeLearn({ onLearnClick, onStartBreathe }) {
             className="video-overlay__img"
             src="/video-placeholder.png"
             alt="3-Minute Video Meditation"
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
+
+      {showVideo2 && (
+        <div className="video-overlay" onClick={() => { setShowVideo2(false); setVideo2Watched(true) }}>
+          <button className="video-overlay__close" onClick={() => { setShowVideo2(false); setVideo2Watched(true) }}>✕</button>
+          <img
+            className="video-overlay__img"
+            src="/video-placeholder-2.png"
+            alt="Ask an Expert: Environmental & Lifestyle Factors"
             onClick={e => e.stopPropagation()}
           />
         </div>
