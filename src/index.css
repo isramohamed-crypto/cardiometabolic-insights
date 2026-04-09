@@ -1747,7 +1747,7 @@ svg { display: block; }
   font-family: var(--font-serif);
   font-size: var(--font-size-xl);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-primary);
   padding: 0 var(--space-5);
   margin-bottom: var(--space-4);
 }
@@ -1763,8 +1763,8 @@ svg { display: block; }
 }
 .qa-scroll::-webkit-scrollbar { display: none; }
 .qa-card {
-  min-width: 260px;
-  height: 190px;
+  min-width: 280px;
+  height: 250px;
   border-radius: var(--radius-lg);
   cursor: pointer;
   perspective: 800px;

@@ -28,7 +28,8 @@
       "Bash(find /Users/sarahpage/Downloads -name \"eczema-female-face*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/eczema-female-face.jpg' \\\\;)",
       "Bash(find /Users/sarahpage/Downloads -name \"house-interior*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/house-interior.jpg' \\\\;)",
       "Bash(ls -lt /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.jpg)",
-      "Bash(find /Users/sarahpage/Downloads -name \"Screenshot 2026-04-09 at 2*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/video-placeholder-2.png' \\\\;)"
+      "Bash(find /Users/sarahpage/Downloads -name \"Screenshot 2026-04-09 at 2*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/video-placeholder-2.png' \\\\;)",
+      "mcp__ff7b6004-ac43-47b3-838b-7173ff9f479b__use_figma"
     ]
   }
 }
