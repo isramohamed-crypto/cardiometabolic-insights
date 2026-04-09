@@ -91,12 +91,12 @@ export default function SwipeLearn({ onLearnClick, onStartBreathe }) {
     <>
       <section className="swipe-learn">
         <div className="swipe-learn__head">
-          <h2 className="swipe-learn__title">Stress + Skin</h2>
+          <h2 className="swipe-learn__title">How stress impacts your skin</h2>
           <a
             href="#"
             className="swipe-learn__link"
             onClick={e => { e.preventDefault(); onLearnClick && onLearnClick() }}
-          >Full Journey</a>
+          >View full journey</a>
         </div>
 
         {phase === 'next2' ? (

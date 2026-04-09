@@ -47,7 +47,7 @@ export default function WatchNow() {
         <div className="watch-head">
           <div>
             <span className="watch-badge">Paid Content for Sanofi</span>
-            <h2 className="watch-title">Understanding Your Eczema</h2>
+            <h2 className="watch-title">Expert advice</h2>
             <p className="watch-subtitle">Videos and expert insights</p>
           </div>
         </div>

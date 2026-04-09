@@ -62,7 +62,7 @@ export default function PeerStories() {
   return (
     <section className="peer-section">
       <div className="peer-section__head">
-        <h2 className="peer-section__heading">Peer stories</h2>
+        <h2 className="peer-section__heading">Stories from people like you</h2>
       </div>
 
       <div className="peer-carousel">

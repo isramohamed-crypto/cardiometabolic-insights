@@ -17,7 +17,7 @@ export default function CommunityPoll() {
 
   return (
     <section className="poll-section">
-      <h2 className="poll-section__heading">Community poll</h2>
+      <h2 className="poll-section__heading">What people are saying</h2>
 
       <div className="poll-card">
         {/* Header */}

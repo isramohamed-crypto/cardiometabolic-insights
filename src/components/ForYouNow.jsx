@@ -54,7 +54,7 @@ const cards = [
 export default function ForYouNow({ onStartBreathe }) {
   return (
     <div className="for-you-now">
-      <h2 className="for-you-now__title">Things to try</h2>
+      <h2 className="for-you-now__title">Recommended for you</h2>
       <div className="for-you-now__scroll">
         {cards.map(card => (
           <div
