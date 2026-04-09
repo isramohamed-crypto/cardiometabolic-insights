@@ -21,7 +21,11 @@
       "Bash(chmod +x /tmp/vite_dev.sh)",
       "WebFetch(domain:claude.ai)",
       "Bash(ls -t /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.jpeg /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.webp)",
-      "Bash(ls -t /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.webp)"
+      "Bash(ls -t /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png /Users/sarahpage/Downloads/*.webp)",
+      "WebFetch(domain:www.verywellmind.com)",
+      "Bash(ls /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png)",
+      "Bash(ls /Users/sarahpage/Downloads/Screenshot*)",
+      "Bash(find /Users/sarahpage/Downloads -name \"eczema-female-face*\" -exec cp {} '/Users/sarahpage/Documents/Projects/Pre-Rx/People Inc/public/eczema-female-face.jpg' \\\\;)"
     ]
   }
 }

@@ -41,7 +41,7 @@ export default function App() {
           </div>
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-          <SwipeLearn onLearnClick={() => setActivePage('Learn')} />
+          <SwipeLearn onLearnClick={() => setActivePage('Learn')} onStartBreathe={() => setShowBreathe(true)} />
           <QuickAnswers />
           <DupixentAd />
           <WatchNow />
