@@ -16,6 +16,7 @@ import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
+import CommunityPoll from './components/CommunityPoll'
 import LearnPage from './components/LearnPage'
 import BottomNav from './components/BottomNav'
 
@@ -42,10 +43,11 @@ export default function App() {
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
           <SwipeLearn onLearnClick={() => setActivePage('Learn')} onStartBreathe={() => setShowBreathe(true)} />
-          <QuickAnswers />
           <DupixentAd />
           <WatchNow />
-          <InsightSection />
+          <CommunityPoll />
+          <QuickAnswers />
+          {/* <InsightSection /> */}
         </main>
       )}
 

@@ -3,7 +3,7 @@ import React from 'react'
 export default function InsightSection() {
   return (
     <section className="insight-section">
-      <h3 className="insight-section__heading">Your insight</h3>
+      <h2 className="insight-section__heading">Your insight</h2>
 
       <div className="insight-card">
         <div className="insight-tag">
