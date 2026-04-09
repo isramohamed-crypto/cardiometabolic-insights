@@ -32,7 +32,10 @@
       "mcp__ff7b6004-ac43-47b3-838b-7173ff9f479b__use_figma",
       "Bash(node --input-type=module)",
       "Bash(npx --yes acorn --ecma2020 --module src/components/WatchNow.jsx)",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.jpeg /Users/sarahpage/Downloads/*.png)",
+      "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png)",
+      "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg)"
     ]
   }
 }

@@ -8,7 +8,7 @@ const VIDEOS = [
     title: 'How the Immune System Drives Eczema \u2014 and What\u2019s Being Done About It',
     src: 'Dr. Sarah Kim \u00b7 Verywell Health',
     dur: '4:32',
-    bg: 'linear-gradient(150deg,rgba(58,30,90,0.85),rgba(93,45,230,0.6))',
+    thumb: '/video-thumb-1.jpg',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const VIDEOS = [
     title: 'What Is OX40L? A Simple Explanation',
     src: 'Verywell Health \u00b7 Sanofi',
     dur: '3:18',
-    bg: 'linear-gradient(150deg,rgba(6,74,85,0.85),rgba(13,124,143,0.6))',
+    thumb: '/video-thumb-2.jpg',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const VIDEOS = [
     title: 'Marcus\u2019s Story: Why I Joined a Clinical Trial',
     src: 'Patient Story \u00b7 Sanofi',
     dur: '5:47',
-    bg: 'linear-gradient(150deg,rgba(74,42,16,0.85),rgba(212,120,50,0.6))',
+    thumb: '/video-thumb-3.jpg',
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const VIDEOS = [
     title: 'Preparing to Talk About Newer Treatments',
     src: 'Verywell Health \u00b7 Sanofi',
     dur: '2:55',
-    bg: 'linear-gradient(150deg,rgba(20,48,36,0.85),rgba(60,130,90,0.6))',
+    thumb: '/video-thumb-4.jpg',
   },
 ]
 
@@ -59,7 +59,7 @@ export default function WatchNow() {
               className="edu-card"
               onClick={() => setActiveVideo(video)}
             >
-              <div className="edu-card__bg" style={{ background: video.bg }}>
+              <div className="edu-card__bg" style={{ background: `linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.2) 50%,transparent 100%), url(${video.thumb}) center/cover no-repeat` }}>
                 <div className="edu-card__play">
                   <div className="edu-card__play-tri" />
                 </div>
@@ -86,11 +86,11 @@ export default function WatchNow() {
             className="video-overlay__close"
             onClick={() => setActiveVideo(null)}
           >
-            \u2715
+            ✕
           </button>
           <div
             className="edu-video-mock"
-            style={{ background: activeVideo.bg }}
+            style={{ background: `linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.15) 50%,transparent 100%), url(${activeVideo.thumb}) center/cover no-repeat` }}
             onClick={e => e.stopPropagation()}
           >
             <div className="edu-video-mock__play">

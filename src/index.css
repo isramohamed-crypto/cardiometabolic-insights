@@ -1884,6 +1884,8 @@ svg { display: block; }
   gap: 12px;
   overflow-x: auto;
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--space-5);
   padding: 0 var(--space-5) var(--space-4);
   -webkit-overflow-scrolling: touch;
 }
@@ -1891,7 +1893,8 @@ svg { display: block; }
 
 /* Video card */
 .edu-card {
-  flex: 0 0 220px;
+  flex: 0 0 82vw;
+  scroll-snap-align: start;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
