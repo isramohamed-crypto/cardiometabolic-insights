@@ -3,9 +3,10 @@ import React from 'react'
 export default function TrackPage() {
   return (
     <main className="main learn-page track-page">
-      <div className="lp-header">
-        <h1 className="lp-header__title">Track your symptoms</h1>
-        <p className="lp-header__sub">Log how you're feeling and spot the patterns behind your flares.</p>
+      <div className="pp-hero">
+        <p className="pp-hero-eyebrow">Track your symptoms</p>
+        <h1 className="pp-hero-title">Your skin story</h1>
+        <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your flares.</p>
       </div>
     </main>
   )

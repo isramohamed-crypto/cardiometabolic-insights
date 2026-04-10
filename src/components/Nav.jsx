@@ -14,7 +14,7 @@ export default function Nav({ activePage, setActivePage }) {
   }, [])
 
   return (
-    <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
+    <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' && activePage !== 'Learn' && activePage !== 'Track' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
       <div className="nav__brand">
         <span className="nav__wordmark">Eczema360</span>
       </div>
