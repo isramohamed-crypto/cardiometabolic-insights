@@ -6,16 +6,16 @@ const SLEEP_DATA   = [72,68,65,74,70,58,62,75,71,60,73,78,64,72]
 const DAYS         = ['Mar 25','26','27','28','29','30','31','Apr 1','2','3','4','5','6','7']
 
 const TRIGGERS = [
-  { e: '😰', l: 'Stressful day', p: 45, c: 'var(--color-primary)' },
+  { e: '😰', l: 'Stressful day', p: 45, c: 'var(--color-teal)' },
   { e: '😴', l: 'Rough night',   p: 25, c: 'var(--color-teal)' },
-  { e: '🌤️', l: 'Weather',       p: 10, c: '#FDDA3C' },
+  { e: '🌤️', l: 'Weather',       p: 10, c: 'var(--color-sage)' },
   { e: '🍽️', l: 'New food',      p:  5, c: 'var(--color-warm)' },
   { e: '👍', l: 'Normal day',    p: 15, c: 'var(--color-text-muted)' },
 ]
 
 const ACTIONS = [
   { icon: '🌬️', bg: 'rgba(46,209,203,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → flare cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
-  { icon: '🧴', bg: 'rgba(93,45,230,.1)',    tag: 'SKINCARE · ROUTINE', tagC: 'var(--color-primary)', title: 'Add moisturizer timing to your daily checklist', body: 'You moisturize 4/7 nights. Making it 7/7 could improve your average skin score.', cta: 'Add to checklist', ctaBg: 'rgba(93,45,230,.1)', ctaC: 'var(--color-primary)' },
+  { icon: '🧴', bg: 'rgba(93,45,230,.1)',    tag: 'SKINCARE · ROUTINE', tagC: 'var(--color-teal)', title: 'Add moisturizer timing to your daily checklist', body: 'You moisturize 4/7 nights. Making it 7/7 could improve your average skin score.', cta: 'Add to checklist', ctaBg: 'rgba(93,45,230,.1)', ctaC: 'var(--color-teal)' },
   { icon: '📖', bg: 'rgba(28,95,241,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#1C5FF1', title: 'Continue: Stress + Skin journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(28,95,241,.1)', ctaC: '#1C5FF1' },
   { icon: '🥗', bg: 'rgba(253,218,60,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(253,218,60,.15)', ctaC: '#8A7A30' },
 ]
@@ -30,7 +30,7 @@ const METRICS = [
 ]
 
 const EPROS = [
-  { icon: '📋', iconBg: 'rgba(93,45,230,.1)',   title: 'DLQI — Quality of Life',    sub: 'How eczema impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(93,45,230,.1)', pillC: 'var(--color-primary)', last: 'Mar 24' },
+  { icon: '📋', iconBg: 'rgba(93,45,230,.1)',   title: 'DLQI — Quality of Life',    sub: 'How eczema impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(93,45,230,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
   { icon: '📊', iconBg: 'rgba(46,209,203,.12)', title: 'POEM — Symptom Severity',   sub: 'Track eczema severity over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(46,209,203,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
   { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of your skin condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
 ]
@@ -55,14 +55,14 @@ function TrendChart() {
   return (
     <div className="tp-chart-wrap">
       <div className="tp-chart-legend">
-        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-primary)' }} />Skin score</span>
+        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-teal)' }} />Skin score</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-warm)' }} />Stress</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-teal)' }} />Sleep</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', display: 'block' }}>
         <polyline points={SLEEP_DATA.map((v, i) => `${(i / (SLEEP_DATA.length - 1)) * W},${H - (v / 100) * H}`).join(' ')} fill="none" stroke="var(--color-teal)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
         <polyline points={stressPts} fill="none" stroke="var(--color-warm)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.65" />
-        <polyline points={skinPts}   fill="none" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline points={skinPts}   fill="none" stroke="var(--color-teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <div className="tp-chart-days">
         {[DAYS[0], DAYS[6], DAYS[13]].map(d => <span key={d}>{d}</span>)}
@@ -88,7 +88,7 @@ export default function TrackPage() {
       {/* Status strip — overlaps hero */}
       <div className="tp-status-strip">
         <div className="tp-sc"><div className="tp-sc-label">Days tracked</div><div className="tp-sc-val">21</div></div>
-        <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-primary)' }}>Stress</div></div>
+        <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-teal)' }}>Stress</div></div>
         <div className="tp-sc"><div className="tp-sc-label">Confidence</div><div className="tp-sc-val">82%</div></div>
       </div>
 
@@ -121,8 +121,8 @@ export default function TrackPage() {
             </div>
           ))}
           <div className="tp-insight">
-            <div className="tp-insight-tag" style={{ color: 'var(--color-primary)' }}>
-              <span className="tp-insight-dot" style={{ background: 'var(--color-primary)' }} />
+            <div className="tp-insight-tag" style={{ color: 'var(--color-teal)' }}>
+              <span className="tp-insight-dot" style={{ background: 'var(--color-teal)' }} />
               Pattern detected
             </div>
             <div className="tp-insight-title">Stressful days show up on your skin ~48 hours later</div>
@@ -173,7 +173,7 @@ export default function TrackPage() {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Health assessments</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(93,45,230,.1)', color: 'var(--color-primary)' }}>ePRO</span>
+          <span className="tp-sec-badge" style={{ background: 'rgba(93,45,230,.1)', color: 'var(--color-teal)' }}>ePRO</span>
         </div>
         {EPROS.map((ep, i) => (
           <div key={i} className="tp-epro-card">
@@ -205,7 +205,7 @@ export default function TrackPage() {
             <div className="tp-er-ring">
               <svg width="64" height="64" viewBox="0 0 64 64" style={{ position: 'absolute', inset: 0 }}>
                 <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-border)" strokeWidth="4" />
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-primary)" strokeWidth="4" strokeDasharray="176" strokeDashoffset={176 - (176 * 9 / 30)} strokeLinecap="round" transform="rotate(-90 32 32)" />
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-teal)" strokeWidth="4" strokeDasharray="176" strokeDashoffset={176 - (176 * 9 / 30)} strokeLinecap="round" transform="rotate(-90 32 32)" />
               </svg>
               <span className="tp-er-val">9</span>
               <span className="tp-er-max">/30</span>
@@ -223,8 +223,8 @@ export default function TrackPage() {
             {[{d:'Apr 3',s:9,pct:30},{d:'Feb 22',s:12,pct:40},{d:'Jan 10',s:16,pct:53}].map((r,i) => (
               <div key={i} className="tp-er-hist-row">
                 <span className="tp-er-hist-date">{r.d}</span>
-                <div className="tp-er-hist-bar"><div className="tp-er-hist-fill" style={{ width: `${r.pct}%`, background: 'var(--color-primary)' }} /></div>
-                <span className="tp-er-hist-score" style={{ color: 'var(--color-primary)' }}>{r.s}</span>
+                <div className="tp-er-hist-bar"><div className="tp-er-hist-fill" style={{ width: `${r.pct}%`, background: 'var(--color-teal)' }} /></div>
+                <span className="tp-er-hist-score" style={{ color: 'var(--color-teal)' }}>{r.s}</span>
               </div>
             ))}
           </div>
