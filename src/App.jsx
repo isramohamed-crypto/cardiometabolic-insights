@@ -19,6 +19,7 @@ import InsightSection from './components/InsightSection'
 import CommunityPoll from './components/CommunityPoll'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
+import TrackPage from './components/TrackPage'
 import BottomNav from './components/BottomNav'
 
 export default function App() {
@@ -31,6 +32,8 @@ export default function App() {
 
       {activePage === 'Learn' ? (
         <LearnPage />
+      ) : activePage === 'Track' ? (
+        <TrackPage />
       ) : (
         <main className="main">
           <div className="hero-wrap">
