@@ -106,8 +106,8 @@ export default function TrackPage() {
   return (
     <main className="main learn-page track-page">
       <div className="pp-hero tp-hero">
-        <p className="pp-hero-eyebrow">Track your symptoms</p>
-        <h1 className="pp-hero-title">Your skin story</h1>
+        <p className="pp-hero-eyebrow">Your skin diary</p>
+        <h1 className="pp-hero-title">What your data is telling you</h1>
         <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your flares.</p>
       </div>
 

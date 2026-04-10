@@ -232,9 +232,9 @@ export default function LearnPage() {
   return (
     <main className="main learn-page">
       <div className="pp-hero">
-        <p className="pp-hero-eyebrow">Learn about your skin</p>
-        <h1 className="pp-hero-title">All about eczema</h1>
-        <p className="pp-hero-sub">Dive deep into how skin conditions can effect your entire life.</p>
+        <p className="pp-hero-eyebrow">Get smarter about your skin</p>
+        <h1 className="pp-hero-title">Pick a topic, go at your own pace</h1>
+        <p className="pp-hero-sub">Short reads. Real answers. Jump back in anytime.</p>
       </div>
       <div className="lp-journeys">
         {JOURNEYS.map(j => <JourneyCard key={j.id} journey={j} />)}

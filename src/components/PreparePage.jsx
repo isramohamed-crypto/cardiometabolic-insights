@@ -300,9 +300,9 @@ export default function PreparePage() {
 
       {/* Hero */}
       <div className="pp-hero">
-        <p className="pp-hero-eyebrow">Prepare for your visit</p>
-        <h1 className="pp-hero-title">You're ready, Diane</h1>
-        <p className="pp-hero-sub">Your tracking data has been turned into a summary you and your dermatologist can use.</p>
+        <p className="pp-hero-eyebrow">Walk in ready</p>
+        <h1 className="pp-hero-title">Diane, you're set</h1>
+        <p className="pp-hero-sub">We turned your last few weeks into a conversation starter. Your derm will actually want to see this.</p>
         <div className="pp-hero-appt">
           <span className="pp-hero-appt-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
