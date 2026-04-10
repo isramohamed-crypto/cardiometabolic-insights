@@ -1,13 +1,37 @@
 import React, { useState } from 'react'
 
-const SKIN_DATA    = [2,2,3,3,2,4,3,2,2,3,2,4,3,2]
-const STRESS_DATA  = [6,5,7,4,5,3,7,6,5,8,4,3,7,6]
-const SLEEP_DATA   = [72,68,65,74,70,58,62,75,71,60,73,78,64,72]
+const CHART_DATA = {
+  '14 days': {
+    skin:   [2,2,3,3,2,4,3,2,2,3,2,4,3,2],
+    stress: [6,5,7,4,5,3,7,6,5,8,4,3,7,6],
+    sleep:  [72,68,65,74,70,58,62,75,71,60,73,78,64,72],
+    days:   ['Mar 25','31','Apr 7'],
+    note:   'Pattern detected: skin score peaks on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.',
+  },
+  '30 days': {
+    skin:   [3,2,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2,1,2,3,2,4,3,2,2,3,2],
+    stress: [4,5,6,5,7,4,5,3,7,6,5,8,4,3,7,6,5,4,6,5,7,4,5,3,7,6,5,8,4,3],
+    sleep:  [74,72,68,65,74,70,58,62,75,71,60,73,78,64,72,70,68,65,74,70,58,62,75,71,60,73,78,64,72,70],
+    days:   ['Mar 8','Mar 22','Apr 7'],
+    note:   'Pattern detected: stress spikes in weeks 2 and 4 consistently follow sleep scores below 65.',
+  },
+  '90 days': {
+    skin:   [3,3,2,3,4,3,2,2,3,2,4,3,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2],
+    stress: [3,4,5,4,6,5,7,4,5,3,7,6,5,8,4,3,7,6,5,4,6,5,7,4,5,3,7,6,5,8],
+    sleep:  [76,75,72,68,65,74,70,58,62,75,71,60,73,78,64,72,70,68,65,74,70,58,62,75,71,60,73,78,64,70],
+    days:   ['Jan 7','Feb 21','Apr 7'],
+    note:   'Long-term pattern: stress is your #1 predictor. Skin scores trend higher in weeks with consistent sleep above 70.',
+  },
+}
+
+const SKIN_DATA    = CHART_DATA['14 days'].skin
+const STRESS_DATA  = CHART_DATA['14 days'].stress
+const SLEEP_DATA   = CHART_DATA['14 days'].sleep
 const DAYS         = ['Mar 25','26','27','28','29','30','31','Apr 1','2','3','4','5','6','7']
 
 const TRIGGERS = [
   { e: '😰', l: 'Stressful day', p: 45, c: 'var(--color-teal)' },
-  { e: '😴', l: 'Rough night',   p: 25, c: 'var(--color-teal)' },
+  { e: '😴', l: 'Rough night',   p: 25, c: 'var(--color-blue)' },
   { e: '🌤️', l: 'Weather',       p: 10, c: 'var(--color-sage)' },
   { e: '🍽️', l: 'New food',      p:  5, c: 'var(--color-warm)' },
   { e: '👍', l: 'Normal day',    p: 15, c: 'var(--color-text-muted)' },
@@ -47,28 +71,30 @@ function Sparkline({ data, color }) {
   )
 }
 
-function TrendChart() {
+function TrendChart({ range }) {
   const W = 300, H = 80
-  const skinPts  = SKIN_DATA.map((v, i)   => `${(i / (SKIN_DATA.length - 1)) * W},${H - (v / 5) * H}`).join(' ')
-  const stressPts = STRESS_DATA.map((v, i) => `${(i / (STRESS_DATA.length - 1)) * W},${H - (v / 10) * H}`).join(' ')
+  const d = CHART_DATA[range]
+  const skinPts   = d.skin.map((v, i)   => `${(i / (d.skin.length - 1)) * W},${H - (v / 5) * H}`).join(' ')
+  const stressPts = d.stress.map((v, i) => `${(i / (d.stress.length - 1)) * W},${H - (v / 10) * H}`).join(' ')
+  const sleepPts  = d.sleep.map((v, i)  => `${(i / (d.sleep.length - 1)) * W},${H - (v / 100) * H}`).join(' ')
 
   return (
     <div className="tp-chart-wrap">
       <div className="tp-chart-legend">
-        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-teal)' }} />Skin score</span>
+        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-sage)' }} />Skin score</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-warm)' }} />Stress</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-teal)' }} />Sleep</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', display: 'block' }}>
-        <polyline points={SLEEP_DATA.map((v, i) => `${(i / (SLEEP_DATA.length - 1)) * W},${H - (v / 100) * H}`).join(' ')} fill="none" stroke="var(--color-teal)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.5" />
+        <polyline points={sleepPts}  fill="none" stroke="var(--color-teal)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         <polyline points={stressPts} fill="none" stroke="var(--color-warm)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.65" />
-        <polyline points={skinPts}   fill="none" stroke="var(--color-teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline points={skinPts}   fill="none" stroke="var(--color-sage)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <div className="tp-chart-days">
-        {[DAYS[0], DAYS[6], DAYS[13]].map(d => <span key={d}>{d}</span>)}
+        {d.days.map(day => <span key={day}>{day}</span>)}
       </div>
       <div className="tp-chart-note">
-        <strong>Pattern detected:</strong> skin score peaks on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.
+        <strong>Pattern detected:</strong> {d.note.replace('Pattern detected: ', '')}
       </div>
     </div>
   )
@@ -103,7 +129,7 @@ export default function TrackPage() {
             <button key={t} className={`tp-tt-btn${timeRange === t ? ' tp-tt-btn--on' : ''}`} onClick={() => setTimeRange(t)}>{t}</button>
           ))}
         </div>
-        <div className="tp-card"><TrendChart /></div>
+        <div className="tp-card"><TrendChart range={timeRange} /></div>
       </div>
 
       {/* What's been going on */}
@@ -144,6 +170,7 @@ export default function TrackPage() {
               <span className="tp-ac-cta" style={{ background: a.ctaBg, color: a.ctaC }}>{a.cta}</span>
             </div>
           ))}
+          <div style={{ minWidth: 'var(--space-4)', flexShrink: 0 }} />
         </div>
       </div>
 
