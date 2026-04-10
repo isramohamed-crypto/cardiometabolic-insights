@@ -58,6 +58,7 @@ function ChatOverlay({ initialQ, onClose }) {
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const msgsRef = useRef(null)
+  const initSent = useRef(false)
 
   function send(q) {
     if (!q.trim()) return
@@ -72,7 +73,10 @@ function ChatOverlay({ initialQ, onClose }) {
   }
 
   useEffect(() => {
-    if (initialQ) setTimeout(() => send(initialQ), 300)
+    if (initialQ && !initSent.current) {
+      initSent.current = true
+      setTimeout(() => send(initialQ), 300)
+    }
   }, [])
 
   useEffect(() => {
@@ -182,12 +186,104 @@ const QUESTIONS = [
   { text: 'My DLQI is 9 and improving. At what point would you consider biologic therapy for my profile?', reason: 'Based on DLQI + POEM trends' },
 ]
 
+const STORIES = [
+  {
+    step: 'Story 1 of 5', avatar: 'M', name: 'Marcus, 34', detail: 'Moderate-to-severe AD · 12 years diagnosed',
+    quote: "I'd been on the same topical for six years. I didn't know there was a whole ladder of options I hadn't tried.",
+    context: "Marcus's dermatologist explained the treatment escalation pathway — from topicals to phototherapy to biologics. Understanding where he was on that spectrum gave Marcus the confidence to ask about next steps.",
+    takeaway: 'Ask: "Where am I on the treatment ladder, and what comes next?"', takeawaySub: 'A question for your upcoming visit',
+    bg: 'linear-gradient(150deg,#2B1B3D,#4A2D6B)', glow: 'radial-gradient(circle at 75% 20%,rgba(123,45,142,.25),transparent 60%)',
+  },
+  {
+    step: 'Story 2 of 5', avatar: 'P', name: 'Priya, 28', detail: 'Severe AD · Sleep and stress triggers',
+    quote: "My doctor kept asking about my skin. But it was the sleep loss and the anxiety at work that were destroying me.",
+    context: "Priya learned that quality-of-life impact — not just skin severity — matters for treatment decisions. Once she started describing her sleep disruption and social avoidance, her dermatologist reassessed her treatment plan.",
+    takeaway: 'Tell your doctor how eczema affects your life — not just your skin.', takeawaySub: 'Your DLQI score captures this, too',
+    bg: 'linear-gradient(150deg,#0D7C8F,#064a55)', glow: 'radial-gradient(circle at 20% 75%,rgba(253,218,60,.15),transparent 55%)',
+  },
+  {
+    step: 'Story 3 of 5', avatar: 'D', name: 'Diane, mom of Maya (13)', detail: "Managing her daughter's moderate AD",
+    quote: "I read that eczema is an immune condition — not just a skin thing. That changed every question I asked.",
+    context: "Diane researched how atopic dermatitis involves an overactive immune system. When she brought this understanding to Maya's appointment, her pediatric dermatologist discussed newer approaches that target specific immune pathways like OX40L.",
+    takeaway: 'Ask: "Are there newer treatments that target the immune system directly?"', takeawaySub: 'Researchers are studying new approaches',
+    bg: 'linear-gradient(150deg,#3D2258,#5A3580)', glow: 'radial-gradient(circle at 65% 30%,rgba(232,134,106,.15),transparent 55%)',
+  },
+  {
+    step: 'Story 4 of 5', avatar: 'J', name: 'James, 45', detail: 'AD + psoriasis · Stress and sleep triggers',
+    quote: "I showed my dermatologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
+    context: "James tracked his symptoms, sleep, and stress daily. When his dermatologist saw the pattern — stress on Monday, skin flare by Wednesday — she immediately adjusted his treatment approach and discussed whether systemic therapy might help.",
+    takeaway: 'Your tracking data tells a story. Share your Eczema360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
+    bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
+  },
+  {
+    step: 'Story 5 of 5', avatar: 'A', name: 'Amira, 31', detail: 'Severe AD · Multiple treatment failures',
+    quote: "I didn't know you could ask your dermatologist about clinical trials. I thought they were only for people with no options left.",
+    context: "After trying multiple topicals and one biologic without full control, Amira's dermatologist mentioned a clinical trial studying a new approach that targets OX40L. She learned that trials are a proactive option — not a last resort.",
+    takeaway: 'Ask: "Are there any clinical trials I might be eligible for?"', takeawaySub: 'Trials are an option at any stage',
+    bg: 'linear-gradient(150deg,#4a3a28,#2a1c10)', glow: 'radial-gradient(circle at 50% 50%,rgba(212,168,83,.15),transparent 55%)',
+  },
+]
+
 const AI_SUGGESTIONS = [
   'What should I ask about biologics?',
   'Explain my stress-flare pattern to my doctor',
   'Is my eczema severe enough for a referral?',
   'What does my DLQI score mean for treatment?',
 ]
+
+function StoriesSwipe() {
+  const [idx, setIdx] = useState(0)
+  const dragStartX = useRef(null)
+
+  function go(i) { setIdx(Math.max(0, Math.min(i, STORIES.length - 1))) }
+
+  function onDragEnd(clientX) {
+    const diff = dragStartX.current - clientX
+    if (Math.abs(diff) > 40) go(idx + (diff > 0 ? 1 : -1))
+  }
+
+  const s = STORIES[idx]
+
+  return (
+    <div className="pp-stories-swipe">
+      <div
+        className="pp-story-card"
+        style={{ background: s.bg, cursor: 'grab' }}
+        onTouchStart={e => { dragStartX.current = e.changedTouches[0].clientX }}
+        onTouchEnd={e => onDragEnd(e.changedTouches[0].clientX)}
+        onPointerDown={e => { dragStartX.current = e.clientX }}
+        onPointerUp={e => onDragEnd(e.clientX)}
+      >
+        <div className="pp-story-glow" style={{ background: s.glow }} />
+        <div className="pp-story-content">
+          <div className="pp-story-step">{s.step}</div>
+          <div className="pp-story-person">
+            <div className="pp-story-avatar">{s.avatar}</div>
+            <div>
+              <div className="pp-story-name">{s.name}</div>
+              <div className="pp-story-detail">{s.detail}</div>
+            </div>
+          </div>
+          <div className="pp-story-quote">"{s.quote}"</div>
+          <div className="pp-story-context">{s.context}</div>
+          <div className="pp-story-takeaway">
+            <div className="pp-story-takeaway-icon">💡</div>
+            <div>
+              <div className="pp-story-takeaway-text">{s.takeaway}</div>
+              <div className="pp-story-takeaway-sub">{s.takeawaySub}</div>
+            </div>
+          </div>
+          <div className="pp-story-src">Verywell Health · In Partnership with Sanofi</div>
+        </div>
+      </div>
+      <div className="pp-swipe-dots">
+        {STORIES.map((_, i) => (
+          <div key={i} className={`pp-sw-dot${i === idx ? ' pp-sw-dot--on' : ''}`} onClick={() => go(i)} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function PreparePage() {
   const [chatOpen, setChatOpen] = useState(false)
@@ -303,15 +399,19 @@ export default function PreparePage() {
         <SwipeCards />
       </div>
 
-      {/* Stat callout */}
-      <div className="pp-section">
-        <div className="pp-stat-callout">
-          <div className="pp-stat-emoji">🩺</div>
-          <div className="pp-stat-headline">Most common reasons for dermatologist visits include skin exams, lesions, acne, and skin rashes</div>
-          <div className="pp-stat-body">Eczema is one of the most common conditions dermatologists treat. You're not alone — and your dermatologist has seen thousands of cases like yours.</div>
-          <div className="pp-stat-source">Verywell Health · Dermatologist visit data, 2007–2018</div>
+      {/* Stories from others */}
+      <section className="pp-stories-sec">
+        <div className="watch-head">
+          <div>
+            <span className="watch-badge">Paid Content for Sanofi</span>
+            <h2 className="watch-title">Stories from others</h2>
+          </div>
         </div>
-      </div>
+        <StoriesSwipe />
+        <div className="edu-disclaimer" style={{ margin: 'var(--space-3) 0 0' }}>
+          <strong>Sponsored content.</strong> These stories are illustrative and produced in partnership with Sanofi by Verywell Health. Amlitelimab is an investigational medicine currently in clinical trials for atopic dermatitis. It has not been approved by any regulatory authority. Always consult your healthcare provider about your treatment options.
+        </div>
+      </section>
 
       {/* Share */}
       <div className="pp-section">
