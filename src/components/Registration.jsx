@@ -72,7 +72,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            Personalized guidance, daily tracking, and <strong>trusted content</strong> — all in one place.
+            Daily tips matched to your triggers. Track what matters. Walk into your next derm visit <strong>ready</strong>.
           </p>
 
           <div className="reg-auth-buttons">
@@ -104,10 +104,10 @@ export default function Registration({ onClose, onStartOnboarding }) {
 
           <div className="reg-benefits">
             {[
-              { icon: '📊', color: 'purple', title: 'Personalized daily feed', desc: 'Content matched to your triggers, treatment stage, and lifestyle' },
-              { icon: '📋', color: 'sage',   title: 'Symptom & trigger tracking', desc: 'Log skin, sleep, and stress — with wearable auto-sync' },
-              { icon: '🧠', color: 'warm',   title: 'AI-powered insights', desc: 'Pattern detection that helps you predict flares before they happen' },
-              { icon: '💬', color: 'lime',   title: 'Doctor-ready discussion guides', desc: 'Walk into your next appointment with data your derm can use' },
+              { icon: '📊', color: 'purple', title: 'Your day, your way', desc: 'Content matched to your triggers, treatment stage, and lifestyle' },
+              { icon: '📋', color: 'sage',   title: 'Spot your patterns before a flare hits', desc: 'Log skin, sleep, and stress — with wearable auto-sync' },
+              { icon: '🧠', color: 'warm',   title: 'See what your skin is actually telling you', desc: 'Pattern detection that helps you predict flares before they happen' },
+              { icon: '💬', color: 'lime',   title: 'Show up to your appointment with receipts', desc: 'Walk into your next appointment with data your derm can use' },
             ].map(b => (
               <div className="reg-benefit" key={b.title}>
                 <div className={`reg-benefit__icon reg-benefit__icon--${b.color}`}>{b.icon}</div>

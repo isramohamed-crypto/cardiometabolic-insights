@@ -169,9 +169,9 @@
 }
 
 .reg-value-prop {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--color-text, #1A1520);
+  color: #1A1520;
   line-height: 1.5;
   text-align: center;
   margin-bottom: 28px;
@@ -179,8 +179,8 @@
 }
 
 .reg-value-prop strong {
-  color: var(--color-teal, #5D2DE6);
-  font-weight: 600;
+  color: #5D2DE6;
+  font-weight: 700;
 }
 
 /* ── AUTH BUTTONS ── */

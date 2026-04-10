@@ -91,7 +91,7 @@ export default function SwipeLearn({ onLearnClick, onStartBreathe }) {
     <>
       <section className="swipe-learn">
         <div className="swipe-learn__head">
-          <h2 className="swipe-learn__title">How stress impacts your skin</h2>
+          <h2 className="swipe-learn__title">The stress-skin connection, explained</h2>
           <a
             href="#"
             className="swipe-learn__link"

@@ -103,7 +103,6 @@ export default function DailyCheckin() {
         <div className="daily-checkin__icon">📋</div>
         <div className="daily-checkin__body">
           <p className="daily-checkin__title">How are you feeling?</p>
-          <p className="daily-checkin__sub">Log skin, stress &amp; triggers · Oura auto-synced</p>
         </div>
         <div className="daily-checkin__arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
