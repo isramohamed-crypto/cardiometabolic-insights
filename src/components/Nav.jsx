@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const links = ['Today', 'Track', 'Learn', 'Prepare']
 
-export default function Nav({ activePage, setActivePage }) {
+export default function Nav({ activePage, setActivePage, onLogoClick }) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Nav({ activePage, setActivePage }) {
   return (
     <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' && activePage !== 'Learn' && activePage !== 'Track' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
       <div className="nav__brand">
-        <span className="nav__wordmark">Eczema360</span>
+        <button className="nav__wordmark" onClick={onLogoClick} style={{background:'none',border:'none',cursor:'pointer',padding:0}}>Eczema360</button>
       </div>
       <nav className="nav__links">
         {links.map(link => (

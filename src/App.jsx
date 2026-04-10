@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Nav from './components/Nav'
+import Registration from './components/Registration'
+import Onboarding from './components/Onboarding'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
 import DailyCheckin from './components/DailyCheckin'
@@ -26,10 +28,19 @@ import BottomNav from './components/BottomNav'
 export default function App() {
   const [activePage, setActivePage] = useState('Today')
   const [showBreathe, setShowBreathe] = useState(false)
+  const [showRegistration, setShowRegistration] = useState(false)
+  const [onboarding, setOnboarding] = useState(null) // null | { name }
+
+  function startOnboarding(name = '') {
+    setShowRegistration(false)
+    setOnboarding({ name })
+  }
 
   return (
     <>
-      <Nav activePage={activePage} setActivePage={setActivePage} />
+      <Nav activePage={activePage} setActivePage={setActivePage} onLogoClick={() => setShowRegistration(true)} />
+      {showRegistration && <Registration onClose={() => setShowRegistration(false)} onStartOnboarding={startOnboarding} />}
+      {onboarding && <Onboarding name={onboarding.name} onClose={() => setOnboarding(null)} />}
 
       {activePage === 'Learn' ? (
         <LearnPage />
