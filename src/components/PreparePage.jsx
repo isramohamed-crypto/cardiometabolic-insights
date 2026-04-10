@@ -337,32 +337,6 @@ export default function PreparePage() {
         </div>
       </div>
 
-      {/* Questions */}
-      <div className="pp-section">
-        <div className="pp-sec-head">
-          <span className="pp-sec-badge">Data-driven</span>
-          <h2 className="pp-sec-title">Questions to ask</h2>
-        </div>
-        <div className="pp-card">
-          {QUESTIONS.map((item, i) => (
-            <div key={i} className="pp-q-row">
-              <div className="pp-q-icon">💡</div>
-              <div><div className="pp-q-text">{item.text}</div><div className="pp-q-reason">{item.reason}</div></div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Share (after questions) */}
-      <div className="pp-section">
-        <button
-          className={`pp-share-btn${shared ? ' pp-share-btn--done' : ''}`}
-          onClick={() => setShared(true)}
-        >
-          {shared ? '✓ Report shared with Dr. Williams' : 'Share report with Dr. Williams →'}
-        </button>
-      </div>
-
       {/* AI Bar */}
       <div className="pp-section">
         <div className="pp-sec-head">
@@ -389,6 +363,32 @@ export default function PreparePage() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Questions */}
+      <div className="pp-section">
+        <div className="pp-sec-head">
+          <span className="pp-sec-badge">Data-driven</span>
+          <h2 className="pp-sec-title">Questions to ask</h2>
+        </div>
+        <div className="pp-card">
+          {QUESTIONS.map((item, i) => (
+            <div key={i} className="pp-q-row">
+              <div className="pp-q-icon">💡</div>
+              <div><div className="pp-q-text">{item.text}</div><div className="pp-q-reason">{item.reason}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Share (after questions) */}
+      <div className="pp-section">
+        <button
+          className={`pp-share-btn${shared ? ' pp-share-btn--done' : ''}`}
+          onClick={() => setShared(true)}
+        >
+          {shared ? '✓ Report shared with Dr. Williams' : 'Share report with Dr. Williams →'}
+        </button>
       </div>
 
       {/* Swipe */}
