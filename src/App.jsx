@@ -20,6 +20,7 @@ import CommunityPoll from './components/CommunityPoll'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
 import TrackPage from './components/TrackPage'
+import PreparePage from './components/PreparePage'
 import BottomNav from './components/BottomNav'
 
 export default function App() {
@@ -34,6 +35,8 @@ export default function App() {
         <LearnPage />
       ) : activePage === 'Track' ? (
         <TrackPage />
+      ) : activePage === 'Prepare' ? (
+        <PreparePage />
       ) : (
         <main className="main">
           <div className="hero-wrap">
