@@ -2249,6 +2249,12 @@ h2 {
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-border-light);
 }
+.peer-card__logo {
+  display: block;
+  height: 23px;
+  width: auto;
+  object-fit: contain;
+}
 @media (min-width: 640px) {
   .peer-card {
     flex: 0 0 calc(33.333% - 12px);
