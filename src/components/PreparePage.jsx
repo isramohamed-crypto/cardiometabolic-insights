@@ -403,13 +403,13 @@ export default function PreparePage() {
       <section className="pp-stories-sec">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid Content for Sanofi</span>
+            <span className="watch-badge">Paid content for Brand</span>
             <h2 className="watch-title">Stories from others</h2>
           </div>
         </div>
         <StoriesSwipe />
         <div className="edu-disclaimer" style={{ margin: 'var(--space-3) 0 0' }}>
-          <strong>Sponsored content.</strong> These stories are illustrative and produced in partnership with Sanofi by Verywell Health. Amlitelimab is an investigational medicine currently in clinical trials for atopic dermatitis. It has not been approved by any regulatory authority. Always consult your healthcare provider about your treatment options.
+          <strong>Sponsored content.</strong> These stories are illustrative and produced in partnership with Brand.
         </div>
       </section>
 

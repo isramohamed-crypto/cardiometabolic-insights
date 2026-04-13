@@ -12,25 +12,25 @@ const VIDEOS = [
   },
   {
     id: 2,
-    tag: 'Science Explained',
-    title: 'What Is OX40L? A Simple Explanation',
-    src: 'Verywell Health \u00b7 Sanofi',
+    tag: 'Celebrity Health Story',
+    title: 'After Years of Struggling with Severe Eczema, Abby Tai Has Found Healing Through Helping Others \u2018Conquer\u2019 Theirs',
+    src: 'People \u00b7 Brand',
     dur: '3:18',
-    thumb: '/video-thumb-2.jpg',
+    thumb: '/abby-tai-eczema.webp',
   },
   {
     id: 3,
     tag: 'Patient Story',
-    title: 'Marcus\u2019s Story: Why I Joined a Clinical Trial',
-    src: 'Patient Story \u00b7 Sanofi',
+    title: 'Dermatologists Say This Is the Best Way to Treat Eczema on Your Face',
+    src: 'Byrdie \u00b7 Brand',
     dur: '5:47',
-    thumb: '/video-thumb-3.jpg',
+    thumb: '/ellefanning.webp',
   },
   {
     id: 4,
     tag: 'Preparing for Your Visit',
     title: 'Preparing to Talk About Newer Treatments',
-    src: 'Verywell Health \u00b7 Sanofi',
+    src: 'Verywell Health \u00b7 Brand',
     dur: '2:55',
     thumb: '/video-thumb-4.jpg',
   },
@@ -46,7 +46,7 @@ export default function WatchNow() {
       <section className="watch-now watch-now--edu">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid Content for Sanofi</span>
+            <span className="watch-badge">Paid content for Brand</span>
             <h2 className="watch-title">Expert advice</h2>
             <p className="watch-subtitle">Videos and expert insights</p>
           </div>
@@ -75,7 +75,7 @@ export default function WatchNow() {
         </div>
 
         <div className="edu-disclaimer">
-          <strong>Sponsored content.</strong> Amlitelimab is an investigational medicine currently in clinical trials for atopic dermatitis. It has not been approved by any regulatory authority. Videos produced in partnership with Sanofi by Verywell Health.
+          <strong>Sponsored content.</strong> Videos and content produced in partnership with Brand.
         </div>
       </section>
 
