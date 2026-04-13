@@ -3721,8 +3721,12 @@ h2 {
   display: flex;
   flex-direction: column;
   animation: pp-slide-up .3s ease-out;
+}
+.pp-chat-overlay > * {
   max-width: var(--max-width);
-  margin: 0 auto;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 @keyframes pp-slide-up { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
 .pp-chat-header {
