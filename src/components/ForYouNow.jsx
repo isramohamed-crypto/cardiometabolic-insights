@@ -12,6 +12,7 @@ const cards = [
     body: 'Stress days often show up on your skin a day or two later. A few minutes of calm tonight can help break that cycle.',
     cta: { label: 'Start now →', bg: 'var(--color-teal-light)', color: 'var(--color-teal)' },
     src: 'Verywell Mind',
+    logo: '/vwm-logo.png',
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const cards = [
     body: 'Your skin is more sensitive right now — tonight\'s routine counts double.',
     cta: { label: 'Set reminder', bg: 'var(--color-sage-light)', color: 'var(--color-sage)' },
     src: 'Verywell Health',
+    logo: '/vwh-logo.png',
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ const cards = [
     body: 'You\'re building real evidence. Bring this to your next derm visit — it helps them understand what\'s driving your flares.',
     cta: { label: 'See your trend →', bg: 'var(--color-lime-light)', color: '#B08A00' },
     src: 'BrightInsight',
+    logo: '/BrightInsight-logo-blue.png',
   },
   {
     id: 4,
@@ -48,6 +51,7 @@ const cards = [
     body: 'Good food doesn\'t fix a flare — but it does give your skin something to work with.',
     cta: { label: 'See recipe →', bg: 'var(--color-blue-light)', color: 'var(--color-blue)' },
     src: 'EatingWell',
+    logo: '/ew-logo.png',
   },
 ]
 
@@ -78,7 +82,9 @@ export default function ForYouNow({ onStartBreathe }) {
                   {card.cta.label}
                 </button>
               )}
-              {card.src && (
+              {card.logo ? (
+                <img src={card.logo} alt={card.src} className="fyn-card__logo" />
+              ) : card.src && (
                 <p className="fyn-card__src">{card.src}</p>
               )}
             </div>

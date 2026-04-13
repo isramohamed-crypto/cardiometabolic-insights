@@ -35,7 +35,8 @@
       "Bash(npx vite:*)",
       "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.jpeg /Users/sarahpage/Downloads/*.png)",
       "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png)",
-      "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg)"
+      "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg)",
+      "Bash(ls /Users/sarahpage/Downloads/ew*)"
     ]
   }
 }
