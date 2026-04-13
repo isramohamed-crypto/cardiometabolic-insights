@@ -672,7 +672,7 @@ h2 {
 }
 .daily-checkin__sub {
   font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
+  color: #9CA3AF;
   margin-top: 2px;
   line-height: 1.4;
 }
