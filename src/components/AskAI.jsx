@@ -105,7 +105,7 @@ export default function AskAI() {
             </button>
             <div className="chat-overlay__title">
               <span className="chat-overlay__dot" />
-              Eczema360 AI
+              SkInsights AI
             </div>
             <div style={{ width: 36 }} />
           </div>

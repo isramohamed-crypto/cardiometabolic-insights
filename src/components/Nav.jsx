@@ -16,7 +16,7 @@ export default function Nav({ activePage, setActivePage, onLogoClick }) {
   return (
     <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' && activePage !== 'Learn' && activePage !== 'Track' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
       <div className="nav__brand">
-        <button className="nav__wordmark" onClick={onLogoClick} style={{background:'none',border:'none',cursor:'pointer',padding:0}}>Eczema360</button>
+        <button className="nav__wordmark" onClick={onLogoClick} style={{background:'none',border:'none',cursor:'pointer',padding:0}}>SkInsights</button>
       </div>
       <nav className="nav__links">
         {links.map(link => (
@@ -30,7 +30,7 @@ export default function Nav({ activePage, setActivePage, onLogoClick }) {
           </a>
         ))}
       </nav>
-      <button className="nav__avatar" aria-label="Profile">D</button>
+      <button className="nav__avatar" aria-label="Profile">C</button>
     </header>
   )
 }
