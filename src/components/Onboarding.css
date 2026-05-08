@@ -220,6 +220,71 @@
   border-color: #5D2DE6;
 }
 
+/* ── INLINE HINT ── */
+.ob-q-hint {
+  font-size: 12px;
+  color: #5A4E72;
+  line-height: 1.5;
+  margin: -4px 0 14px;
+  padding: 10px 12px;
+  background: #F5F0FE;
+  border-radius: 10px;
+}
+
+/* ── TEXT INPUT (Q2) ── */
+.ob-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1520;
+  background: #F5F0FE;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: all .18s;
+  box-sizing: border-box;
+}
+.ob-input::placeholder { color: #9B8BB8; font-weight: 400 }
+.ob-input:focus {
+  background: #fff;
+  border-color: #5D2DE6;
+  box-shadow: 0 0 0 4px rgba(93,45,230,.12);
+}
+
+/* ── BRANCH TOGGLE (Q4) ── */
+.ob-toggle {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: #F5F0FE;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.ob-toggle__btn {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5A4E72;
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .18s;
+}
+
+.ob-toggle__btn:active { transform: scale(.98) }
+
+.ob-toggle__btn--active {
+  background: #fff;
+  color: #5D2DE6;
+  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px #E4DDF5;
+}
+
 /* ── NAV ROW ── */
 .ob-nav-row {
   display: flex;
