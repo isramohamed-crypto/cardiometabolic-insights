@@ -53,7 +53,6 @@ export default function App() {
           <div className="hero-wrap">
             <Hero />
             <AskAI />
-            <DailyCheckin />
             {/* <div className="today-wrap">
               <TodayCard />
             </div> */}
@@ -65,6 +64,7 @@ export default function App() {
           <WatchNow />
           <CommunityPoll />
           <QuickAnswers />
+          <DailyCheckin />
           <PeerStories />
           {/* <InsightSection /> */}
         </main>
