@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const links = ['Today', 'Track', 'Learn', 'Prepare']
 
-export default function Nav({ activePage, setActivePage, onLogoClick }) {
+export default function Nav({ activePage, setActivePage, onLogoClick, onAvatarClick, avatarInitial = 'C', avatarUrl = '' }) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -30,7 +30,11 @@ export default function Nav({ activePage, setActivePage, onLogoClick }) {
           </a>
         ))}
       </nav>
-      <button className="nav__avatar" aria-label="Profile">C</button>
+      <button className="nav__avatar" aria-label="Open account menu" onClick={onAvatarClick}>
+        {avatarUrl
+          ? <img src={avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '9999px', display: 'block' }} />
+          : avatarInitial}
+      </button>
     </header>
   )
 }
