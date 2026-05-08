@@ -27,6 +27,11 @@ export default function AccountDrawer({ profile, completionPct, strengthLabel, o
   const displayName = profile?.name?.trim() || 'Welcome'
   const avatarUrl = profile?.avatarUrl || ''
 
+  // Ring geometry — larger circle than nav (radius 27 in a 60 viewBox)
+  const RING_R = 27
+  const RING_C = 2 * Math.PI * RING_R
+  const showRing = completionPct < 100
+
   function pickFile() { fileRef.current?.click() }
 
   function onFile(e) {
@@ -57,11 +62,23 @@ export default function AccountDrawer({ profile, completionPct, strengthLabel, o
         <div className="ad-header">
           <div className="ad-header__top">
             <button
-              className="ad-avatar-wrap"
+              className={`ad-avatar-wrap${showRing ? ' ad-avatar-wrap--with-ring' : ''}`}
               type="button"
               aria-label="Change profile photo"
               onClick={pickFile}
             >
+              {showRing && (
+                <svg className="ad-avatar-ring" viewBox="0 0 60 60" aria-hidden="true">
+                  <circle cx="30" cy="30" r={RING_R} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="3" />
+                  <circle
+                    cx="30" cy="30" r={RING_R}
+                    fill="none" stroke="#FDDA3C" strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={`${(completionPct / 100) * RING_C} ${RING_C}`}
+                    transform="rotate(-90 30 30)"
+                  />
+                </svg>
+              )}
               {avatarUrl
                 ? <img src={avatarUrl} alt="" className="ad-avatar-img" />
                 : <span className="ad-avatar">{initial}</span>}

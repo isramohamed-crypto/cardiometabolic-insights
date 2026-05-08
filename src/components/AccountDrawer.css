@@ -55,6 +55,21 @@
 .ad-avatar-wrap:hover { transform: scale(1.04) }
 .ad-avatar-wrap:active { transform: scale(.96) }
 
+/* When ring is present, drop the static border so we don't double-stack it */
+.ad-avatar-wrap--with-ring {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ad-avatar-ring {
+  position: absolute;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  pointer-events: none;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.15));
+}
+
 .ad-avatar {
   font-size: 22px;
   font-weight: 700;

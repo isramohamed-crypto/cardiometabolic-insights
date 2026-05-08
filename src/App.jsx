@@ -98,6 +98,7 @@ export default function App() {
         onAvatarClick={handleAvatarClick}
         avatarInitial={avatarInitial}
         avatarUrl={avatarUrl}
+        completionPct={completion.pct}
       />
       {showRegistration && <Registration onClose={() => setShowRegistration(false)} onStartOnboarding={startOnboarding} />}
       {onboarding && <Onboarding name={onboarding.name} onClose={() => { setOnboarding(null); refreshProfile() }} />}
