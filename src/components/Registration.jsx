@@ -58,12 +58,12 @@ export default function Registration({ onClose, onStartOnboarding }) {
           </div>
           <div className="reg-hero__content">
             <div className="reg-hero__wordmark">
-              Eczema360
+              SkInsights
               <span className="reg-hero__wordmark-sep">|</span>
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
             <h1 className="reg-hero__headline">
-              <em>Finally —</em> a place that gets eczema like you live it.
+              <em>Finally —</em> a place that gets your skin like you live it.
             </h1>
           </div>
           <button className="reg-close" onClick={onClose} aria-label="Close">✕</button>
@@ -72,7 +72,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            Daily tips matched to your triggers. Track what matters. Walk into your next derm visit <strong>ready</strong>.
+            Tips and guidance built around your day. Your home, your routines, your skin — all in one place.
           </p>
 
           <div className="reg-auth-buttons">
@@ -104,10 +104,10 @@ export default function Registration({ onClose, onStartOnboarding }) {
 
           <div className="reg-benefits">
             {[
-              { icon: '📊', color: 'purple', title: 'Your day, your way', desc: 'Content matched to your triggers, treatment stage, and lifestyle' },
-              { icon: '📋', color: 'sage',   title: 'Spot your patterns before a flare hits', desc: 'Log skin, sleep, and stress — with wearable auto-sync' },
-              { icon: '🧠', color: 'warm',   title: 'See what your skin is actually telling you', desc: 'Pattern detection that helps you predict flares before they happen' },
-              { icon: '💬', color: 'lime',   title: 'Show up to your appointment with receipts', desc: 'Walk into your next appointment with data your derm can use' },
+              { icon: '🌿', color: 'purple', title: 'Content built around how you live', desc: 'Tips and guidance matched to your home, your routine, and what\'s actually affecting your skin' },
+              { icon: '✓',  color: 'sage',   title: 'Small changes that add up', desc: 'Track what you\'re doing differently and see what\'s actually making a difference over time' },
+              { icon: '💡', color: 'warm',   title: 'See what your skin is telling you', desc: 'Patterns emerge when you start paying attention. We help you notice them first' },
+              { icon: '🩺', color: 'lime',   title: 'Walk into your next derm visit ready', desc: 'Your check-in history and trigger patterns, organized so your doctor can actually use them' },
             ].map(b => (
               <div className="reg-benefit" key={b.title}>
                 <div className={`reg-benefit__icon reg-benefit__icon--${b.color}`}>{b.icon}</div>
