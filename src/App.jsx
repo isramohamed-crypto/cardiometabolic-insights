@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import Nav from './components/Nav'
 import Registration from './components/Registration'
 import Onboarding from './components/Onboarding'
+import AccountDrawer from './components/AccountDrawer'
+import ProfilePage, { computeCompletion } from './components/ProfilePage'
+import SettingsPage, { ACCOUNT_SECTIONS, NOTIFICATION_SECTIONS } from './components/SettingsPage'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
 import DailyCheckin from './components/DailyCheckin'
@@ -25,22 +28,132 @@ import TrackPage from './components/TrackPage'
 import PreparePage from './components/PreparePage'
 import BottomNav from './components/BottomNav'
 
+function readProfile() {
+  try {
+    const raw = localStorage.getItem('skinsightsProfile')
+    return raw ? JSON.parse(raw) : {}
+  } catch (_) { return {} }
+}
+
+function writeProfile(p) {
+  try { localStorage.setItem('skinsightsProfile', JSON.stringify(p)) } catch (_) {}
+}
+
 export default function App() {
   const [activePage, setActivePage] = useState('Today')
   const [showBreathe, setShowBreathe] = useState(false)
   const [showRegistration, setShowRegistration] = useState(false)
-  const [onboarding, setOnboarding] = useState(null) // null | { name }
+  const [onboarding, setOnboarding] = useState(null)
+  const [showDrawer, setShowDrawer] = useState(false)
+  const [showProfile, setShowProfile] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [showAccount, setShowAccount] = useState(false)
+  const [profile, setProfile] = useState(() => readProfile())
+
+  const refreshProfile = useCallback(() => setProfile(readProfile()), [])
 
   function startOnboarding(name = '') {
     setShowRegistration(false)
     setOnboarding({ name })
   }
 
+  function handleAvatarClick() {
+    refreshProfile()
+    setShowDrawer(true)
+  }
+
+  function handleAvatarChange(dataUrl) {
+    setProfile(p => {
+      const next = { ...p, avatarUrl: dataUrl, updatedAt: new Date().toISOString() }
+      writeProfile(next)
+      return next
+    })
+  }
+
+  function handleDrawerSelect(itemId) {
+    setShowDrawer(false)
+    if (itemId === 'profile')        { setShowProfile(true); return }
+    if (itemId === 'notifications')  { setShowNotifications(true); return }
+    if (itemId === 'settings')       { setShowAccount(true); return }
+    if (itemId === 'help' || itemId === 'signout') {
+      // Stub for now.
+      return
+    }
+  }
+
+  function closeOverlay(closer) {
+    return () => { closer(false); refreshProfile() }
+  }
+
+  const completion = computeCompletion(profile)
+  const avatarInitial = (profile?.name || 'C').trim().charAt(0).toUpperCase() || 'C'
+  const avatarUrl = profile?.avatarUrl || ''
+
   return (
     <>
-      <Nav activePage={activePage} setActivePage={setActivePage} onLogoClick={() => setShowRegistration(true)} />
+      <Nav
+        activePage={activePage}
+        setActivePage={setActivePage}
+        onLogoClick={() => setShowRegistration(true)}
+        onAvatarClick={handleAvatarClick}
+        avatarInitial={avatarInitial}
+        avatarUrl={avatarUrl}
+      />
       {showRegistration && <Registration onClose={() => setShowRegistration(false)} onStartOnboarding={startOnboarding} />}
-      {onboarding && <Onboarding name={onboarding.name} onClose={() => setOnboarding(null)} />}
+      {onboarding && <Onboarding name={onboarding.name} onClose={() => { setOnboarding(null); refreshProfile() }} />}
+
+      {showDrawer && (
+        <AccountDrawer
+          profile={profile}
+          completionPct={completion.pct}
+          strengthLabel={completion.label}
+          onClose={() => setShowDrawer(false)}
+          onSelect={handleDrawerSelect}
+          onAvatarChange={handleAvatarChange}
+        />
+      )}
+
+      {showProfile && (
+        <ProfilePage
+          onClose={closeOverlay(setShowProfile)}
+          onAskAI={() => {
+            // TODO: hand prefilled prompt to AskAI once teammate's AI work lands.
+            setShowProfile(false)
+            setActivePage('Today')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        />
+      )}
+
+      {showNotifications && (
+        <SettingsPage
+          title="Notifications"
+          storageKey="skinsightsNotifications"
+          sections={NOTIFICATION_SECTIONS}
+          onClose={closeOverlay(setShowNotifications)}
+          onNavigate={target => {
+            if (target === 'account') {
+              setShowNotifications(false)
+              setShowAccount(true)
+            }
+          }}
+        />
+      )}
+
+      {showAccount && (
+        <SettingsPage
+          title="Account settings"
+          storageKey="skinsightsAccount"
+          sections={ACCOUNT_SECTIONS}
+          onClose={closeOverlay(setShowAccount)}
+          onNavigate={target => {
+            if (target === 'notifications') {
+              setShowAccount(false)
+              setShowNotifications(true)
+            }
+          }}
+        />
+      )}
 
       {activePage === 'Learn' ? (
         <LearnPage />
