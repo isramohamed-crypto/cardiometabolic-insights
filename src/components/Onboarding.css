@@ -50,11 +50,7 @@
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
-<<<<<<< Updated upstream
   color: var(--color-lime);            /* 8.50:1 on #3A1B99 — AAA */
-=======
-  color: #E8EF65;                 /* Green Apple on Seaweed — 8.94:1 AAA */
->>>>>>> Stashed changes
   margin-bottom: 8px;
 }
 
@@ -69,11 +65,7 @@
 
 .ob-hero__title em {
   font-style: italic;
-<<<<<<< Updated upstream
   color: var(--color-sage);            /* 6.18:1 on #3A1B99 — AA (was 3.72 — borderline) */
-=======
-  color: #00B9E2;                 /* Mineral Blue on Seaweed — 4.76:1 AA */
->>>>>>> Stashed changes
 }
 
 .ob-hero__sub {
@@ -99,11 +91,7 @@
 .ob-progress-label {
   font-size: 11px;
   font-weight: 600;
-<<<<<<< Updated upstream
   color: var(--color-text-muted);
-=======
-  color: #8A8A8A;
->>>>>>> Stashed changes
   letter-spacing: .06em;
   text-transform: uppercase;
 }
@@ -111,31 +99,19 @@
 .ob-progress-step {
   font-size: 12px;
   font-weight: 700;
-<<<<<<< Updated upstream
   color: var(--color-teal);
-=======
-  color: #1BBC3C;
->>>>>>> Stashed changes
 }
 
 .ob-progress-bar {
   height: 4px;
-<<<<<<< Updated upstream
   background: var(--color-border);
-=======
-  background: #EDE6D6;
->>>>>>> Stashed changes
   border-radius: 2px;
   overflow: hidden;
 }
 
 .ob-progress-fill {
   height: 100%;
-<<<<<<< Updated upstream
   background: var(--color-teal);
-=======
-  background: #1BBC3C;
->>>>>>> Stashed changes
   border-radius: 2px;
   transition: width .4s cubic-bezier(.4,0,.2,1);
 }
@@ -155,11 +131,7 @@
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-<<<<<<< Updated upstream
   color: var(--color-sage);
-=======
-  color: #00B9E2;
->>>>>>> Stashed changes
   margin-bottom: 10px;
 }
 
@@ -167,22 +139,14 @@
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -.02em;
-<<<<<<< Updated upstream
   color: var(--color-text-primary);
-=======
-  color: #1A1A1A;
->>>>>>> Stashed changes
   line-height: 1.25;
   margin-bottom: 6px;
 }
 
 .ob-q-sub {
   font-size: 13px;
-<<<<<<< Updated upstream
   color: var(--color-text-secondary);
-=======
-  color: #5C5C5C;
->>>>>>> Stashed changes
   line-height: 1.55;
   margin-bottom: 20px;
 }
@@ -201,11 +165,7 @@
   padding: 14px 16px;
   border-radius: 14px;
   border: 2px solid transparent;
-<<<<<<< Updated upstream
   background: var(--color-bg);
-=======
-  background: #FFFCF5;
->>>>>>> Stashed changes
   cursor: pointer;
   transition: all .18s;
   text-align: left;
@@ -216,13 +176,8 @@
 .ob-opt:active { transform: scale(.98) }
 
 .ob-opt--sel {
-<<<<<<< Updated upstream
   background: var(--color-teal-light);
   border-color: var(--color-teal);
-=======
-  background: #E3F8E8;
-  border-color: #1BBC3C;
->>>>>>> Stashed changes
 }
 
 .ob-opt__emoji {
@@ -237,21 +192,13 @@
 .ob-opt__label {
   font-size: 14px;
   font-weight: 600;
-<<<<<<< Updated upstream
   color: var(--color-text-primary);
-=======
-  color: #1A1A1A;
->>>>>>> Stashed changes
   margin-bottom: 1px;
 }
 
 .ob-opt__desc {
   font-size: 12px;
-<<<<<<< Updated upstream
   color: var(--color-text-muted);
-=======
-  color: #8A8A8A;
->>>>>>> Stashed changes
   line-height: 1.4;
 }
 
@@ -259,11 +206,7 @@
   width: 24px;
   height: 24px;
   border-radius: 9999px;
-<<<<<<< Updated upstream
   border: 2px solid var(--color-border);
-=======
-  border: 2px solid #EDE6D6;
->>>>>>> Stashed changes
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -275,31 +218,18 @@
 }
 
 .ob-opt--sel .ob-opt__check {
-<<<<<<< Updated upstream
   background: var(--color-teal);
   border-color: var(--color-teal);
-=======
-  background: #1BBC3C;
-  border-color: #1BBC3C;
->>>>>>> Stashed changes
 }
 
 /* ── INLINE HINT ── */
 .ob-q-hint {
   font-size: 12px;
-<<<<<<< Updated upstream
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: -4px 0 14px;
   padding: 10px 12px;
   background: var(--color-bg);
-=======
-  color: #5C5C5C;
-  line-height: 1.5;
-  margin: -4px 0 14px;
-  padding: 10px 12px;
-  background: #FFFCF5;
->>>>>>> Stashed changes
   border-radius: 10px;
 }
 
@@ -309,13 +239,8 @@
   padding: 14px 16px;
   font-size: 16px;
   font-weight: 500;
-<<<<<<< Updated upstream
   color: var(--color-text-primary);
   background: var(--color-bg);
-=======
-  color: #1A1A1A;
-  background: #FFFCF5;
->>>>>>> Stashed changes
   border: 2px solid transparent;
   border-radius: 14px;
   outline: none;
@@ -323,19 +248,11 @@
   transition: all .18s;
   box-sizing: border-box;
 }
-<<<<<<< Updated upstream
 .ob-input::placeholder { color: var(--color-text-muted); font-weight: 400 }
 .ob-input:focus {
   background: #fff;
   border-color: var(--color-teal);
   box-shadow: 0 0 0 4px rgba(93,45,230,.12);
-=======
-.ob-input::placeholder { color: #8A8A8A; font-weight: 400 }
-.ob-input:focus {
-  background: #fff;
-  border-color: #1BBC3C;
-  box-shadow: 0 0 0 4px rgba(27, 188, 60,.12);
->>>>>>> Stashed changes
 }
 
 /* ── CHIPS (Q5 interests) ── */
@@ -351,19 +268,11 @@
   gap: 6px;
   padding: 9px 14px;
   border-radius: 9999px;
-<<<<<<< Updated upstream
   background: var(--color-bg);
   border: 1.5px solid transparent;
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-primary);
-=======
-  background: #FFFCF5;
-  border: 1.5px solid transparent;
-  font-size: 13px;
-  font-weight: 500;
-  color: #1A1A1A;
->>>>>>> Stashed changes
   cursor: pointer;
   transition: all .15s;
   font-family: inherit;
@@ -373,15 +282,9 @@
 .ob-chip:active { transform: scale(.97) }
 
 .ob-chip--sel {
-<<<<<<< Updated upstream
   background: var(--color-teal-light);
   border-color: var(--color-teal);
   color: var(--color-teal);
-=======
-  background: #E3F8E8;
-  border-color: #1BBC3C;
-  color: #1BBC3C;
->>>>>>> Stashed changes
   font-weight: 600;
 }
 
@@ -395,11 +298,7 @@
   text-align: right;
   font-size: 12px;
   font-weight: 600;
-<<<<<<< Updated upstream
   color: var(--color-teal);
-=======
-  color: #1BBC3C;
->>>>>>> Stashed changes
   letter-spacing: 0.02em;
 }
 
@@ -408,11 +307,7 @@
   display: flex;
   gap: 8px;
   padding: 4px;
-<<<<<<< Updated upstream
   background: var(--color-bg);
-=======
-  background: #FFFCF5;
->>>>>>> Stashed changes
   border-radius: 12px;
   margin-bottom: 16px;
 }
@@ -422,11 +317,7 @@
   padding: 10px 12px;
   font-size: 13px;
   font-weight: 600;
-<<<<<<< Updated upstream
   color: var(--color-text-secondary);
-=======
-  color: #5C5C5C;
->>>>>>> Stashed changes
   background: transparent;
   border: none;
   border-radius: 9px;
@@ -439,13 +330,8 @@
 
 .ob-toggle__btn--active {
   background: #fff;
-<<<<<<< Updated upstream
   color: var(--color-teal);
   box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px var(--color-border);
-=======
-  color: #1BBC3C;
-  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px #EDE6D6;
->>>>>>> Stashed changes
 }
 
 /* ── NAV ROW ── */
@@ -474,13 +360,8 @@
   font-size: 14px;
   font-weight: 600;
   background: #fff;
-<<<<<<< Updated upstream
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
-=======
-  color: #5C5C5C;
-  border: 1px solid #EDE6D6;
->>>>>>> Stashed changes
   cursor: pointer;
   font-family: inherit;
   transition: opacity .15s;
@@ -489,11 +370,7 @@
 
 .ob-skip {
   font-size: 12px;
-<<<<<<< Updated upstream
   color: var(--color-text-muted);
-=======
-  color: #8A8A8A;
->>>>>>> Stashed changes
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -510,11 +387,7 @@
   font-size: 14px;
   font-weight: 700;
   color: #fff;
-<<<<<<< Updated upstream
   background: var(--color-blue);
-=======
-  background: #0053E2;
->>>>>>> Stashed changes
   border: none;
   cursor: pointer;
   font-family: inherit;
@@ -534,11 +407,7 @@
   padding: 48px 24px 40px;
   text-align: center;
   animation: obFadeIn .5s ease-out;
-<<<<<<< Updated upstream
   background: var(--color-bg);
-=======
-  background: #FFFCF5;
->>>>>>> Stashed changes
   min-height: 100dvh;
 }
 
@@ -546,11 +415,7 @@
   width: 72px;
   height: 72px;
   border-radius: 9999px;
-<<<<<<< Updated upstream
   background: linear-gradient(135deg, var(--color-teal), var(--color-teal-mid));
-=======
-  background: linear-gradient(135deg, #1BBC3C, #3FD15F);
->>>>>>> Stashed changes
   display: flex;
   align-items: center;
   justify-content: center;
@@ -565,21 +430,13 @@
   font-size: 26px;
   font-weight: 500;
   letter-spacing: -.02em;
-<<<<<<< Updated upstream
   color: var(--color-text-primary);
-=======
-  color: #1A1A1A;
->>>>>>> Stashed changes
   margin-bottom: 8px;
 }
 
 .ob-complete__sub {
   font-size: 14px;
-<<<<<<< Updated upstream
   color: var(--color-text-secondary);
-=======
-  color: #5C5C5C;
->>>>>>> Stashed changes
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -587,11 +444,7 @@
 .ob-profile-card {
   background: #fff;
   border-radius: 20px;
-<<<<<<< Updated upstream
   border: 1px solid var(--color-border-light);
-=======
-  border: 1px solid #F5EFE0;
->>>>>>> Stashed changes
   box-shadow: 0 2px 12px rgba(30,50,42,.06);
   padding: 20px;
   margin-bottom: 24px;
@@ -603,11 +456,7 @@
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-<<<<<<< Updated upstream
   color: var(--color-sage);
-=======
-  color: #00B9E2;
->>>>>>> Stashed changes
   margin-bottom: 14px;
 }
 
@@ -616,11 +465,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 10px 0;
-<<<<<<< Updated upstream
   border-bottom: 1px solid var(--color-border-light);
-=======
-  border-bottom: 1px solid #F5EFE0;
->>>>>>> Stashed changes
 }
 .ob-profile-row:last-child { border-bottom: none }
 
@@ -628,11 +473,7 @@
 
 .ob-profile-row__key {
   font-size: 11px;
-<<<<<<< Updated upstream
   color: var(--color-text-muted);
-=======
-  color: #8A8A8A;
->>>>>>> Stashed changes
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .04em;
@@ -640,11 +481,7 @@
 
 .ob-profile-row__val {
   font-size: 14px;
-<<<<<<< Updated upstream
   color: var(--color-text-primary);
-=======
-  color: #1A1A1A;
->>>>>>> Stashed changes
   font-weight: 500;
   margin-top: 2px;
 }
@@ -696,13 +533,8 @@
   font-size: 15px;
   font-weight: 700;
   color: #fff;
-<<<<<<< Updated upstream
   background: var(--color-blue);
   box-shadow: 0 4px 20px rgba(28,95,241,.3);
-=======
-  background: #0053E2;
-  box-shadow: 0 4px 20px rgba(0, 83, 226,.3);
->>>>>>> Stashed changes
   border: none;
   cursor: pointer;
   font-family: inherit;
