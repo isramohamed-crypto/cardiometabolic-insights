@@ -671,7 +671,7 @@ h2 {
 /* ── TRACK AI INSIGHTS SUMMARY (compact, expandable) ── */
 .tp-ai-summary {
   margin: 12px var(--space-4) 0;
-  background: linear-gradient(135deg, #5D2DE6, #7445F0);
+  background: linear-gradient(135deg, var(--color-teal), var(--color-teal-mid));
   border-radius: 12px;
   color: #fff;
   box-shadow: 0 2px 10px rgba(93,45,230,.18);
@@ -700,7 +700,7 @@ h2 {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   background: rgba(253,218,60,0.95);
-  color: #5D2DE6;
+  color: var(--color-teal);
   padding: 3px 8px;
   border-radius: 9999px;
   flex-shrink: 0;
@@ -775,7 +775,7 @@ h2 {
   gap: 6px;
   padding: 4px;
   margin: 12px var(--space-4) 0;
-  background: #F5F0FE;
+  background: var(--color-bg);
   border-radius: 9999px;
   overflow-x: auto;
 }
@@ -785,7 +785,7 @@ h2 {
   padding: 8px 16px;
   font-size: 13px;
   font-weight: 600;
-  color: #5A4E72;
+  color: var(--color-text-secondary);
   background: transparent;
   border: none;
   border-radius: 9999px;
@@ -796,8 +796,8 @@ h2 {
 }
 .tp-cond-toggle__btn--active {
   background: #fff;
-  color: #5D2DE6;
-  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px #E4DDF5;
+  color: var(--color-teal);
+  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px var(--color-border);
 }
 
 /* ── TRACK CHECK-IN BANNER ── */
@@ -872,16 +872,16 @@ h2 {
   width: 100%;
   padding: 14px 14px;
   border-radius: 14px;
-  background: #F5F0FE;
+  background: var(--color-bg);
   border: 1.5px solid transparent;
   cursor: pointer;
   text-align: left;
   font-family: inherit;
   transition: all .15s;
 }
-.ci-start-card:hover { background: #EDE8FD }
+.ci-start-card:hover { background: var(--color-teal-light) }
 .ci-start-card:active { transform: scale(.98) }
-.ci-start-card--ghost { background: #fff; border-color: #E4DDF5 }
+.ci-start-card--ghost { background: #fff; border-color: var(--color-border) }
 .ci-start-card--done { background: rgba(46,209,203,.12); border-color: rgba(46,209,203,.4) }
 
 .ci-start-card__icon {
@@ -894,9 +894,9 @@ h2 {
   box-shadow: 0 1px 3px rgba(30,50,42,.06);
 }
 .ci-start-card__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.ci-start-card__title { font-size: 14px; font-weight: 600; color: #1A1520 }
-.ci-start-card__desc { font-size: 12px; color: #5A4E72; line-height: 1.35 }
-.ci-start-card__arrow { font-size: 20px; color: #5D2DE6; flex-shrink: 0 }
+.ci-start-card__title { font-size: 14px; font-weight: 600; color: var(--color-text-primary) }
+.ci-start-card__desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.35 }
+.ci-start-card__arrow { font-size: 20px; color: var(--color-teal); flex-shrink: 0 }
 .ci-start-card--done .ci-start-card__arrow { color: #0D7C8F }
 
 /* Photo pill — preview small thumbnail when image is attached */
@@ -904,11 +904,11 @@ h2 {
   display: inline-flex; align-items: center; gap: 8px;
   margin: 8px 0 12px;
   padding: 4px 10px 4px 4px;
-  background: #F5F0FE;
-  border: 1px solid #E4DDF5;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 9999px;
   font-size: 12px;
-  color: #5A4E72;
+  color: var(--color-text-secondary);
 }
 .ci-photo-pill img {
   width: 28px; height: 28px;
@@ -937,8 +937,8 @@ h2 {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #5D2DE6;
-  background: linear-gradient(135deg, #FDDA3C, #FFE89B);
+  color: var(--color-teal);
+  background: linear-gradient(135deg, var(--color-lime), #FFE89B);
   padding: 2px 7px;
   border-radius: 9999px;
 }
@@ -949,17 +949,17 @@ h2 {
   display: flex; align-items: center; gap: 10px;
   margin-top: 16px;
   padding: 12px 14px;
-  background: #F5F0FE;
+  background: var(--color-bg);
   border-radius: 12px;
   font-size: 13px;
-  color: #5D2DE6;
+  color: var(--color-teal);
   font-weight: 600;
 }
 .ci-analyzing__spinner {
   width: 16px; height: 16px;
   border-radius: 9999px;
   border: 2px solid rgba(93,45,230,.2);
-  border-top-color: #5D2DE6;
+  border-top-color: var(--color-teal);
   animation: ciSpin .8s linear infinite;
   flex-shrink: 0;
 }
@@ -968,15 +968,15 @@ h2 {
 /* "Where it lives" footnote on done / summary screens */
 .ci-done__where {
   font-size: 12px;
-  color: #5A4E72;
-  background: #F5F0FE;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
   border-radius: 12px;
   padding: 10px 14px;
   margin: 0 0 var(--space-4);
   line-height: 1.45;
   text-align: left;
 }
-.ci-done__where strong { color: #5D2DE6; font-weight: 700 }
+.ci-done__where strong { color: var(--color-teal); font-weight: 700 }
 
 /* Single-condition chip (shown above the question when only 1 condition tracked) */
 .ci-cond-chip {
@@ -985,8 +985,8 @@ h2 {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #5D2DE6;
-  background: #EDE8FD;
+  color: var(--color-teal);
+  background: var(--color-teal-light);
   padding: 4px 10px;
   border-radius: 9999px;
   margin: 0 0 var(--space-3);
@@ -997,7 +997,7 @@ h2 {
   display: flex;
   gap: 6px;
   padding: 4px;
-  background: #F5F0FE;
+  background: var(--color-bg);
   border-radius: 9999px;
   margin: 0 0 var(--space-4);
   overflow-x: auto;
@@ -1008,7 +1008,7 @@ h2 {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #5A4E72;
+  color: var(--color-text-secondary);
   background: transparent;
   border: none;
   border-radius: 9999px;
@@ -1021,12 +1021,12 @@ h2 {
 }
 .ci-cond-toggle__btn--active {
   background: #fff;
-  color: #5D2DE6;
-  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px #E4DDF5;
+  color: var(--color-teal);
+  box-shadow: 0 1px 3px rgba(30,50,42,.08), 0 0 0 1px var(--color-border);
 }
 .ci-cond-toggle__dot {
   font-size: 10px;
-  color: #2ED1CB;
+  color: var(--color-sage);
   font-weight: 700;
 }
 
@@ -1037,7 +1037,7 @@ h2 {
   flex-direction: column;
   gap: 10px;
   padding-top: var(--space-3);
-  border-top: 1px dashed #E4DDF5;
+  border-top: 1px dashed var(--color-border);
 }
 
 .ci-detail {
@@ -1052,7 +1052,7 @@ h2 {
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: #5A4E72;
+  color: var(--color-text-secondary);
 }
 .ci-detail__emoji { font-size: 14px }
 
@@ -1061,21 +1061,21 @@ h2 {
   padding: 10px 12px;
   font-size: 14px;
   background: #fff;
-  border: 1.5px solid #E4DDF5;
+  border: 1.5px solid var(--color-border);
   border-radius: 12px;
   outline: none;
   font-family: inherit;
-  color: #1A1520;
+  color: var(--color-text-primary);
   box-sizing: border-box;
   transition: border-color .15s;
 }
-.ci-detail__input:focus { border-color: #5D2DE6 }
+.ci-detail__input:focus { border-color: var(--color-teal) }
 
 /* Summary view card (today's check-in recap) */
 .ci-summary-card {
   background: #fff;
   border-radius: 18px;
-  border: 1px solid #EDE8F8;
+  border: 1px solid var(--color-border-light);
   box-shadow: 0 2px 12px rgba(30,50,42,.06);
   padding: 14px 16px;
   margin: 0 0 16px;
@@ -1087,7 +1087,7 @@ h2 {
   flex-direction: column;
   gap: 4px;
   padding: 10px 0;
-  border-bottom: 1px solid #EDE8F8;
+  border-bottom: 1px solid var(--color-border-light);
 }
 .ci-summary-row:last-child { border-bottom: none }
 
@@ -1096,18 +1096,18 @@ h2 {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #9B8BB8;
+  color: var(--color-text-muted);
 }
 
 .ci-summary-row__val {
   font-size: 14px;
   font-weight: 500;
-  color: #1A1520;
+  color: var(--color-text-primary);
   line-height: 1.4;
 }
 
 .ci-summary-entry { padding: 2px 0 }
-.ci-summary-entry__detail { color: #5A4E72; font-weight: 400 }
+.ci-summary-entry__detail { color: var(--color-text-secondary); font-weight: 400 }
 
 /* Nav row inside steps (Back / Continue) */
 .ci-nav-row {
@@ -1119,8 +1119,8 @@ h2 {
 }
 .ci-back {
   background: none;
-  border: 1px solid #E4DDF5;
-  color: #5A4E72;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   font-size: 13px;
   font-weight: 600;
   padding: 10px 16px;
