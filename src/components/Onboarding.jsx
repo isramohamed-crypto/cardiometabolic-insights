@@ -82,6 +82,28 @@ const roleLabels = {
   other:  'Supporting someone else',
 }
 
+// Code → label mapping so the value stored in profile matches what downstream
+// components (ProfilePage, SkinCheckinSheet) expect.
+const CODE_TO_LABEL = {
+  role: { myself: 'Myself', child: 'My child', other: 'Someone else' },
+  focus: {
+    confidence: 'Affecting my confidence',
+    sleep:      'Disrupting my sleep',
+    triggers:   'Figuring out my triggers',
+    treatment:  'Managing my treatment',
+    frustrated: 'Frustrated nothing works',
+  },
+  diagnosisStatus: { yes: 'Yes, I have a diagnosis', no: 'Not yet / not sure' },
+  condition: {
+    eczema: 'Eczema', psoriasis: 'Psoriasis', rosacea: 'Rosacea', acne: 'Acne', other_dx: 'Something else (diagnosed)',
+    redness: 'Redness or irritation', dryness: 'Dryness or flaking', itching: 'Itching or sensitivity', breakouts: 'Breakouts or bumps', flares: 'Unpredictable flare-ups',
+  },
+}
+function mapCode(field, v) {
+  if (Array.isArray(v)) return v.map(x => CODE_TO_LABEL[field]?.[x] || x)
+  return CODE_TO_LABEL[field]?.[v] || v
+}
+
 export default function Onboarding({ name, onClose }) {
   // step 0..4 = Q1..Q5, step 5 = summary
   const [step, setStep] = useState(0)
@@ -133,14 +155,19 @@ export default function Onboarding({ name, onClose }) {
       if (hasVal) { profile[key] = val; onboardingSources.add(key) }
     }
     maybeSet('name',            trimmedName)
-    maybeSet('role',            ans.q1)
-    maybeSet('focus',           ans.q3)
-    maybeSet('diagnosisStatus', ans.q4Branch)
-    maybeSet('condition',       ans.q4)
+    maybeSet('role',            mapCode('role',            ans.q1))
+    maybeSet('focus',           mapCode('focus',           ans.q3))
+    maybeSet('diagnosisStatus', mapCode('diagnosisStatus', ans.q4Branch))
+    maybeSet('condition',       mapCode('condition',       ans.q4))
     maybeSet('topics',          ans.q5)
     profile.onboardingSources = Array.from(onboardingSources)
     profile.skippedAt = new Date().toISOString()
     try { localStorage.setItem('skinsightsProfile', JSON.stringify(profile)) } catch (_) {}
+    // Fresh onboarding = fresh check-in state.
+    try {
+      localStorage.removeItem('skinsightsLastCheckin')
+      localStorage.removeItem('skinsightsCheckins')
+    } catch (_) {}
     setStep(5)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -163,11 +190,11 @@ export default function Onboarding({ name, onClose }) {
     const onboardingSources = new Set(existing.onboardingSources || [])
     const fields = {
       name:            trimmedName,
-      role:            ans.q1,
-      focus:           ans.q3,
-      diagnosisStatus: ans.q4Branch,
-      condition:       ans.q4,
-      topics:          ans.q5,
+      role:            mapCode('role',            ans.q1),
+      focus:           mapCode('focus',           ans.q3),
+      diagnosisStatus: mapCode('diagnosisStatus', ans.q4Branch),
+      condition:       mapCode('condition',       ans.q4),
+      topics:          ans.q5,    // topics are already stored as labels
     }
     const next_data = { ...existing }
     for (const [k, v] of Object.entries(fields)) {
@@ -180,6 +207,12 @@ export default function Onboarding({ name, onClose }) {
     next_data.onboardingSources = Array.from(onboardingSources)
     next_data.completedAt = new Date().toISOString()
     try { localStorage.setItem('skinsightsProfile', JSON.stringify(next_data)) } catch (_) {}
+    // Fresh onboarding = fresh check-in state. Otherwise the home feed card can
+    // look like "today's check-in is logged" from a stale demo session.
+    try {
+      localStorage.removeItem('skinsightsLastCheckin')
+      localStorage.removeItem('skinsightsCheckins')
+    } catch (_) {}
     next()
   }
 

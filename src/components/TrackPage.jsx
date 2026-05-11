@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
+
+function readCheckins() {
+  try { return JSON.parse(localStorage.getItem('skinsightsCheckins') || '[]') } catch (_) { return [] }
+}
 
 const CHART_DATA = {
   '14 days': {
@@ -29,13 +33,37 @@ const STRESS_DATA  = CHART_DATA['14 days'].stress
 const SLEEP_DATA   = CHART_DATA['14 days'].sleep
 const DAYS         = ['Mar 25','26','27','28','29','30','31','Apr 1','2','3','4','5','6','7']
 
-const TRIGGERS = [
-  { e: '😰', l: 'Stressful day', p: 45, c: 'var(--color-teal)' },
-  { e: '😴', l: 'Rough night',   p: 25, c: 'var(--color-blue)' },
-  { e: '🌤️', l: 'Weather',       p: 10, c: 'var(--color-sage)' },
-  { e: '🍽️', l: 'New food',      p:  5, c: 'var(--color-warm)' },
-  { e: '👍', l: 'Normal day',    p: 15, c: 'var(--color-text-muted)' },
+// Mock fallback when the user has 0 check-ins. Once they start logging,
+// these percentages are computed from actual check-in history.
+const TRIGGERS_MOCK = [
+  { e: '😰', l: 'Stressful day',   p: 45, c: 'var(--color-teal)' },
+  { e: '😴', l: 'Rough night',     p: 25, c: 'var(--color-blue)' },
+  { e: '🌤️', l: 'Weather change',  p: 10, c: 'var(--color-sage)' },
+  { e: '🍽️', l: 'New food',        p:  5, c: 'var(--color-warm)' },
+  { e: '🧴', l: 'New product',     p:  0, c: 'var(--color-coral)' },
+  { e: '🏃', l: 'Routine changed', p:  0, c: 'var(--color-lime)' },
+  { e: '👍', l: 'Normal day',      p: 15, c: 'var(--color-text-muted)' },
 ]
+
+// Compute trigger percentages from the user's check-in history. Each check-in
+// can have multiple context labels — we count occurrences across all check-ins
+// and normalize to total tag mentions.
+function computeTriggers(checkins) {
+  if (!checkins || checkins.length === 0) return { rows: TRIGGERS_MOCK, isReal: false }
+  const counts = Object.fromEntries(TRIGGERS_MOCK.map(t => [t.l, 0]))
+  let total = 0
+  for (const c of checkins) {
+    const labels = c.contextLabels || []
+    for (const l of labels) {
+      if (counts[l] != null) { counts[l]++; total++ }
+    }
+  }
+  const rows = TRIGGERS_MOCK.map(t => ({
+    ...t,
+    p: total === 0 ? 0 : Math.round((counts[t.l] / total) * 100),
+  }))
+  return { rows, isReal: true }
+}
 
 const ACTIONS = [
   { icon: '🌬️', bg: 'rgba(46,209,203,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → flare cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
@@ -100,8 +128,40 @@ function TrendChart({ range }) {
   )
 }
 
-export default function TrackPage() {
+function readLastCheckin() {
+  try { return JSON.parse(localStorage.getItem('skinsightsLastCheckin') || 'null') } catch (_) { return null }
+}
+function daysAgoUtil(isoDate) {
+  if (!isoDate) return null
+  const then = new Date(isoDate); const now = new Date()
+  const a = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const b = new Date(then.getFullYear(), then.getMonth(), then.getDate())
+  return Math.round((a - b) / (1000 * 60 * 60 * 24))
+}
+
+export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [timeRange, setTimeRange] = useState('14 days')
+  const [checkins, setCheckins] = useState(() => readCheckins())
+  const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
+
+  // Re-read whenever a new check-in is logged (parent bumps checkinTick) or on focus
+  useEffect(() => {
+    function refresh() {
+      setCheckins(readCheckins())
+      setLastCheckin(readLastCheckin())
+    }
+    refresh()
+    window.addEventListener('focus', refresh)
+    return () => window.removeEventListener('focus', refresh)
+  }, [checkinTick])
+
+  const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(checkins), [checkins])
+  // Days tracked = baseline mock (21) + actual check-ins logged
+  const daysTracked = 21 + checkins.length
+  const topPattern = useMemo(() => {
+    const top = [...triggerRows].sort((a, b) => b.p - a.p)[0]
+    return top?.p > 0 ? top.l.replace('Stressful day', 'Stress').replace(' day', '') : 'Stress'
+  }, [triggerRows])
 
   return (
     <main className="main learn-page track-page">
@@ -113,10 +173,42 @@ export default function TrackPage() {
 
       {/* Status strip — overlaps hero */}
       <div className="tp-status-strip">
-        <div className="tp-sc"><div className="tp-sc-label">Days tracked</div><div className="tp-sc-val">21</div></div>
-        <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-teal)' }}>Stress</div></div>
+        <div className="tp-sc"><div className="tp-sc-label">Days tracked</div><div className="tp-sc-val">{daysTracked}</div></div>
+        <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-teal)' }}>{topPattern}</div></div>
         <div className="tp-sc"><div className="tp-sc-label">Confidence</div><div className="tp-sc-val">82%</div></div>
       </div>
+
+      {/* Check-in prompt banner */}
+      {(() => {
+        const d = daysAgoUtil(lastCheckin?.date)
+        const todayDone = d === 0
+        return (
+          <button
+            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
+            type="button"
+            onClick={() => onOpenCheckin?.()}
+          >
+            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
+            <span className="tp-checkin-banner__body">
+              <span className="tp-checkin-banner__title">
+                {todayDone
+                  ? 'Logged today — tap to view or update'
+                  : (d == null
+                      ? 'Start your first skin check-in'
+                      : d === 1
+                        ? 'Log today\'s check-in'
+                        : `Log today\'s check-in — it\'s been ${d} days`)}
+              </span>
+              <span className="tp-checkin-banner__sub">
+                {todayDone
+                  ? 'Your trend is up to date. Tap to see today\'s summary.'
+                  : 'Adds to your trend, triggers, and pattern detection.'}
+              </span>
+            </span>
+            <span className="tp-checkin-banner__arrow">→</span>
+          </button>
+        )
+      })()}
 
       {/* Trend */}
       <div className="tp-section">
@@ -136,9 +228,14 @@ export default function TrackPage() {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">What's been going on</h2>
+          {triggersReal && (
+            <span className="tp-sec-badge" style={{ background: 'rgba(46,209,203,.12)', color: 'var(--color-teal)' }}>
+              From your check-ins
+            </span>
+          )}
         </div>
         <div className="tp-card">
-          {TRIGGERS.map((t, i) => (
+          {triggerRows.map((t, i) => (
             <div key={i} className="tp-trig-row">
               <span className="tp-trig-emoji">{t.e}</span>
               <span className="tp-trig-label">{t.l}</span>
