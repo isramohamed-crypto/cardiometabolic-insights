@@ -126,7 +126,7 @@ function SettingField({ field, data, editing, onEdit, onSet, disabled }) {
       <div className={`pp-field sp-field-toggle${disabled ? ' sp-field-toggle--disabled' : ''}`}>
         <div className="sp-field-toggle__row">
           <div className="pp-field__main">
-            <div className="pp-field__label" style={{ textTransform: 'none', letterSpacing: 0, fontSize: 14, color: '#1A1520' }}>
+            <div className="pp-field__label" style={{ textTransform: 'none', letterSpacing: 0, fontSize: 14, color: '#1A1A1A' }}>
               {field.label}
             </div>
             {field.hint && <div className="sp-field-hint">{field.hint}</div>}
@@ -152,7 +152,7 @@ function SettingField({ field, data, editing, onEdit, onSet, disabled }) {
       <div className="pp-field">
         <button className="pp-field__row" onClick={() => field.onAction && field.onAction()} type="button">
           <div className="pp-field__main">
-            <div className="pp-field__label" style={{ textTransform: 'none', letterSpacing: 0, fontSize: 14, color: '#1A1520' }}>{field.label}</div>
+            <div className="pp-field__label" style={{ textTransform: 'none', letterSpacing: 0, fontSize: 14, color: '#1A1A1A' }}>{field.label}</div>
             {field.hint && <div className="sp-field-hint">{field.hint}</div>}
           </div>
           <span className="pp-field__edit">{field.cta || 'Open'}</span>
