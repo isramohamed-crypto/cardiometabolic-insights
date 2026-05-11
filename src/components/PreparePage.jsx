@@ -8,6 +8,14 @@ function readProfileName() {
   } catch (_) { return '' }
 }
 
+function readConditions() {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const raw = Array.isArray(p.condition) ? p.condition : (p.condition ? [p.condition] : [])
+    return raw.filter(Boolean)
+  } catch (_) { return [] }
+}
+
 const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
@@ -182,19 +190,120 @@ function SwipeCards() {
   )
 }
 
-const SUMMARY_ITEMS = [
-  { icon: '📊', text: 'Stress → flare pattern confirmed: Wednesday stress shows up on skin by Friday, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
-  { icon: '😴', text: '82% of worst skin days follow nights with sleep score under 65', reason: 'Oura sleep data + skin score' },
-  { icon: '📋', text: 'DLQI: 9/30 (moderate impact, improving from 16 in January) · POEM: 11/28 (moderate symptoms)', reason: 'ePRO assessment results' },
-  { icon: '🧴', text: 'Currently managing with OTC moisturizers + occasional hydrocortisone. Consistent routine 4/7 nights.', reason: 'Self-reported treatment' },
-]
+/**
+ * Per-condition playbooks for Prepare. Each one supplies the "Key findings",
+ * "Questions to ask", and "AI suggestions" content tailored to that condition.
+ * Falls back to GENERIC_PREPARE_PLAYBOOK when the user's condition isn't here
+ * (e.g. for the non-diagnosis "concerns").
+ */
+const PREPARE_PLAYBOOKS = {
+  'Eczema': {
+    summary: [
+      { icon: '📊', text: 'Stress → flare pattern confirmed: Wednesday stress shows up on skin by Friday, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
+      { icon: '😴', text: '82% of worst skin days follow nights with sleep score under 65', reason: 'Oura sleep data + skin score' },
+      { icon: '📋', text: 'DLQI: 9/30 (moderate impact, improving from 16 in January) · POEM: 11/28 (moderate symptoms)', reason: 'ePRO assessment results' },
+      { icon: '🧴', text: 'Currently managing with OTC moisturizers + occasional hydrocortisone. Consistent routine 4/7 nights.', reason: 'Self-reported treatment' },
+    ],
+    questions: [
+      { text: 'My data shows flares spike 48 hours after high-stress days. Is there a preventive intervention for that window?', reason: 'Based on 21-day stress-flare correlation' },
+      { text: '82% of my flares follow poor sleep. Are there nighttime-specific interventions beyond moisturizing?', reason: 'Based on Oura sleep + skin scores' },
+      { text: "I've been managing with OTC for 3 weeks without full control. Should we discuss stepping up treatment?", reason: 'Pre-Rx readiness assessment' },
+      { text: 'My DLQI is 9 and improving. At what point would you consider biologic therapy for my profile?', reason: 'Based on DLQI + POEM trends' },
+    ],
+    aiSuggestions: [
+      'What should I ask about biologics?',
+      'Explain my stress-flare pattern to my doctor',
+      'Is my eczema severe enough for a referral?',
+      'What does my DLQI score mean for treatment?',
+    ],
+  },
+  'Psoriasis': {
+    summary: [
+      { icon: '📊', text: 'PASI score: 6.8 (moderate, body surface area ~8%) — slow improvement over 12 weeks', reason: 'Self-reported severity + photos' },
+      { icon: '🦴', text: 'Morning joint stiffness logged 4 of 21 days — possible psoriatic arthritis signal', reason: 'Daily check-in symptoms' },
+      { icon: '📋', text: 'DLQI: 9/30 (moderate impact). Plaques most disruptive in social and clothing-choice scenarios.', reason: 'ePRO assessment results' },
+      { icon: '🧴', text: 'Currently on topical calcipotriene + emollient. Stable but not clearing.', reason: 'Self-reported treatment' },
+    ],
+    questions: [
+      { text: 'My plaques are stable but not clearing on topicals. At what point should we discuss systemic therapy?', reason: 'Based on 12 weeks of topical use' },
+      { text: 'I have morning joint stiffness lasting >30 minutes. Could this be psoriatic arthritis?', reason: 'Based on check-in symptom log' },
+      { text: 'What biologics treat both my plaques and joint symptoms?', reason: 'Combination-therapy question' },
+      { text: 'My PASI has improved from 9.4 to 6.8. Is this clinically meaningful progress?', reason: 'Based on severity trend' },
+    ],
+    aiSuggestions: [
+      'What should I ask about biologics for psoriasis?',
+      'Are my joint symptoms a concern?',
+      'Explain my PASI trend for my dermatologist',
+      'What questions to ask about scalp psoriasis?',
+    ],
+  },
+  'Rosacea': {
+    summary: [
+      { icon: '🌡️', text: 'Persistent erythema across cheeks and nose on 18 of 21 days', reason: 'Daily check-in skin score' },
+      { icon: '🔍', text: 'Top triggers: heat/humidity and red wine — flushing within 30 minutes, 100% consistent', reason: 'Check-in context tags' },
+      { icon: '🫧', text: 'Papulopustular component on chin and nasolabial folds — averaging 4–6 active lesions', reason: 'Photos + check-ins' },
+      { icon: '🧴', text: 'Currently using gentle skincare + metronidazole gel ~3x/week.', reason: 'Self-reported treatment' },
+    ],
+    questions: [
+      { text: 'My flushing persists for hours after triggers. Would a vascular treatment like brimonidine or oxymetazoline help?', reason: 'Based on logged trigger response' },
+      { text: 'Should I consider IPL or laser for the persistent background redness?', reason: 'Procedural treatment question' },
+      { text: 'Are there oral options like low-dose doxycycline for my bumps?', reason: 'Based on papulopustular pattern' },
+      { text: "I've been on metronidazole for 8 weeks with partial improvement. What's the next step?", reason: 'Treatment trial readiness' },
+    ],
+    aiSuggestions: [
+      'What questions to ask about laser for rosacea?',
+      'Explain my trigger patterns to the doctor',
+      'Should I try oral treatment for rosacea?',
+      'Is my rosacea moderate or severe?',
+    ],
+  },
+  'Acne': {
+    summary: [
+      { icon: '📊', text: 'Active inflammatory lesions: 7–10 on average, distribution along jawline + chin', reason: 'Daily check-ins + photos' },
+      { icon: '🔄', text: 'Cyclical pattern detected — breakouts cluster every 25–30 days (likely hormonal)', reason: '3 months of tracking' },
+      { icon: '📋', text: 'Quality-of-life impact rated moderate. Scarring concerns noted in journal entries.', reason: 'Self-reported ePRO' },
+      { icon: '🧴', text: 'Currently using benzoyl peroxide 2.5% + tretinoin 0.025% for 12 weeks. Marginal improvement.', reason: 'Self-reported treatment' },
+    ],
+    questions: [
+      { text: "I've used my current regimen for 12 weeks without significant improvement. What's the next step?", reason: 'Based on adherent treatment period' },
+      { text: 'My breakouts follow a cyclical pattern. Should we discuss hormonal therapy like spironolactone or a combined OC?', reason: 'Based on 3-month cycle pattern' },
+      { text: 'Would you consider oral isotretinoin given the persistent cystic component and scarring risk?', reason: 'Severity + scarring concerns' },
+      { text: 'Are there in-office treatments (chemical peels, laser, cortisone injections) to help my active cysts?', reason: 'Adjunctive treatment question' },
+    ],
+    aiSuggestions: [
+      'What questions to ask about isotretinoin?',
+      'Explain my hormonal acne pattern',
+      'What should I ask about my cystic acne?',
+      'Are there in-office options for my acne?',
+    ],
+  },
+}
 
-const QUESTIONS = [
-  { text: 'My data shows flares spike 48 hours after high-stress days. Is there a preventive intervention for that window?', reason: 'Based on 21-day stress-flare correlation' },
-  { text: '82% of my flares follow poor sleep. Are there nighttime-specific interventions beyond moisturizing?', reason: 'Based on Oura sleep + skin scores' },
-  { text: "I've been managing with OTC for 3 weeks without full control. Should we discuss stepping up treatment?", reason: 'Pre-Rx readiness assessment' },
-  { text: 'My DLQI is 9 and improving. At what point would you consider biologic therapy for my profile?', reason: 'Based on DLQI + POEM trends' },
-]
+const GENERIC_PREPARE_PLAYBOOK = {
+  summary: [
+    { icon: '📊', text: '21 days of daily skin check-ins tracked — pattern data ready to review', reason: 'Self-reported skin scores' },
+    { icon: '🔍', text: 'Top correlating factors: stress (45%), poor sleep (25%), weather changes (10%)', reason: 'Context tags across check-ins' },
+    { icon: '📸', text: 'Photos captured during both calm and symptomatic days for derm review', reason: 'AI-assisted skin photos' },
+    { icon: '🧴', text: 'Current management: OTC products + lifestyle tracking. No diagnosis yet.', reason: 'Self-reported approach' },
+  ],
+  questions: [
+    { text: 'Based on my photos and symptom log, what is your initial differential diagnosis?', reason: 'Pre-diagnosis exploration' },
+    { text: 'Should I consider patch testing or other allergy workups for my reactivity?', reason: 'Based on product-trigger logs' },
+    { text: 'Are there diagnostic tests (biopsy, blood work) we should consider?', reason: 'Workup question' },
+    { text: 'If this turns out to be a chronic condition, what would the first-line treatment look like?', reason: 'Planning question' },
+  ],
+  aiSuggestions: [
+    'What questions should I ask without a diagnosis?',
+    'What tests might my derm order?',
+    'How do I describe my symptoms clearly?',
+    'What conditions match my symptoms?',
+  ],
+}
+
+function playbookFor(condition) {
+  if (!condition) return GENERIC_PREPARE_PLAYBOOK
+  return PREPARE_PLAYBOOKS[condition] || GENERIC_PREPARE_PLAYBOOK
+}
 
 const STORIES = [
   {
@@ -234,12 +343,7 @@ const STORIES = [
   },
 ]
 
-const AI_SUGGESTIONS = [
-  'What should I ask about biologics?',
-  'Explain my stress-flare pattern to my doctor',
-  'Is my eczema severe enough for a referral?',
-  'What does my DLQI score mean for treatment?',
-]
+// AI_SUGGESTIONS moved into PREPARE_PLAYBOOKS — each condition has its own.
 
 function StoriesSwipe() {
   const [idx, setIdx] = useState(0)
@@ -300,6 +404,20 @@ export default function PreparePage() {
   const [chatInitQ, setChatInitQ] = useState('')
   const [shared, setShared] = useState(false)
   const firstName = readProfileName()
+  // Tracked conditions — all shown side-by-side in the report
+  const [conditions] = useState(() => readConditions())
+  const conditionsToRender = conditions.length > 0 ? conditions : [null]   // null = generic
+  // Flattened lists with a condition tag on each item, for the combined sections
+  const allFindings = conditionsToRender.flatMap(c =>
+    playbookFor(c).summary.map(item => ({ ...item, condition: c }))
+  )
+  const allQuestions = conditionsToRender.flatMap(c =>
+    playbookFor(c).questions.map(item => ({ ...item, condition: c }))
+  )
+  // AI suggestions: take 1-2 per condition to keep the chip row manageable
+  const allSuggestions = conditionsToRender.flatMap(c =>
+    playbookFor(c).aiSuggestions.slice(0, conditionsToRender.length > 1 ? 2 : 4)
+  )
 
   function openChat(q = '') {
     setChatInitQ(q)
@@ -325,11 +443,32 @@ export default function PreparePage() {
         </div>
       </div>
 
-      {/* Summary */}
+      {/* AI Summary — cross-condition synthesis at the top */}
+      <div className="pp-section">
+        <div className="pp-ai-summary-card">
+          <div className="pp-ai-summary-card__head">
+            <span className="pp-ai-summary-card__badge">✨ AI Summary</span>
+            <span className="pp-ai-summary-card__meta">For Dr. Williams · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+          </div>
+          <p className="pp-ai-summary-card__lead">
+            {conditions.length >= 2
+              ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions.length} conditions</strong> ({conditions.join(', ')}) with 21 days of daily check-ins. Stress and sleep below 65 affect <strong>both</strong> conditions; cycles and treatment status differ.</>
+              : conditions[0]
+                ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions[0].toLowerCase()}</strong> with 21 days of daily check-ins. Clear stress-sleep pattern with a defined treatment trial in progress.</>
+                : <>21 days of self-tracked skin data ready for review. No diagnosis yet — symptoms and trigger patterns documented.</>
+            }
+          </p>
+          <p className="pp-ai-summary-card__cta">
+            Bring this report to your visit. The sections below show the data and pre-drafted questions Dr. Williams will find most useful.
+          </p>
+        </div>
+      </div>
+
+      {/* Key findings — all conditions, each labeled */}
       <div className="pp-section">
         <div className="pp-sec-head">
           <span className="pp-sec-badge">Auto-generated</span>
-          <h2 className="pp-sec-title">Your summary for Dr. Williams</h2>
+          <h2 className="pp-sec-title">Key findings for Dr. Williams</h2>
         </div>
         <div className="pp-sum-grid">
           <div className="pp-sum-tile"><div className="pp-st-label">Days tracked</div><div className="pp-st-val">21</div><div className="pp-st-detail">Daily check-ins + Oura</div></div>
@@ -339,10 +478,16 @@ export default function PreparePage() {
         </div>
         <div className="pp-card">
           <div className="pp-card-label">Key findings to share</div>
-          {SUMMARY_ITEMS.map((item, i) => (
+          {allFindings.map((item, i) => (
             <div key={i} className="pp-q-row">
               <div className="pp-q-icon">{item.icon}</div>
-              <div><div className="pp-q-text">{item.text}</div><div className="pp-q-reason">{item.reason}</div></div>
+              <div>
+                <div className="pp-q-text">{item.text}</div>
+                <div className="pp-q-reason">
+                  {item.condition && <span className="pp-cond-tag">{item.condition}</span>}
+                  {item.reason}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -367,7 +512,7 @@ export default function PreparePage() {
             </button>
           </div>
           <div className="pp-ai-suggestions">
-            {AI_SUGGESTIONS.map((q, i) => (
+            {allSuggestions.map((q, i) => (
               <button key={i} className="pp-ai-sug" onClick={() => openChat(q)}>
                 <span className="pp-ai-sug-arrow">→</span>{q}
               </button>
@@ -383,10 +528,16 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Questions to ask</h2>
         </div>
         <div className="pp-card">
-          {QUESTIONS.map((item, i) => (
+          {allQuestions.map((item, i) => (
             <div key={i} className="pp-q-row">
               <div className="pp-q-icon">💡</div>
-              <div><div className="pp-q-text">{item.text}</div><div className="pp-q-reason">{item.reason}</div></div>
+              <div>
+                <div className="pp-q-text">{item.text}</div>
+                <div className="pp-q-reason">
+                  {item.condition && <span className="pp-cond-tag">{item.condition}</span>}
+                  {item.reason}
+                </div>
+              </div>
             </div>
           ))}
         </div>
