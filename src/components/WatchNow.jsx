@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import MarkAsTried from './MarkAsTried'
 
 /* ─── Video data ─────────────────────────────────────────────────────────── */
 const VIDEOS = [
@@ -64,6 +65,15 @@ export default function WatchNow() {
                   <div className="edu-card__play-tri" />
                 </div>
                 <div className="edu-card__dur">{video.dur}</div>
+                <div className="edu-card__save">
+                  <MarkAsTried
+                    id={`expert-advice:${video.id}`}
+                    title={video.title}
+                    source="Expert advice"
+                    variant="save"
+                    className="try-btn--overlay"
+                  />
+                </div>
                 <div className="edu-card__meta">
                   <div className="edu-card__tag">{video.tag}</div>
                   <div className="edu-card__title">{video.title}</div>

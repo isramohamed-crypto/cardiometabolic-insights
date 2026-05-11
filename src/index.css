@@ -2455,6 +2455,15 @@ h2 {
 }
 .edu-card:active { transform: scale(0.97); }
 
+/* Surface: Expert advice video cards — save chip overlaid on top-right.
+   Visual styling lives in .try-btn--overlay (shared with Quick wins). */
+.edu-card__save {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
 .edu-card__bg {
   position: relative;
   width: 100%;
@@ -2482,7 +2491,7 @@ h2 {
 .edu-card__dur {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 600;
@@ -4545,6 +4554,10 @@ h2 {
 .lbe-flip-btn--dark {
   background: var(--color-text-primary);
   color: white;
+  /* On the advice (back) side, the save affordance lives in top-right.
+     Move the flip-back button to top-left to avoid the collision. */
+  right: auto;
+  left: var(--space-3);
 }
 
 .lbe-card--advice {
@@ -4633,6 +4646,7 @@ h2 {
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,.06);
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 .rs-card__image {
@@ -4646,8 +4660,7 @@ h2 {
   display: flex;
   gap: 10px;
   padding: 10px 12px;
-  border: 1.25px solid var(--color-border);
-  margin: -1px 12px 12px;
+  margin: 0 12px 12px;
   background: white;
   align-items: flex-start;
 }
@@ -4674,6 +4687,93 @@ h2 {
   letter-spacing: 0.04em;
   color: var(--color-text-secondary);
   margin-top: 6px;
+}
+
+/* Shared 'Mark as tried' affordance — subtle right-aligned text link.
+   Used on Peer Stories advice cards and chat-flow recommendation cards
+   (light-background contexts). Per-surface positioning lives in .*__try-row. */
+.try-btn {
+  padding: 4px 2px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color .15s ease, background-color .15s ease;
+}
+.try-btn:hover {
+  color: var(--color-teal);
+}
+.try-btn--tried {
+  color: var(--color-teal);
+  font-weight: 600;
+}
+.try-btn--tried:hover {
+  color: var(--color-teal-dark);
+}
+
+/* Overlay variant — dark translucent pill for over-image use
+   (Quick wins cards, Expert advice video cards). */
+.try-btn--overlay {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.95);
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+}
+.try-btn--overlay:hover {
+  color: white;
+  background: rgba(0,0,0,0.6);
+}
+.try-btn--overlay.try-btn--tried {
+  color: var(--color-lime);
+  font-weight: 700;
+}
+.try-btn--overlay.try-btn--tried:hover {
+  color: var(--color-lime);
+  background: rgba(0,0,0,0.6);
+}
+
+/* Surface: Quick wins (rs-card) — overlay top-right of image */
+.rs-card__try-row {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+/* Surface: Peer Stories advice card (back side of flip) — top-right */
+.lbe-advice__try-row {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 3;
+}
+
+/* Surface: chat-flow Recommended Reading card — top-right */
+.chat-reading__try-row {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+}
+
+/* Surface: chat-flow Recommendations list items — button inline next to each article */
+.chat-reco__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  justify-content: space-between;
+}
+.chat-reco__item .try-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .rs-cover {
@@ -4812,6 +4912,7 @@ h2 {
   padding: 12px 14px;
   margin-top: 10px;
   border-radius: 0 8px 8px 0;
+  position: relative;
 }
 .chat-reading__label {
   font-family: var(--font-sans);
@@ -4819,6 +4920,7 @@ h2 {
   font-weight: 700;
   color: var(--color-text-secondary);
   margin-bottom: 6px;
+  padding-right: 90px;
 }
 .chat-reading__label a {
   color: var(--color-warm);

@@ -5,6 +5,7 @@ import Onboarding from './components/Onboarding'
 import AccountDrawer from './components/AccountDrawer'
 import ProfilePage, { computeCompletion } from './components/ProfilePage'
 import SettingsPage, { ACCOUNT_SECTIONS, NOTIFICATION_SECTIONS } from './components/SettingsPage'
+import SavedItemsPage from './components/SavedItemsPage'
 import SkinCheckinSheet from './components/SkinCheckinSheet'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
@@ -47,6 +48,7 @@ export default function App() {
   const [onboarding, setOnboarding] = useState(null)
   const [showDrawer, setShowDrawer] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
+  const [showSavedItems, setShowSavedItems] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
   const [showCheckin, setShowCheckin] = useState(false)
@@ -76,6 +78,7 @@ export default function App() {
   function handleDrawerSelect(itemId) {
     setShowDrawer(false)
     if (itemId === 'profile')        { setShowProfile(true); return }
+    if (itemId === 'savedItems')     { setShowSavedItems(true); return }
     if (itemId === 'notifications')  { setShowNotifications(true); return }
     if (itemId === 'settings')       { setShowAccount(true); return }
     if (itemId === 'help' || itemId === 'signout') {
@@ -133,6 +136,10 @@ export default function App() {
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         />
+      )}
+
+      {showSavedItems && (
+        <SavedItemsPage onClose={() => setShowSavedItems(false)} />
       )}
 
       {showNotifications && (

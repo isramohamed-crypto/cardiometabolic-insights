@@ -3,6 +3,7 @@ import './AccountDrawer.css'
 
 const MENU = [
   { id: 'profile',       icon: '👤', label: 'Profile',           desc: 'View and complete your profile' },
+  { id: 'savedItems',    icon: '🔖', label: 'Saved items',       desc: 'Tips, articles, and videos you’ve marked' },
   { id: 'notifications', icon: '🔔', label: 'Notifications',     desc: 'Reminders, digests, and updates' },
   { id: 'settings',      icon: '⚙️', label: 'Account settings',  desc: 'Email, phone, password, privacy' },
   { id: 'help',          icon: '💬', label: 'Help & support',    desc: 'FAQ, contact, send feedback' },
