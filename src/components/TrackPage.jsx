@@ -38,10 +38,10 @@ const TRIGGERS = [
 ]
 
 const ACTIONS = [
-  { icon: '🌬️', bg: 'rgba(46,209,203,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → flare cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
-  { icon: '🧴', bg: 'rgba(93,45,230,.1)',    tag: 'SKINCARE · ROUTINE', tagC: 'var(--color-teal)', title: 'Add moisturizer timing to your daily checklist', body: 'You moisturize 4/7 nights. Making it 7/7 could improve your average skin score.', cta: 'Add to checklist', ctaBg: 'rgba(93,45,230,.1)', ctaC: 'var(--color-teal)' },
-  { icon: '📖', bg: 'rgba(28,95,241,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#1C5FF1', title: 'Continue: Stress + Skin journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(28,95,241,.1)', ctaC: '#1C5FF1' },
-  { icon: '🥗', bg: 'rgba(253,218,60,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(253,218,60,.15)', ctaC: '#8A7A30' },
+  { icon: '🌬️', bg: 'rgba(0, 185, 226,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → flare cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
+  { icon: '🧴', bg: 'rgba(27, 188, 60,.1)',    tag: 'SKINCARE · ROUTINE', tagC: 'var(--color-teal)', title: 'Add moisturizer timing to your daily checklist', body: 'You moisturize 4/7 nights. Making it 7/7 could improve your average skin score.', cta: 'Add to checklist', ctaBg: 'rgba(27, 188, 60,.1)', ctaC: 'var(--color-teal)' },
+  { icon: '📖', bg: 'rgba(0, 83, 226,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#0053E2', title: 'Continue: Stress + Skin journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(0, 83, 226,.1)', ctaC: '#0053E2' },
+  { icon: '🥗', bg: 'rgba(232, 239, 101,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(232, 239, 101,.15)', ctaC: '#8A7A30' },
 ]
 
 const METRICS = [
@@ -49,13 +49,13 @@ const METRICS = [
   { e: '😰', l: 'Stress',      v: 'Med-Hi', u: '', d: '3.2hrs high stress',   tc: 'var(--color-warm)',   tl: '↓ worse',     sp: STRESS_DATA.map(v => v * 10) },
   { e: '⚡',  l: 'Readiness',  v: '62', u: '/100', d: 'Temp +0.3°C',          tc: 'var(--color-text-muted)', tl: '→ stable', sp: [68,65,62,70,66,55,58,72,68,58,70,74,60,62] },
   { e: '💓', l: 'HRV',         v: '38', u: 'ms',   d: '15% below baseline',   tc: 'var(--color-warm)',   tl: '↓ -6 vs avg', sp: [42,40,38,45,41,35,36,44,42,34,43,46,37,38] },
-  { e: '❤️', l: 'Resting HR',  v: '64', u: 'bpm',  d: 'vs. 60 baseline',      tc: '#FDDA3C',             tl: '↑ +4 bpm',    sp: [60,61,63,59,62,65,64,60,61,66,60,58,64,64] },
+  { e: '❤️', l: 'Resting HR',  v: '64', u: 'bpm',  d: 'vs. 60 baseline',      tc: '#E8EF65',             tl: '↑ +4 bpm',    sp: [60,61,63,59,62,65,64,60,61,66,60,58,64,64] },
   { e: '🛡️', l: 'Resilience',  v: 'Mod', u: '',    d: 'Recovery: 62',         tc: 'var(--color-text-muted)', tl: '→ stable', sp: [55,58,52,65,60,48,50,65,58,45,62,68,52,55] },
 ]
 
 const EPROS = [
-  { icon: '📋', iconBg: 'rgba(93,45,230,.1)',   title: 'DLQI — Quality of Life',    sub: 'How eczema impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(93,45,230,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
-  { icon: '📊', iconBg: 'rgba(46,209,203,.12)', title: 'POEM — Symptom Severity',   sub: 'Track eczema severity over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(46,209,203,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
+  { icon: '📋', iconBg: 'rgba(27, 188, 60,.1)',   title: 'DLQI — Quality of Life',    sub: 'How eczema impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(27, 188, 60,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
+  { icon: '📊', iconBg: 'rgba(0, 185, 226,.12)', title: 'POEM — Symptom Severity',   sub: 'Track eczema severity over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(0, 185, 226,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
   { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of your skin condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
 ]
 
@@ -122,7 +122,7 @@ export default function TrackPage() {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Trend</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(46,209,203,.12)', color: 'var(--color-teal)' }}>Live</span>
+          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Live</span>
         </div>
         <div className="tp-time-toggle">
           {['14 days','30 days','90 days'].map(t => (
@@ -178,7 +178,7 @@ export default function TrackPage() {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Your body signals</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(46,209,203,.12)', color: 'var(--color-teal)' }}>Oura</span>
+          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Oura</span>
         </div>
         <div className="tp-metrics-grid">
           {METRICS.map((m, i) => (
@@ -200,7 +200,7 @@ export default function TrackPage() {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Health assessments</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(93,45,230,.1)', color: 'var(--color-teal)' }}>ePRO</span>
+          <span className="tp-sec-badge" style={{ background: 'rgba(27, 188, 60,.1)', color: 'var(--color-teal)' }}>ePRO</span>
         </div>
         {EPROS.map((ep, i) => (
           <div key={i} className="tp-epro-card">
@@ -224,7 +224,7 @@ export default function TrackPage() {
       <div className="tp-section" style={{ marginBottom: 'var(--space-6)' }}>
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Your assessment results</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(46,209,203,.12)', color: 'var(--color-teal)' }}>Trend</span>
+          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Trend</span>
         </div>
         <div className="tp-card">
           <div className="tp-er-header"><span className="tp-er-title">DLQI — Quality of Life</span></div>
