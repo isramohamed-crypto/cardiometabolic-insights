@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react'
 const SUGGESTED = [
   'Why does my face burn after I wash it?',
   "I'm exhausted trying to figure out what makes my skin better or worse.",
-  'What actually helps people live with this?',
+  "What can I eat on the go that won't make my skin worse?",
+  'What are the best tips you have for someone living with eczema?',
 ]
 
 // Single-turn responses for the first two questions
@@ -12,12 +13,14 @@ const CANNED_RESPONSES = {
     "When your face burns or stings after washing, that's often a sign your skin barrier is irritated. The most common culprits:\n\n• A cleanser with sulfates or fragrance\n• Water that's too hot or too cold\n• Towel-drying too aggressively\n• Waiting more than 3 minutes before moisturizing\n\nFor eczema-prone skin, swapping to a fragrance-free, sulfate-free cleanser and moisturizing within 3 minutes of washing can dramatically reduce that burning sensation. Want me to walk through what to look for in a cleanser?",
   "I'm exhausted trying to figure out what makes my skin better or worse.":
     "You're not alone — figuring out personal triggers is one of the hardest parts of eczema, and it's exhausting because the connections aren't obvious in the moment.\n\nWhat actually works:\n\n• Track a small set of things daily (skin score, sleep, stress, weather, products) — patterns emerge after 2–3 weeks, not 2–3 days\n• Don't try to track everything at once\n• Look for triggers that show up 24–48 hours later, not the same day\n\nYour daily check-in is doing this work in the background. After three weeks, you'll have data your derm can actually use. Would you like to see what patterns we've spotted so far?",
+  "What can I eat on the go that won't make my skin worse?":
+    "Eczema and food connections are real but very individual — what flares your skin may not flare someone else's. That said, a few generally low-risk, on-the-go picks:\n\nSolid bets:\n\n• Unsalted almonds or walnuts (omega-3s support the skin barrier)\n• Fresh fruit — berries, apples, oranges\n• Single-serve hummus with carrots or cucumber\n• A salmon or tuna pouch\n• Hard-boiled eggs, if you tolerate them\n\nWorth being cautious with:\n\n• Dairy and eggs — the most common adult-eczema food triggers in studies\n• Aged cheeses, kombucha, alcohol — high in histamine\n• Heavily processed snacks (sugar + seed oils tend to spike inflammation)\n\nOne pattern worth knowing: food-related flares tend to show up 24–48 hours later, not the same day. If you suspect something, log it and check your skin score two days out.\n\nWant me to set up a food-tracking field in your daily check-in?",
 }
 
 const DEFAULT_RESPONSE =
   "That's a great question. Based on what we know about eczema and stress, the connection between your skin and your nervous system is real and well-documented.\n\nI'd recommend checking in with your care team about this specifically. In the meantime, your daily check-in data can help you spot patterns over time.\n\nIs there anything more specific I can help you with?"
 
-// Multi-turn scripted flow for "What actually helps people live with this?"
+// Multi-turn scripted flow for "What are the best tips you have for someone living with eczema?"
 const HELPS_FLOW = [
   // Turn 0 — initial AI response after Claire's question
   {
@@ -114,7 +117,7 @@ const HELPS_FLOW = [
   },
 ]
 
-const FLOW_TRIGGER = 'What actually helps people live with this?'
+const FLOW_TRIGGER = 'What are the best tips you have for someone living with eczema?'
 
 function TypingIndicator() {
   return (
@@ -295,7 +298,7 @@ export default function AskAI() {
             <input
               className="ask-ai__input"
               type="text"
-              placeholder="Hi! Ask me anything…"
+              placeholder="✨ Hi! Ask me anything…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && submit()}
@@ -346,7 +349,7 @@ export default function AskAI() {
               <input
                 className="chat-overlay__input"
                 type="text"
-                placeholder="Type something..."
+                placeholder="✨ Type something..."
                 value={followUp}
                 onChange={e => setFollowUp(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendFollowUp()}
