@@ -170,14 +170,17 @@ export default function ProfilePage({ onClose, onAskAI }) {
 
   function setField(id, value) {
     setProfile(p => {
-      const sources = (p.aiSources || []).filter(x => x !== id)  // user edited -> no longer AI-sourced
-      const next = { ...p, [id]: value, aiSources: sources, updatedAt: new Date().toISOString() }
+      // User edited the field — remove from AI and onboarding source tags
+      const aiSources = (p.aiSources || []).filter(x => x !== id)
+      const onboardingSources = (p.onboardingSources || []).filter(x => x !== id)
+      const next = { ...p, [id]: value, aiSources, onboardingSources, updatedAt: new Date().toISOString() }
       writeStored(next)
       return next
     })
   }
 
   const aiSources = new Set(profile.aiSources || [])
+  const onboardingSources = new Set(profile.onboardingSources || [])
   const { pct, total, filled, label: tierLabel } = computeCompletion(profile)
 
   return (
@@ -226,6 +229,7 @@ export default function ProfilePage({ onClose, onAskAI }) {
             section={sec}
             profile={profile}
             aiSources={aiSources}
+            onboardingSources={onboardingSources}
             editingFieldId={editing?.sectionId === sec.id ? editing.fieldId : null}
             onEdit={(fieldId) => setEditing(editing?.fieldId === fieldId ? null : { sectionId: sec.id, fieldId })}
             onSet={setField}
@@ -240,7 +244,7 @@ export default function ProfilePage({ onClose, onAskAI }) {
   )
 }
 
-function Section({ section, profile, aiSources, editingFieldId, onEdit, onSet }) {
+function Section({ section, profile, aiSources, onboardingSources, editingFieldId, onEdit, onSet }) {
   let total = section.fields.length
   let filled = 0
   for (const f of section.fields) {
@@ -268,6 +272,7 @@ function Section({ section, profile, aiSources, editingFieldId, onEdit, onSet })
             field={f}
             profile={profile}
             isAi={aiSources.has(f.id)}
+            isOnboarding={onboardingSources.has(f.id)}
             editing={editingFieldId === f.id}
             onEdit={() => onEdit(f.id)}
             onSet={onSet}
@@ -278,10 +283,16 @@ function Section({ section, profile, aiSources, editingFieldId, onEdit, onSet })
   )
 }
 
-function Field({ field, profile, isAi, editing, onEdit, onSet }) {
+function Field({ field, profile, isAi, isOnboarding, editing, onEdit, onSet }) {
   const rawVal = profile?.[field.id]
   const has = Array.isArray(rawVal) ? rawVal.length > 0 : (rawVal != null && rawVal !== '')
   const displayVal = Array.isArray(rawVal) ? rawVal.join(', ') : (rawVal || '')
+  // AI tag takes precedence if somehow both are set (shouldn't happen in practice)
+  const tag = isAi && has
+    ? <span className="pp-field__ai-tag">✨ From AI Insights</span>
+    : (isOnboarding && has
+        ? <span className="pp-field__onboarding-tag">From onboarding</span>
+        : null)
 
   return (
     <div className={`pp-field${editing ? ' pp-field--editing' : ''}`}>
@@ -293,7 +304,7 @@ function Field({ field, profile, isAi, editing, onEdit, onSet }) {
         <div className="pp-field__main">
           <div className="pp-field__label">
             {field.label}
-            {isAi && has && <span className="pp-field__ai-tag">✨ From AI Insights</span>}
+            {tag}
           </div>
           <div className={`pp-field__value${has ? '' : ' pp-field__value--empty'}`}>
             {has ? displayVal : 'Not added yet'}
