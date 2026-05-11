@@ -304,29 +304,38 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   // Reset whenever the sheet opens. If today's check-in already exists,
   // open in summary-view mode so the user can see what they logged.
   useEffect(() => {
-    if (open) {
-      setSeverityByCond({}); setSeverityAiByCond({}); setSymptomsByCond({})
-      setContext([]); setContextDetails({})
-      setPhotoUrl(''); setWearableSynced(false); setAnalyzing(false)
-      document.body.style.overflow = 'hidden'
-
-      // Pick the first tracked condition as active by default
-      const conds = trackedConditionsFor(readProfile())
-      setActiveCondition(conds[0])
-
-      let last = null
-      try { last = JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) {}
-      const todayLogged = last && new Date(last.date).toDateString() === new Date().toDateString()
-
-      if (todayLogged) {
-        setViewing(last)
-        setStep(6)        // dedicated summary-view step
-      } else {
-        setViewing(null)
-        setStep(0)
-      }
+    if (!open) {
+      // Always release the body scroll lock when the sheet is closed,
+      // regardless of where the close came from. (Earlier cleanup only
+      // ran in stale closures, leaving Track unscrollable after a log.)
+      document.body.style.overflow = ''
+      return
     }
-    return () => { if (!open) document.body.style.overflow = '' }
+
+    // Sheet is opening
+    setSeverityByCond({}); setSeverityAiByCond({}); setSymptomsByCond({})
+    setContext([]); setContextDetails({})
+    setPhotoUrl(''); setWearableSynced(false); setAnalyzing(false)
+    document.body.style.overflow = 'hidden'
+
+    // Pick the first tracked condition as active by default
+    const conds = trackedConditionsFor(readProfile())
+    setActiveCondition(conds[0])
+
+    let last = null
+    try { last = JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) {}
+    const todayLogged = last && new Date(last.date).toDateString() === new Date().toDateString()
+
+    if (todayLogged) {
+      setViewing(last)
+      setStep(6)
+    } else {
+      setViewing(null)
+      setStep(0)
+    }
+
+    // Cleanup always restores scroll, in case the component unmounts mid-flow
+    return () => { document.body.style.overflow = '' }
   }, [open])
 
   const profile = useMemo(() => open ? readProfile() : {}, [open])
