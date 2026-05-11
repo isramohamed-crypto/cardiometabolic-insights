@@ -25,7 +25,7 @@
 
 /* Header */
 .ad-header {
-  background: linear-gradient(135deg, #5D2DE6, #7445F0);
+  background: linear-gradient(135deg, #1BBC3C, #3FD15F);
   color: #fff;
   padding: 20px 20px 24px;
 }
@@ -83,15 +83,15 @@
   width: 22px;
   height: 22px;
   border-radius: 9999px;
-  background: #FDDA3C;
-  color: #5D2DE6;
+  background: #E8EF65;
+  color: #1BBC3C;
   font-size: 16px;
   font-weight: 800;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #5D2DE6;
+  border: 2px solid #1BBC3C;
   box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
 
@@ -136,7 +136,7 @@
 .ad-strength__pct {
   font-size: 14px;
   font-weight: 700;
-  color: #FDDA3C;
+  color: #E8EF65;
 }
 .ad-strength__bar {
   height: 5px;
@@ -147,7 +147,7 @@
 }
 .ad-strength__fill {
   height: 100%;
-  background: #FDDA3C;
+  background: #E8EF65;
   border-radius: 3px;
   transition: width .4s cubic-bezier(.4,0,.2,1);
 }
@@ -166,8 +166,8 @@
   background: rgba(0,0,0,0.18);
   color: #fff;
 }
-.ad-tier--allstar  { background: #FDDA3C; color: #5D2DE6 }
-.ad-tier--intermediate { background: rgba(46,209,203,0.9); color: #fff }
+.ad-tier--allstar  { background: #E8EF65; color: #1BBC3C }
+.ad-tier--intermediate { background: rgba(0, 185, 226,0.9); color: #fff }
 .ad-tier--beginner { background: rgba(255,255,255,0.2); color: #fff }
 .ad-strength__cta {
   background: none;
@@ -200,8 +200,8 @@
   transition: background .12s;
   font-family: inherit;
 }
-.ad-item:hover { background: #F5F0FE }
-.ad-item:active { background: #EDE8FD }
+.ad-item:hover { background: #FFFCF5 }
+.ad-item:active { background: #E3F8E8 }
 
 .ad-item__icon {
   font-size: 20px;
@@ -210,7 +210,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #F5F0FE;
+  background: #FFFCF5;
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -220,13 +220,13 @@
 .ad-item__label {
   font-size: 14px;
   font-weight: 600;
-  color: #1A1520;
+  color: #1A1A1A;
   margin-bottom: 1px;
 }
 
 .ad-item__desc {
   font-size: 12px;
-  color: #9B8BB8;
+  color: #8A8A8A;
   line-height: 1.35;
 }
 
