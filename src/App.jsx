@@ -5,6 +5,7 @@ import Onboarding from './components/Onboarding'
 import AccountDrawer from './components/AccountDrawer'
 import ProfilePage, { computeCompletion } from './components/ProfilePage'
 import SettingsPage, { ACCOUNT_SECTIONS, NOTIFICATION_SECTIONS } from './components/SettingsPage'
+import SkinCheckinSheet from './components/SkinCheckinSheet'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
 import DailyCheckin from './components/DailyCheckin'
@@ -48,6 +49,8 @@ export default function App() {
   const [showProfile, setShowProfile] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
+  const [showCheckin, setShowCheckin] = useState(false)
+  const [checkinTick, setCheckinTick] = useState(0)   // bumps after a check-in is logged
   const [profile, setProfile] = useState(() => readProfile())
 
   const refreshProfile = useCallback(() => setProfile(readProfile()), [])
@@ -101,7 +104,13 @@ export default function App() {
         avatarUrl={avatarUrl}
       />
       {showRegistration && <Registration onClose={() => setShowRegistration(false)} onStartOnboarding={startOnboarding} />}
-      {onboarding && <Onboarding name={onboarding.name} onClose={() => { setOnboarding(null); refreshProfile() }} />}
+      {onboarding && <Onboarding name={onboarding.name} onClose={() => {
+        setOnboarding(null)
+        refreshProfile()
+        // Onboarding clears check-in storage — bump the tick so the home-feed
+        // card and Track banner re-read and reflect the empty state.
+        setCheckinTick(t => t + 1)
+      }} />}
 
       {showDrawer && (
         <AccountDrawer
@@ -156,10 +165,22 @@ export default function App() {
         />
       )}
 
+      {/* Skin check-in sheet — mounted at App level so any page can open it */}
+      <SkinCheckinSheet
+        open={showCheckin}
+        onClose={() => setShowCheckin(false)}
+        onComplete={() => setCheckinTick(t => t + 1)}
+        onViewTrack={() => {
+          setShowCheckin(false)
+          setActivePage('Track')
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+      />
+
       {activePage === 'Learn' ? (
         <LearnPage />
       ) : activePage === 'Track' ? (
-        <TrackPage />
+        <TrackPage onOpenCheckin={() => setShowCheckin(true)} checkinTick={checkinTick} />
       ) : activePage === 'Prepare' ? (
         <PreparePage />
       ) : (
@@ -178,7 +199,7 @@ export default function App() {
           <WatchNow />
           <CommunityPoll />
           <QuickAnswers />
-          <DailyCheckin />
+          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <PeerStories />
           {/* <InsightSection /> */}
         </main>
