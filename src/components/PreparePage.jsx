@@ -7,7 +7,7 @@ const SW_SLIDES = [
     body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your SkInsights summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
-    glow: 'radial-gradient(circle at 75% 20%,rgba(0,185,226,.2),transparent 60%)',
+    glow: 'radial-gradient(circle at 75% 20%,rgba(46,209,203,.2),transparent 60%)',
   },
   {
     step: '2 of 5', emoji: '📸',
@@ -23,7 +23,7 @@ const SW_SLIDES = [
     body: 'Include OTC moisturizers, prescription creams, and anything you\'ve stopped using. "Didn\'t work" is valuable information — it helps your dermatologist narrow options faster.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#0D7C8F,#064a55)',
-    glow: 'radial-gradient(circle at 70% 25%,rgba(232,239,101,.2),transparent 55%)',
+    glow: 'radial-gradient(circle at 70% 25%,rgba(253,218,60,.2),transparent 55%)',
   },
   {
     step: '4 of 5', emoji: '🤔',
@@ -199,7 +199,7 @@ const STORIES = [
     quote: "My doctor kept asking about my skin. But it was the sleep loss and the anxiety at work that were destroying me.",
     context: "Priya learned that quality-of-life impact — not just skin severity — matters for treatment decisions. Once she started describing her sleep disruption and social avoidance, her dermatologist reassessed her treatment plan.",
     takeaway: 'Tell your doctor how eczema affects your life — not just your skin.', takeawaySub: 'Your DLQI score captures this, too',
-    bg: 'linear-gradient(150deg,#0D7C8F,#064a55)', glow: 'radial-gradient(circle at 20% 75%,rgba(232,239,101,.15),transparent 55%)',
+    bg: 'linear-gradient(150deg,#0D7C8F,#064a55)', glow: 'radial-gradient(circle at 20% 75%,rgba(253,218,60,.15),transparent 55%)',
   },
   {
     step: 'Story 3 of 5', avatar: 'D', name: 'Diane, mom of Maya (13)', detail: "Managing her daughter's moderate AD",

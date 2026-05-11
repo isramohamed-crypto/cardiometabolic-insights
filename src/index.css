@@ -1,48 +1,46 @@
 /* ── TOKENS ─────────────────────────────────────────────────── */
 :root {
-  /* Brand palette — Health.com rebrand: green on cream, vibrant accents */
-  /* Token names retained for backward compatibility; only values change. */
+  /* Brand palette — accessible lifestyle, premium + approachable */
 
-  /* Primary — Leaf green */
-  --color-teal:          #1BBC3C;
-  --color-teal-mid:      #3FD15F;
-  --color-teal-light:    #E3F8E8;
-  --color-teal-dark:     #004620;   /* Seaweed */
+  /* Primary — deep purple */
+  --color-teal:          #5D2DE6;
+  --color-teal-mid:      #7445F0;
+  --color-teal-light:    #EDE8FD;
 
-  /* Secondary — Mineral Blue */
-  --color-sage:          #00B9E2;
-  --color-sage-light:    #DEF9FF;
+  /* Secondary — teal/cyan */
+  --color-sage:          #2ED1CB;
+  --color-sage-light:    #E0F9F8;
 
-  /* Warm accent — Tangerine */
-  --color-warm:          #FF8C2F;
-  --color-warm-light:    #FFE4D0;
+  /* Warm accent — orange */
+  --color-warm:          #F64C22;
+  --color-warm-light:    #FEE9E3;
 
-  /* Accent — Watermelon · stress, alert states */
-  --color-coral:         #EF2673;
-  --color-coral-light:   #FFDCED;
+  /* Accent — coral · stress, alert states */
+  --color-coral:         #F64C22;
+  --color-coral-light:   #FEE9E3;
 
-  /* Accent — Blueberry · high-contrast CTAs, links */
-  --color-blue:          #0053E2;
-  --color-blue-light:    #DEF9FF;
+  /* Accent — electric blue · high-contrast CTAs, links */
+  --color-blue:          #1C5FF1;
+  --color-blue-light:    #E4ECFE;
 
-  /* Accent — Green Apple · achievement, success */
-  --color-lime:          #E8EF65;
-  --color-lime-light:    #FCFFBC;
+  /* Accent — yellow · achievement, success */
+  --color-lime:          #FDDA3C;
+  --color-lime-light:    #FFFAE6;
 
-  /* Neutrals — cream system */
-  --color-bg:            #FFFCF5;   /* Cream */
+  /* Neutrals */
+  --color-bg:            #F5F0FE;   /* lavender tint */
   --color-surface:       #FFFFFF;
-  --color-surface-2:     #FFFCF5;
-  --color-border:        #EDE6D6;
-  --color-border-light:  #F5EFE0;
-  --color-text-primary:  #1A1A1A;
-  --color-text-secondary:#5C5C5C;
-  --color-text-muted:    #8A8A8A;
+  --color-surface-2:     #F5F0FE;
+  --color-border:        #E4DDF5;
+  --color-border-light:  #EDE8F8;
+  --color-text-primary:  #1A1520;
+  --color-text-secondary:#5A4E72;
+  --color-text-muted:    #9B8BB8;
   --color-text-inverse:  #FFFFFF;
 
-  /* Type — Poppins for display, DM Sans for body */
-  --font-serif: 'Poppins', 'DM Sans', system-ui, sans-serif;
-  --font-sans:  'DM Sans', system-ui, sans-serif;
+  /* Type */
+  --font-serif: 'Plus Jakarta Sans', sans-serif;
+  --font-sans:  'Plus Jakarta Sans', sans-serif;
 
   --font-size-xs:   0.6875rem; /* 11px */
   --font-size-sm:   0.8125rem; /* 13px */
@@ -119,13 +117,11 @@ h2 {
   transition: background 0.25s ease, backdrop-filter 0.25s ease;
 }
 .nav--scrolled {
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-teal);
   backdrop-filter: blur(12px);
 }
 .nav--secondary {
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-teal);
 }
 
 .nav__brand {
@@ -134,33 +130,12 @@ h2 {
   gap: var(--space-2);
 }
 .nav__wordmark {
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: none;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #fff;
-}
-/* Green-on-cream wordmark when nav has a solid surface */
-.nav--scrolled .nav__wordmark,
-.nav--secondary .nav__wordmark {
-  color: var(--color-teal);
-}
-/* Link + avatar overrides for cream nav surface */
-.nav--scrolled .nav__link,
-.nav--secondary .nav__link {
-  color: var(--color-text-secondary);
-}
-.nav--scrolled .nav__link--active,
-.nav--secondary .nav__link--active,
-.nav--scrolled .nav__link:hover,
-.nav--secondary .nav__link:hover {
-  color: var(--color-teal);
-}
-.nav--scrolled .nav__avatar,
-.nav--secondary .nav__avatar {
-  background: var(--color-teal-light);
-  color: var(--color-teal-dark);
 }
 .nav__separator {
   font-size: var(--font-size-xs);
@@ -222,7 +197,7 @@ h2 {
 /* ── HERO WRAP ──────────────────────────────────────────────── */
 .hero-wrap {
   background: var(--color-teal);
-  border-bottom: 2px solid #3FD15F;
+  border-bottom: 2px solid #7241FC;
   padding-top: var(--nav-height);
   padding-bottom: var(--space-5);
   margin-bottom: var(--space-5);
@@ -238,9 +213,8 @@ h2 {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(60% 80% at 20% 0%, rgba(232,239,101,0.35), transparent 70%),
-    radial-gradient(50% 60% at 90% 100%, rgba(0,70,32,0.35), transparent 70%);
+  background: url('/purple-gradient.jpg') center center / cover no-repeat;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 0;
 }
@@ -686,7 +660,7 @@ h2 {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  background: #DEF9FF;
+  background: #E0F9F8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1158,7 +1132,7 @@ h2 {
   bottom: 0; left: 0; right: 0;
   height: var(--bottom-nav-height);
   background: var(--color-teal);
-  border-top: 2px solid #3FD15F;
+  border-top: 2px solid #7241FC;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -1201,7 +1175,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #00B9E2;
+  background: #2ED1CB;
   padding: 14px var(--space-4);
 }
 .dupixent-ad__placeholder {
@@ -1327,7 +1301,7 @@ h2 {
 .swipe-learn__complete-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #00B9E2, #0089A8);
+  background: linear-gradient(135deg, #2ED1CB, #1aaa9e);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2907,7 +2881,7 @@ h2 {
   overflow: hidden;
 }
 .lp-journey--locked { opacity: 0.7; }
-.lp-journey--open { box-shadow: 0 0 0 2px rgba(27,188,60,0.25), 0 8px 32px rgba(27,188,60,0.15); }
+.lp-journey--open { box-shadow: 0 0 0 2px rgba(93,45,230,0.25), 0 8px 32px rgba(93,45,230,0.15); }
 .lp-journey__top {
   display: flex;
   align-items: center;
@@ -3443,7 +3417,7 @@ h2 {
 
 .pp-hero {
   background: var(--color-teal);
-  border-bottom: 2px solid #3FD15F;
+  border-bottom: 2px solid #7241FC;
   margin-top: calc(-1 * var(--nav-height));
   padding-top: calc(var(--nav-height) + var(--space-8));
   padding-bottom: var(--space-8);
@@ -3461,7 +3435,7 @@ h2 {
   inset: 0;
   background:
     radial-gradient(ellipse at 90% 10%, rgba(255,255,255,.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 10% 90%, rgba(27,188,60,.4) 0%, transparent 50%);
+    radial-gradient(ellipse at 10% 90%, rgba(93,45,230,.4) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -3864,7 +3838,7 @@ h2 {
   letter-spacing: -0.02em;
 }
 .lbe-cover__chip {
-  background: #E8EF65;
+  background: #FDDA3C;
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 800;
@@ -3942,7 +3916,7 @@ h2 {
 }
 .lbe-card__chip {
   display: inline-block;
-  background: #E8EF65;
+  background: #FDDA3C;
   color: #1a1a1a;
   font-family: var(--font-sans);
   font-size: 10px;
@@ -3972,7 +3946,7 @@ h2 {
   left: var(--space-4);
   right: var(--space-4);
   background: white;
-  border-right: 6px solid #E8EF65;
+  border-right: 6px solid #FDDA3C;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -4064,7 +4038,7 @@ h2 {
   overflow-y: auto;
 }
 .lbe-advice__chip {
-  background: #E8EF65;
+  background: #FDDA3C;
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 800;
