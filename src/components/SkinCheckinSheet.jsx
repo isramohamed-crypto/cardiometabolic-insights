@@ -782,7 +782,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
 
           return (
             <div className="ci-done">
-              <div className="ci-done__emoji" style={{ background: 'linear-gradient(135deg, #2ED1CB, #44E2DC)' }}>✓</div>
+              <div className="ci-done__emoji" style={{ background: 'linear-gradient(135deg, var(--color-sage), #44E2DC)' }}>✓</div>
               <h3 className="ci-done__title">Today's check-in</h3>
               <p className="ci-done__sub">Logged at {timeStr}.</p>
               <div className="ci-summary-card">
