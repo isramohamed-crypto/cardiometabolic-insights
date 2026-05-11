@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import MarkAsTried from './MarkAsTried'
 
 const SUGGESTED = [
   'Why does my face burn after I wash it?',
@@ -133,6 +134,10 @@ function renderText(text) {
   )
 }
 
+function slug(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)
+}
+
 function ReadingCard({ reading }) {
   return (
     <div className="chat-reading">
@@ -157,6 +162,13 @@ function ReadingCard({ reading }) {
           </ul>
         </>
       )}
+      <div className="chat-reading__try-row">
+        <MarkAsTried
+          id={`ai-reading:${slug(reading.title)}`}
+          title={reading.title}
+          source={`AI Chat · ${reading.source}`}
+        />
+      </div>
     </div>
   )
 }
@@ -173,7 +185,15 @@ function Recommendations({ data }) {
           </p>
           <ul className="chat-reco__list">
             {src.articles.map((a, j) => (
-              <li key={j}>&ldquo;{a}&rdquo;</li>
+              <li key={j} className="chat-reco__item">
+                <span>&ldquo;{a}&rdquo;</span>
+                <MarkAsTried
+                  id={`ai-reco:${slug(src.source)}:${slug(a)}`}
+                  title={a}
+                  source={`AI Chat · ${src.source}`}
+                  variant="save"
+                />
+              </li>
             ))}
           </ul>
         </div>
@@ -222,6 +242,7 @@ export default function AskAI() {
   const [followUp, setFollowUp] = useState('')
   const [flowActive, setFlowActive] = useState(false)
   const [flowTurn, setFlowTurn] = useState(0) // index of NEXT flow turn to show
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const bottomRef = useRef(null)
 
   function showAITurn(idx) {
@@ -301,6 +322,7 @@ export default function AskAI() {
               placeholder="✨ Hi! Ask me anything…"
               value={query}
               onChange={e => setQuery(e.target.value)}
+              onFocus={() => setShowSuggestions(true)}
               onKeyDown={e => e.key === 'Enter' && submit()}
             />
             <button className="ask-ai__submit" aria-label="Send" onClick={() => submit()}>
@@ -309,15 +331,23 @@ export default function AskAI() {
               </svg>
             </button>
           </div>
-          <p className="ask-ai__label">Common questions</p>
-          <ul className="ask-ai__suggestions">
-            {SUGGESTED.map((q, i) => (
-              <li key={i} className="ask-ai__suggestion" onClick={() => submit(q)}>
-                <span className="ask-ai__arrow">→</span>
-                {q}
-              </li>
-            ))}
-          </ul>
+          {showSuggestions && (
+            <>
+              <p className="ask-ai__label">Common questions</p>
+              <ul className="ask-ai__suggestions">
+                {SUGGESTED.map((q, i) => (
+                  <li
+                    key={i}
+                    className="ask-ai__suggestion"
+                    onMouseDown={e => { e.preventDefault(); submit(q) }}
+                  >
+                    <span className="ask-ai__arrow">→</span>
+                    {q}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
 

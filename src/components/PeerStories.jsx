@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import MarkAsTried from './MarkAsTried'
 
 const SUBJECTS = [
   {
@@ -113,6 +114,14 @@ function FlipCard({ subject }) {
             <p className="lbe-advice__chip">{subject.firstName.toUpperCase()}'S ADVICE FOR OTHERS</p>
             <blockquote className="lbe-advice__quote">&ldquo;{subject.adviceQuote}&rdquo;</blockquote>
             <p className="lbe-advice__story">{subject.adviceStory}</p>
+            <div className="lbe-advice__try-row">
+              <MarkAsTried
+                id={`peer-stories:${subject.id}`}
+                title={subject.adviceQuote}
+                source={`Living Beyond Eczema · ${subject.firstName}`}
+                variant="helpful"
+              />
+            </div>
           </div>
         </article>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import MarkAsTried from './MarkAsTried'
 
 const TIPS = [
   {
@@ -49,6 +50,14 @@ export default function ForYouNow() {
                 <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
                 <p className="rs-card__author">— {t.author}</p>
               </div>
+            </div>
+            <div className="rs-card__try-row">
+              <MarkAsTried
+                id={`quick-wins:${t.id}`}
+                title={t.quote}
+                source="Quick wins"
+                className="try-btn--overlay"
+              />
             </div>
           </article>
         ))}
