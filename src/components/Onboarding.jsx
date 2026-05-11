@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Onboarding.css'
 
-const TOTAL_QS = 4
+const TOTAL_QS = 5
 
 const Q1 = {
   text: 'Who are you managing this for?',
@@ -30,6 +30,33 @@ const Q3 = {
   ],
 }
 
+// Topics use their full label as the stored value so they line up with
+// the profile page's `topics` field (no migration needed).
+const Q5_TOPICS = [
+  { label: 'Skincare routines',         icon: '🧴' },
+  { label: 'Triggers & flares',         icon: '🔍' },
+  { label: 'Sleep & rest',              icon: '😴' },
+  { label: 'Stress & mental health',    icon: '🧘' },
+  { label: 'Diet & gut health',         icon: '🥗' },
+  { label: 'Pregnancy & hormones',      icon: '🤰' },
+  { label: 'Kids & caregiving',         icon: '👶' },
+  { label: 'Workouts & sweat',          icon: '💪' },
+  { label: 'Sun & outdoors',            icon: '☀️' },
+  { label: 'Travel',                    icon: '✈️' },
+  { label: 'Confidence & self-image',   icon: '✨' },
+  { label: 'New treatments & research', icon: '🧪' },
+  { label: 'Home organization',         icon: '🏠' },
+  { label: 'Quick recipes',             icon: '🍳' },
+  { label: 'Family meals',              icon: '🍽️' },
+  { label: 'Workplace tips',            icon: '💼' },
+]
+
+const Q5 = {
+  text: 'What kinds of content interest you?',
+  sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
+  options: Q5_TOPICS,
+}
+
 const Q4 = {
   text: 'Do you have a skin diagnosis?',
   sub: 'Either way, we\'ll tailor the experience to where you are.',
@@ -56,7 +83,7 @@ const roleLabels = {
 }
 
 export default function Onboarding({ name, onClose }) {
-  // step 0..3 = Q1..Q4, step 4 = summary
+  // step 0..4 = Q1..Q5, step 5 = summary
   const [step, setStep] = useState(0)
   const [ans, setAns] = useState({
     q1: null,                 // role: myself | child | other
@@ -64,6 +91,7 @@ export default function Onboarding({ name, onClose }) {
     q3: null,                 // primary impact
     q4Branch: 'yes',          // 'yes' | 'no' — defaults to 'yes' so the list shows on entry
     q4: [],                   // multi-select: array of diagnosis or struggle ids
+    q5: [],                   // multi-select: array of interest topic labels
   })
 
   function selectOpt(key, id) {
@@ -78,6 +106,14 @@ export default function Onboarding({ name, onClose }) {
     })
   }
 
+  function toggleQ5(label) {
+    setAns(a => {
+      const set = new Set(a.q5)
+      if (set.has(label)) set.delete(label); else set.add(label)
+      return { ...a, q5: Array.from(set) }
+    })
+  }
+
   function setQ4Branch(branch) {
     setAns(a => ({ ...a, q4Branch: branch, q4: [] }))
   }
@@ -85,31 +121,70 @@ export default function Onboarding({ name, onClose }) {
   function next() { setStep(s => s + 1); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   function back() { setStep(s => s - 1); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
+  // Skip: persist whatever's been answered so far, then jump to the summary
+  function skip() {
+    let existing = {}
+    try { existing = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}') } catch (_) {}
+    const trimmedName = (ans.q2 || '').trim()
+    const onboardingSources = new Set(existing.onboardingSources || [])
+    const profile = { ...existing }
+    const maybeSet = (key, val) => {
+      const hasVal = Array.isArray(val) ? val.length > 0 : (val != null && val !== '')
+      if (hasVal) { profile[key] = val; onboardingSources.add(key) }
+    }
+    maybeSet('name',            trimmedName)
+    maybeSet('role',            ans.q1)
+    maybeSet('focus',           ans.q3)
+    maybeSet('diagnosisStatus', ans.q4Branch)
+    maybeSet('condition',       ans.q4)
+    maybeSet('topics',          ans.q5)
+    profile.onboardingSources = Array.from(onboardingSources)
+    profile.skippedAt = new Date().toISOString()
+    try { localStorage.setItem('skinsightsProfile', JSON.stringify(profile)) } catch (_) {}
+    setStep(5)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   // Validation per step
   const canContinue = (() => {
     if (step === 0) return !!ans.q1
     if (step === 1) return ans.q2.trim().length >= 1
     if (step === 2) return !!ans.q3
     if (step === 3) return !!ans.q4Branch && Array.isArray(ans.q4) && ans.q4.length > 0
+    if (step === 4) return Array.isArray(ans.q5) && ans.q5.length > 0
     return false
   })()
 
-  // Persist on completion (entering step 4 - summary)
+  // Persist on completion (entering step 5 - summary)
   function complete() {
-    const profile = {
-      name: ans.q2.trim(),
-      role: ans.q1,
-      focus: ans.q3,
+    let existing = {}
+    try { existing = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}') } catch (_) {}
+    const trimmedName = ans.q2.trim()
+    const onboardingSources = new Set(existing.onboardingSources || [])
+    const fields = {
+      name:            trimmedName,
+      role:            ans.q1,
+      focus:           ans.q3,
       diagnosisStatus: ans.q4Branch,
-      condition: ans.q4,
-      completedAt: new Date().toISOString(),
+      condition:       ans.q4,
+      topics:          ans.q5,
     }
-    try { localStorage.setItem('skinsightsProfile', JSON.stringify(profile)) } catch (_) {}
+    const next_data = { ...existing }
+    for (const [k, v] of Object.entries(fields)) {
+      const hasVal = Array.isArray(v) ? v.length > 0 : (v != null && v !== '')
+      if (hasVal) {
+        next_data[k] = v
+        onboardingSources.add(k)
+      }
+    }
+    next_data.onboardingSources = Array.from(onboardingSources)
+    next_data.completedAt = new Date().toISOString()
+    try { localStorage.setItem('skinsightsProfile', JSON.stringify(next_data)) } catch (_) {}
     next()
   }
 
-  // ── SUMMARY (Screen 5) ─────────────────────────────────────────────
-  if (step === 4) {
+  // ── SUMMARY (Screen 6) ─────────────────────────────────────────────
+  if (step === 5) {
     const roleLabel  = roleLabels[ans.q1] || ''
     const focusLabel = Q3.options.find(o => o.id === ans.q3)?.label || ''
     const q4List = ans.q4Branch === 'yes' ? Q4.yesOptions : Q4.noOptions
@@ -121,37 +196,64 @@ export default function Onboarding({ name, onClose }) {
       ? (ans.q4.length > 1 ? 'Diagnoses' : 'Diagnosis')
       : (ans.q4.length > 1 ? 'Main concerns' : 'Main concern')
 
+    // Populated rows
+    const rows = []
+    if (roleLabel)        rows.push({ icon: '👤', key: 'Managing for',       val: roleLabel })
+    if (focusLabel)       rows.push({ icon: '🎯', key: 'What matters most',  val: focusLabel })
+    if (conditionLabel)   rows.push({ icon: '📍', key: conditionKey,         val: conditionLabel })
+    if (ans.q5?.length)   rows.push({ icon: '💡', key: 'Interests',           val: ans.q5.join(', ') })
+
+    // Skipped items — list of what they didn't answer
+    const missing = []
+    if (!ans.q1)                                 missing.push({ icon: '👤', label: 'Who you\'re managing this for' })
+    if (!ans.q2 || !ans.q2.trim())               missing.push({ icon: '✏️', label: 'Your name' })
+    if (!ans.q3)                                 missing.push({ icon: '🎯', label: 'What matters most to you' })
+    if (!(ans.q4?.length))                       missing.push({ icon: '📍', label: 'Your diagnosis or concerns' })
+    if (!(ans.q5?.length))                       missing.push({ icon: '💡', label: 'Your interests' })
+
+    const skipped = missing.length > 0
+    const summaryName = (ans.q2 || '').trim().split(' ')[0]
+    const title = skipped
+      ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
+      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Skinsights is ready.')
+    const sub = skipped
+      ? <>No problem — you can finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your feed.</>
+      : <>We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Profile settings</strong>.</>
+
     return (
       <div className="ob-overlay">
         <div className="ob-screen">
           <div className="ob-complete">
             <div className="ob-complete__icon">✓</div>
-            <h2 className="ob-complete__title">Your Skinsights is ready.</h2>
-            <p className="ob-complete__sub">We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Account settings</strong>, where you can also complete the rest of your profile.</p>
-            <div className="ob-profile-card">
-              <div className="ob-profile-card__label">Your profile</div>
-              <div className="ob-profile-row">
-                <span className="ob-profile-row__icon">👤</span>
-                <div>
-                  <div className="ob-profile-row__key">Managing for</div>
-                  <div className="ob-profile-row__val">{roleLabel}</div>
-                </div>
+            <h2 className="ob-complete__title">{title}</h2>
+            <p className="ob-complete__sub">{sub}</p>
+            {rows.length > 0 && (
+              <div className="ob-profile-card">
+                <div className="ob-profile-card__label">Your profile</div>
+                {rows.map(r => (
+                  <div className="ob-profile-row" key={r.key}>
+                    <span className="ob-profile-row__icon">{r.icon}</span>
+                    <div>
+                      <div className="ob-profile-row__key">{r.key}</div>
+                      <div className="ob-profile-row__val">{r.val}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="ob-profile-row">
-                <span className="ob-profile-row__icon">🎯</span>
-                <div>
-                  <div className="ob-profile-row__key">What matters most</div>
-                  <div className="ob-profile-row__val">{focusLabel}</div>
-                </div>
+            )}
+
+            {missing.length > 0 && (
+              <div className="ob-missing-card">
+                <div className="ob-missing-card__label">⏳ Skipped — finish later in Profile settings</div>
+                {missing.map(m => (
+                  <div className="ob-missing-row" key={m.label}>
+                    <span className="ob-missing-row__icon">{m.icon}</span>
+                    <span className="ob-missing-row__label">{m.label}</span>
+                  </div>
+                ))}
               </div>
-              <div className="ob-profile-row">
-                <span className="ob-profile-row__icon">📍</span>
-                <div>
-                  <div className="ob-profile-row__key">{conditionKey}</div>
-                  <div className="ob-profile-row__val">{conditionLabel}</div>
-                </div>
-              </div>
-            </div>
+            )}
+
             <button className="ob-cta" onClick={onClose}>Let's get skinsighted →</button>
           </div>
         </div>
@@ -166,7 +268,7 @@ export default function Onboarding({ name, onClose }) {
     : <>Better skin <em>starts here.</em></>
   const heroSub = firstName
     ? `A few quick questions to tailor your feed, tracking, and guidance around what matters most to you.`
-    : `Let's personalize your eczema companion — four quick questions.`
+    : `Let's personalize your skin companion — five quick questions.`
 
   const progressPct = ((step + 1) / TOTAL_QS) * 100
 
@@ -270,13 +372,39 @@ export default function Onboarding({ name, onClose }) {
                 )}
               </>
             )}
+
+            {step === 4 && (
+              <>
+                <div className="ob-q-text">{Q5.text}</div>
+                <div className="ob-q-sub">{Q5.sub}</div>
+                <div className="ob-chips">
+                  {Q5.options.map(o => {
+                    const sel = ans.q5.includes(o.label)
+                    return (
+                      <button
+                        key={o.label}
+                        type="button"
+                        className={`ob-chip${sel ? ' ob-chip--sel' : ''}`}
+                        onClick={() => toggleQ5(o.label)}
+                      >
+                        <span className="ob-chip__icon">{o.icon}</span>
+                        <span>{o.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+                {ans.q5.length > 0 && (
+                  <p className="ob-q-count">{ans.q5.length} selected</p>
+                )}
+              </>
+            )}
           </div>
         </div>
 
         {/* Nav row */}
         <div className="ob-nav-row">
           {step === 0
-            ? <button className="ob-skip" onClick={onClose}>Skip for now</button>
+            ? <span className="ob-nav-spacer" />
             : <button className="ob-back" onClick={back}>← Back</button>
           }
           <button
@@ -289,6 +417,11 @@ export default function Onboarding({ name, onClose }) {
           >
             {step === TOTAL_QS - 1 ? 'Finish →' : 'Continue →'}
           </button>
+        </div>
+
+        {/* Skip — available on every step. Routes to summary, not straight into the app */}
+        <div className="ob-skip-row">
+          <button className="ob-skip" onClick={skip}>Skip for now</button>
         </div>
       </div>
     </div>

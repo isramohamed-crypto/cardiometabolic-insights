@@ -86,7 +86,8 @@ export default function App() {
   }
 
   const completion = computeCompletion(profile)
-  const avatarInitial = (profile?.name || 'C').trim().charAt(0).toUpperCase() || 'C'
+  const firstName = (profile?.name || '').trim().split(' ')[0]
+  const avatarInitial = firstName ? firstName.charAt(0).toUpperCase() : 'C'
   const avatarUrl = profile?.avatarUrl || ''
 
   return (
@@ -164,7 +165,7 @@ export default function App() {
       ) : (
         <main className="main">
           <div className="hero-wrap">
-            <Hero />
+            <Hero firstName={firstName} />
             <AskAI />
             {/* <div className="today-wrap">
               <TodayCard />

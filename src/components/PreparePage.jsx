@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 
+function readProfileName() {
+  try {
+    const raw = localStorage.getItem('skinsightsProfile')
+    const name = raw ? (JSON.parse(raw)?.name || '').trim() : ''
+    return name ? name.split(' ')[0] : ''
+  } catch (_) { return '' }
+}
+
 const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
@@ -52,8 +60,10 @@ const CHAT_RESPONSES = {
 const DEFAULT_RESPONSE = "That's a great question to bring up with Dr. Williams. Based on your tracking data, I can help you frame it effectively.\n\nYour 21 days of data show a clear stress → flare pattern with an 82% confidence level. Your DLQI and POEM scores both support a conversation about optimizing your treatment plan.\n\nWould you like me to help draft a specific question for your appointment?"
 
 function ChatOverlay({ initialQ, onClose }) {
+  const firstName = readProfileName()
+  const greeting = firstName ? `Hi ${firstName}!` : 'Hi there!'
   const [messages, setMessages] = useState([
-    { role: 'ai', text: "Hi Claire! I can help you prepare for your appointment with Dr. Williams on April 15th.\n\nI have access to your tracking data, ePRO scores, and Oura data. Ask me anything about what to discuss or how to frame your questions." },
+    { role: 'ai', text: `${greeting} I can help you prepare for your appointment with Dr. Williams on April 15th.\n\nI have access to your tracking data, ePRO scores, and Oura data. Ask me anything about what to discuss or how to frame your questions.` },
   ])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
@@ -289,6 +299,7 @@ export default function PreparePage() {
   const [chatOpen, setChatOpen] = useState(false)
   const [chatInitQ, setChatInitQ] = useState('')
   const [shared, setShared] = useState(false)
+  const firstName = readProfileName()
 
   function openChat(q = '') {
     setChatInitQ(q)
@@ -301,7 +312,7 @@ export default function PreparePage() {
       {/* Hero */}
       <div className="pp-hero">
         <p className="pp-hero-eyebrow">Walk in ready</p>
-        <h1 className="pp-hero-title">Claire, you're set</h1>
+        <h1 className="pp-hero-title">{firstName ? `${firstName}, you're set` : "You're all set"}</h1>
         <p className="pp-hero-sub">We turned your last few weeks into a conversation starter. Your derm will actually want to see this.</p>
         <div className="pp-hero-appt">
           <span className="pp-hero-appt-icon">
