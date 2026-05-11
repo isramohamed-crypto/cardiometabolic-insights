@@ -33,6 +33,74 @@ const STRESS_DATA  = CHART_DATA['14 days'].stress
 const SLEEP_DATA   = CHART_DATA['14 days'].sleep
 const DAYS         = ['Mar 25','26','27','28','29','30','31','Apr 1','2','3','4','5','6','7']
 
+/**
+ * Per-condition skin-score mock data. Stress and sleep are body-wide so they
+ * stay shared. Each condition gets its own plausible curve + a pattern note.
+ * When user toggles between conditions on Track, the trend chart pulls
+ * `skin` and `note` from here keyed by the active condition label.
+ */
+const CONDITION_TREND_OVERRIDES = {
+  'Eczema': {
+    '14 days': { skin: [2,2,3,3,2,4,3,2,2,3,2,4,3,2], note: 'Eczema flares on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.' },
+    '30 days': { skin: [3,2,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2,1,2,3,2,4,3,2,2,3,2], note: 'Eczema worsens on weeks where stress > 6 and sleep < 65.' },
+    '90 days': { skin: [3,3,2,3,4,3,2,2,3,2,4,3,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2], note: 'Eczema trend improves in weeks with consistent sleep above 70.' },
+  },
+  'Psoriasis': {
+    '14 days': { skin: [3,3,3,3,2,2,2,3,3,3,3,4,3,3], note: 'Psoriasis plaques have been steady — slight worsening late this week.' },
+    '30 days': { skin: [3,3,3,3,3,2,2,2,3,3,3,4,3,3,3,3,3,3,3,3,2,2,2,3,3,3,4,3,3,3], note: 'Psoriasis is slow-changing — improvements visible across 4-week intervals.' },
+    '90 days': { skin: [4,4,3,3,3,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,3,3,3,3], note: 'Psoriasis has gradually improved over the quarter — consistent treatment showing.' },
+  },
+  'Rosacea': {
+    '14 days': { skin: [1,2,3,2,3,4,3,2,1,2,3,3,2,2], note: 'Rosacea flushing spikes on Mar 30 and Apr 4 — both warm/humid weather days.' },
+    '30 days': { skin: [2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2], note: 'Rosacea is reactive to weather and new products this month.' },
+    '90 days': { skin: [2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,3,3], note: 'Rosacea volatility highest in transitional weather periods.' },
+  },
+  'Acne': {
+    '14 days': { skin: [2,2,2,3,3,4,4,3,2,2,1,1,2,2], note: 'Acne breakouts peaked Mar 30–Apr 1, then cleared as the week went on.' },
+    '30 days': { skin: [2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,3,2], note: 'Acne shows a roughly 10-day cycle — likely hormonal.' },
+    '90 days': { skin: [3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1], note: 'Acne breakouts follow a recurring monthly pattern.' },
+  },
+  'Redness or irritation': {
+    '14 days': { skin: [2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Redness flared on Mar 29 and Apr 3 — both after trying a new product.' },
+    '30 days': { skin: [3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Redness tied to product reactivity this month.' },
+    '90 days': { skin: [3,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,3,2,3,2,3,4,3,2,2,3,4,3,2], note: 'Redness reactive to environmental and product changes.' },
+  },
+  'Dryness or flaking': {
+    '14 days': { skin: [3,3,4,3,3,4,4,3,3,3,2,3,3,3], note: 'Dryness highest on cold/dry days — moisturizing within 3 min of showering helps.' },
+    '30 days': { skin: [3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4], note: 'Dryness fluctuates with humidity — trends drier in winter weeks.' },
+    '90 days': { skin: [4,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,4,4], note: 'Dryness has slowly improved — barrier repair routine is working.' },
+  },
+  'Itching or sensitivity': {
+    '14 days': { skin: [3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Itch spikes overnight on Mar 30 and Apr 3 — both after late caffeine/stress days.' },
+    '30 days': { skin: [3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Itch worst on poor-sleep nights — strong correlation with sleep < 65.' },
+    '90 days': { skin: [3,3,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,3,2,3,3,4,3,2,3,3,3,2], note: 'Itch trends improve in weeks with regular sleep schedule.' },
+  },
+  'Breakouts or bumps': {
+    '14 days': { skin: [2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Breakouts peaked early in the cycle, then settled.' },
+    '30 days': { skin: [3,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Breakouts show a cyclical pattern, ~12 days apart.' },
+    '90 days': { skin: [3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3], note: 'Breakouts following a recurring monthly cycle.' },
+  },
+  'Unpredictable flare-ups': {
+    '14 days': { skin: [1,2,4,2,1,3,4,2,1,3,2,4,2,1], note: 'Flares are erratic — no clear weekly pattern, but stress days correlate strongly.' },
+    '30 days': { skin: [2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,2,1,2,4,2,1,3,4,2,1,3,2,4,2], note: 'Unpredictable flare pattern — stress is the strongest single trigger.' },
+    '90 days': { skin: [3,2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,3,2,1,2,4,2,1,3,4,2,1,3,2], note: 'Even across 90 days, the only consistent flare predictor is your stress level.' },
+  },
+}
+
+// Resolve trend data: stress/sleep always shared, skin/note pulled from
+// condition-specific overrides when available.
+function trendDataFor(condition, range) {
+  const shared = CHART_DATA[range]
+  const override = condition ? CONDITION_TREND_OVERRIDES[condition]?.[range] : null
+  return {
+    skin: override?.skin || shared.skin,
+    stress: shared.stress,
+    sleep: shared.sleep,
+    days: shared.days,
+    note: override?.note || shared.note,
+  }
+}
+
 // Mock fallback when the user has 0 check-ins. Once they start logging,
 // these percentages are computed from actual check-in history.
 const TRIGGERS_MOCK = [
@@ -99,9 +167,9 @@ function Sparkline({ data, color }) {
   )
 }
 
-function TrendChart({ range }) {
+function TrendChart({ range, condition }) {
   const W = 300, H = 80
-  const d = CHART_DATA[range]
+  const d = trendDataFor(condition, range)
   const skinPts   = d.skin.map((v, i)   => `${(i / (d.skin.length - 1)) * W},${H - (v / 5) * H}`).join(' ')
   const stressPts = d.stress.map((v, i) => `${(i / (d.stress.length - 1)) * W},${H - (v / 10) * H}`).join(' ')
   const sleepPts  = d.sleep.map((v, i)  => `${(i / (d.sleep.length - 1)) * W},${H - (v / 100) * H}`).join(' ')
@@ -131,6 +199,14 @@ function TrendChart({ range }) {
 function readLastCheckin() {
   try { return JSON.parse(localStorage.getItem('skinsightsLastCheckin') || 'null') } catch (_) { return null }
 }
+
+function readConditions() {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const raw = Array.isArray(p.condition) ? p.condition : (p.condition ? [p.condition] : [])
+    return raw.filter(Boolean)
+  } catch (_) { return [] }
+}
 function daysAgoUtil(isoDate) {
   if (!isoDate) return null
   const then = new Date(isoDate); const now = new Date()
@@ -143,17 +219,26 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [timeRange, setTimeRange] = useState('14 days')
   const [checkins, setCheckins] = useState(() => readCheckins())
   const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
+  const [conditions, setConditions] = useState(() => readConditions())
+  const [activeCondition, setActiveCondition] = useState(() => readConditions()[0] || null)
 
   // Re-read whenever a new check-in is logged (parent bumps checkinTick) or on focus
   useEffect(() => {
     function refresh() {
       setCheckins(readCheckins())
       setLastCheckin(readLastCheckin())
+      const conds = readConditions()
+      setConditions(conds)
+      // Keep activeCondition in sync if it's no longer in the list
+      setActiveCondition(prev => (prev && conds.includes(prev)) ? prev : (conds[0] || null))
     }
     refresh()
     window.addEventListener('focus', refresh)
     return () => window.removeEventListener('focus', refresh)
   }, [checkinTick])
+
+  // AI Insights expand/collapse state (always visible, just toggleable)
+  const [aiOpen, setAiOpen] = useState(false)
 
   const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(checkins), [checkins])
   // Days tracked = baseline mock (21) + actual check-ins logged
@@ -177,6 +262,73 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-teal)' }}>{topPattern}</div></div>
         <div className="tp-sc"><div className="tp-sc-label">Confidence</div><div className="tp-sc-val">82%</div></div>
       </div>
+
+      {/* AI Insights — compact, expandable */}
+      <div className={`tp-ai-summary${aiOpen ? ' tp-ai-summary--open' : ''}`}>
+        <button
+          type="button"
+          className="tp-ai-summary__head"
+          onClick={() => setAiOpen(o => !o)}
+          aria-expanded={aiOpen}
+        >
+          <span className="tp-ai-summary__badge">✨ AI Insights</span>
+          <span className="tp-ai-summary__teaser">
+            {aiOpen ? 'Tap to collapse' : '3 patterns to know'}
+          </span>
+          <span className="tp-ai-summary__chev" aria-hidden="true">{aiOpen ? '▴' : '▾'}</span>
+        </button>
+          {aiOpen && (
+            <ul className="tp-ai-summary__list">
+              {conditions.length >= 2 ? (
+                <>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
+                    <span><strong>Stress is your strongest trigger across both.</strong> Both worsen 24–48 hrs after stressful days.</span>
+                  </li>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
+                    <span><strong>Sleep under 65 hits both equally.</strong> Worst days follow shortest nights.</span>
+                  </li>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                    <span><strong>They don't peak together.</strong> When your {conditions[0]?.toLowerCase()} is worst, your {conditions[1]?.toLowerCase()} is often calmer.</span>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
+                    <span><strong>Stress predicts flares.</strong> Your {(conditions[0] || 'skin').toLowerCase()} worsens 24–48 hrs after high-stress days.</span>
+                  </li>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
+                    <span><strong>Sleep quality matters.</strong> Nights under 65 are followed by visibly worse days.</span>
+                  </li>
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                    <span><strong>Moisturizer timing matters.</strong> Days you log within-3-min moisturizing trend better.</span>
+                  </li>
+                </>
+              )}
+            </ul>
+          )}
+        </div>
+
+      {/* Condition toggle — only renders for users with 2+ tracked conditions */}
+      {conditions.length > 1 && (
+        <div className="tp-cond-toggle" role="tablist">
+          {conditions.map(c => (
+            <button
+              key={c}
+              role="tab"
+              type="button"
+              aria-selected={c === activeCondition}
+              className={`tp-cond-toggle__btn${c === activeCondition ? ' tp-cond-toggle__btn--active' : ''}`}
+              onClick={() => setActiveCondition(c)}
+            >{c}</button>
+          ))}
+        </div>
+      )}
 
       {/* Check-in prompt banner */}
       {(() => {
@@ -213,7 +365,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       {/* Trend */}
       <div className="tp-section">
         <div className="tp-sec-head">
-          <h2 className="tp-sec-title">Trend</h2>
+          <h2 className="tp-sec-title">{activeCondition ? `${activeCondition} trend` : 'Trend'}</h2>
           <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Live</span>
         </div>
         <div className="tp-time-toggle">
@@ -221,7 +373,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             <button key={t} className={`tp-tt-btn${timeRange === t ? ' tp-tt-btn--on' : ''}`} onClick={() => setTimeRange(t)}>{t}</button>
           ))}
         </div>
-        <div className="tp-card"><TrendChart range={timeRange} /></div>
+        <div className="tp-card"><TrendChart range={timeRange} condition={activeCondition} /></div>
       </div>
 
       {/* What's been going on */}
@@ -336,7 +488,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             </div>
             <div className="tp-er-score-body">
               <div className="tp-er-score-label">Moderate impact</div>
-              <div className="tp-er-score-interp">Eczema has a moderate effect on your daily life. Sleep, leisure, and social activity are most affected.</div>
+              <div className="tp-er-score-interp">Your {activeCondition || 'skin condition'} has a moderate effect on daily life. Sleep, leisure, and social activity are most affected.</div>
             </div>
           </div>
           <div className="tp-er-trend">
