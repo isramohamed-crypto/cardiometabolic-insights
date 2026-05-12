@@ -10,6 +10,8 @@ import SkinCheckinSheet from './components/SkinCheckinSheet'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
 import DailyCheckin from './components/DailyCheckin'
+import HealthPulseCard from './components/HealthPulseCard'
+import HealthPulseSheet from './components/HealthPulseSheet'
 import TodayCard from './components/TodayCard'
 import InsightCard from './components/InsightCard'
 import CareTeamCard from './components/CareTeamCard'
@@ -53,6 +55,8 @@ export default function App() {
   const [showAccount, setShowAccount] = useState(false)
   const [showCheckin, setShowCheckin] = useState(false)
   const [checkinTick, setCheckinTick] = useState(0)   // bumps after a check-in is logged
+  const [showPulse, setShowPulse] = useState(false)
+  const [pulseTick, setPulseTick]   = useState(0)   // bumps after a Health Pulse is logged
   const [profile, setProfile] = useState(() => readProfile())
 
   const refreshProfile = useCallback(() => setProfile(readProfile()), [])
@@ -184,6 +188,14 @@ export default function App() {
         }}
       />
 
+      {/* Weekly Health Pulse — DLQI + POEM. Mounted at App level. */}
+      {showPulse && (
+        <HealthPulseSheet
+          onClose={() => setShowPulse(false)}
+          onComplete={() => setPulseTick(t => t + 1)}
+        />
+      )}
+
       {activePage === 'Learn' ? (
         <LearnPage />
       ) : activePage === 'Track' ? (
@@ -204,6 +216,7 @@ export default function App() {
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <DupixentAd />
           <WatchNow />
+          <HealthPulseCard onOpen={() => setShowPulse(true)} tick={pulseTick} />
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <CommunityPoll />
           <QuickAnswers />
