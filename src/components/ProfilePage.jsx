@@ -216,7 +216,7 @@ export default function ProfilePage({ onClose, onAskAI }) {
             <span className="pp-ai__icon">✨</span>
             <span className="pp-ai__body">
               <span className="pp-ai__title">Have AI help me complete this</span>
-              <span className="pp-ai__desc">Chat with SkInsights AI to fill in the rest</span>
+              <span className="pp-ai__desc">Chat with skinsights360 AI to fill in the rest</span>
             </span>
             <span className="pp-ai__arrow">→</span>
           </button>
