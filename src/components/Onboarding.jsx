@@ -32,29 +32,35 @@ const Q3 = {
 
 // Topics use their full label as the stored value so they line up with
 // the profile page's `topics` field (no migration needed).
-const Q5_TOPICS = [
-  { label: 'Skincare routines',         icon: '🧴' },
+// Primary list (always visible) covers broad lifestyle categories.
+const Q5_TOPICS_PRIMARY = [
+  { label: 'Skincare routines',      icon: '🧴' },
+  { label: 'Beauty',                 icon: '💄' },
+  { label: 'Food',                   icon: '🍽️' },
+  { label: 'Home',                   icon: '🏠' },
+  { label: 'Travel',                 icon: '✈️' },
+  { label: 'Fashion',                icon: '👗' },
+  { label: 'Entertainment',          icon: '🎬' },
+  { label: 'Sleep & rest',           icon: '😴' },
+  { label: 'Stress & mental health', icon: '🧘' },
+  { label: 'Sun & outdoors',         icon: '☀️' },
+]
+// Secondary list (revealed by "Show more") — deeper skin-specific topics.
+const Q5_TOPICS_MORE = [
   { label: 'Triggers & flares',         icon: '🔍' },
-  { label: 'Sleep & rest',              icon: '😴' },
-  { label: 'Stress & mental health',    icon: '🧘' },
   { label: 'Diet & gut health',         icon: '🥗' },
   { label: 'Pregnancy & hormones',      icon: '🤰' },
   { label: 'Kids & caregiving',         icon: '👶' },
   { label: 'Workouts & sweat',          icon: '💪' },
-  { label: 'Sun & outdoors',            icon: '☀️' },
-  { label: 'Travel',                    icon: '✈️' },
   { label: 'Confidence & self-image',   icon: '✨' },
   { label: 'New treatments & research', icon: '🧪' },
-  { label: 'Home organization',         icon: '🏠' },
-  { label: 'Quick recipes',             icon: '🍳' },
-  { label: 'Family meals',              icon: '🍽️' },
   { label: 'Workplace tips',            icon: '💼' },
 ]
+const Q5_TOPICS = [...Q5_TOPICS_PRIMARY, ...Q5_TOPICS_MORE]
 
 const Q5 = {
   text: 'What kinds of content interest you?',
   sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
-  options: Q5_TOPICS,
 }
 
 const Q4 = {
@@ -107,6 +113,7 @@ function mapCode(field, v) {
 export default function Onboarding({ name, onClose }) {
   // step 0..4 = Q1..Q5, step 5 = summary
   const [step, setStep] = useState(0)
+  const [q5ShowMore, setQ5ShowMore] = useState(false)
   const [ans, setAns] = useState({
     q1: null,                 // role: myself | child | other
     q2: name || '',           // first name (free text), pre-filled from Registration if provided
@@ -248,7 +255,7 @@ export default function Onboarding({ name, onClose }) {
     const summaryName = (ans.q2 || '').trim().split(' ')[0]
     const title = skipped
       ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
-      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Skinsights is ready.')
+      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Skinsights360 is ready.')
     const sub = skipped
       ? <>No problem — you can finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your feed.</>
       : <>We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Profile settings</strong>.</>
@@ -310,7 +317,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to SkInsight360</p>
+          <p className="ob-hero__eyebrow">Welcome to Skinsights360</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>
@@ -411,20 +418,36 @@ export default function Onboarding({ name, onClose }) {
                 <div className="ob-q-text">{Q5.text}</div>
                 <div className="ob-q-sub">{Q5.sub}</div>
                 <div className="ob-chips">
-                  {Q5.options.map(o => {
-                    const sel = ans.q5.includes(o.label)
-                    return (
-                      <button
-                        key={o.label}
-                        type="button"
-                        className={`ob-chip${sel ? ' ob-chip--sel' : ''}`}
-                        onClick={() => toggleQ5(o.label)}
-                      >
-                        <span className="ob-chip__icon">{o.icon}</span>
-                        <span>{o.label}</span>
-                      </button>
-                    )
-                  })}
+                  {(() => {
+                    // Always include any already-selected secondary topics in the visible
+                    // list so the user can deselect them after collapsing.
+                    const selectedMore = Q5_TOPICS_MORE.filter(t => ans.q5.includes(t.label))
+                    const visible = [
+                      ...Q5_TOPICS_PRIMARY,
+                      ...(q5ShowMore ? Q5_TOPICS_MORE : selectedMore),
+                    ]
+                    return visible.map(o => {
+                      const sel = ans.q5.includes(o.label)
+                      return (
+                        <button
+                          key={o.label}
+                          type="button"
+                          className={`ob-chip${sel ? ' ob-chip--sel' : ''}`}
+                          onClick={() => toggleQ5(o.label)}
+                        >
+                          <span className="ob-chip__icon">{o.icon}</span>
+                          <span>{o.label}</span>
+                        </button>
+                      )
+                    })
+                  })()}
+                  <button
+                    type="button"
+                    className="ob-chip ob-chip--more"
+                    onClick={() => setQ5ShowMore(v => !v)}
+                  >
+                    {q5ShowMore ? '− Show less' : `+ Show ${Q5_TOPICS_MORE.length} more`}
+                  </button>
                 </div>
                 {ans.q5.length > 0 && (
                   <p className="ob-q-count">{ans.q5.length} selected</p>
