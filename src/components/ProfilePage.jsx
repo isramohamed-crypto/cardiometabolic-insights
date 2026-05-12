@@ -28,7 +28,7 @@ const MIGRATION_MAP = {
  * defaults and tag them with "From AI Insights" until the user edits them.
  */
 const AI_SEEDS = {
-  topics:        ['Home organization', 'Quick recipes', 'Family meals'],
+  topics:        ['Home', 'Food', 'Entertainment'],
   climate:       'Cold and dry',
   comms_freq:    'A few times a week',
   routine_type:  'Moderate — a few products',
@@ -81,7 +81,7 @@ const SECTIONS = [
     icon: '🎯',
     fields: [
       { id: 'focus',          label: 'What matters most',           type: 'select',      options: ['Affecting my confidence', 'Disrupting my sleep', 'Figuring out my triggers', 'Managing my treatment', 'Frustrated nothing works'] },
-      { id: 'topics',         label: 'Topics I want to see more of',type: 'multiselect', options: ['Skincare routines', 'Triggers & flares', 'Sleep & rest', 'Stress & mental health', 'Diet & gut health', 'Pregnancy & hormones', 'Kids & caregiving', 'Workouts & sweat', 'Sun & outdoors', 'Travel', 'Confidence & self-image', 'New treatments & research', 'Home organization', 'Quick recipes', 'Family meals', 'Workplace tips'] },
+      { id: 'topics',         label: 'Topics I want to see more of',type: 'multiselect', options: ['Skincare routines', 'Beauty', 'Food', 'Home', 'Travel', 'Fashion', 'Entertainment', 'Sleep & rest', 'Stress & mental health', 'Sun & outdoors', 'Triggers & flares', 'Diet & gut health', 'Pregnancy & hormones', 'Kids & caregiving', 'Workouts & sweat', 'Confidence & self-image', 'New treatments & research', 'Workplace tips', 'Home organization', 'Quick recipes', 'Family meals'] },
       { id: 'comms_freq',     label: 'How often to hear from us',   type: 'select',      options: ['Daily check-ins', 'A few times a week', 'Weekly digest', 'Only the essentials'] },
       { id: 'goal',           label: 'Top goal for the next 90 days', type: 'select',    options: ['Find a routine that works', 'Identify my triggers', 'Sleep better', 'Reduce stress', 'Try a new treatment', 'Feel more confident', 'Just learn for now'] },
     ],
