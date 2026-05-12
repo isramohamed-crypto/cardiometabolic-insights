@@ -323,6 +323,7 @@ export default function AskAI() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setShowSuggestions(false)}
               onKeyDown={e => e.key === 'Enter' && submit()}
             />
             <button className="ask-ai__submit" aria-label="Send" onClick={() => submit()}>
@@ -361,7 +362,7 @@ export default function AskAI() {
             </button>
             <div className="chat-overlay__title">
               <span className="chat-overlay__dot" />
-              skinsights360 AI
+              Skinsights360 AI
             </div>
             <div style={{ width: 36 }} />
           </div>

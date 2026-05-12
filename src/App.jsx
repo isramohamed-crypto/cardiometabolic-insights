@@ -204,9 +204,9 @@ export default function App() {
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <DupixentAd />
           <WatchNow />
+          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <CommunityPoll />
           <QuickAnswers />
-          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <PeerStories />
           {/* <InsightSection /> */}
         </main>

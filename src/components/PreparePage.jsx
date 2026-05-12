@@ -20,7 +20,7 @@ const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
     title: 'Bring your tracking data — even on your phone',
-    body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your skinsights360 summary does this automatically.',
+    body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your Skinsights360 summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
@@ -109,7 +109,7 @@ function ChatOverlay({ initialQ, onClose }) {
         </button>
         <div className="pp-chat-title">
           <span className="pp-chat-dot" />
-          skinsights360 AI · Visit Prep
+          Skinsights360 AI · Visit Prep
         </div>
         <div style={{ width: 36 }} />
       </div>
@@ -331,7 +331,7 @@ const STORIES = [
     step: 'Story 4 of 5', avatar: 'J', name: 'James, 45', detail: 'AD + psoriasis · Stress and sleep triggers',
     quote: "I showed my dermatologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
     context: "James tracked his symptoms, sleep, and stress daily. When his dermatologist saw the pattern — stress on Monday, skin flare by Wednesday — she immediately adjusted his treatment approach and discussed whether systemic therapy might help.",
-    takeaway: 'Your tracking data tells a story. Share your skinsights360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
+    takeaway: 'Your tracking data tells a story. Share your Skinsights360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
     bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
   },
   {
@@ -499,7 +499,7 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Ask the AI</h2>
         </div>
         <div className="pp-ai-bar">
-          <div className="pp-ai-label"><span className="pp-ai-dot" />skinsights360 AI · Visit prep mode</div>
+          <div className="pp-ai-label"><span className="pp-ai-dot" />Skinsights360 AI · Visit prep mode</div>
           <div className="pp-ai-input-row">
             <input
               className="pp-ai-input"
