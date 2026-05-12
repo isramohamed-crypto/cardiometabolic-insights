@@ -293,6 +293,15 @@
   line-height: 1;
 }
 
+/* "Show more / Show less" toggle chip — distinguished from selectable topics */
+.ob-chip--more {
+  background: transparent;
+  border: 1.5px dashed var(--color-border);
+  color: var(--color-teal);
+  font-weight: 600;
+}
+.ob-chip--more:hover { background: var(--color-bg) }
+
 .ob-q-count {
   margin: 14px 0 0;
   text-align: right;
