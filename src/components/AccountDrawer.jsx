@@ -112,7 +112,7 @@ export default function AccountDrawer({ profile, completionPct, strengthLabel, o
         </nav>
 
         <div className="ad-footer">
-          <p>SkInsights · v0.1</p>
+          <p>SkInsight360 · v0.1</p>
         </div>
       </aside>
     </div>

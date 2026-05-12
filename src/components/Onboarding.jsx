@@ -310,7 +310,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to SkInsights</p>
+          <p className="ob-hero__eyebrow">Welcome to SkInsight360</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>

@@ -1,9 +1,17 @@
 import React, { useMemo } from 'react'
 
-const CHECKIN_KEY = 'skinsightsLastCheckin'
+const CHECKIN_KEY  = 'skinsightsLastCheckin'
+const CHECKINS_KEY = 'skinsightsCheckins'
 
 function readLastCheckin() {
   try { return JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) { return null }
+}
+
+function readCheckins() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(CHECKINS_KEY) || '[]')
+    return Array.isArray(parsed) ? parsed : []
+  } catch (_) { return [] }
 }
 
 function daysAgo(isoDate) {
@@ -12,6 +20,24 @@ function daysAgo(isoDate) {
   const a = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const b = new Date(then.getFullYear(), then.getMonth(), then.getDate())
   return Math.round((a - b) / (1000 * 60 * 60 * 24))
+}
+
+// Returns 7 booleans, oldest first, for the last 7 calendar days (today is index 6).
+function lastSevenDaysStreak(checkins) {
+  const set = new Set()
+  for (const c of checkins) {
+    if (!c?.date) continue
+    const d = new Date(c.date)
+    if (Number.isNaN(d.getTime())) continue
+    set.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
+  }
+  const now = new Date()
+  const result = []
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i)
+    result.push(set.has(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`))
+  }
+  return result
 }
 
 // Title text used by the entry card. Matches the Track-page check-in banner
@@ -31,32 +57,47 @@ function checkinPromptTitle(isoDate, isCheckedInToday) {
  * card re-reads the latest record.
  */
 export default function DailyCheckin({ onOpen, tick = 0 }) {
-  const last = useMemo(() => readLastCheckin(), [tick])
+  const last     = useMemo(() => readLastCheckin(), [tick])
+  const checkins = useMemo(() => readCheckins(),    [tick])
   const isCheckedInToday = daysAgo(last?.date) === 0
+  const streak = useMemo(() => lastSevenDaysStreak(checkins), [checkins])
+  const loggedCount = streak.filter(Boolean).length
+
   // Copy mirrors the Track-page check-in banner so it tells the same story
   const titleLabel = checkinPromptTitle(last?.date, isCheckedInToday)
   const subLabel = isCheckedInToday
     ? 'Your trend is up to date. Tap to see today\'s summary.'
-    : 'Adds to your trend, triggers, and pattern detection.'
+    : 'Trends, triggers, and patterns get sharper with each log.'
+
+  const eyebrowText = loggedCount > 0
+    ? `Today · day ${loggedCount}`
+    : 'Today · start your streak'
+  const ctaText = isCheckedInToday ? 'Update →' : 'Log today →'
 
   return (
-    <div
-      className={`daily-checkin${isCheckedInToday ? ' daily-checkin--done' : ''}`}
-      onClick={onOpen}
-      role="button"
-      tabIndex={0}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpen?.() }}
-    >
-      <div className="daily-checkin__icon">{isCheckedInToday ? '✓' : '📋'}</div>
-      <div className="daily-checkin__body">
-        <p className="daily-checkin__title">{titleLabel}</p>
-        <p className="daily-checkin__sub">{subLabel}</p>
+    <section className="checkin-section">
+      <div
+        className="dc-feat"
+        onClick={onOpen}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpen?.() }}
+      >
+        <div className="dc-feat__blob" aria-hidden="true" />
+        <div className="dc-feat__head">
+          <p className="dc-feat__eyebrow">{eyebrowText}</p>
+          <h2 className="dc-feat__title">{titleLabel}</h2>
+          <p className="dc-feat__sub">{subLabel}</p>
+        </div>
+        <div className="dc-feat__foot">
+          <div className="dc-feat__dots" aria-label={`${loggedCount} of 7 days logged this week`}>
+            {streak.map((logged, i) => (
+              <span key={i} className={`dc-feat__dot${logged ? ' dc-feat__dot--on' : ''}`} />
+            ))}
+          </div>
+          <span className="dc-feat__cta">{ctaText}</span>
+        </div>
       </div>
-      <div className="daily-checkin__arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </div>
-    </div>
+    </section>
   )
 }
