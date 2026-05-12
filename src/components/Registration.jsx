@@ -58,7 +58,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
           </div>
           <div className="reg-hero__content">
             <div className="reg-hero__wordmark">
-              SkInsights
+              skinsights360
               <span className="reg-hero__wordmark-sep">|</span>
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
