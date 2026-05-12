@@ -16,6 +16,93 @@ function readConditions() {
   } catch (_) { return [] }
 }
 
+function readDoctor() {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    return {
+      name:      (p.doctor_name || '').trim(),
+      specialty: (p.doctor_specialty || '').trim(),
+      location:  (p.doctor_location || '').trim(),
+    }
+  } catch (_) { return { name: '', specialty: '', location: '' } }
+}
+
+function readAppointment() {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    return p.nextAppointment || null
+  } catch (_) { return null }
+}
+
+function writeAppointment(appt) {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    if (appt) p.nextAppointment = appt
+    else delete p.nextAppointment
+    localStorage.setItem('skinsightsProfile', JSON.stringify(p))
+  } catch (_) {}
+}
+
+function readEproRecords() {
+  try {
+    const raw = localStorage.getItem('skinsightsEpro')
+    const arr = raw ? JSON.parse(raw) : []
+    return Array.isArray(arr) ? arr : []
+  } catch (_) { return [] }
+}
+
+function dlqiBand(score) {
+  if (score <= 1)  return 'no effect'
+  if (score <= 5)  return 'small effect'
+  if (score <= 10) return 'moderate effect'
+  if (score <= 20) return 'large effect'
+  return 'extremely large effect'
+}
+function poemBand(score) {
+  if (score <= 2)  return 'clear or almost clear'
+  if (score <= 7)  return 'mild'
+  if (score <= 16) return 'moderate'
+  if (score <= 24) return 'severe'
+  return 'very severe'
+}
+function trendArrow(curr, prev) {
+  if (prev == null) return ''
+  if (curr < prev) return ` ↓ from ${prev}`
+  if (curr > prev) return ` ↑ from ${prev}`
+  return ` · same as last week`
+}
+
+/**
+ * Build a dynamic "ePRO summary" finding from the latest Health Pulse record.
+ * Returns null when there are no records yet (so callers can fall back to
+ * the playbook's static demo row, or show an empty-state CTA).
+ */
+function eproSummaryItem(records) {
+  if (!records || records.length === 0) return null
+  const latest = records[records.length - 1]
+  const previous = records.length > 1 ? records[records.length - 2] : null
+  const dlqiText = `DLQI ${latest.dlqi}/30 (${dlqiBand(latest.dlqi)}${trendArrow(latest.dlqi, previous?.dlqi)})`
+  const poemText = `POEM ${latest.poem}/28 (${poemBand(latest.poem)}${trendArrow(latest.poem, previous?.poem)})`
+  return {
+    icon: '📋',
+    text: `${dlqiText} · ${poemText}`,
+    reason: `From your Weekly Health Pulse${records.length > 1 ? ` (${records.length} entries)` : ''}`,
+    isEpro: true,
+  }
+}
+
+function formatAppointmentDisplay(appt) {
+  if (!appt?.date) return ''
+  const iso = appt.time ? `${appt.date}T${appt.time}` : `${appt.date}T12:00`
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  const dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  const timeStr = appt.time
+    ? d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    : ''
+  return timeStr ? `${dateStr} · ${timeStr}` : dateStr
+}
+
 const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
@@ -67,11 +154,14 @@ const CHAT_RESPONSES = {
 }
 const DEFAULT_RESPONSE = "That's a great question to bring up with Dr. Williams. Based on your tracking data, I can help you frame it effectively.\n\nYour 21 days of data show a clear stress → flare pattern with an 82% confidence level. Your DLQI and POEM scores both support a conversation about optimizing your treatment plan.\n\nWould you like me to help draft a specific question for your appointment?"
 
-function ChatOverlay({ initialQ, onClose }) {
+function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
   const firstName = readProfileName()
   const greeting = firstName ? `Hi ${firstName}!` : 'Hi there!'
+  const apptPhrase = apptDate
+    ? `for your appointment with ${dermName} on ${apptDate}`
+    : (dermName !== 'your derm' ? `for your visit with ${dermName}` : 'for your next derm visit')
   const [messages, setMessages] = useState([
-    { role: 'ai', text: `${greeting} I can help you prepare for your appointment with Dr. Williams on April 15th.\n\nI have access to your tracking data, ePRO scores, and Oura data. Ask me anything about what to discuss or how to frame your questions.` },
+    { role: 'ai', text: `${greeting} I can help you prepare ${apptPhrase}.\n\nI have access to your tracking data, ePRO scores, and Oura data. Ask me anything about what to discuss or how to frame your questions.` },
   ])
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
@@ -399,6 +489,122 @@ function StoriesSwipe() {
   )
 }
 
+/**
+ * Small modal for setting / editing the next dermatology appointment.
+ * Writes to skinsightsProfile.nextAppointment so Prepare can read it back.
+ */
+function AppointmentModal({ initial, doctorFallback, onSave, onClose }) {
+  const [date, setDate]                   = useState(initial?.date || '')
+  const [time, setTime]                   = useState(initial?.time || '')
+  const [providerName, setProviderName]   = useState(initial?.providerName || doctorFallback?.name || '')
+  const [providerSpec, setProviderSpec]   = useState(initial?.providerSpecialty || doctorFallback?.specialty || 'Dermatology')
+
+  useEffect(() => {
+    function onKey(e) { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  function handleSave() {
+    if (!date) return
+    onSave({ date, time, providerName: providerName.trim(), providerSpecialty: providerSpec.trim() })
+    onClose()
+  }
+
+  const inputStyle = {
+    width: '100%', padding: '10px 12px', fontSize: 14, border: '1px solid var(--color-border)',
+    borderRadius: 8, fontFamily: 'inherit', background: '#fff', boxSizing: 'border-box', outline: 'none',
+  }
+  const labelStyle = { display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 6 }
+
+  return (
+    <div
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 1100,
+        background: 'rgba(0,70,32,0.45)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+        animation: 'siFadeIn .15s ease-out',
+      }}
+    >
+      <div
+        role="dialog"
+        aria-label="Edit appointment"
+        style={{
+          width: '100%', maxWidth: 380, background: '#fff',
+          borderRadius: 18, padding: 22,
+          boxShadow: '0 12px 40px rgba(0,0,0,.18)',
+          fontFamily: 'var(--font-sans)',
+        }}
+      >
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 800, color: '#004620', marginBottom: 4, letterSpacing: '-0.01em' }}>
+          {initial ? 'Edit appointment' : 'Add your next appointment'}
+        </h3>
+        <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18, lineHeight: 1.5 }}>
+          We'll surface a Visit Prep summary in the days leading up to it.
+        </p>
+
+        <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
+          <div style={{ flex: 1 }}>
+            <label style={labelStyle}>Date</label>
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} style={inputStyle} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <label style={labelStyle}>Time</label>
+            <input type="time" value={time} onChange={e => setTime(e.target.value)} style={inputStyle} />
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 14 }}>
+          <label style={labelStyle}>Provider name</label>
+          <input type="text" value={providerName} onChange={e => setProviderName(e.target.value)} style={inputStyle} placeholder="Dr. Smith" />
+        </div>
+
+        <div style={{ marginBottom: 22 }}>
+          <label style={labelStyle}>Specialty</label>
+          <input type="text" value={providerSpec} onChange={e => setProviderSpec(e.target.value)} style={inputStyle} placeholder="Dermatology" />
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', alignItems: 'center' }}>
+          {initial && (
+            <button
+              onClick={() => { onSave(null); onClose() }}
+              style={{
+                background: 'transparent', color: 'var(--color-coral)', border: 'none',
+                padding: '8px 12px', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: 'inherit', marginRight: 'auto',
+              }}
+            >Remove</button>
+          )}
+          <button
+            onClick={onClose}
+            style={{
+              background: '#fff', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)',
+              padding: '9px 16px', borderRadius: 9999, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >Cancel</button>
+          <button
+            onClick={handleSave}
+            disabled={!date}
+            style={{
+              background: date ? '#1BBC3C' : 'var(--color-border)',
+              color: '#fff', border: 'none', padding: '9px 18px', borderRadius: 9999,
+              fontSize: 13, fontWeight: 700, cursor: date ? 'pointer' : 'not-allowed',
+              fontFamily: 'inherit',
+            }}
+          >Save</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function PreparePage() {
   const [chatOpen, setChatOpen] = useState(false)
   const [chatInitQ, setChatInitQ] = useState('')
@@ -406,11 +612,40 @@ export default function PreparePage() {
   const firstName = readProfileName()
   // Tracked conditions — all shown side-by-side in the report
   const [conditions] = useState(() => readConditions())
+  // Phase 1: care team + appointment now read from profile (no longer hard-coded)
+  const [doctor, setDoctor]           = useState(readDoctor)
+  const [appointment, setAppointment] = useState(readAppointment)
+  const [showApptModal, setShowApptModal] = useState(false)
+  // Phase 2: latest Weekly Health Pulse drives DLQI/POEM in summary
+  const eproRecords = readEproRecords()
+  const eproRow     = eproSummaryItem(eproRecords)
+  const hasEpro     = !!eproRow
+  const dermName = doctor.name || 'your derm'
+  const dermDisplay = doctor.name
+    ? (doctor.specialty ? `${doctor.name} · ${doctor.specialty}` : doctor.name)
+    : ''
+  const apptDisplay = formatAppointmentDisplay(appointment)
+  function saveAppointment(appt) {
+    writeAppointment(appt)
+    setAppointment(appt)
+    // re-read doctor too in case the modal updated provider name/specialty into the profile in future iterations
+    setDoctor(readDoctor())
+  }
   const conditionsToRender = conditions.length > 0 ? conditions : [null]   // null = generic
   // Flattened lists with a condition tag on each item, for the combined sections
-  const allFindings = conditionsToRender.flatMap(c =>
-    playbookFor(c).summary.map(item => ({ ...item, condition: c }))
+  // Build summary findings. When we have real Weekly Pulse data, replace the
+  // playbook's hard-coded DLQI/POEM line with a computed row at the top.
+  // When we don't, the playbook's static demo data stays (so the Prepare tab
+  // still looks populated for first-time users).
+  const isPlaybookEproRow = item => /\bDLQI\b|\bPOEM\b/.test(item.text)
+  const playbookFindings = conditionsToRender.flatMap(c =>
+    playbookFor(c).summary
+      .filter(item => !hasEpro || !isPlaybookEproRow(item))
+      .map(item => ({ ...item, condition: c }))
   )
+  const allFindings = hasEpro
+    ? [{ ...eproRow, condition: null }, ...playbookFindings]
+    : playbookFindings
   const allQuestions = conditionsToRender.flatMap(c =>
     playbookFor(c).questions.map(item => ({ ...item, condition: c }))
   )
@@ -432,13 +667,26 @@ export default function PreparePage() {
         <p className="pp-hero-eyebrow">Walk in ready</p>
         <h1 className="pp-hero-title">{firstName ? `${firstName}, you're set` : "You're all set"}</h1>
         <p className="pp-hero-sub">We turned your last few weeks into a conversation starter. Your derm will actually want to see this.</p>
-        <div className="pp-hero-appt">
+        <div
+          className="pp-hero-appt"
+          onClick={() => setShowApptModal(true)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setShowApptModal(true) }}
+          style={{ cursor: 'pointer' }}
+        >
           <span className="pp-hero-appt-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
           </span>
           <div className="pp-hero-appt-body">
-            <div className="pp-hero-appt-name">Dr. Sarah Williams · Dermatology</div>
-            <div className="pp-hero-appt-date">April 15, 2026 · 2:30 PM</div>
+            <div className="pp-hero-appt-name">
+              {appointment?.providerName
+                ? `${appointment.providerName}${appointment.providerSpecialty ? ' · ' + appointment.providerSpecialty : ''}`
+                : (dermDisplay || 'Add your dermatologist in Profile')}
+            </div>
+            <div className="pp-hero-appt-date">
+              {apptDisplay || 'Tap to add appointment date & time'}
+            </div>
           </div>
         </div>
       </div>
@@ -448,7 +696,7 @@ export default function PreparePage() {
         <div className="pp-ai-summary-card">
           <div className="pp-ai-summary-card__head">
             <span className="pp-ai-summary-card__badge">✨ AI Summary</span>
-            <span className="pp-ai-summary-card__meta">For Dr. Williams · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+            <span className="pp-ai-summary-card__meta">For {dermName} · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
           </div>
           <p className="pp-ai-summary-card__lead">
             {conditions.length >= 2
@@ -459,7 +707,7 @@ export default function PreparePage() {
             }
           </p>
           <p className="pp-ai-summary-card__cta">
-            Bring this report to your visit. The sections below show the data and pre-drafted questions Dr. Williams will find most useful.
+            Bring this report to your visit. The sections below show the data and pre-drafted questions {dermName} will find most useful.
           </p>
         </div>
       </div>
@@ -468,7 +716,7 @@ export default function PreparePage() {
       <div className="pp-section">
         <div className="pp-sec-head">
           <span className="pp-sec-badge">Auto-generated</span>
-          <h2 className="pp-sec-title">Key findings for Dr. Williams</h2>
+          <h2 className="pp-sec-title">Key findings for {dermName}</h2>
         </div>
         <div className="pp-sum-grid">
           <div className="pp-sum-tile"><div className="pp-st-label">Days tracked</div><div className="pp-st-val">21</div><div className="pp-st-detail">Daily check-ins + Oura</div></div>
@@ -549,7 +797,7 @@ export default function PreparePage() {
           className={`pp-share-btn${shared ? ' pp-share-btn--done' : ''}`}
           onClick={() => setShared(true)}
         >
-          {shared ? '✓ Report shared with Dr. Williams' : 'Share report with Dr. Williams →'}
+          {shared ? `✓ Report shared with ${dermName}` : `Share report with ${dermName} →`}
         </button>
       </div>
 
@@ -581,11 +829,27 @@ export default function PreparePage() {
           className={`pp-share-btn${shared ? ' pp-share-btn--done' : ''}`}
           onClick={() => setShared(true)}
         >
-          {shared ? '✓ Report shared with Dr. Williams' : 'Share report with Dr. Williams →'}
+          {shared ? `✓ Report shared with ${dermName}` : `Share report with ${dermName} →`}
         </button>
       </div>
 
-      {chatOpen && <ChatOverlay initialQ={chatInitQ} onClose={() => setChatOpen(false)} />}
+      {chatOpen && (
+        <ChatOverlay
+          initialQ={chatInitQ}
+          onClose={() => setChatOpen(false)}
+          dermName={dermName}
+          apptDate={apptDisplay}
+        />
+      )}
+
+      {showApptModal && (
+        <AppointmentModal
+          initial={appointment}
+          doctorFallback={doctor}
+          onSave={saveAppointment}
+          onClose={() => setShowApptModal(false)}
+        />
+      )}
     </main>
   )
 }

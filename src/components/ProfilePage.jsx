@@ -63,6 +63,16 @@ const SECTIONS = [
     ],
   },
   {
+    id: 'care_team',
+    label: 'Care team',
+    icon: '👩‍⚕️',
+    fields: [
+      { id: 'doctor_name',      label: 'Dermatologist',  type: 'text', placeholder: 'Dr. Sarah Williams' },
+      { id: 'doctor_specialty', label: 'Specialty',      type: 'text', placeholder: 'Dermatology' },
+      { id: 'doctor_location',  label: 'Practice',       type: 'text', placeholder: 'City, State' },
+    ],
+  },
+  {
     id: 'lifestyle',
     label: 'Lifestyle',
     icon: '🌿',
