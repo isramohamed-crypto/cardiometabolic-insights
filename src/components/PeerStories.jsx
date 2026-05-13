@@ -132,6 +132,13 @@ function FlipCard({ subject }) {
 export default function PeerStories() {
   return (
     <section className="peer-section lbe-section">
+      <div className="watch-head">
+        <div>
+          <span className="watch-badge">Sponsored series</span>
+          <h2 className="watch-title">Real stories</h2>
+          <p className="watch-subtitle">People living with eczema, in their own words</p>
+        </div>
+      </div>
       <div className="peer-carousel lbe-carousel">
         {/* COVER */}
         <article className="lbe-cover">
