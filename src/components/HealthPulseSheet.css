@@ -31,7 +31,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-teal-dark);
+  color: var(--color-coral);          /* Watermelon */
   margin-bottom: 4px;
 }
 .hp-card__title {
