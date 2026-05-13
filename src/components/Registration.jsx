@@ -70,7 +70,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
             <h1 className="reg-hero__headline">
-              <em>Finally —</em> a place that gets your skin like you live it.
+              <em>Welcome.</em> Smart skin care for real life.
             </h1>
           </div>
           <button className="reg-close" onClick={onClose} aria-label="Close">✕</button>
@@ -79,7 +79,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            Tips and guidance built around your day. Your home, your routines, your skin — all in one place.
+            Daily tracking, AI patterns, derm-ready reports, and content built around how you live.
           </p>
 
           <div className="reg-divider">
