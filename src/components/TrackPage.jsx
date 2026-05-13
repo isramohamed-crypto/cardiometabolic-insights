@@ -104,13 +104,13 @@ function trendDataFor(condition, range) {
 // Mock fallback when the user has 0 check-ins. Once they start logging,
 // these percentages are computed from actual check-in history.
 const TRIGGERS_MOCK = [
-  { e: '😰', l: 'Stressful day',   p: 45, c: 'var(--color-teal)' },
-  { e: '😴', l: 'Rough night',     p: 25, c: 'var(--color-blue)' },
-  { e: '🌤️', l: 'Weather change',  p: 10, c: 'var(--color-sage)' },
-  { e: '🍽️', l: 'New food',        p:  5, c: 'var(--color-warm)' },
-  { e: '🧴', l: 'New product',     p:  0, c: 'var(--color-coral)' },
-  { e: '🏃', l: 'Routine changed', p:  0, c: 'var(--color-lime)' },
-  { e: '👍', l: 'Normal day',      p: 15, c: 'var(--color-text-muted)' },
+  { e: '😰', l: 'Stressful day',      p: 45, c: 'var(--color-teal)' },
+  { e: '😴', l: 'Rough night',        p: 25, c: 'var(--color-blue)' },
+  { e: '🌤️', l: 'Weather change',     p: 10, c: 'var(--color-sage)' },
+  { e: '🍽️', l: 'New food',           p:  5, c: 'var(--color-warm)' },
+  { e: '🧴', l: 'Tried new product',  p:  0, c: 'var(--color-coral)' },
+  { e: '🏃', l: 'Routine changed',    p:  0, c: 'var(--color-lime)' },
+  { e: '👍', l: 'Normal day',         p: 15, c: 'var(--color-text-muted)' },
 ]
 
 // Compute trigger percentages from the user's check-in history. Each check-in
@@ -207,6 +207,22 @@ function readConditions() {
     return raw.filter(Boolean)
   } catch (_) { return [] }
 }
+
+function readTreatments() {
+  try {
+    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const raw = Array.isArray(p.treatmentList) ? p.treatmentList : []
+    return raw.map(t => typeof t === 'string' ? { name: t } : t).filter(t => t?.name)
+  } catch (_) { return [] }
+}
+
+function daysSinceUtil(isoDate) {
+  if (!isoDate) return null
+  const then = new Date(isoDate); const now = new Date()
+  const a = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const b = new Date(then.getFullYear(), then.getMonth(), then.getDate())
+  return Math.max(0, Math.round((a - b) / (1000 * 60 * 60 * 24)))
+}
 function daysAgoUtil(isoDate) {
   if (!isoDate) return null
   const then = new Date(isoDate); const now = new Date()
@@ -221,12 +237,14 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
   const [conditions, setConditions] = useState(() => readConditions())
   const [activeCondition, setActiveCondition] = useState(() => readConditions()[0] || null)
+  const [treatments, setTreatments] = useState(() => readTreatments())
 
   // Re-read whenever a new check-in is logged (parent bumps checkinTick) or on focus
   useEffect(() => {
     function refresh() {
       setCheckins(readCheckins())
       setLastCheckin(readLastCheckin())
+      setTreatments(readTreatments())
       const conds = readConditions()
       setConditions(conds)
       // Keep activeCondition in sync if it's no longer in the list
@@ -404,6 +422,59 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             <div className="tp-insight-body">When you report a stressful day, your skin score worsens 2 days afterward — confirmed 3 of 4 weeks. Your Oura HRV data backs this up.</div>
           </div>
         </div>
+      </div>
+
+      {/* Treatments & products — from check-in chips */}
+      <div className="tp-section">
+        <div className="tp-sec-head">
+          <h2 className="tp-sec-title">Treatments &amp; products</h2>
+          {treatments.length > 0 && (
+            <span className="tp-sec-badge" style={{ background: 'var(--color-teal-light)', color: 'var(--color-teal)' }}>
+              {treatments.length} active
+            </span>
+          )}
+        </div>
+        {treatments.length === 0 ? (
+          <div className="tp-card">
+            <div className="tp-tx-empty">
+              <span className="tp-tx-empty__icon">🧴</span>
+              <div>
+                <div className="tp-tx-empty__title">Nothing logged yet</div>
+                <div className="tp-tx-empty__sub">Add what you're using during your next skin check-in. It'll show up here.</div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="tp-tx-scroll">
+              {treatments.map(t => {
+                const days = daysSinceUtil(t.addedAt)
+                const cond = t.condition || null
+                return (
+                  <article key={`${cond || ''}::${t.name}`} className="tp-tx-card">
+                    <div className="tp-tx-card__top">
+                      {cond
+                        ? <span className="tp-tx-card__tag">{cond}</span>
+                        : <span className="tp-tx-card__tag tp-tx-card__tag--generic">General</span>}
+                      <span className="tp-tx-card__status">●</span>
+                    </div>
+                    <div className="tp-tx-card__name">{t.name}</div>
+                    <div className="tp-tx-card__meta">
+                      <span className="tp-tx-card__meta-icon">⏱</span>
+                      {days == null
+                        ? 'Just added'
+                        : days === 0 ? 'New today' : days === 1 ? '1 day active' : `${days} days active`}
+                    </div>
+                  </article>
+                )
+              })}
+              <div style={{ minWidth: 'var(--space-4)', flexShrink: 0 }} />
+            </div>
+            <p className="tp-tx-note">
+              💡 Add dose &amp; frequency in your <strong>profile</strong> to power adherence insights.
+            </p>
+          </>
+        )}
       </div>
 
       {/* Recommended for you */}
