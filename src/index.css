@@ -106,13 +106,13 @@ h2 {
 
 /* ── NAV ────────────────────────────────────────────────────── */
 .nav {
-  /* Restraint: always cream with hairline border. Green stays only on the
-     wordmark — the single color moment in the chrome (Tom ref). */
+  /* Restraint: always cream. Wordmark + 3px Leaf-green bottom border are
+     the brand moments in the chrome. */
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--nav-height);
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 3px solid var(--color-teal);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,12 +122,12 @@ h2 {
 }
 .nav--scrolled {
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 3px solid var(--color-teal);
   backdrop-filter: blur(12px);
 }
 .nav--secondary {
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 3px solid var(--color-teal);
 }
 
 .nav__brand {
@@ -231,7 +231,7 @@ h2 {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 280px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-lime);   /* Green Apple */
   padding-top: var(--nav-height);
   padding-bottom: var(--space-5);
   margin-bottom: var(--space-5);
@@ -2026,13 +2026,13 @@ h2 {
 
 /* ── BOTTOM NAV ─────────────────────────────────────────────── */
 .bottom-nav {
-  /* Restraint: cream/white footer surface, hairline top border, charcoal
-     icons by default. Color earns its place only on the active tab. */
+  /* Cream surface with 3px Leaf-green top border — bookends the
+     screen with the matching Leaf-green border under the top nav. */
   position: fixed;
   bottom: 0; left: 0; right: 0;
   height: var(--bottom-nav-height);
   background: var(--color-bg);
-  border-top: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-teal);
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -4379,12 +4379,12 @@ h2 {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--color-lime);
+  background: var(--color-warm);          /* Tangerine */
+  color: var(--color-lime-light);         /* Vanilla arrow */
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
   cursor: pointer;
   flex-shrink: 0;
   transition: opacity 0.2s;
@@ -4440,21 +4440,25 @@ h2 {
   from { transform: translateY(100%); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
+/* Chat overlay header — matches the main top nav (cream bg, charcoal
+   text, 3px Leaf-green bottom border) so opening the chat doesn't
+   feel like crossing into a different visual system. */
 .chat-overlay__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  background: var(--color-teal);
+  background: var(--color-bg);
+  border-bottom: 3px solid var(--color-teal);
   flex-shrink: 0;
 }
 .chat-overlay__back {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.15);
+  background: var(--color-teal-light);
   border: none;
-  color: #fff;
+  color: var(--color-teal-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4464,15 +4468,17 @@ h2 {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-family: var(--font-serif);
   font-size: var(--font-size-base);
-  font-weight: 700;
-  color: #fff;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-teal);          /* Leaf green wordmark, like top nav */
 }
 .chat-overlay__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-lime);
+  background: var(--color-teal);
   animation: pulse 2s infinite;
 }
 .chat-overlay__messages {
@@ -4734,7 +4740,7 @@ h2 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-lime);   /* Green Apple */
   margin-top: calc(-1 * var(--nav-height));
   padding-top: calc(var(--nav-height) + var(--space-8));
   padding-bottom: var(--space-8);
