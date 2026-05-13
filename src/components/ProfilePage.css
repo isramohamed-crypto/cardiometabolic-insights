@@ -164,7 +164,10 @@
 .pp-ai__arrow { color: #fff; font-size: 18px; flex-shrink: 0; }
 
 /* Sections */
-.pp-section {
+/* Scoped to .pp-overlay so this card styling stays inside ProfilePage and
+   doesn't bleed into PreparePage (which also uses .pp-section as a
+   layout wrapper without intending a card surface). */
+.pp-overlay .pp-section {
   background: #fff;
   margin: 0 16px 14px;
   border-radius: 16px;
