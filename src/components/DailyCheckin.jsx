@@ -74,6 +74,10 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
     : 'Today · start your streak'
   const ctaText = isCheckedInToday ? 'Update →' : 'Log today →'
 
+  // Magazine ribbon "DAY N" badge — shows the current streak count, or a
+  // 'NEW' badge when there's no streak yet (first-time user).
+  const dayBadge = loggedCount > 0 ? `DAY ${loggedCount}` : 'NEW'
+
   return (
     <section className="checkin-section">
       <div
@@ -83,19 +87,28 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
         tabIndex={0}
         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpen?.() }}
       >
-        <div className="dc-feat__blob" aria-hidden="true" />
-        <div className="dc-feat__head">
-          <p className="dc-feat__eyebrow">{eyebrowText}</p>
-          <h2 className="dc-feat__title">{titleLabel}</h2>
-          <p className="dc-feat__sub">{subLabel}</p>
+        {/* Magazine-cover ribbon masthead */}
+        <div className="dc-feat__ribbon">
+          <span className="dc-feat__ribbon-label">Skin Diary</span>
+          <span className="dc-feat__ribbon-day">{dayBadge}</span>
         </div>
-        <div className="dc-feat__foot">
-          <div className="dc-feat__dots" aria-label={`${loggedCount} of 7 days logged this week`}>
-            {streak.map((logged, i) => (
-              <span key={i} className={`dc-feat__dot${logged ? ' dc-feat__dot--on' : ''}`} />
-            ))}
+
+        {/* Body */}
+        <div className="dc-feat__body">
+          <div className="dc-feat__blob" aria-hidden="true" />
+          <div className="dc-feat__head">
+            <p className="dc-feat__eyebrow">{eyebrowText}</p>
+            <h2 className="dc-feat__title">{titleLabel}</h2>
+            <p className="dc-feat__sub">{subLabel}</p>
           </div>
-          <span className="dc-feat__cta">{ctaText}</span>
+          <div className="dc-feat__foot">
+            <div className="dc-feat__dots" aria-label={`${loggedCount} of 7 days logged this week`}>
+              {streak.map((logged, i) => (
+                <span key={i} className={`dc-feat__dot${logged ? ' dc-feat__dot--on' : ''}`} />
+              ))}
+            </div>
+            <span className="dc-feat__cta">{ctaText}</span>
+          </div>
         </div>
       </div>
     </section>

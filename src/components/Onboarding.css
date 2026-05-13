@@ -24,22 +24,26 @@
 }
 
 /* ── HERO ── */
-/* Health.com brand: Seaweed (dark green) hero with Green Apple + Mineral Blue
-   accents. Every text element clears WCAG AA, most clear AAA. */
+/* Match the other pages: petal-image background with a cream wash so
+   charcoal headlines + Watermelon eyebrows clear AA across the photo,
+   plus the 1px Light Pink bottom border the other heroes use. */
 .ob-hero {
-  background: #004620;
+  background-color: var(--color-bg);
+  background-image: url('/hero-petal.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 24px 20px 32px;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid var(--color-coral-light);   /* Light pink */
 }
 
 .ob-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 80% 20%, rgba(63, 209, 95,.35), transparent 60%),
-    radial-gradient(circle at 20% 80%, rgba(0, 185, 226,.15), transparent 50%);
+  background: linear-gradient(180deg, rgba(255,252,245,0.70) 0%, rgba(255,252,245,0.92) 100%);
   pointer-events: none;
 }
 
@@ -47,30 +51,32 @@
 
 .ob-hero__eyebrow {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--color-lime);            /* 8.50:1 on #3A1B99 — AAA */
+  color: var(--color-coral);           /* Watermelon — matches other hero eyebrows */
   margin-bottom: 8px;
 }
 
 .ob-hero__title {
+  font-family: var(--font-serif);
   font-size: 28px;
-  font-weight: 500;
-  letter-spacing: -.03em;
-  color: rgba(255,255,255,.95);   /* White on Seaweed — 11.07:1 AAA */
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--color-text-primary);    /* Charcoal on cream — AAA */
   line-height: 1.2;
   margin: 0 0 8px;
 }
 
 .ob-hero__title em {
   font-style: italic;
-  color: var(--color-sage);            /* 6.18:1 on #3A1B99 — AA (was 3.72 — borderline) */
+  color: var(--color-teal);            /* Leaf green italic accent */
+  font-weight: 700;
 }
 
 .ob-hero__sub {
   font-size: 14px;
-  color: rgba(255,255,255,.85);   /* White @.85 on Seaweed — 8.43:1 AAA */
+  color: var(--color-text-secondary);  /* Warm gray on cream */
   line-height: 1.6;
   margin: 0;
 }

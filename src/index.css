@@ -1451,23 +1451,69 @@ h2 {
 }
 
 .dc-feat {
-  /* Restraint pass: white card, no decorative blob, hairline border. */
+  /* Magazine-cover: Watermelon ribbon masthead at top, white body below
+     with the Green Apple blob accent in the top-right of the body. */
   position: relative;
   overflow: hidden;
   background: var(--color-surface);
   border: 1px solid var(--color-border-light);
   border-radius: 22px;
-  padding: 22px 22px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  padding: 0;                                 /* ribbon + body own their padding */
   cursor: pointer;
   transition: transform .15s ease;
 }
 .dc-feat:active { transform: scale(0.99); }
 
-/* Blob removed in restraint pass — card stays a clean white surface. */
-.dc-feat__blob { display: none; }
+/* Watermelon ribbon masthead at the top of the card */
+.dc-feat__ribbon {
+  background: var(--color-coral);             /* Watermelon */
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dc-feat__ribbon-label {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.dc-feat__ribbon-day {
+  background: var(--color-lime-light);        /* Vanilla */
+  color: var(--color-coral);                  /* Watermelon text */
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+/* Body — content area below the ribbon. Blob lives here. */
+.dc-feat__body {
+  position: relative;
+  padding: 22px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+}
+
+/* Green Apple decorative blob — sits in the top-right corner of the body
+   so the headline gets a soft pop without taking over the card. */
+.dc-feat__blob {
+  position: absolute;
+  top: -60px;
+  right: -50px;
+  width: 170px;
+  height: 170px;
+  background: var(--color-lime);              /* Green Apple */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
 
 .dc-feat__head,
 .dc-feat__foot { position: relative; z-index: 1; }
@@ -1498,6 +1544,7 @@ h2 {
   font-size: 13px;
   color: var(--color-text-secondary);
   line-height: 1.5;
+  padding-right: 64px;             /* clear of the Green Apple blob */
 }
 
 .dc-feat__foot {
@@ -1534,7 +1581,7 @@ h2 {
   transition: background-color .15s ease;
 }
 .dc-feat:hover .dc-feat__cta {
-  background: #000;
+  background: #0089A8;             /* Mineral Blue dark */
 }
 
 /* Legacy 'daily-checkin' classes remain in use elsewhere (e.g. hero-wrap

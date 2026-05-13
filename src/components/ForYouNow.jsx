@@ -17,6 +17,14 @@ const TIPS = [
     author: 'HEATHER MUIR, BEAUTY DIRECTOR, REAL SIMPLE',
   },
   {
+    /* Blank card — placeholder for a sponsored slot. Fill in image,
+       avatar, quote, author later. The `placeholder: true` flag lets
+       the render skip image + avatar + author markup. */
+    id: 'sponsored',
+    placeholder: true,
+    quote: 'Sponsored Ad',
+  },
+  {
     id: 'skincare-org',
     image: '/rs-skincare-org.jpg',
     avatar: '/rs-heather-muir.jpg',
@@ -28,7 +36,7 @@ const TIPS = [
 export default function ForYouNow() {
   return (
     <div className="for-you-now">
-      <h2 className="for-you-now__title">Quick wins</h2>
+      <h2 className="for-you-now__title">Tips for you</h2>
       <div className="for-you-now__scroll">
         <article className="rs-cover" aria-label="Real Simple — The Eczema Reset">
           <p className="rs-cover__brand">REAL SIMPLE</p>
@@ -38,24 +46,30 @@ export default function ForYouNow() {
 
         {TIPS.map(t => (
           <article key={t.id} className="rs-card">
-            <div
-              className="rs-card__image"
-              style={{ backgroundImage: `url(${t.image})` }}
-              role="img"
-              aria-label={t.quote}
-            />
+            {!t.placeholder && (
+              <div
+                className="rs-card__image"
+                style={{ backgroundImage: `url(${t.image})` }}
+                role="img"
+                aria-label={t.quote}
+              />
+            )}
             <div className="rs-card__quote-block">
-              <img className="rs-card__avatar" src={t.avatar} alt="" />
+              {!t.placeholder && (
+                <img className="rs-card__avatar" src={t.avatar} alt="" />
+              )}
               <div className="rs-card__quote-text">
                 <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
-                <p className="rs-card__author">— {t.author}</p>
+                {t.author && (
+                  <p className="rs-card__author">— {t.author}</p>
+                )}
               </div>
             </div>
             <div className="rs-card__try-row">
               <MarkAsTried
                 id={`quick-wins:${t.id}`}
                 title={t.quote}
-                source="Quick wins"
+                source="Tips for you"
                 className="try-btn--overlay"
               />
             </div>

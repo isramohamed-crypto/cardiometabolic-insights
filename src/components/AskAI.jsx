@@ -242,7 +242,7 @@ export default function AskAI() {
   const [followUp, setFollowUp] = useState('')
   const [flowActive, setFlowActive] = useState(false)
   const [flowTurn, setFlowTurn] = useState(0) // index of NEXT flow turn to show
-  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(true)
   const bottomRef = useRef(null)
 
   function showAITurn(idx) {
@@ -334,7 +334,7 @@ export default function AskAI() {
           </div>
           {showSuggestions && (
             <>
-              <p className="ask-ai__label">Common questions</p>
+              <p className="ask-ai__label">Here's what people like you ask</p>
               <ul className="ask-ai__suggestions">
                 {SUGGESTED.map((q, i) => (
                   <li
