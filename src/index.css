@@ -3118,6 +3118,416 @@ h2 {
 }
 
 /* ── Community Poll ──────────────────────────────────────── */
+/* ── Travel + Leisure 'Finding Fall' takeover card ───────────── */
+.tl-section {
+  padding: var(--space-6) var(--space-5) var(--space-4);
+}
+.tl-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: 620px;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    linear-gradient(160deg, #6B3A1F 0%, #A6601D 35%, #8B5A20 65%, #4A3B1F 100%);
+  box-shadow: 0 10px 28px rgba(30, 35, 48, 0.18);
+}
+.tl-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tl-card__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 50%, rgba(0,0,0,.78) 100%);
+  pointer-events: none;
+}
+.tl-card__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 20px 18px;
+  color: #fff;
+  text-align: center;
+}
+.tl-card__brand {
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin: 0;
+  text-align: left;
+}
+.tl-card__brand-plus { margin: 0 1px; }
+.tl-card__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tl-card__title {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin: 0 0 6px;
+  color: #fff;
+}
+.tl-card__sub {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.95);
+  margin: 0 0 6px;
+  max-width: 260px;
+  align-self: center;
+}
+.tl-card__cta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tl-card__cta {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  transition: transform .12s ease, filter .15s ease;
+}
+.tl-card__cta:active { transform: scale(.985); }
+.tl-card__cta:hover  { filter: brightness(1.08); }
+.tl-card__cta--rust  { background: #A43819; }
+.tl-card__cta--olive { background: #707324; }
+.tl-card__cta--brown { background: #724413; }
+
+/* Persona content state — replaces the video view when a CTA is tapped. */
+.tl-card--persona {
+  aspect-ratio: auto;
+  max-height: none;
+  background: var(--color-surface);
+}
+.tl-persona {
+  position: relative;
+  padding: 16px 20px 22px;
+  font-family: var(--font-sans);
+}
+.tl-persona__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.tl-persona__back:hover { color: var(--color-text-primary); }
+.tl-persona__intro {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  margin: 0 0 18px;
+  text-align: center;
+}
+.tl-persona__image {
+  width: calc(100% + 40px);
+  margin: 0 -20px 18px;
+  aspect-ratio: 294 / 186;
+  background-size: cover;
+  background-position: center;
+}
+.tl-persona__image--rust {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
+    linear-gradient(135deg, #C9612E, #7E3215);
+}
+.tl-persona__image--olive {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.10)),
+    linear-gradient(135deg, #8E9534, #4F571B);
+}
+.tl-persona__image--brown {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
+    linear-gradient(135deg, #9B6526, #4F2D0C);
+}
+.tl-persona__title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  margin: 0 0 14px;
+}
+.tl-persona__title--rust  { color: #A43819; }
+.tl-persona__title--olive { color: #707324; }
+.tl-persona__title--brown { color: #724413; }
+.tl-persona__body {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* ── People · Ones To Watch · Women In Sports ──────────────── */
+.otw-section {
+  padding: var(--space-6) var(--space-5) var(--space-4);
+}
+
+/* Header card — magazine takeover. The image now fills the whole card
+   (no padding around the visual block), and the People masthead +
+   title overlay it like Travel+Leisure's wordmark sits over the video. */
+.otw-header {
+  background: #0AB4A8;                  /* People · teal — fallback while img loads */
+  border-radius: 20px;
+  overflow: hidden;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.otw-header__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
+}
+.otw-header__people {
+  background: #fff;
+  color: #0AB4A8;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 900;
+}
+.otw-header__divider { opacity: 0.6; }
+.otw-header__label { font-weight: 700; }
+/* Visual block — image fills the card; masthead overlays the top and
+   title overlays the bottom. Same dark-fade-at-top-and-bottom gradient
+   pattern as the Travel+Leisure video overlay (.tl-card__overlay). */
+.otw-header__visual {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background:
+    /* T+L overlay pattern: dark at top + bottom, clear in the middle */
+    linear-gradient(180deg,
+      rgba(0,0,0,.45) 0%,
+      rgba(0,0,0,0)   28%,
+      rgba(0,0,0,0)   50%,
+      rgba(0,0,0,.78) 100%),
+    url('/OTW-group.jpg') center top / cover no-repeat,
+    /* fallback while the image loads or if it 404s */
+    linear-gradient(135deg, #4A2D1A, #8D5A40, #C49870);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 20px 22px;
+  box-sizing: border-box;
+}
+.otw-header__title {
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+/* Accordion list — sits inside the header card, replacing the caption.
+   Breaks out of the header's side + bottom padding so the colored card
+   rows touch the magazine card's edges and bottom rounded corners. */
+.otw-list {
+  /* Header card no longer has padding, so the list flows full width
+     naturally. Bottom rounded corners come from .otw-header's
+     border-radius + overflow:hidden. */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual accordion card — flush with neighbors, no own radius */
+.otw-card {
+  border-radius: 0;
+  color: #fff;
+  transition: background-color .2s ease;
+}
+.otw-card--teal { background: #0AB4A8; }
+.otw-card--blue { background: #2A4FCC; }
+.otw-card--pink { background: #E61E73; }
+
+.otw-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px 10px 10px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+}
+.otw-card__head:active { opacity: 0.92; }
+
+/* Yellow starburst circle behind portrait */
+.otw-card__sticker {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.otw-card__star {
+  position: absolute;
+  inset: 0;
+  background: #F5DE2D;
+  /* CSS-only "burst" — 24-point spiked circle via a conic-gradient
+     mask. Falls back to a plain yellow circle in browsers without
+     mask support. */
+  border-radius: 50%;
+  -webkit-mask:
+    conic-gradient(from 0deg,
+      #000 0deg, transparent 6deg, #000 12deg, transparent 18deg,
+      #000 24deg, transparent 30deg, #000 36deg, transparent 42deg,
+      #000 48deg, transparent 54deg, #000 60deg, transparent 66deg,
+      #000 72deg, transparent 78deg, #000 84deg, transparent 90deg,
+      #000 96deg, transparent 102deg, #000 108deg, transparent 114deg,
+      #000 120deg, transparent 126deg, #000 132deg, transparent 138deg,
+      #000 144deg, transparent 150deg, #000 156deg, transparent 162deg,
+      #000 168deg, transparent 174deg, #000 180deg, transparent 186deg,
+      #000 192deg, transparent 198deg, #000 204deg, transparent 210deg,
+      #000 216deg, transparent 222deg, #000 228deg, transparent 234deg,
+      #000 240deg, transparent 246deg, #000 252deg, transparent 258deg,
+      #000 264deg, transparent 270deg, #000 276deg, transparent 282deg,
+      #000 288deg, transparent 294deg, #000 300deg, transparent 306deg,
+      #000 312deg, transparent 318deg, #000 324deg, transparent 330deg,
+      #000 336deg, transparent 342deg, #000 348deg, transparent 354deg,
+      #000 360deg
+    ),
+    radial-gradient(circle, #000 0 70%, transparent 70%);
+  -webkit-mask-composite: source-over;
+  mask:
+    conic-gradient(from 0deg,
+      #000 0deg, transparent 6deg, #000 12deg, transparent 18deg,
+      #000 24deg, transparent 30deg, #000 36deg, transparent 42deg,
+      #000 48deg, transparent 54deg, #000 60deg, transparent 66deg,
+      #000 72deg, transparent 78deg, #000 84deg, transparent 90deg,
+      #000 96deg, transparent 102deg, #000 108deg, transparent 114deg,
+      #000 120deg, transparent 126deg, #000 132deg, transparent 138deg,
+      #000 144deg, transparent 150deg, #000 156deg, transparent 162deg,
+      #000 168deg, transparent 174deg, #000 180deg, transparent 186deg,
+      #000 192deg, transparent 198deg, #000 204deg, transparent 210deg,
+      #000 216deg, transparent 222deg, #000 228deg, transparent 234deg,
+      #000 240deg, transparent 246deg, #000 252deg, transparent 258deg,
+      #000 264deg, transparent 270deg, #000 276deg, transparent 282deg,
+      #000 288deg, transparent 294deg, #000 300deg, transparent 306deg,
+      #000 312deg, transparent 318deg, #000 324deg, transparent 330deg,
+      #000 336deg, transparent 342deg, #000 348deg, transparent 354deg,
+      #000 360deg
+    );
+}
+.otw-card__photo {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center top;
+  z-index: 1;
+}
+
+.otw-card__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.otw-card__label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+}
+.otw-card__name {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.05;
+}
+.otw-card__toggle {
+  font-size: 22px;
+  font-weight: 400;
+  color: #fff;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Body — animates open/closed with max-height. Same transition timing
+   in both directions so the closing card's collapse and the opening
+   card's expand run perfectly simultaneously when the user taps a
+   different accordion. */
+.otw-card__body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity    0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.otw-card--open .otw-card__body {
+  max-height: 320px;          /* generous ceiling for long bios */
+  opacity: 1;
+}
+.otw-card__bio {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.95);
+  margin: 0;
+  padding: 0 20px 16px 86px;
+}
+
 .poll-section {
   padding: var(--space-6) var(--space-5) var(--space-4);
 }
