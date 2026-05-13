@@ -217,13 +217,45 @@ const GENERIC_PLAYBOOK = {
 
 // Each option can have a `detail` follow-up that appears below when it's
 // selected, so the user can capture specifics (which product, what food, etc).
+// Common treatments + products. Used to autosuggest as the user types. The
+// user can also enter freeform text. Grouped roughly by category so the
+// suggestion list feels relevant. Not meant to be exhaustive — a starter set.
+const COMMON_TREATMENTS = [
+  // Moisturizers / barrier
+  'CeraVe Moisturizing Cream', 'CeraVe Hydrating Cleanser', 'Cetaphil Moisturizing Cream',
+  'Vanicream Moisturizing Cream', 'Aquaphor Healing Ointment', 'Eucerin Advanced Repair',
+  'La Roche-Posay Lipikar', 'Aveeno Eczema Therapy', 'Vaseline',
+  // Rx topicals — eczema/psoriasis
+  'Hydrocortisone 1%', 'Hydrocortisone 2.5%', 'Triamcinolone 0.1%',
+  'Clobetasol propionate', 'Betamethasone', 'Tacrolimus (Protopic)',
+  'Pimecrolimus (Elidel)', 'Crisaborole (Eucrisa)', 'Ruxolitinib (Opzelura)',
+  'Calcipotriene (Dovonex)',
+  // Biologics / systemic
+  'Dupixent (dupilumab)', 'Adbry (tralokinumab)', 'Cibinqo (abrocitinib)',
+  'Rinvoq (upadacitinib)', 'Skyrizi (risankizumab)', 'Cosentyx (secukinumab)',
+  'Humira (adalimumab)',
+  // Acne
+  'Tretinoin 0.025%', 'Tretinoin 0.05%', 'Adapalene (Differin) 0.1%',
+  'Benzoyl peroxide 2.5%', 'Benzoyl peroxide 10%', 'Clindamycin gel',
+  'Salicylic acid', 'Azelaic acid', 'Spironolactone', 'Isotretinoin (Accutane)',
+  // Rosacea
+  'Metronidazole gel', 'Ivermectin (Soolantra)', 'Brimonidine (Mirvaso)',
+  'Oxymetazoline (Rhofade)', 'Doxycycline',
+  // Cleansers / actives
+  'Niacinamide serum', 'Hyaluronic acid serum', 'Vitamin C serum',
+  // Sun
+  'SPF 30 sunscreen', 'SPF 50 sunscreen', 'EltaMD UV Clear',
+  // Supplements
+  'Omega-3 / fish oil', 'Vitamin D', 'Probiotics', 'Zinc',
+]
+
 const DAY_CONTEXT = [
-  { e: '😰', l: 'Stressful day',   detail: { prompt: 'What was stressful?',  placeholder: 'Work, family, deadline…' } },
-  { e: '😴', l: 'Rough night',     detail: { prompt: 'What was off?',         placeholder: 'Couldn\'t sleep, itched all night…' } },
-  { e: '🌤️', l: 'Weather change',  detail: { prompt: 'What changed?',         placeholder: 'Got hot/cold/humid/dry…' } },
-  { e: '🍽️', l: 'New food',        detail: { prompt: 'Which food?',           placeholder: 'Dairy, gluten, citrus, alcohol…' } },
-  { e: '🧴', l: 'New product',     detail: { prompt: 'Which product?',        placeholder: 'Brand or product name' } },
-  { e: '🏃', l: 'Routine changed', detail: { prompt: 'What changed?',         placeholder: 'Workout, travel, schedule…' } },
+  { e: '😰', l: 'Stressful day',   detail: { prompt: 'What was stressful?',          placeholder: 'Work, family, deadline…' } },
+  { e: '😴', l: 'Rough night',     detail: { prompt: 'What was off?',                 placeholder: 'Couldn\'t sleep, itched all night…' } },
+  { e: '🌤️', l: 'Weather change',  detail: { prompt: 'What changed?',                 placeholder: 'Got hot/cold/humid/dry…' } },
+  { e: '🍽️', l: 'New food',        detail: { prompt: 'Which food?',                   placeholder: 'Dairy, gluten, citrus, alcohol…' } },
+  { e: '🧴', l: 'Tried new product', detail: { prompt: 'Which product did you try for the first time today?', placeholder: 'Detergent, soap, sunscreen…' } },
+  { e: '🏃', l: 'Routine changed', detail: { prompt: 'What changed?',                 placeholder: 'Workout, travel, schedule…' } },
   { e: '👍', l: 'Normal day', wide: true },
 ]
 
@@ -294,6 +326,10 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   const [wearableSynced, setWearableSynced] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
   const [viewing, setViewing]   = useState(null)              // saved record shown in summary-view mode
+  // Treatments & products (Q1 — per-condition for multi-condition users)
+  // { [conditionName]: [productName, ...] }
+  const [treatmentsByCond, setTreatmentsByCond] = useState({})
+  const [treatmentInput, setTreatmentInput] = useState('')
   const fileRef = useRef(null)
 
   // Prototype: when the user taps "Upload a skin photo", auto-load this
@@ -316,11 +352,27 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     setSeverityByCond({}); setSeverityAiByCond({}); setSymptomsByCond({})
     setContext([]); setContextDetails({})
     setPhotoUrl(''); setWearableSynced(false); setAnalyzing(false)
+    setTreatmentInput('')
     document.body.style.overflow = 'hidden'
 
     // Pick the first tracked condition as active by default
-    const conds = trackedConditionsFor(readProfile())
+    const profile = readProfile()
+    const conds = trackedConditionsFor(profile)
     setActiveCondition(conds[0])
+    // Pre-load saved treatments, grouped by condition. Legacy items
+    // (strings or {name} without condition) get assigned to the first tracked condition.
+    const saved = profile.treatmentList || []
+    const byCond = {}
+    for (const c of conds) byCond[c] = []
+    for (const item of saved) {
+      const name = typeof item === 'string' ? item : item?.name
+      if (!name) continue
+      const tagged = (typeof item === 'object' && item?.condition && byCond[item.condition] != null)
+        ? item.condition
+        : conds[0]
+      byCond[tagged] = (byCond[tagged] || []).concat(name)
+    }
+    setTreatmentsByCond(byCond)
 
     let last = null
     try { last = JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) {}
@@ -420,6 +472,35 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     setContextDetails(d => ({ ...d, [i]: val }))
   }
 
+  // Active-condition slice of the treatments map. All add/remove flows through here.
+  const treatments = (activeCondition && treatmentsByCond[activeCondition]) || []
+
+  function addTreatment(name) {
+    if (!activeCondition) return
+    const v = (name ?? treatmentInput).trim()
+    if (!v) return
+    setTreatmentsByCond(prev => {
+      const current = prev[activeCondition] || []
+      if (current.includes(v)) return prev
+      return { ...prev, [activeCondition]: [...current, v] }
+    })
+    setTreatmentInput('')
+  }
+  function removeTreatment(name) {
+    if (!activeCondition) return
+    setTreatmentsByCond(prev => ({
+      ...prev,
+      [activeCondition]: (prev[activeCondition] || []).filter(x => x !== name),
+    }))
+  }
+  // Filter common-treatments suggestions by current input
+  const treatmentSuggestions = (treatmentInput.trim().length >= 1
+    ? COMMON_TREATMENTS.filter(t =>
+        t.toLowerCase().includes(treatmentInput.trim().toLowerCase()) && !treatments.includes(t)
+      ).slice(0, 6)
+    : []
+  )
+
   function finish() {
     const contextLabels = (context || []).map(i => DAY_CONTEXT[i]?.l).filter(Boolean)
     const contextEntries = (context || []).map(i => ({
@@ -446,6 +527,14 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     const skinScore = topSeverity == null ? null : (5 - topSeverity)
     const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'skin'
 
+    // Flatten the per-condition map into a single array of tagged items
+    const allTreatments = []
+    for (const [cond, names] of Object.entries(treatmentsByCond)) {
+      for (const name of names) {
+        allTreatments.push({ name, condition: cond === '__generic' ? null : cond })
+      }
+    }
+
     const checkin = {
       date: new Date().toISOString(),
       // top-level (back-compat)
@@ -456,10 +545,31 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
       conditionAnswers,
       contextLabels,
       contextEntries,
+      treatments: allTreatments.map(t => t.name),  // flat list — back-compat for summary view
+      treatmentsByCondition: allTreatments,        // richer per-condition list
       photoAttached: !!photoUrl,
       wearableSynced,
     }
     writeCheckin(checkin)
+
+    // Persist to profile.treatmentList as tagged items, preserving any existing
+    // rich detail (dose/freq) the user added in their profile.
+    try {
+      const profile = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+      const existingMap = new Map(
+        (profile.treatmentList || []).map(t => {
+          const n = typeof t === 'string' ? t : t?.name
+          const c = (typeof t === 'object' ? t?.condition : null) || ''
+          return [`${c}::${n}`, t]
+        })
+      )
+      profile.treatmentList = allTreatments.map(({ name, condition }) => {
+        const key = `${condition || ''}::${name}`
+        return existingMap.get(key) || { name, condition, addedAt: new Date().toISOString() }
+      })
+      localStorage.setItem('skinsightsProfile', JSON.stringify(profile))
+    } catch (_) {}
+
     onComplete?.(checkin)
     setStep(5)
   }
@@ -541,10 +651,10 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
           </>
         )}
 
-        {step === 1 && (
+        {step === 2 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 1 of 3</span>
+              <span className="ci-label">Question 2 of 4</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
@@ -612,16 +722,16 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             </div>
 
             <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(0)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" disabled={!anySeverityAnswered} onClick={() => setStep(2)}>Continue →</button>
+              <button className="ci-back" onClick={() => setStep(1)}>← Back</button>
+              <button className="ci-btn ci-btn--inline" disabled={!anySeverityAnswered} onClick={() => setStep(3)}>Continue →</button>
             </div>
           </>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 2 of 3</span>
+              <span className="ci-label">Question 3 of 4</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
@@ -669,16 +779,16 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             </div>
 
             <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(1)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" disabled={!anySymptomsAnswered} onClick={() => setStep(3)}>Continue →</button>
+              <button className="ci-back" onClick={() => setStep(2)}>← Back</button>
+              <button className="ci-btn ci-btn--inline" disabled={!anySymptomsAnswered} onClick={() => setStep(4)}>Continue →</button>
             </div>
           </>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 3 of 3</span>
+              <span className="ci-label">Question 4 of 4</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
@@ -723,9 +833,112 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             )}
 
             <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(2)}>← Back</button>
+              <button className="ci-back" onClick={() => setStep(3)}>← Back</button>
               <button className="ci-btn ci-btn--inline" onClick={finish}>
                 {context.length === 0 ? 'Skip & log →' : 'Log check-in →'}
+              </button>
+            </div>
+          </>
+        )}
+
+        {step === 1 && (
+          <>
+            <div className="ci-header">
+              <span className="ci-label">Question 1 of 4 · Treatments</span>
+              <button className="ci-close" onClick={onClose}>✕</button>
+            </div>
+            <div className="ci-progress"><div className="ci-fill" style={{ width: '25%' }} /></div>
+
+            {/* Condition toggle — same pattern as severity / symptoms screens */}
+            {conditions.length > 1 && (
+              <div className="ci-cond-toggle" role="tablist">
+                {conditions.map(c => {
+                  const sel = c === activeCondition
+                  return (
+                    <button
+                      key={c}
+                      role="tab"
+                      type="button"
+                      aria-selected={sel}
+                      className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
+                      onClick={() => setActiveCondition(c)}
+                    >
+                      {c === '__generic' ? 'Skin' : c}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+            {conditions.length === 1 && activeCondition && activeCondition !== '__generic' && (
+              <div className="ci-cond-chip">Tracking your {activeCondition.toLowerCase()}</div>
+            )}
+
+            <h2 className="ci-title">
+              {treatments.length === 0
+                ? (conditions.length > 1
+                    ? `What are you using for your ${(activeCondition || 'skin').toLowerCase()}?`
+                    : 'What are you using to treat your skin?')
+                : 'Still using these treatments?'}
+            </h2>
+            <p className="ci-sub">
+              {treatments.length === 0
+                ? <>Search common products below, or <strong>type your own</strong> and add it as a chip. Next time you check in, you'll just confirm this list — no need to re-enter.</>
+                : 'Confirm what\'s still active, remove anything you\'ve stopped, or add something new.'}
+            </p>
+
+            {treatments.length > 0 && (
+              <div className="ci-tx-chips">
+                {treatments.map(name => (
+                  <span key={name} className="ci-tx-chip">
+                    <span className="ci-tx-chip__name">{name}</span>
+                    <button
+                      type="button"
+                      className="ci-tx-chip__x"
+                      aria-label={`Remove ${name}`}
+                      onClick={() => removeTreatment(name)}
+                    >✕</button>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div className="ci-tx-input-wrap">
+              <input
+                className="ci-tx-input"
+                type="text"
+                placeholder="Type a product, medication, or brand…"
+                value={treatmentInput}
+                onChange={e => setTreatmentInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTreatment() } }}
+              />
+              {treatmentInput.trim() && (
+                <button
+                  type="button"
+                  className="ci-tx-add"
+                  onClick={() => addTreatment()}
+                >+ Add "{treatmentInput.trim()}"</button>
+              )}
+              {treatmentSuggestions.length > 0 && (
+                <ul className="ci-tx-suggest">
+                  {treatmentSuggestions.map(s => (
+                    <li key={s}>
+                      <button type="button" className="ci-tx-suggest__btn" onClick={() => addTreatment(s)}>
+                        <span className="ci-tx-suggest__plus">+</span>{s}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <p className="ci-done__where" style={{ marginTop: 12 }}>
+              💡 Don't see it? Just type the name and tap <strong>Add</strong>. You can add dose &amp; frequency in your <strong>profile</strong> later.
+            </p>
+
+            <div className="ci-nav-row">
+              <button className="ci-back" onClick={() => setStep(0)}>← Back</button>
+              <button className="ci-btn ci-btn--inline" onClick={() => setStep(2)}>
+                {treatments.length === 0 ? 'Skip → next' : 'Continue →'}
               </button>
             </div>
           </>
@@ -837,6 +1050,12 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                         </div>
                       ))}
                     </div>
+                  </div>
+                )}
+                {viewing.treatments?.length > 0 && (
+                  <div className="ci-summary-row">
+                    <div className="ci-summary-row__key">Active treatments</div>
+                    <div className="ci-summary-row__val">{viewing.treatments.join(', ')}</div>
                   </div>
                 )}
                 {viewing.photoAttached && (

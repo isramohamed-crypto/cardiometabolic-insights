@@ -169,8 +169,11 @@ export default function Onboarding({ name, onClose }) {
     maybeSet('topics',          ans.q5)
     profile.onboardingSources = Array.from(onboardingSources)
     profile.skippedAt = new Date().toISOString()
+    // Fresh onboarding = clear stale per-session state.
+    delete profile.treatmentList
+    delete profile.aiSources
+    delete profile.aiSeededAt
     try { localStorage.setItem('skinsightsProfile', JSON.stringify(profile)) } catch (_) {}
-    // Fresh onboarding = fresh check-in state.
     try {
       localStorage.removeItem('skinsightsLastCheckin')
       localStorage.removeItem('skinsightsCheckins')
@@ -213,9 +216,12 @@ export default function Onboarding({ name, onClose }) {
     }
     next_data.onboardingSources = Array.from(onboardingSources)
     next_data.completedAt = new Date().toISOString()
+    // Fresh onboarding = clear stale per-session state so the check-in
+    // doesn't re-populate from an earlier demo run.
+    delete next_data.treatmentList
+    delete next_data.aiSources
+    delete next_data.aiSeededAt
     try { localStorage.setItem('skinsightsProfile', JSON.stringify(next_data)) } catch (_) {}
-    // Fresh onboarding = fresh check-in state. Otherwise the home feed card can
-    // look like "today's check-in is logged" from a stale demo session.
     try {
       localStorage.removeItem('skinsightsLastCheckin')
       localStorage.removeItem('skinsightsCheckins')

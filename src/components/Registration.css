@@ -216,12 +216,34 @@
   box-shadow: 0 4px 16px rgba(27, 188, 60,.3);
 }
 
+.reg-auth-btn--phone {
+  background: #fff;
+  color: var(--color-text-primary, #1A1A1A);
+  border: 1.5px solid var(--color-border, #EDE6D6);
+  box-shadow: 0 2px 12px rgba(30,50,42,.06);
+}
+
 .reg-auth-btn--google {
   background: #fff;
   color: #1A1A1A;
   border: 1.5px solid #EDE6D6;
   box-shadow: 0 2px 12px rgba(30,50,42,.06);
 }
+
+/* Inline link inside sheet sub copy ("Change number", "Resend code") */
+.reg-sheet__link {
+  background: none;
+  border: none;
+  color: var(--color-teal, #1BBC3C);
+  font-weight: 600;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+  font-family: inherit;
+}
+.reg-sheet__link:hover { opacity: .85 }
 
 .reg-auth-btn--apple {
   background: #1A1A1A;

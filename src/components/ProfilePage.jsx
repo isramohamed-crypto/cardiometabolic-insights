@@ -31,7 +31,6 @@ const AI_SEEDS = {
   topics:        ['Home', 'Food', 'Entertainment'],
   climate:       'Cold and dry',
   comms_freq:    'A few times a week',
-  routine_type:  'Moderate — a few products',
 }
 
 const SECTIONS = [
@@ -55,9 +54,6 @@ const SECTIONS = [
       { id: 'role',            label: 'Managing for',          type: 'select',      options: ['Myself', 'My child', 'Someone else'] },
       { id: 'diagnosisStatus', label: 'Diagnosis status',      type: 'select',      options: ['Yes, I have a diagnosis', 'Not yet / not sure'] },
       { id: 'condition',       label: 'Conditions / concerns', type: 'multiselect', options: ['Eczema', 'Psoriasis', 'Rosacea', 'Acne', 'Something else (diagnosed)', 'Redness or irritation', 'Dryness or flaking', 'Itching or sensitivity', 'Breakouts or bumps', 'Unpredictable flare-ups'] },
-      { id: 'diagnosed_when',  label: 'When diagnosed',        type: 'select',      options: ['Within the last year', '1–3 years ago', '3–10 years ago', 'More than 10 years ago', 'As long as I can remember', 'Not yet diagnosed'] },
-      { id: 'severity',        label: 'Current severity',      type: 'select',      options: ['Mild — barely notice it', 'Moderate — affects daily life', 'Severe — significantly impacts life', 'It varies a lot'] },
-      { id: 'treatments',      label: 'Current treatments',    type: 'multiselect', options: ['Moisturizers', 'OTC hydrocortisone', 'Prescription topicals', 'Oral steroids', 'Biologic (e.g. Dupixent)', 'Light therapy', 'No treatment'] },
       { id: 'triggers',        label: 'Known triggers',        type: 'multiselect', options: ['Stress', 'Heat / humidity', 'Cold / dry air', 'Specific foods', 'Sweating / exercise', 'Fragrances', 'Soaps / detergents', 'Pets', 'Pollen / allergies', 'Hormonal cycles'] },
       { id: 'comorbidities',   label: 'Other conditions',      type: 'multiselect', options: ['Asthma', 'Seasonal allergies', 'Food allergies', 'Hay fever', 'Anxiety', 'Depression', 'None of these'] },
     ],
@@ -82,7 +78,6 @@ const SECTIONS = [
       { id: 'diet',           label: 'Diet pattern',          type: 'select', options: ['No restrictions', 'Vegetarian', 'Vegan', 'Pescatarian', 'Gluten-free', 'Dairy-free', 'Other'] },
       { id: 'climate',        label: 'Climate where you live',type: 'select', options: ['Hot and humid', 'Hot and dry', 'Temperate / mild', 'Cold and dry', 'Cold and humid', 'Four distinct seasons'] },
       { id: 'pets',           label: 'Pets in your home',     type: 'multiselect', options: ['Dog', 'Cat', 'Other furry pet', 'Bird', 'Fish / reptile', 'No pets'] },
-      { id: 'routine_type',   label: 'Skincare routine',      type: 'select', options: ['Minimal — soap + moisturizer', 'Moderate — a few products', 'Extensive — multi-step routine', 'No routine yet'] },
     ],
   },
   {
@@ -189,6 +184,14 @@ export default function ProfilePage({ onClose, onAskAI }) {
     })
   }
 
+  function updateTreatmentList(newList) {
+    setProfile(p => {
+      const next = { ...p, treatmentList: newList, updatedAt: new Date().toISOString() }
+      writeStored(next)
+      return next
+    })
+  }
+
   const aiSources = new Set(profile.aiSources || [])
   const onboardingSources = new Set(profile.onboardingSources || [])
   const { pct, total, filled, label: tierLabel } = computeCompletion(profile)
@@ -234,22 +237,188 @@ export default function ProfilePage({ onClose, onAskAI }) {
 
         {/* Sections */}
         {SECTIONS.map(sec => (
-          <Section
-            key={sec.id}
-            section={sec}
-            profile={profile}
-            aiSources={aiSources}
-            onboardingSources={onboardingSources}
-            editingFieldId={editing?.sectionId === sec.id ? editing.fieldId : null}
-            onEdit={(fieldId) => setEditing(editing?.fieldId === fieldId ? null : { sectionId: sec.id, fieldId })}
-            onSet={setField}
-          />
+          <React.Fragment key={sec.id}>
+            <Section
+              section={sec}
+              profile={profile}
+              aiSources={aiSources}
+              onboardingSources={onboardingSources}
+              editingFieldId={editing?.sectionId === sec.id ? editing.fieldId : null}
+              onEdit={(fieldId) => setEditing(editing?.fieldId === fieldId ? null : { sectionId: sec.id, fieldId })}
+              onSet={setField}
+            />
+            {/* Treatments & products lives directly after Health context. */}
+            {sec.id === 'health' && (
+              <TreatmentsSection profile={profile} onUpdate={updateTreatmentList} />
+            )}
+          </React.Fragment>
         ))}
+
 
         <div className="pp-footer">
           <button className="pp-done" onClick={onClose}>Done</button>
         </div>
       </div>
+    </div>
+  )
+}
+
+const FREQ_OPTIONS = [
+  'Once daily', 'Twice daily', 'Three times daily',
+  'As needed', '2–3x a week', 'Weekly', 'Every 2 weeks', 'Monthly',
+]
+
+/**
+ * Treatments & products — read-only chips synced from check-in chips,
+ * but each row is tappable to enrich with dose, frequency, notes.
+ * Persists everything to profile.treatmentList via onUpdate.
+ */
+function TreatmentsSection({ profile, onUpdate }) {
+  const list = Array.isArray(profile?.treatmentList) ? profile.treatmentList : []
+  const [editingKey, setEditingKey] = useState(null)   // `${condition||''}::${name}`
+  const [form, setForm] = useState({ dose: '', frequency: '', notes: '' })
+
+  function keyFor(item) {
+    const c = (typeof item === 'object' ? item?.condition : null) || ''
+    const n = typeof item === 'string' ? item : item?.name
+    return `${c}::${n}`
+  }
+
+  function startEdit(item) {
+    const obj = typeof item === 'string' ? { name: item } : item
+    setEditingKey(keyFor(item))
+    setForm({
+      dose: obj.dose || '',
+      frequency: obj.frequency || '',
+      notes: obj.notes || '',
+    })
+  }
+
+  function cancelEdit() {
+    setEditingKey(null)
+    setForm({ dose: '', frequency: '', notes: '' })
+  }
+
+  function saveEdit() {
+    const updated = list.map(item => {
+      if (keyFor(item) !== editingKey) return item
+      const base = typeof item === 'string' ? { name: item } : { ...item }
+      return {
+        ...base,
+        dose: form.dose.trim() || null,
+        frequency: form.frequency.trim() || null,
+        notes: form.notes.trim() || null,
+        updatedAt: new Date().toISOString(),
+      }
+    })
+    onUpdate(updated)
+    cancelEdit()
+  }
+
+  // Group by condition for display
+  const groups = {}
+  for (const item of list) {
+    const name = typeof item === 'string' ? item : item?.name
+    if (!name) continue
+    const cond = (typeof item === 'object' && item?.condition) || '__general'
+    groups[cond] = groups[cond] || []
+    groups[cond].push(item)
+  }
+  const groupKeys = Object.keys(groups)
+
+  return (
+    <div className="pp-section">
+      <div className="pp-section__head">
+        <div className="pp-section__title">
+          <span className="pp-section__icon">🧴</span>
+          <span>Treatments &amp; products</span>
+        </div>
+        {list.length > 0 && (
+          <span className="pp-section__count pp-section__count--complete">{list.length} active</span>
+        )}
+      </div>
+
+      {list.length === 0 ? (
+        <div className="pp-fields">
+          <div className="pp-field" style={{ padding: '14px 16px' }}>
+            <div className="pp-field__label">No treatments logged yet</div>
+            <div className="pp-field__value pp-field__value--empty">
+              Add what you're using during your next skin check-in. They'll show up here for you to add dose &amp; frequency.
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="pp-fields">
+          {groupKeys.map(key => (
+            <React.Fragment key={key}>
+              {groupKeys.length > 1 && (
+                <div className="pp-tx-group__label">
+                  {key === '__general' ? 'General' : key}
+                </div>
+              )}
+              {groups[key].map((item) => {
+                const k = keyFor(item)
+                const obj = typeof item === 'string' ? { name: item } : item
+                const meta = [obj.dose, obj.frequency].filter(Boolean).join(' · ')
+                const isEditing = editingKey === k
+                return (
+                  <div key={k} className={`pp-field${isEditing ? ' pp-field--editing' : ''}`}>
+                    <button className="pp-field__row" type="button" onClick={() => startEdit(item)}>
+                      <div className="pp-field__main">
+                        <div className="pp-field__label" style={{ textTransform: 'none', letterSpacing: 0, fontSize: 14, color: '#1A1520', fontWeight: 600 }}>
+                          {obj.name}
+                        </div>
+                        <div className={`pp-field__value${meta ? '' : ' pp-field__value--empty'}`}>
+                          {meta || 'Add dose & frequency'}
+                        </div>
+                      </div>
+                      <span className="pp-field__edit">{meta ? 'Edit' : '+ Details'}</span>
+                    </button>
+                    {isEditing && (
+                      <div className="pp-editor">
+                        <label className="pp-tx-edit-label">Dose</label>
+                        <input
+                          className="pp-editor__input"
+                          type="text"
+                          placeholder="e.g. 0.025%, 300mg, 1 pump"
+                          value={form.dose}
+                          onChange={e => setForm(f => ({ ...f, dose: e.target.value }))}
+                        />
+                        <label className="pp-tx-edit-label" style={{ marginTop: 10 }}>Frequency</label>
+                        <div className="pp-editor__opts">
+                          {FREQ_OPTIONS.map(opt => (
+                            <button
+                              key={opt}
+                              type="button"
+                              className={`pp-chip${form.frequency === opt ? ' pp-chip--sel' : ''}`}
+                              onClick={() => setForm(f => ({ ...f, frequency: opt }))}
+                            >{opt}</button>
+                          ))}
+                        </div>
+                        <label className="pp-tx-edit-label" style={{ marginTop: 10 }}>Notes (optional)</label>
+                        <input
+                          className="pp-editor__input"
+                          type="text"
+                          placeholder="When applied, side effects, anything to remember…"
+                          value={form.notes}
+                          onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                        />
+                        <div className="pp-editor__actions">
+                          <button className="pp-editor__cancel" type="button" onClick={cancelEdit}>Cancel</button>
+                          <button className="pp-editor__save" type="button" onClick={saveEdit}>Save</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </React.Fragment>
+          ))}
+          <p className="pp-tx-foot">
+            💡 Add or remove items during your next skin check-in. Dose &amp; frequency tracked here power adherence insights.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
