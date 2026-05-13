@@ -213,17 +213,21 @@ export default function App() {
               <TodayCard />
             </div> */}
           </div>
+          {/* Today screen section order:
+              1 hero · 2 quick wins · 3 travel+leisure · 4 skin check ·
+              5 ones to watch · 6 eczema in real life · 7 stress-skin ·
+              8 real stories · 9 expert advice · 10 weekly health pulse */}
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-          <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
-          <DupixentAd />
-          <WatchNow />
-          <HealthPulseCard onOpen={() => setShowPulse(true)} tick={pulseTick} />
-          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <AutumnTravelCard />
+          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           <OnesToWatch />
           <QuickAnswers />
+          <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <PeerStories />
+          <WatchNow />
+          <HealthPulseCard onOpen={() => setShowPulse(true)} tick={pulseTick} />
+          {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
           {/* <InsightSection /> */}
         </main>
       )}

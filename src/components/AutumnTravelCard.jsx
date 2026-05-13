@@ -27,14 +27,17 @@ const SHARED_INTRO = 'With a bit of planning—like thoughtful packing to prepar
 const PERSONA_CONTENT = {
   food: {
     title: 'For the Food and Cuisine Fanatic',
+    video: '/tl-food-and-cuisine.mp4',
     body: "When you think of New England, you may picture quaint coastal towns and centuries of history, but don't let that distract you from another star of the show: the can't-miss local fare. Crack into fresh-caught seafood—perhaps at McLoons Lobster Shack in South Thomason, ME—or enjoy natural, maple sweetness at Dutton's Sugar Shack & Berry Farm in Manchester Center, VT.",
   },
   culture: {
     title: 'For the Culture Seeker',
+    video: '/TL-Culture-Seeker.mp4',
     body: "When you think of New England, you may picture quaint coastal towns and centuries of history, but don't let that distract you from another star of the show: the can't-miss local fare. Crack into fresh-caught seafood—perhaps at McLoons Lobster Shack in South Thomason, ME—or enjoy natural, maple sweetness at Dutton's Sugar Shack & Berry Farm in Manchester Center, VT.",
   },
   family: {
     title: 'For the Family-Focused Traveler',
+    video: '/TL-Family-Focus.mp4',
     body: "When you think of New England, you may picture quaint coastal towns and centuries of history, but don't let that distract you from another star of the show: the can't-miss local fare. Crack into fresh-caught seafood—perhaps at McLoons Lobster Shack in South Thomason, ME—or enjoy natural, maple sweetness at Dutton's Sugar Shack & Berry Farm in Manchester Center, VT.",
   },
 }
@@ -96,11 +99,17 @@ function PersonaView({ personaId, onBack }) {
         ← Finding Fall
       </button>
       <p className="tl-persona__intro">{SHARED_INTRO}</p>
-      <div
-        className={`tl-persona__image tl-persona__image--${persona.tone}`}
-        role="img"
-        aria-label={`${content.title} placeholder image`}
-      />
+      <video
+        key={content.video}
+        className={`tl-persona__media tl-persona__media--${persona.tone}`}
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-label={content.title}
+      >
+        <source src={content.video} type="video/mp4" />
+      </video>
       <h3 className={`tl-persona__title tl-persona__title--${persona.tone}`}>
         {content.title}
       </h3>
