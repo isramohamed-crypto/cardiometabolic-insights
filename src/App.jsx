@@ -26,6 +26,8 @@ import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
 import CommunityPoll from './components/CommunityPoll'
+import AutumnTravelCard from './components/AutumnTravelCard'
+import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
 import TrackPage from './components/TrackPage'
@@ -218,7 +220,8 @@ export default function App() {
           <WatchNow />
           <HealthPulseCard onOpen={() => setShowPulse(true)} tick={pulseTick} />
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
-          <CommunityPoll />
+          <AutumnTravelCard />
+          <OnesToWatch />
           <QuickAnswers />
           <PeerStories />
           {/* <InsightSection /> */}
