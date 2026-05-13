@@ -59,7 +59,7 @@ const Q5_TOPICS_MORE = [
 const Q5_TOPICS = [...Q5_TOPICS_PRIMARY, ...Q5_TOPICS_MORE]
 
 const Q5 = {
-  text: 'What kinds of content interest you?',
+  text: 'What\'s most important to you?',
   sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
 }
 
@@ -304,8 +304,8 @@ export default function Onboarding({ name, onClose }) {
   // ── QUESTION SCREENS (1–4) ──────────────────────────────────────────
   const firstName = (ans.q2 || name || '').trim().split(' ')[0]
   const heroHeadline = firstName
-    ? <>{firstName}, let's <em>personalize</em> your care.</>
-    : <>Better skin <em>starts here.</em></>
+    ? <>{firstName}, let's <em>personalize</em> your experience.</>
+    : <>Let's <em>personalize</em> your experience.</>
   const heroSub = firstName
     ? `A few quick questions to tailor your feed, tracking, and guidance around what matters most to you.`
     : `Let's personalize your skin companion — five quick questions.`

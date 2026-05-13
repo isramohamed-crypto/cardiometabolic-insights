@@ -154,10 +154,12 @@ h2 {
   color: var(--color-text-secondary);
 }
 .nav--scrolled .nav__link--active,
-.nav--secondary .nav__link--active,
+.nav--secondary .nav__link--active {
+  color: var(--color-teal);
+}
 .nav--scrolled .nav__link:hover,
 .nav--secondary .nav__link:hover {
-  color: var(--color-teal);
+  color: var(--color-teal-dark);             /* Seaweed */
 }
 .nav--scrolled .nav__avatar,
 .nav--secondary .nav__avatar {
@@ -190,9 +192,8 @@ h2 {
   color: var(--color-text-secondary);
   transition: color .15s;
 }
-.nav__link--active,
-.nav__link:hover { color: var(--color-teal); }
-.nav__link--active { font-weight: 700; }
+.nav__link--active { color: var(--color-teal); font-weight: 700; }
+.nav__link:hover    { color: var(--color-teal-dark); }     /* Seaweed */
 
 .nav__avatar {
   width: 32px; height: 32px;
@@ -231,7 +232,7 @@ h2 {
   background-position: center;
   background-repeat: no-repeat;
   min-height: 280px;
-  border-bottom: 1px solid var(--color-lime);   /* Green Apple */
+  border-bottom: 1px solid var(--color-coral-light);   /* Light pink */
   padding-top: var(--nav-height);
   padding-bottom: var(--space-5);
   margin-bottom: var(--space-5);
@@ -1820,7 +1821,7 @@ h2 {
 .bottom-nav__item svg { width: 20px; height: 20px; }
 .bottom-nav__item--active { color: var(--color-teal); font-weight: 700; }
 .bottom-nav__item--active svg { fill: none; stroke: var(--color-teal); }
-.bottom-nav__item:hover { color: rgba(255,255,255,0.8); }
+.bottom-nav__item:hover { color: var(--color-teal-dark); }   /* Seaweed */
 
 /* ── AD PLACEHOLDER ─────────────────────────────────────────── */
 .dupixent-ad-wrap {
@@ -4111,9 +4112,9 @@ h2 {
 }
 .ask-ai__inner {
   /* Was tuned for dark green hero — now sits on cream/petal hero, so use
-     an opaque white card with a subtle border. */
+     an opaque white card with a Green-Apple border. */
   background: rgba(255, 252, 245, 0.85);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-lime);          /* Green Apple */
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   backdrop-filter: blur(8px);
@@ -4123,6 +4124,7 @@ h2 {
   align-items: center;
   gap: var(--space-2);
   background: rgba(255,255,255,0.95);
+  border: 1px solid var(--color-sage-light);     /* Cornflower */
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
   margin-bottom: var(--space-4);
@@ -4504,7 +4506,7 @@ h2 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-bottom: 1px solid var(--color-lime);   /* Green Apple */
+  border-bottom: 1px solid var(--color-coral-light);   /* Light pink */
   margin-top: calc(-1 * var(--nav-height));
   padding-top: calc(var(--nav-height) + var(--space-8));
   padding-bottom: var(--space-8);
