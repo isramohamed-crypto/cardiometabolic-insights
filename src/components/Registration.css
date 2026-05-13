@@ -218,9 +218,9 @@
 
 .reg-auth-btn--phone {
   background: #fff;
-  color: var(--color-text-primary, #1A1A1A);
-  border: 1.5px solid var(--color-border, #EDE6D6);
-  box-shadow: 0 2px 12px rgba(30,50,42,.06);
+  color: var(--color-teal, #1BBC3C);
+  border: 1.5px solid var(--color-teal, #1BBC3C);
+  box-shadow: 0 2px 12px rgba(27, 188, 60,.08);
 }
 
 .reg-auth-btn--google {

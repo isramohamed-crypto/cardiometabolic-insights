@@ -3,47 +3,25 @@ import './Registration.css'
 
 export default function Registration({ onClose, onStartOnboarding }) {
   const [showSheet, setShowSheet] = useState(false)
-  const [showPhone, setShowPhone] = useState(false)
-  const [phoneStep, setPhoneStep] = useState(1)   // 1 = number, 2 = code
-  const [phone, setPhone] = useState('')
-  const [code, setCode] = useState('')
+  const [signupMethod, setSignupMethod] = useState('email')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [hipaa, setHipaa] = useState(true)
   const [comms, setComms] = useState(false)
   const nameRef = useRef(null)
-  const phoneRef = useRef(null)
-  const codeRef = useRef(null)
 
-  const canSubmit = name.trim().length >= 2 && email.includes('@') && email.includes('.') && password.length >= 8 && hipaa
-  const phoneDigits = phone.replace(/\D/g, '')
-  const canSendCode = phoneDigits.length >= 10
-  const canVerify   = code.replace(/\D/g, '').length === 6
+  const phoneDigits = (phone.match(/\d/g) || []).length
+  const contactValid = signupMethod === 'email'
+    ? (email.includes('@') && email.includes('.'))
+    : phoneDigits >= 10
+  const canSubmit = name.trim().length >= 2 && contactValid && password.length >= 8 && hipaa
 
-  function openSheet() {
+  function openSheet(method = 'email') {
+    setSignupMethod(method)
     setShowSheet(true)
     setTimeout(() => nameRef.current?.focus(), 350)
-  }
-
-  function openPhoneSheet() {
-    setPhoneStep(1)
-    setPhone('')
-    setCode('')
-    setShowPhone(true)
-    setTimeout(() => phoneRef.current?.focus(), 350)
-  }
-
-  function sendCode() {
-    if (!canSendCode) return
-    setPhoneStep(2)
-    setTimeout(() => codeRef.current?.focus(), 200)
-  }
-
-  function verifyCode() {
-    if (!canVerify) return
-    setShowPhone(false)
-    onStartOnboarding('')
   }
 
   function handleSubmit() {
@@ -128,11 +106,17 @@ export default function Registration({ onClose, onStartOnboarding }) {
           </div>
 
           <div className="reg-auth-buttons">
-            <button className="reg-auth-btn reg-auth-btn--email" onClick={openSheet}>
+            <button className="reg-auth-btn reg-auth-btn--email" onClick={() => openSheet('email')}>
               <span className="reg-auth-btn__icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
               </span>
               Continue with Email
+            </button>
+            <button className="reg-auth-btn reg-auth-btn--phone" onClick={() => openSheet('phone')}>
+              <span className="reg-auth-btn__icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </span>
+              Continue with Phone
             </button>
             <button className="reg-auth-btn reg-auth-btn--google" onClick={socialSignIn}>
               <span className="reg-auth-btn__icon">
@@ -168,10 +152,17 @@ export default function Registration({ onClose, onStartOnboarding }) {
               <label className="reg-input-label">Your first name</label>
               <input ref={nameRef} className="reg-input" type="text" placeholder="What should we call you?" value={name} onChange={e => setName(e.target.value)} autoComplete="given-name" />
             </div>
-            <div className="reg-input-group">
-              <label className="reg-input-label">Email address</label>
-              <input className="reg-input" type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" />
-            </div>
+            {signupMethod === 'email' ? (
+              <div className="reg-input-group">
+                <label className="reg-input-label">Email address</label>
+                <input className="reg-input" type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" />
+              </div>
+            ) : (
+              <div className="reg-input-group">
+                <label className="reg-input-label">Phone number</label>
+                <input className="reg-input" type="tel" inputMode="tel" placeholder="(555) 123-4567" value={phone} onChange={e => setPhone(e.target.value)} autoComplete="tel" />
+              </div>
+            )}
             <div className="reg-input-group">
               <label className="reg-input-label">Create a password</label>
               <input className="reg-input" type="password" placeholder="At least 8 characters" value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" />
@@ -184,7 +175,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
               </div>
               <div className="reg-consent-row" onClick={() => setComms(v => !v)}>
                 <div className={`reg-consent-check${comms ? ' on' : ''}`}>{comms ? '✓' : ''}</div>
-                <div className="reg-consent-text">Send me personalized tips, content updates, and weekly skin summaries via email.</div>
+                <div className="reg-consent-text">Send me personalized tips, content updates, and weekly skin summaries{signupMethod === 'phone' ? ' by text.' : ' via email.'}</div>
               </div>
             </div>
 
@@ -196,73 +187,6 @@ export default function Registration({ onClose, onStartOnboarding }) {
         </div>
       )}
 
-      {/* PHONE SHEET — 2-step (number, then verification code) */}
-      {showPhone && (
-        <div className="reg-sheet-overlay" onClick={e => { if (e.target === e.currentTarget) setShowPhone(false) }}>
-          <div className="reg-sheet">
-            <div className="reg-sheet__header">
-              <div className="reg-sheet__title">
-                {phoneStep === 1 ? 'Sign in with phone' : 'Enter verification code'}
-              </div>
-              <button className="reg-sheet__close" onClick={() => setShowPhone(false)}>✕</button>
-            </div>
-
-            {phoneStep === 1 ? (
-              <>
-                <p className="reg-sheet__sub">We'll text you a 6-digit code to verify. Standard message rates may apply.</p>
-                <div className="reg-input-group">
-                  <label className="reg-input-label">Phone number</label>
-                  <input
-                    ref={phoneRef}
-                    className="reg-input"
-                    type="tel"
-                    inputMode="tel"
-                    placeholder="+1 (555) 555-5555"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                    autoComplete="tel"
-                    onKeyDown={e => { if (e.key === 'Enter') sendCode() }}
-                  />
-                </div>
-                <button className="reg-sheet-btn" disabled={!canSendCode} onClick={sendCode}>
-                  Send code →
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="reg-sheet__sub">
-                  We sent a code to <strong>{phone}</strong>.{' '}
-                  <button className="reg-sheet__link" type="button" onClick={() => setPhoneStep(1)}>Change number</button>
-                </p>
-                <div className="reg-input-group">
-                  <label className="reg-input-label">6-digit code</label>
-                  <input
-                    ref={codeRef}
-                    className="reg-input"
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="123 456"
-                    value={code}
-                    onChange={e => setCode(e.target.value.replace(/[^\d ]/g, '').slice(0, 7))}
-                    autoComplete="one-time-code"
-                    maxLength={7}
-                    onKeyDown={e => { if (e.key === 'Enter') verifyCode() }}
-                  />
-                </div>
-                <button className="reg-sheet-btn" disabled={!canVerify} onClick={verifyCode}>
-                  Verify & continue →
-                </button>
-                <p className="reg-sheet-terms">
-                  Didn't get it? <button className="reg-sheet__link" type="button" onClick={sendCode}>Resend code</button>
-                </p>
-              </>
-            )}
-            {phoneStep === 1 && (
-              <p className="reg-sheet-terms">Your number is encrypted and HIPAA-compliant. We never sell your information. <a href="#">Privacy Policy</a></p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   )
 }
