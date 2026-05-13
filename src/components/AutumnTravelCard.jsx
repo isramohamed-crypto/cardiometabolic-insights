@@ -124,6 +124,7 @@ export default function AutumnTravelCard() {
 
   return (
     <section className="tl-section">
+      <h2 className="tl-section__heading">Because you liked Travel…</h2>
       <article className={`tl-card${onCard ? ' tl-card--persona' : ''}`}>
         {activePersona
           ? <PersonaView personaId={activePersona} onBack={() => setActivePersona(null)} />

@@ -3170,6 +3170,15 @@ h2 {
 .tl-section {
   padding: var(--space-6) var(--space-5) var(--space-4);
 }
+.tl-section__heading {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: var(--space-3);
+}
 .tl-card {
   position: relative;
   width: 100%;
