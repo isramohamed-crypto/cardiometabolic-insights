@@ -3255,28 +3255,19 @@ h2 {
   margin: 0 0 18px;
   text-align: center;
 }
-.tl-persona__image {
+.tl-persona__media {
   width: calc(100% + 40px);
   margin: 0 -20px 18px;
   aspect-ratio: 294 / 186;
-  background-size: cover;
-  background-position: center;
+  display: block;
+  object-fit: cover;
 }
-.tl-persona__image--rust {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
-    linear-gradient(135deg, #C9612E, #7E3215);
-}
-.tl-persona__image--olive {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.10)),
-    linear-gradient(135deg, #8E9534, #4F571B);
-}
-.tl-persona__image--brown {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.10)),
-    linear-gradient(135deg, #9B6526, #4F2D0C);
-}
+/* Color-tinted fallback shown while the mp4 buffers (or if it 404s).
+   Layered behind the <video>; with object-fit:cover the video covers
+   it fully once playback starts. */
+.tl-persona__media--rust  { background: linear-gradient(135deg, #C9612E, #7E3215); }
+.tl-persona__media--olive { background: linear-gradient(135deg, #8E9534, #4F571B); }
+.tl-persona__media--brown { background: linear-gradient(135deg, #9B6526, #4F2D0C); }
 .tl-persona__title {
   font-family: var(--font-serif);
   font-size: 26px;
