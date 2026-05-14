@@ -300,7 +300,7 @@ export default function Onboarding({ name, onClose }) {
               </div>
             )}
 
-            <button className="ob-cta" onClick={onClose}>Let's get skinsighted →</button>
+            <button className="ob-cta" onClick={onClose}>Let's get started →</button>
           </div>
         </div>
       </div>
