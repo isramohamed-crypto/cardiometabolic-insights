@@ -5220,6 +5220,24 @@ h2 {
 .pp-q-icon--psoriasis { background: var(--color-cond-psoriasis-light); }
 .pp-q-icon--rosacea   { background: var(--color-cond-rosacea-light); }
 .pp-q-icon--acne      { background: var(--color-cond-acne-light); }
+
+/* Sponsor row inside the Key-findings list — same vertical rhythm as
+   a regular .pp-q-row but centers a Sanofi logo in place of the icon
+   + text + reason content. */
+.pp-q-row--sponsor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) 0;
+  min-height: 64px;
+}
+.pp-q-sponsor-logo {
+  height: 28px;
+  width: auto;
+  max-width: 60%;
+  object-fit: contain;
+  display: block;
+}
 .pp-q-text { font-size: 14px; font-weight: 500; color: var(--color-text-primary); line-height: 1.45; }
 .pp-q-reason { font-size: 11px; color: var(--color-text-muted); margin-top: 3px; }
 
@@ -5948,6 +5966,9 @@ h2 {
 }
 .sponsor-card-wrap .sponsor-banner--card {
   height: 216px;
+}
+.sponsor-card-wrap--lg .sponsor-banner--card {
+  height: 280px;
 }
 
 /* Sponsored card — same outer dimensions as a regular .rs-card, but

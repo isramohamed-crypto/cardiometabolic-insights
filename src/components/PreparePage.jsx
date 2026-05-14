@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import SponsorBanner from './SponsorBanner'
 
 const PEOPLE_INC_BRANDS = new Set([
   'People', 'Real Simple', 'Verywell Health', 'Verywell Mind',
@@ -739,18 +740,29 @@ export default function PreparePage() {
           {allFindings.map((item, i) => {
             const cMod = item.condition ? `--${item.condition.toLowerCase()}` : ''
             return (
-              <div key={i} className="pp-q-row">
-                <div className={`pp-q-icon${cMod ? ` pp-q-icon${cMod}` : ''}`}>{item.icon}</div>
-                <div>
-                  <div className="pp-q-text">{item.text}</div>
-                  <div className="pp-q-reason">
-                    {item.condition && (
-                      <span className={`pp-cond-tag pp-cond-tag${cMod}`}>{item.condition}</span>
-                    )}
-                    {item.reason}
+              <React.Fragment key={i}>
+                <div className="pp-q-row">
+                  <div className={`pp-q-icon${cMod ? ` pp-q-icon${cMod}` : ''}`}>{item.icon}</div>
+                  <div>
+                    <div className="pp-q-text">{item.text}</div>
+                    <div className="pp-q-reason">
+                      {item.condition && (
+                        <span className={`pp-cond-tag pp-cond-tag${cMod}`}>{item.condition}</span>
+                      )}
+                      {item.reason}
+                    </div>
                   </div>
                 </div>
-              </div>
+                {i === 0 && (
+                  <div className="pp-q-row pp-q-row--sponsor" aria-label="Sponsored by Sanofi">
+                    <img
+                      src="/sanofi.jpg"
+                      alt="Sanofi"
+                      className="pp-q-sponsor-logo"
+                    />
+                  </div>
+                )}
+              </React.Fragment>
             )
           })}
         </div>
@@ -819,6 +831,10 @@ export default function PreparePage() {
         >
           {shared ? `✓ Report shared with ${dermName}` : `Share report with ${dermName} →`}
         </button>
+      </div>
+
+      <div className="sponsor-card-wrap sponsor-card-wrap--lg">
+        <SponsorBanner variant="card" />
       </div>
 
       {/* Swipe */}

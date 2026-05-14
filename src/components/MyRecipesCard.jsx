@@ -41,10 +41,10 @@ function DefaultView({ onPersonaSelect }) {
         <h2 className="tl-card__brand mr-card__brand">MyRecipes</h2>
         <div className="tl-card__bottom">
           <h3 className="tl-card__title mr-card__title">
-            Top-rated high-protein breakfasts
+            Quick meals for sensitive skin
           </h3>
           <p className="tl-card__sub">
-            Crowd-pleasing morning recipes packed with protein.
+            Crowd-pleasing recipes that don&rsquo;t trigger sensitivities.
           </p>
           <div className="tl-card__cta-list">
             {PERSONAS.map(p => (
