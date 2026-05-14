@@ -478,6 +478,10 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         )}
       </div>
 
+      <div className="sponsor-card-wrap">
+        <SponsorBanner variant="card" />
+      </div>
+
       {/* Recommended for you */}
       <div className="tp-section">
         <div className="tp-sec-head"><h2 className="tp-sec-title">Recommended for you</h2></div>
@@ -494,8 +498,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           <div style={{ minWidth: 'var(--space-4)', flexShrink: 0 }} />
         </div>
       </div>
-
-      <SponsorBanner />
 
       {/* Body signals */}
       <div className="tp-section">
@@ -542,6 +544,8 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           </div>
         ))}
       </div>
+
+      <SponsorBanner />
 
       {/* DLQI Results */}
       <div className="tp-section" style={{ marginBottom: 'var(--space-6)' }}>

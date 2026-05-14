@@ -241,6 +241,7 @@ export default function LearnPage() {
         {JOURNEYS.map(j => (
           <React.Fragment key={j.id}>
             {j.id === 'sleep' && <SponsorBanner variant="card" />}
+            {j.id === 'hcp' && <SponsorBanner />}
             <JourneyCard journey={j} />
           </React.Fragment>
         ))}

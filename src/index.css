@@ -5970,6 +5970,12 @@ h2 {
 .sponsor-card-wrap--lg .sponsor-banner--card {
   height: 280px;
 }
+/* On Learn, the card variant lives directly in the .lp-journeys flex
+   column (no wrapper). Bump its height to match the Today card so it
+   reads as a real card surface, not a thin banner. */
+.lp-journeys .sponsor-banner--card {
+  height: 216px;
+}
 
 /* Sponsored card — same outer dimensions as a regular .rs-card, but
    replaces the image + quote stack with a centered sponsor logo. */
