@@ -38,7 +38,13 @@ function DefaultView({ onPersonaSelect }) {
     <>
       <div className="tl-card__overlay" aria-hidden="true" />
       <div className="tl-card__content">
-        <h2 className="tl-card__brand mr-card__brand">MyRecipes</h2>
+        <h2 className="tl-card__brand mr-card__brand">
+          <img
+            src="/myrecipes-logo.png"
+            alt="MyRecipes"
+            className="mr-card__logo"
+          />
+        </h2>
         <div className="tl-card__bottom">
           <h3 className="tl-card__title mr-card__title">
             Quick meals for sensitive skin
