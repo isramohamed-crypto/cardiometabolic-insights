@@ -50,14 +50,14 @@
   /* Per-condition palette — each tracked condition gets its own color
      so multi-condition users can scan their data by condition at a
      glance (most visible in the "Questions to ask" rows). */
-  --color-cond-eczema:           var(--color-teal);
-  --color-cond-eczema-light:     var(--color-teal-light);
-  --color-cond-psoriasis:        var(--color-coral);
+  --color-cond-eczema:           var(--color-sage);           /* Mineral Blue */
+  --color-cond-eczema-light:     var(--color-sage-light);
+  --color-cond-psoriasis:        var(--color-coral);          /* Watermelon */
   --color-cond-psoriasis-light:  var(--color-coral-light);
-  --color-cond-rosacea:          var(--color-warm);
+  --color-cond-rosacea:          var(--color-warm);           /* Tangerine */
   --color-cond-rosacea-light:    var(--color-warm-light);
-  --color-cond-acne:             var(--color-sage);
-  --color-cond-acne-light:       var(--color-sage-light);
+  --color-cond-acne:             #E66B8E;                     /* Guava */
+  --color-cond-acne-light:       #FFEEF3;                     /* Very light pink */
 
   /* Neutrals — cream system */
   --color-bg:            #FFFCF5;   /* Cream */
@@ -5874,6 +5874,14 @@ h2 {
   border: 1px solid var(--color-border);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
+}
+/* On surfaces with no horizontal padding (e.g. Today's <main>), wrap the
+   card variant in .sponsor-card-wrap to inset it from the page edges. */
+.sponsor-card-wrap {
+  padding: var(--space-4) var(--space-5);
+}
+.sponsor-card-wrap .sponsor-banner--card {
+  height: 216px;
 }
 
 /* Sponsored card — same outer dimensions as a regular .rs-card, but

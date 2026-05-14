@@ -236,7 +236,9 @@ export default function App() {
           </section>
 
           <QuickAnswers />
-          <SponsorBanner />
+          <div className="sponsor-card-wrap">
+            <SponsorBanner variant="card" />
+          </div>
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <PeerStories />
           <WatchNow />
