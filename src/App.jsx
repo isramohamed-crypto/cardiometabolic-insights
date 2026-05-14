@@ -228,7 +228,7 @@ export default function App() {
           {/* "Based on your interests…" — Travel + Leisure and Ones to
               Watch sit side-by-side in a horizontal scroll carousel. */}
           <section className="interests-row">
-            <h2 className="interests-row__heading">Based on your interests…</h2>
+            <h2 className="interests-row__heading">Based on your interests</h2>
             <div className="interests-row__scroll">
               <div className="interests-row__item"><OnesToWatch /></div>
               <div className="interests-row__item"><AutumnTravelCard /></div>
