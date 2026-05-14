@@ -48,19 +48,8 @@ export default function OnesToWatch() {
   }
 
   return (
-    <section className="otw-section">
-      {/* Header */}
-      <article className="otw-header">
-        <div className="otw-header__visual" role="img" aria-label="Women in sports">
-          <div className="otw-header__top">
-            <span className="otw-header__people">People</span>
-            <span className="otw-header__divider">|</span>
-            <span className="otw-header__label">Ones To Watch</span>
-          </div>
-          <h2 className="otw-header__title">
-            ONES<br />TO WATCH:<br />WOMEN IN SPORTS
-          </h2>
-        </div>
+    <article className="otw-header">
+        <div className="otw-header__visual" role="img" aria-label="Women in sports" />
 
         {/* Accordion cards — sit inside the magazine takeover card,
             replacing the previous caption line. */}
@@ -103,7 +92,6 @@ export default function OnesToWatch() {
           )
         })}
         </div>
-      </article>
-    </section>
+    </article>
   )
 }

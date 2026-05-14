@@ -1445,9 +1445,11 @@ h2 {
 .ci-back:active { opacity: .7 }
 .ci-btn--inline { flex: 1; max-width: 240px; margin-left: auto }
 
-/* Daily skin check-in — featured card (direction B + streak dots from C) */
+/* Daily skin check-in — featured card (direction B + streak dots from C)
+   Sits directly under the "Tips for you" carousel as one section, so
+   top padding is removed to let the Skin Diary card visually attach. */
 .checkin-section {
-  padding: var(--space-6) var(--space-5) var(--space-4);
+  padding: 0 var(--space-5) var(--space-4);
 }
 
 .dc-feat {
@@ -3166,18 +3168,45 @@ h2 {
 }
 
 /* ── Community Poll ──────────────────────────────────────── */
-/* ── Travel + Leisure 'Finding Fall' takeover card ───────────── */
-.tl-section {
-  padding: var(--space-6) var(--space-5) var(--space-4);
+/* ── 'Based on your interests…' — T+L + Ones-to-Watch side-by-side ─── */
+.interests-row {
+  padding: var(--space-6) 0 var(--space-4);
 }
-.tl-section__heading {
+.interests-row__heading {
   font-family: var(--font-serif);
   font-size: var(--font-size-2xl);
   font-weight: 500;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  margin-bottom: var(--space-3);
+  margin: 0 var(--space-5) var(--space-3);
+}
+.interests-row__scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--space-5);
+  padding: 0 var(--space-5);
+  scrollbar-width: none;
+}
+.interests-row__scroll::-webkit-scrollbar { display: none; }
+.interests-row__item {
+  flex: 0 0 85vw;
+  max-width: 360px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+}
+/* Make the carousel children fill their item slot */
+.interests-row__item > .tl-card,
+.interests-row__item > .otw-header {
+  width: 100%;
+}
+
+/* ── Travel + Leisure 'Finding Fall' takeover card ───────────── */
+.tl-section {
+  padding: var(--space-6) var(--space-5) var(--space-4);
 }
 .tl-card {
   position: relative;
@@ -3392,7 +3421,7 @@ h2 {
       rgba(0,0,0,0)   28%,
       rgba(0,0,0,0)   50%,
       rgba(0,0,0,.78) 100%),
-    url('/OTW-group.jpg') center top / cover no-repeat,
+    url('/OTW-group.jpg?v=3') center top / cover no-repeat,
     /* fallback while the image loads or if it 404s */
     linear-gradient(135deg, #4A2D1A, #8D5A40, #C49870);
   display: flex;
@@ -5488,6 +5517,51 @@ h2 {
   background-size: cover;
   background-position: center;
   background-color: #ececec;
+}
+
+/* Full-width Sanofi sponsor banner — sits inline in the Today feed
+   where Weekly Health Pulse used to live. ~48px tall, logo centered.
+   Uses the full-bleed trick so it breaks out of .main's max-width and
+   touches the viewport edges with zero side padding. */
+.sponsor-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  padding: 0;
+  background: white;
+  border-top: 1px solid var(--color-coral-light);
+  border-bottom: 1px solid var(--color-coral-light);
+  overflow: hidden;
+}
+.sponsor-banner__logo {
+  height: 32px;
+  width: auto;
+  max-width: 80%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Sponsored card — same outer dimensions as a regular .rs-card, but
+   replaces the image + quote stack with a centered sponsor logo. */
+.rs-card--sponsored {
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+.rs-card__sponsor-logo {
+  max-width: 70%;
+  max-height: 70%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: auto;
 }
 .rs-card__quote-block {
   display: flex;

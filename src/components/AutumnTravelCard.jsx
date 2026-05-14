@@ -123,14 +123,11 @@ export default function AutumnTravelCard() {
   const onCard = !!activePersona
 
   return (
-    <section className="tl-section">
-      <h2 className="tl-section__heading">Because you liked Travel…</h2>
-      <article className={`tl-card${onCard ? ' tl-card--persona' : ''}`}>
-        {activePersona
-          ? <PersonaView personaId={activePersona} onBack={() => setActivePersona(null)} />
-          : <DefaultView onPersonaSelect={id => setActivePersona(id)} />
-        }
-      </article>
-    </section>
+    <article className={`tl-card${onCard ? ' tl-card--persona' : ''}`}>
+      {activePersona
+        ? <PersonaView personaId={activePersona} onBack={() => setActivePersona(null)} />
+        : <DefaultView onPersonaSelect={id => setActivePersona(id)} />
+      }
+    </article>
   )
 }

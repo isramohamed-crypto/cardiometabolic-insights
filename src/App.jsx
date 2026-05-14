@@ -12,6 +12,7 @@ import StatusStrip from './components/StatusStrip'
 import DailyCheckin from './components/DailyCheckin'
 import HealthPulseCard from './components/HealthPulseCard'
 import HealthPulseSheet from './components/HealthPulseSheet'
+import SponsorBanner from './components/SponsorBanner'
 import TodayCard from './components/TodayCard'
 import InsightCard from './components/InsightCard'
 import CareTeamCard from './components/CareTeamCard'
@@ -217,16 +218,29 @@ export default function App() {
               1 hero · 2 quick wins · 3 travel+leisure · 4 skin check ·
               5 ones to watch · 6 eczema in real life · 7 stress-skin ·
               8 real stories · 9 expert advice · 10 weekly health pulse */}
+          {/* 'Tips for you' — the Real Simple carousel above and the
+              daily Skin Diary card below visually belong to the same
+              section (single section heading via ForYouNow). */}
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
-          {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-          <AutumnTravelCard />
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
-          <OnesToWatch />
+          {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
+
+          {/* "Based on your interests…" — Travel + Leisure and Ones to
+              Watch sit side-by-side in a horizontal scroll carousel. */}
+          <section className="interests-row">
+            <h2 className="interests-row__heading">Based on your interests…</h2>
+            <div className="interests-row__scroll">
+              <div className="interests-row__item"><OnesToWatch /></div>
+              <div className="interests-row__item"><AutumnTravelCard /></div>
+            </div>
+          </section>
+
           <QuickAnswers />
+          <SponsorBanner />
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <PeerStories />
           <WatchNow />
-          <HealthPulseCard onOpen={() => setShowPulse(true)} tick={pulseTick} />
+          <SponsorBanner />
           {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
           {/* <InsightSection /> */}
         </main>

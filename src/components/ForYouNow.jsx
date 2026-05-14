@@ -44,37 +44,52 @@ export default function ForYouNow() {
           <p className="rs-cover__sub">Discover calming routines, gentle care, and everyday ways to help soothe the cycle of irritation.</p>
         </article>
 
-        {TIPS.map(t => (
-          <article key={t.id} className="rs-card">
-            {!t.placeholder && (
+        {TIPS.map(t => {
+          if (t.placeholder) {
+            // Sponsored slot — keep the exact card dimensions but show
+            // a centered Sanofi logo instead of image + quote + author.
+            return (
+              <article
+                key={t.id}
+                className="rs-card rs-card--sponsored"
+                aria-label="Sponsored by Sanofi"
+              >
+                <img
+                  className="rs-card__sponsor-logo"
+                  src="/sanofi.jpg"
+                  alt="Sanofi"
+                />
+              </article>
+            )
+          }
+          return (
+            <article key={t.id} className="rs-card">
               <div
                 className="rs-card__image"
                 style={{ backgroundImage: `url(${t.image})` }}
                 role="img"
                 aria-label={t.quote}
               />
-            )}
-            <div className="rs-card__quote-block">
-              {!t.placeholder && (
+              <div className="rs-card__quote-block">
                 <img className="rs-card__avatar" src={t.avatar} alt="" />
-              )}
-              <div className="rs-card__quote-text">
-                <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
-                {t.author && (
-                  <p className="rs-card__author">— {t.author}</p>
-                )}
+                <div className="rs-card__quote-text">
+                  <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
+                  {t.author && (
+                    <p className="rs-card__author">— {t.author}</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="rs-card__try-row">
-              <MarkAsTried
-                id={`quick-wins:${t.id}`}
-                title={t.quote}
-                source="Tips for you"
-                className="try-btn--overlay"
-              />
-            </div>
-          </article>
-        ))}
+              <div className="rs-card__try-row">
+                <MarkAsTried
+                  id={`quick-wins:${t.id}`}
+                  title={t.quote}
+                  source="Tips for you"
+                  className="try-btn--overlay"
+                />
+              </div>
+            </article>
+          )
+        })}
       </div>
     </div>
   )
