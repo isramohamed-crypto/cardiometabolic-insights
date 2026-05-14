@@ -1,16 +1,18 @@
 import React from 'react'
 
 /**
- * Full-width Sanofi sponsor banner.
- * Sits inline in the Today feed at the slot previously held by the
- * Weekly Health Pulse card. ~48px tall, full-bleed across .main,
- * with the logo centered and an "Advertisement" eyebrow above for
- * disclosure (kept tiny so the slot stays close to the requested
- * 48px height).
+ * Sanofi sponsor banner.
+ * variant="bar"  (default) — full-bleed 48px strip used between feed
+ *                            sections on Today and Track.
+ * variant="card" — inset card style for contexts like Learn where the
+ *                  surrounding content is rendered as cards.
  */
-export default function SponsorBanner() {
+export default function SponsorBanner({ variant = 'bar' }) {
+  const cls = variant === 'card'
+    ? 'sponsor-banner sponsor-banner--card'
+    : 'sponsor-banner'
   return (
-    <aside className="sponsor-banner" aria-label="Sponsored by Sanofi">
+    <aside className={cls} aria-label="Sponsored by Sanofi">
       <img
         className="sponsor-banner__logo"
         src="/sanofi.jpg"

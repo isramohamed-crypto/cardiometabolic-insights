@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SponsorBanner from './SponsorBanner'
 
 const TYPE_COLORS = {
   'Swipe to learn':   { color: '#1BBC3C', bg: 'rgba(27, 188, 60,0.1)' },
@@ -237,7 +238,12 @@ export default function LearnPage() {
         <p className="pp-hero-sub">Short reads. Real answers. Jump back in anytime.</p>
       </div>
       <div className="lp-journeys">
-        {JOURNEYS.map(j => <JourneyCard key={j.id} journey={j} />)}
+        {JOURNEYS.map(j => (
+          <React.Fragment key={j.id}>
+            {j.id === 'sleep' && <SponsorBanner variant="card" />}
+            <JourneyCard journey={j} />
+          </React.Fragment>
+        ))}
       </div>
     </main>
   )

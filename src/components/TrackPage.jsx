@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react'
+import SponsorBanner from './SponsorBanner'
 
 function readCheckins() {
   try { return JSON.parse(localStorage.getItem('skinsightsCheckins') || '[]') } catch (_) { return [] }
@@ -493,6 +494,8 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           <div style={{ minWidth: 'var(--space-4)', flexShrink: 0 }} />
         </div>
       </div>
+
+      <SponsorBanner />
 
       {/* Body signals */}
       <div className="tp-section">
