@@ -3419,6 +3419,57 @@ h2 {
 .tl-card__cta--olive { background: #707324; }
 .tl-card__cta--brown { background: #724413; }
 
+/* MyRecipes — warm toast/mustard/maple */
+.tl-card__cta--toast   { background: #8B3F0F; }
+.tl-card__cta--mustard { background: #A87411; }
+.tl-card__cta--maple   { background: #5C2E0A; }
+/* BHG — holiday evergreen/cranberry/gold */
+.tl-card__cta--evergreen { background: #14402E; }
+.tl-card__cta--cranberry { background: #6B1F28; }
+.tl-card__cta--gold      { background: #946716; }
+
+/* MyRecipes card — warm toast gradient bg in place of T+L's video. */
+.tl-card--mr {
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 28%,
+      rgba(0,0,0,0) 55%, rgba(0,0,0,.85) 100%),
+    linear-gradient(160deg, #C25A1F 0%, #E0823C 35%, #C8702D 65%, #6B3815 100%);
+}
+/* BHG card — evergreen-to-cranberry holiday gradient. */
+.tl-card--bhg {
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 28%,
+      rgba(0,0,0,0) 55%, rgba(0,0,0,.85) 100%),
+    linear-gradient(170deg, #1F4332 0%, #2E5C45 30%, #6B3338 65%, #2D1820 100%);
+}
+
+/* Per-brand masthead wordmark tweaks. The T+L wordmark is huge serif;
+   each new brand needs its own scale + treatment. Swap text for an
+   <img src="..."> on the wordmark element once logo assets land. */
+.mr-card__brand {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.bhg-card__brand {
+  font-family: var(--font-serif);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Brand-specific headline tweaks (size only — base style comes from
+   .tl-card__title). */
+.mr-card__title  { text-transform: none; }
+.bhg-card__title { font-style: italic; }
+
 /* Persona content state — replaces the video view when a CTA is tapped. */
 .tl-card--persona {
   aspect-ratio: auto;
@@ -3466,9 +3517,15 @@ h2 {
 /* Color-tinted fallback shown while the mp4 buffers (or if it 404s).
    Layered behind the <video>; with object-fit:cover the video covers
    it fully once playback starts. */
-.tl-persona__media--rust  { background: linear-gradient(135deg, #C9612E, #7E3215); }
-.tl-persona__media--olive { background: linear-gradient(135deg, #8E9534, #4F571B); }
-.tl-persona__media--brown { background: linear-gradient(135deg, #9B6526, #4F2D0C); }
+.tl-persona__media--rust       { background: linear-gradient(135deg, #C9612E, #7E3215); }
+.tl-persona__media--olive      { background: linear-gradient(135deg, #8E9534, #4F571B); }
+.tl-persona__media--brown      { background: linear-gradient(135deg, #9B6526, #4F2D0C); }
+.tl-persona__media--toast      { background: linear-gradient(135deg, #B5571E, #6B2E0A); }
+.tl-persona__media--mustard    { background: linear-gradient(135deg, #C99020, #6B4A0A); }
+.tl-persona__media--maple      { background: linear-gradient(135deg, #8B4513, #3B1C04); }
+.tl-persona__media--evergreen  { background: linear-gradient(135deg, #2E5C45, #14402E); }
+.tl-persona__media--cranberry  { background: linear-gradient(135deg, #94303E, #4D141C); }
+.tl-persona__media--gold       { background: linear-gradient(135deg, #B58220, #6B4A10); }
 .tl-persona__title {
   font-family: var(--font-serif);
   font-size: 26px;
@@ -3477,9 +3534,15 @@ h2 {
   line-height: 1.08;
   margin: 0 0 14px;
 }
-.tl-persona__title--rust  { color: #A43819; }
-.tl-persona__title--olive { color: #707324; }
-.tl-persona__title--brown { color: #724413; }
+.tl-persona__title--rust       { color: #A43819; }
+.tl-persona__title--olive      { color: #707324; }
+.tl-persona__title--brown      { color: #724413; }
+.tl-persona__title--toast      { color: #8B3F0F; }
+.tl-persona__title--mustard    { color: #A87411; }
+.tl-persona__title--maple      { color: #5C2E0A; }
+.tl-persona__title--evergreen  { color: #14402E; }
+.tl-persona__title--cranberry  { color: #6B1F28; }
+.tl-persona__title--gold       { color: #946716; }
 .tl-persona__body {
   font-family: var(--font-sans);
   font-size: 13px;

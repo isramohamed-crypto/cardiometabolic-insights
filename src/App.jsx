@@ -28,6 +28,8 @@ import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
 import CommunityPoll from './components/CommunityPoll'
 import AutumnTravelCard from './components/AutumnTravelCard'
+import MyRecipesCard from './components/MyRecipesCard'
+import BHGCard from './components/BHGCard'
 import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
@@ -232,6 +234,8 @@ export default function App() {
             <div className="interests-row__scroll">
               <div className="interests-row__item"><OnesToWatch /></div>
               <div className="interests-row__item"><AutumnTravelCard /></div>
+              <div className="interests-row__item"><MyRecipesCard /></div>
+              <div className="interests-row__item"><BHGCard /></div>
             </div>
           </section>
 
