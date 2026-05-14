@@ -31,7 +31,10 @@ export default function SwipeLearn({ onLearnClick }) {
               <button className="swipe-learn__next-cta" onClick={() => setShowVideo2(true)}>
                 {video2Watched ? 'Keep learning →' : 'Start now →'}
               </button>
-              <p className="swipe-learn__next-src">Verywell Health · Ask an Expert Series</p>
+              <p className="swipe-learn__next-src">
+                <span className="brand-pill">Verywell Health</span>
+                <span>Ask an Expert Series</span>
+              </p>
             </div>
           </div>
         ) : phase === 'completing2' ? (
@@ -61,7 +64,10 @@ export default function SwipeLearn({ onLearnClick }) {
               }}>
                 {videoWatched ? 'Keep learning →' : 'Start now →'}
               </button>
-              <p className="swipe-learn__next-src">Verywell Mind · Clinical evidence</p>
+              <p className="swipe-learn__next-src">
+                <span className="brand-pill">Verywell Mind</span>
+                <span>Clinical evidence</span>
+              </p>
             </div>
           </div>
         ) : phase === 'completing' ? (

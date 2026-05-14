@@ -7,7 +7,8 @@ const VIDEOS = [
     id: 1,
     tag: 'Expert Explainer',
     title: 'How the Immune System Drives Eczema \u2014 and What\u2019s Being Done About It',
-    src: 'Dr. Sarah Kim \u00b7 Verywell Health',
+    brand: 'Verywell Health',
+    author: 'Dr. Sarah Kim',
     dur: '4:32',
     thumb: '/video-thumb-1.jpg',
   },
@@ -15,7 +16,8 @@ const VIDEOS = [
     id: 2,
     tag: 'Celebrity Health Story',
     title: 'After Years of Struggling with Severe Eczema, Abby Tai Has Found Healing Through Helping Others \u2018Conquer\u2019 Theirs',
-    src: 'People',
+    brand: 'People',
+    author: null,
     dur: '3:18',
     thumb: '/abby-tai-eczema.webp',
   },
@@ -23,7 +25,8 @@ const VIDEOS = [
     id: 3,
     tag: 'Patient Story',
     title: 'Dermatologists Say This Is the Best Way to Treat Eczema on Your Face',
-    src: 'Byrdie',
+    brand: 'Byrdie',
+    author: null,
     dur: '5:47',
     thumb: '/ellefanning.webp',
   },
@@ -31,7 +34,8 @@ const VIDEOS = [
     id: 4,
     tag: 'Preparing for Your Visit',
     title: 'Preparing to Talk About Newer Treatments',
-    src: 'Verywell Health',
+    brand: 'Verywell Health',
+    author: null,
     dur: '2:55',
     thumb: '/video-thumb-4.jpg',
   },
@@ -47,7 +51,7 @@ export default function WatchNow() {
       <section className="watch-now watch-now--edu">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid content for Brand</span>
+            <span className="watch-badge">Paid content for Sanofi</span>
             <h2 className="watch-title">Expert advice</h2>
             <p className="watch-subtitle">Videos and expert insights</p>
           </div>
@@ -77,7 +81,12 @@ export default function WatchNow() {
                 <div className="edu-card__meta">
                   <div className="edu-card__tag">{video.tag}</div>
                   <div className="edu-card__title">{video.title}</div>
-                  <div className="edu-card__src">{video.src}</div>
+                  <div className="edu-card__src">
+                    <span className="brand-pill">{video.brand}</span>
+                    {video.author && (
+                      <span className="edu-card__src-byline">{video.author}</span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -85,7 +94,10 @@ export default function WatchNow() {
         </div>
 
         <div className="edu-disclaimer">
-          <strong>Sponsored content.</strong> Videos and content produced in partnership with Brand.
+          <span className="edu-disclaimer__eyebrow">Paid content for Sanofi</span>
+          <span className="edu-disclaimer__body">
+            <strong>Sponsored content.</strong> Videos and content produced in partnership with Sanofi.
+          </span>
         </div>
       </section>
 

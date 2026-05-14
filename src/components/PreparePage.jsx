@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 
+const PEOPLE_INC_BRANDS = new Set([
+  'People', 'Real Simple', 'Verywell Health', 'Verywell Mind',
+  'Travel + Leisure', 'Byrdie', 'Better Homes & Gardens',
+])
+
 function readProfileName() {
   try {
     const raw = localStorage.getItem('skinsightsProfile')
@@ -228,8 +233,8 @@ function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
             onKeyDown={e => e.key === 'Enter' && send(input)}
             autoFocus
           />
-          <button className="pp-ai-send" onClick={() => send(input)}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <button className="pp-ai-send" aria-label="Send" onClick={() => send(input)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
@@ -256,19 +261,22 @@ function SwipeCards() {
     <div className="pp-swipe">
       <div
         className="pp-sw-inner"
-        style={{ background: s.bg, cursor: 'grab' }}
+        style={{ cursor: 'grab' }}
         onTouchStart={e => { dragStartX.current = e.changedTouches[0].clientX }}
         onTouchEnd={e => onDragEnd(e.changedTouches[0].clientX)}
         onPointerDown={e => { dragStartX.current = e.clientX }}
         onPointerUp={e => onDragEnd(e.clientX)}
       >
-        <div className="pp-sw-glow" style={{ background: s.glow }} />
         <div className="pp-sw-content">
           <div className="pp-sw-step">{s.step}</div>
           <div className="pp-sw-emoji">{s.emoji}</div>
           <div className="pp-sw-heading">{s.title}</div>
           <div className="pp-sw-body">{s.body}</div>
-          {s.cite && <div className="pp-sw-cite">{s.cite}</div>}
+          {s.cite && (
+            PEOPLE_INC_BRANDS.has(s.cite)
+              ? <span className="brand-pill" style={{ marginTop: 'var(--space-3)' }}>{s.cite}</span>
+              : <div className="pp-sw-cite">{s.cite}</div>
+          )}
         </div>
       </div>
       <div className="pp-swipe-dots">
@@ -452,13 +460,12 @@ function StoriesSwipe() {
     <div className="pp-stories-swipe">
       <div
         className="pp-story-card"
-        style={{ background: s.bg, cursor: 'grab' }}
+        style={{ cursor: 'grab' }}
         onTouchStart={e => { dragStartX.current = e.changedTouches[0].clientX }}
         onTouchEnd={e => onDragEnd(e.changedTouches[0].clientX)}
         onPointerDown={e => { dragStartX.current = e.clientX }}
         onPointerUp={e => onDragEnd(e.clientX)}
       >
-        <div className="pp-story-glow" style={{ background: s.glow }} />
         <div className="pp-story-content">
           <div className="pp-story-step">{s.step}</div>
           <div className="pp-story-person">
@@ -477,7 +484,10 @@ function StoriesSwipe() {
               <div className="pp-story-takeaway-sub">{s.takeawaySub}</div>
             </div>
           </div>
-          <div className="pp-story-src">Verywell Health · In Partnership with Sanofi</div>
+          <div className="pp-story-src">
+            <span className="brand-pill">Verywell Health</span>
+            <span>In Partnership with Sanofi</span>
+          </div>
         </div>
       </div>
       <div className="pp-swipe-dots">
@@ -726,18 +736,23 @@ export default function PreparePage() {
         </div>
         <div className="pp-card">
           <div className="pp-card-label">Key findings to share</div>
-          {allFindings.map((item, i) => (
-            <div key={i} className="pp-q-row">
-              <div className="pp-q-icon">{item.icon}</div>
-              <div>
-                <div className="pp-q-text">{item.text}</div>
-                <div className="pp-q-reason">
-                  {item.condition && <span className="pp-cond-tag">{item.condition}</span>}
-                  {item.reason}
+          {allFindings.map((item, i) => {
+            const cMod = item.condition ? `--${item.condition.toLowerCase()}` : ''
+            return (
+              <div key={i} className="pp-q-row">
+                <div className={`pp-q-icon${cMod ? ` pp-q-icon${cMod}` : ''}`}>{item.icon}</div>
+                <div>
+                  <div className="pp-q-text">{item.text}</div>
+                  <div className="pp-q-reason">
+                    {item.condition && (
+                      <span className={`pp-cond-tag pp-cond-tag${cMod}`}>{item.condition}</span>
+                    )}
+                    {item.reason}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -755,8 +770,8 @@ export default function PreparePage() {
               placeholder="Ask about your data or what to discuss..."
               onKeyDown={e => { if (e.key === 'Enter' && e.target.value) { openChat(e.target.value); e.target.value = '' } }}
             />
-            <button className="pp-ai-send" onClick={e => { const inp = e.currentTarget.previousElementSibling; if (inp.value) { openChat(inp.value); inp.value = '' } }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <button className="pp-ai-send" aria-label="Send" onClick={e => { const inp = e.currentTarget.previousElementSibling; if (inp.value) { openChat(inp.value); inp.value = '' } }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
           <div className="pp-ai-suggestions">
@@ -776,18 +791,23 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Questions to ask</h2>
         </div>
         <div className="pp-card">
-          {allQuestions.map((item, i) => (
-            <div key={i} className="pp-q-row">
-              <div className="pp-q-icon">💡</div>
-              <div>
-                <div className="pp-q-text">{item.text}</div>
-                <div className="pp-q-reason">
-                  {item.condition && <span className="pp-cond-tag">{item.condition}</span>}
-                  {item.reason}
+          {allQuestions.map((item, i) => {
+            const cMod = item.condition ? `--${item.condition.toLowerCase()}` : ''
+            return (
+              <div key={i} className="pp-q-row">
+                <div className={`pp-q-icon${cMod ? ` pp-q-icon${cMod}` : ''}`}>💡</div>
+                <div>
+                  <div className="pp-q-text">{item.text}</div>
+                  <div className="pp-q-reason">
+                    {item.condition && (
+                      <span className={`pp-cond-tag pp-cond-tag${cMod}`}>{item.condition}</span>
+                    )}
+                    {item.reason}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -813,13 +833,16 @@ export default function PreparePage() {
       <section className="pp-stories-sec">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid content for Brand</span>
+            <span className="watch-badge">Paid content for Sanofi</span>
             <h2 className="watch-title">Stories from others</h2>
           </div>
         </div>
         <StoriesSwipe />
         <div className="edu-disclaimer" style={{ margin: 'var(--space-3) 0 0' }}>
-          <strong>Sponsored content.</strong> These stories are illustrative and produced in partnership with Brand.
+          <span className="edu-disclaimer__eyebrow">Paid content for Sanofi</span>
+          <span className="edu-disclaimer__body">
+            <strong>Sponsored content.</strong> Videos and content produced in partnership with Sanofi.
+          </span>
         </div>
       </section>
 

@@ -138,18 +138,30 @@ function slug(s) {
   return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)
 }
 
+function stripBrand(s, brand) {
+  if (!s || !brand) return s
+  // Drop a trailing ", BRAND" so the brand isn't shown twice
+  // (it's already rendered in the pill above).
+  return s.replace(new RegExp(`,?\\s*${brand}\\s*$`, 'i'), '').replace(/,\s*$/, '')
+}
+
 function ReadingCard({ reading }) {
   return (
     <div className="chat-reading">
-      <p className="chat-reading__label">
-        Recommended Reading from{' '}
-        <a href={reading.url} target="_blank" rel="noreferrer">{reading.source}</a>
-      </p>
+      <p className="chat-reading__label">Recommended Reading</p>
+      <a
+        href={reading.url}
+        target="_blank"
+        rel="noreferrer"
+        className="chat-reading__brand-link"
+      >
+        <span className="brand-pill">{reading.source}</span>
+      </a>
       <p className="chat-reading__title">&ldquo;{reading.title}&rdquo;</p>
       {reading.quote && (
         <blockquote className="chat-reading__quote">
           &ldquo;{reading.quote}&rdquo;
-          <span>— {reading.attribution}</span>
+          <span>— {stripBrand(reading.attribution, reading.source)}</span>
         </blockquote>
       )}
       {reading.tips && (
@@ -180,8 +192,9 @@ function Recommendations({ data }) {
       {data.sources.map((src, i) => (
         <div key={i} className="chat-reco__group">
           <p className="chat-reco__src">
-            From{' '}
-            <a href={src.url} target="_blank" rel="noreferrer">{src.source}</a>
+            <a href={src.url} target="_blank" rel="noreferrer">
+              <span className="brand-pill">{src.source}</span>
+            </a>
           </p>
           <ul className="chat-reco__list">
             {src.articles.map((a, j) => (

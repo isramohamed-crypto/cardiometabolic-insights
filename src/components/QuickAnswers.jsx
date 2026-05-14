@@ -8,6 +8,7 @@ const cards = [
     backLabel: 'Not always \u2014 and that\u2019s what makes it hard',
     answer: 'People with eczema often experience judgment about hygiene, visible reactions from others, and social discomfort or avoidance. This can make flare-ups feel more stressful \u2014 and stress can worsen symptoms.',
     source: 'Patient experience research',
+    brand: null,
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ const cards = [
     question: 'Why can eczema feel worse in relationships?',
     backLabel: "It\u2019s not just the skin \u2014 it\u2019s how it\u2019s perceived",
     answer: 'Eczema can impact self-esteem, fear of rejection, and comfort with physical closeness. Some people avoid touch or intimacy during flares, even when partners are supportive.',
-    source: 'Verywell Mind',
+    source: null,
+    brand: 'Verywell Mind',
   },
   {
     id: 3,
@@ -23,7 +25,8 @@ const cards = [
     question: 'Should you hide your eczema from a partner?',
     backLabel: 'Talking about it can actually help',
     answer: 'Instead of assuming judgment: share what you\u2019re experiencing, explain what triggers your flares, and set expectations during flare-ups. Open communication often leads to more understanding, not less.',
-    source: 'Verywell Mind',
+    source: null,
+    brand: 'Verywell Mind',
   },
 ]
 
@@ -55,7 +58,9 @@ export default function QuickAnswers() {
               <div className="qa-face qa-face--back">
                 <span className="qa-label qa-label--back">{card.backLabel}</span>
                 <p className="qa-answer">{card.answer}</p>
-                <span className="qa-source">{card.source}</span>
+                {card.brand
+                  ? <span className="brand-pill">{card.brand}</span>
+                  : <span className="qa-source">{card.source}</span>}
               </div>
             </div>
           </div>

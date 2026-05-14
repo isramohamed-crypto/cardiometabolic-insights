@@ -1,3 +1,21 @@
+/* Shared brand-source pill — Tangerine text on Vanilla bg, matches the
+   AskAI submit button palette. Used wherever a People Inc. publication
+   is cited as the source of an article, quote, or piece of content. */
+.brand-pill {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: var(--color-lime-light);   /* Vanilla */
+  color: var(--color-warm);              /* Tangerine */
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
 /* ── TOKENS ─────────────────────────────────────────────────── */
 :root {
   /* Brand palette — Health.com rebrand: green on cream, vibrant accents */
@@ -28,6 +46,18 @@
   /* Accent — Green Apple · achievement, success */
   --color-lime:          #E8EF65;
   --color-lime-light:    #FCFFBC;
+
+  /* Per-condition palette — each tracked condition gets its own color
+     so multi-condition users can scan their data by condition at a
+     glance (most visible in the "Questions to ask" rows). */
+  --color-cond-eczema:           var(--color-teal);
+  --color-cond-eczema-light:     var(--color-teal-light);
+  --color-cond-psoriasis:        var(--color-coral);
+  --color-cond-psoriasis-light:  var(--color-coral-light);
+  --color-cond-rosacea:          var(--color-warm);
+  --color-cond-rosacea-light:    var(--color-warm-light);
+  --color-cond-acne:             var(--color-sage);
+  --color-cond-acne-light:       var(--color-sage-light);
 
   /* Neutrals — cream system */
   --color-bg:            #FFFCF5;   /* Cream */
@@ -860,7 +890,8 @@ h2 {
   border-top: 1px solid var(--color-border-light);
 }
 
-/* Condition tag inline with reasons */
+/* Condition tag inline with reasons — defaults to leaf-green; the
+   modifier class overrides bg+color per tracked condition. */
 .pp-cond-tag {
   display: inline-block;
   font-size: 9px;
@@ -874,6 +905,10 @@ h2 {
   margin-right: 6px;
   vertical-align: 1px;
 }
+.pp-cond-tag--eczema    { color: var(--color-cond-eczema);    background: var(--color-cond-eczema-light); }
+.pp-cond-tag--psoriasis { color: var(--color-cond-psoriasis); background: var(--color-cond-psoriasis-light); }
+.pp-cond-tag--rosacea   { color: var(--color-cond-rosacea);   background: var(--color-cond-rosacea-light); }
+.pp-cond-tag--acne      { color: var(--color-cond-acne);      background: var(--color-cond-acne-light); }
 
 /* ── TRACK AI INSIGHTS SUMMARY (compact, expandable) ── */
 .tp-ai-summary {
@@ -2364,9 +2399,12 @@ h2 {
 }
 .swipe-learn__next-src {
   font-size: var(--font-size-xs);
-  color: rgba(255,255,255,0.3);
-  font-style: italic;
+  color: rgba(255,255,255,0.45);
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 /* ── Video overlay ───────────────────────────────────────── */
@@ -2950,7 +2988,12 @@ h2 {
   font-family: var(--font-sans);
   font-size: var(--font-size-xs);
   color: rgba(255,255,255,0.55);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
+.edu-card__src-byline { color: rgba(255,255,255,0.85); }
 
 /* Disclaimer */
 .edu-disclaimer {
@@ -2963,9 +3006,22 @@ h2 {
   font-size: 10px;
   color: var(--color-text-muted);
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .edu-disclaimer strong {
   color: var(--color-text-secondary);
+}
+.edu-disclaimer__eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+.edu-disclaimer__body {
+  display: block;
 }
 
 /* Video mock fullscreen overlay */
@@ -3218,7 +3274,7 @@ h2 {
 .interests-row__scroll::-webkit-scrollbar { display: none; }
 .interests-row__scroll { align-items: stretch; }
 /* Shared height token — change once to resize the whole carousel.    */
-:root { --interests-card-h: 460px; }
+:root { --interests-card-h: 560px; }
 .interests-row__item {
   flex: 0 0 85vw;
   max-width: 360px;
@@ -5094,106 +5150,154 @@ h2 {
   flex-shrink: 0;
   margin-top: 2px;
 }
+.pp-q-icon--eczema    { background: var(--color-cond-eczema-light); }
+.pp-q-icon--psoriasis { background: var(--color-cond-psoriasis-light); }
+.pp-q-icon--rosacea   { background: var(--color-cond-rosacea-light); }
+.pp-q-icon--acne      { background: var(--color-cond-acne-light); }
 .pp-q-text { font-size: 14px; font-weight: 500; color: var(--color-text-primary); line-height: 1.45; }
 .pp-q-reason { font-size: 11px; color: var(--color-text-muted); margin-top: 3px; }
 
+/* AI chat bar on Prepare — matches Today's .ask-ai card system:
+   Green-Apple bordered cream card, Cornflower pill input row,
+   Tangerine send button with Vanilla arrow. */
 .pp-ai-bar {
-  background: #fff;
-  border: 1px solid var(--color-border);
+  background: rgba(255, 252, 245, 0.85);
+  border: 1px solid var(--color-lime);          /* Green Apple */
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-4);
   margin-bottom: var(--space-3);
-  overflow: hidden;
-  box-shadow:
-    0 0 0 2px rgba(27, 188, 60, 0.25),
-    0 8px 32px rgba(27, 188, 60, 0.15);
+  backdrop-filter: blur(8px);
 }
 .pp-ai-label {
-  font-size: 10px;
+  font-size: var(--font-size-xs);
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-teal);
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: var(--space-3);
+  margin: 0 0 var(--space-3);
 }
 .pp-ai-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #22c55e;
+  background: var(--color-teal);
   animation: pp-pulse 2s infinite;
   display: inline-block;
   flex-shrink: 0;
 }
 @keyframes pp-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.pp-ai-input-row { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+.pp-ai-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255,255,255,0.95);
+  border: 1px solid var(--color-sage-light);    /* Cornflower */
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+}
 .pp-ai-input {
   flex: 1;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  padding: 10px var(--space-5);
+  border: none;
+  background: transparent;
+  padding: 0;
   font-family: var(--font-sans);
   font-size: var(--font-size-sm);
   color: var(--color-text-primary);
-  background: var(--color-surface-2);
   outline: none;
 }
 .pp-ai-input::placeholder { color: var(--color-text-muted); }
 .pp-ai-send {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--color-lime);
+  background: var(--color-warm);                /* Tangerine */
+  color: var(--color-lime-light);               /* Vanilla arrow */
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   flex-shrink: 0;
+  transition: opacity 0.2s;
 }
-.pp-ai-suggestions { display: flex; flex-direction: column; }
+.pp-ai-send:hover { opacity: 0.85; }
+.pp-ai-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
 .pp-ai-sug {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   font-size: var(--font-size-sm);
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   padding: var(--space-2) 0;
   cursor: pointer;
-  border-bottom: 1px solid var(--color-border-light);
+  transition: color 0.15s;
   text-align: left;
   width: 100%;
-  transition: color .15s;
   background: none;
-  border-left: none;
-  border-right: none;
-  border-top: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border-light);
 }
 .pp-ai-sug:last-child { border-bottom: none; }
 .pp-ai-sug:hover { color: var(--color-teal); }
-.pp-ai-sug-arrow { color: var(--color-teal); font-size: var(--font-size-sm); flex-shrink: 0; }
+.pp-ai-sug-arrow {
+  color: var(--color-teal);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
 
 .pp-swipe { }
+/* Things your doctor wants you to know — white card, charcoal text,
+   watermelon eyebrow, leaf-green dot. No focus-ring glow. */
 .pp-sw-inner {
-  border-radius: var(--radius-xl);
-  padding: 28px 22px;
-  min-height: 260px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
   user-select: none;
 }
-.pp-sw-glow { position: absolute; inset: 0; pointer-events: none; }
+.pp-sw-glow { display: none; }
 .pp-sw-content { position: relative; z-index: 1; }
-.pp-sw-step { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: var(--space-2); }
+.pp-sw-step {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color-coral);            /* Watermelon eyebrow */
+  margin-bottom: var(--space-2);
+}
 .pp-sw-emoji { font-size: 32px; margin-bottom: var(--space-3); }
-.pp-sw-heading { font-size: 20px; font-weight: 500; letter-spacing: -.02em; color: #fff; line-height: 1.25; margin-bottom: var(--space-3); }
-.pp-sw-body { font-size: var(--font-size-sm); color: rgba(255,255,255,.78); line-height: 1.65; }
-.pp-sw-cite { font-size: 11px; color: rgba(255,255,255,.35); margin-top: var(--space-3); }
+.pp-sw-heading {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  margin-bottom: var(--space-3);
+}
+.pp-sw-body {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+.pp-sw-cite {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: var(--space-3);
+}
 .pp-swipe-dots { display: flex; gap: 6px; justify-content: center; padding: 10px 0 2px; }
 .pp-sw-dot {
   width: 8px;
@@ -5214,30 +5318,97 @@ h2 {
 }
 .pp-stories-sec .watch-head { padding: 0 0 var(--space-4); }
 .pp-stories-swipe { padding: 0; }
+/* Stories from others — same white-card branding as the Doctor-Wants-
+   You-To-Know stack above, no focus-ring glow. */
 .pp-story-card {
-  border-radius: var(--radius-xl);
-  min-height: 380px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
   user-select: none;
 }
-.pp-story-glow { position: absolute; inset: 0; pointer-events: none; }
+.pp-story-glow { display: none; }
 .pp-story-content { position: relative; z-index: 1; padding: 24px 20px 20px; }
-.pp-story-step { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 14px; }
+.pp-story-step {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color-coral);              /* Watermelon eyebrow */
+  margin-bottom: 14px;
+}
 .pp-story-person { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.pp-story-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.2); color: #fff; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.pp-story-name { font-size: 14px; font-weight: 600; color: #fff; }
-.pp-story-detail { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 2px; }
-.pp-story-quote { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,.92); line-height: 1.5; margin-bottom: 12px; }
-.pp-story-context { font-size: 12px; color: rgba(255,255,255,.65); line-height: 1.6; margin-bottom: 14px; }
-.pp-story-takeaway { display: flex; gap: 10px; align-items: flex-start; background: rgba(255,255,255,.1); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.pp-story-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-lime-light);    /* Vanilla */
+  color: var(--color-teal);               /* Leaf-green initial */
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pp-story-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.pp-story-detail {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+.pp-story-quote {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.pp-story-context {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.pp-story-takeaway {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--color-teal-light);    /* Leaf-light — matches Today */
+  border: 1px solid rgba(27, 188, 60, 0.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
 .pp-story-takeaway-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-.pp-story-takeaway-text { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; }
-.pp-story-takeaway-sub { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 3px; }
-.pp-story-src { font-size: 10px; color: rgba(255,255,255,.3); }
+.pp-story-takeaway-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+.pp-story-takeaway-sub {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 3px;
+}
+.pp-story-src {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 .pp-stories-sec .edu-disclaimer { margin: var(--space-4) 0 0; }
 
 .pp-share-btn {
@@ -5273,30 +5444,45 @@ h2 {
   margin-right: auto;
 }
 @keyframes pp-slide-up { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
+/* Prepare AI chat overlay — header / back / title match Today's
+   .chat-overlay__* treatment (cream bg, 3px Leaf bottom border,
+   teal-light back button, Fraunces Leaf-green title). */
 .pp-chat-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  background: var(--color-teal);
+  background: var(--color-bg);
+  border-bottom: 3px solid var(--color-teal);
   flex-shrink: 0;
 }
 .pp-chat-back {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  color: #fff;
+  background: var(--color-teal-light);
+  border: none;
+  color: var(--color-teal-dark);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
-.pp-chat-title { font-size: 14px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+.pp-chat-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-teal);
+}
 .pp-chat-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-lime);
+  background: var(--color-teal);
   animation: pp-pulse 2s infinite;
   display: inline-block;
 }
@@ -5340,13 +5526,27 @@ h2 {
 .pp-msg-typing span:nth-child(2) { animation-delay: .2s; }
 .pp-msg-typing span:nth-child(3) { animation-delay: .4s; }
 @keyframes pp-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+/* Chat overlay input — matches Today's .chat-overlay__input-wrap +
+   row: white wrap, cream rounded-pill row, borderless input inside. */
 .pp-chat-input-wrap {
   padding: var(--space-3) var(--space-5) var(--space-5);
-  background: var(--color-surface);
+  background: #fff;
   border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
-.pp-chat-input-row { display: flex; gap: var(--space-2); }
+.pp-chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+}
+.pp-chat-input-row .pp-ai-input {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
 
 /* ── Living Beyond Eczema (peer stories) ───────────────────── */
 .lbe-section { padding-top: var(--space-5); }
@@ -5905,9 +6105,12 @@ h2 {
   justify-content: center;
   padding: var(--space-3) var(--space-5) var(--space-2);
 }
+/* Primary CTA on the SwipeLearn final card — matches the AskAI submit
+   button (Tangerine bg + Vanilla text) so it reads as a recognized
+   primary action across the app. */
 .vwm-scroll-cta {
-  background: var(--color-text-primary);
-  color: white;
+  background: var(--color-warm);          /* Tangerine */
+  color: var(--color-lime-light);         /* Vanilla */
   border: none;
   padding: 12px 24px;
   border-radius: var(--radius-full);
@@ -5915,9 +6118,9 @@ h2 {
   font-weight: 700;
   font-family: var(--font-sans);
   cursor: pointer;
-  transition: transform 0.15s;
+  transition: transform 0.15s, opacity 0.15s;
 }
-.vwm-scroll-cta:hover { transform: translateY(-1px); }
+.vwm-scroll-cta:hover { transform: translateY(-1px); opacity: 0.9; }
 .vwm-scroll-cta:active { transform: translateY(0); }
 
 /* ── AI chat: option chips, recommended reading, recommendations ── */
@@ -5962,6 +6165,11 @@ h2 {
   color: var(--color-warm);
   text-decoration: underline;
   font-weight: 800;
+}
+.chat-reading__brand-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  text-decoration: none;
 }
 .chat-reading__title {
   font-family: var(--font-serif);
@@ -6030,9 +6238,8 @@ h2 {
   margin-bottom: 4px;
 }
 .chat-reco__src a {
-  color: var(--color-teal);
-  font-weight: 800;
-  text-decoration: underline;
+  display: inline-block;
+  text-decoration: none;
 }
 .chat-reco__list {
   margin: 0 0 0 18px;
