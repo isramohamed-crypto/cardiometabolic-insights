@@ -142,6 +142,15 @@
   color: var(--color-lime, #E8EF65);
 }
 
+.reg-hero__sub {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.9);
+  margin: 10px 0 0;
+  max-width: 36ch;
+}
+
 .reg-close {
   position: absolute;
   top: 16px;

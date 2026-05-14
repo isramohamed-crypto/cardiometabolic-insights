@@ -70,7 +70,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
             <h1 className="reg-hero__headline">
-              <em>Welcome.</em> Smart skin care for real life.
+              Welcome to <em>Skinsights360</em>
             </h1>
           </div>
           <button className="reg-close" onClick={onClose} aria-label="Close">✕</button>
@@ -79,7 +79,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            Daily tracking, AI patterns, derm-ready reports, and content built around how you live.
+            A personalized skin health companion that helps you understand patterns, stay ahead of flares, and manage your skin in the context of your real life.
           </p>
 
           <div className="reg-divider">
