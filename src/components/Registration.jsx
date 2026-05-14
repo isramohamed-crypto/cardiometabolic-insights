@@ -84,25 +84,8 @@ export default function Registration({ onClose, onStartOnboarding }) {
 
           <div className="reg-divider">
             <div className="reg-divider__line" />
-            <span className="reg-divider__text">What you get</span>
+            <span className="reg-divider__text">Join now</span>
             <div className="reg-divider__line" />
-          </div>
-
-          <div className="reg-benefits">
-            {[
-              { icon: '🌿', color: 'purple', title: 'Content built around how you live', desc: 'Tips and guidance matched to your home, your routine, and what\'s actually affecting your skin' },
-              { icon: '✓',  color: 'sage',   title: 'Small changes that add up', desc: 'Track what you\'re doing differently and see what\'s actually making a difference over time' },
-              { icon: '💡', color: 'warm',   title: 'See what your skin is telling you', desc: 'Patterns emerge when you start paying attention. We help you notice them first' },
-              { icon: '🩺', color: 'lime',   title: 'Walk into your next derm visit ready', desc: 'Your check-in history and trigger patterns, organized so your doctor can actually use them' },
-            ].map(b => (
-              <div className="reg-benefit" key={b.title}>
-                <div className={`reg-benefit__icon reg-benefit__icon--${b.color}`}>{b.icon}</div>
-                <div className="reg-benefit__text">
-                  <div className="reg-benefit__title">{b.title}</div>
-                  <div className="reg-benefit__desc">{b.desc}</div>
-                </div>
-              </div>
-            ))}
           </div>
 
           <div className="reg-auth-buttons">
