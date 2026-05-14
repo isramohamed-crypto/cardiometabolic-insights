@@ -3436,12 +3436,15 @@ h2 {
       rgba(0,0,0,0) 55%, rgba(0,0,0,.85) 100%),
     linear-gradient(160deg, #C25A1F 0%, #E0823C 35%, #C8702D 65%, #6B3815 100%);
 }
-/* BHG card — evergreen-to-cranberry holiday gradient. */
+/* BHG card — hero photo with the standard T+L overlay gradient (dark
+   at top + bottom, clear middle). Evergreen-to-cranberry holiday
+   gradient stays as a fallback while the image loads. */
 .tl-card--bhg {
   background:
     linear-gradient(180deg,
       rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 28%,
       rgba(0,0,0,0) 55%, rgba(0,0,0,.85) 100%),
+    url('/bhg-hero.jpg') center / cover no-repeat,
     linear-gradient(170deg, #1F4332 0%, #2E5C45 30%, #6B3338 65%, #2D1820 100%);
 }
 

@@ -234,8 +234,8 @@ export default function App() {
             <div className="interests-row__scroll">
               <div className="interests-row__item"><OnesToWatch /></div>
               <div className="interests-row__item"><AutumnTravelCard /></div>
-              <div className="interests-row__item"><MyRecipesCard /></div>
               <div className="interests-row__item"><BHGCard /></div>
+              <div className="interests-row__item"><MyRecipesCard /></div>
             </div>
           </section>
 
