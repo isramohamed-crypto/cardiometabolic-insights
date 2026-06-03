@@ -217,18 +217,31 @@ export default function App() {
             </div> */}
           </div>
           {/* Today screen section order:
-              1 hero · 2 quick wins · 3 travel+leisure · 4 skin check ·
-              5 ones to watch · 6 eczema in real life · 7 stress-skin ·
-              8 real stories · 9 expert advice · 10 weekly health pulse */}
-          {/* 'Tips for you' — the Real Simple carousel above and the
-              daily Skin Diary card below visually belong to the same
-              section (single section heading via ForYouNow). */}
-          <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
+              1 hero · 2 AI · 3 daily check-in · 4 quick answers ·
+              5 tips for you · 6 peer stories · 7 watch now ·
+              8 interests · 9 swipe learn */}
+
+          {/* 3 — Daily check-in: strike while engaged after AI interaction */}
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 
-          {/* "Based on your interests…" — Travel + Leisure and Ones to
-              Watch sit side-by-side in a horizontal scroll carousel. */}
+          {/* 4 — Quick Answers: facts-first for this audience */}
+          <QuickAnswers />
+
+          {/* 5 — Tips for you: credible, Health.com sourced */}
+          <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
+
+          <div className="sponsor-card-wrap">
+            <SponsorBanner variant="card" />
+          </div>
+
+          {/* 6 — Peer Stories: social proof from people like them */}
+          <PeerStories />
+
+          {/* 7 — Watch Now: video for deeper learning */}
+          <WatchNow />
+
+          {/* 8 — Interests row */}
           <section className="interests-row">
             <h2 className="interests-row__heading">Based on your interests</h2>
             <div className="interests-row__scroll">
@@ -239,13 +252,8 @@ export default function App() {
             </div>
           </section>
 
-          <QuickAnswers />
-          <div className="sponsor-card-wrap">
-            <SponsorBanner variant="card" />
-          </div>
+          {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
-          <PeerStories />
-          <WatchNow />
           <SponsorBanner />
           {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
           {/* <InsightSection /> */}
