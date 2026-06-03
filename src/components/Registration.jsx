@@ -55,9 +55,9 @@ export default function Registration({ onClose, onStartOnboarding }) {
         <div className="reg-hero">
           <div className="reg-hero__bg">
             <div className="reg-hero__icons">
-              <span className="reg-hero__icon">🧴</span>
+              <span className="reg-hero__icon">🫀</span>
               <span className="reg-hero__icon">🌙</span>
-              <span className="reg-hero__icon">🧘</span>
+              <span className="reg-hero__icon">🩺</span>
               <span className="reg-hero__icon">✨</span>
               <span className="reg-hero__icon">📊</span>
               <span className="reg-hero__icon">💊</span>
@@ -79,7 +79,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            A personalized skin health companion that helps you understand patterns, stay ahead of flares, and manage your skin in the context of your real life.
+            A personalized cardiometabolic health companion that helps you understand your numbers, stay ahead of risk, and manage your heart health in the context of your real life.
           </p>
 
           <div className="reg-divider">
@@ -158,7 +158,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
               </div>
               <div className="reg-consent-row" onClick={() => setComms(v => !v)}>
                 <div className={`reg-consent-check${comms ? ' on' : ''}`}>{comms ? '✓' : ''}</div>
-                <div className="reg-consent-text">Send me personalized tips, content updates, and weekly skin summaries{signupMethod === 'phone' ? ' by text.' : ' via email.'}</div>
+                <div className="reg-consent-text">Send me personalized tips, content updates, and weekly health summaries{signupMethod === 'phone' ? ' by text.' : ' via email.'}</div>
               </div>
             </div>
 

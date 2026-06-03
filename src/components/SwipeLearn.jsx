@@ -12,7 +12,7 @@ export default function SwipeLearn({ onLearnClick }) {
     <>
       <section className="swipe-learn">
         <div className="swipe-learn__head">
-          <h2 className="swipe-learn__title">The stress-skin connection, explained</h2>
+          <h2 className="swipe-learn__title">The stress-heart connection, explained</h2>
           <a
             href="#"
             className="swipe-learn__link"
@@ -23,16 +23,16 @@ export default function SwipeLearn({ onLearnClick }) {
         {phase === 'next2' ? (
           <div className="swipe-learn__wrap swipe-learn__wrap--next">
             <div className="swipe-learn__next-card swipe-learn__next-card--placeholder">
-              <div className="swipe-learn__next-emoji">💡</div>
-              <h2 className="swipe-learn__next-title">How do environmental and lifestyle factors impact skin conditions?</h2>
+              <div className="swipe-learn__next-emoji">📊</div>
+              <h2 className="swipe-learn__next-title">How lifestyle factors impact cardiometabolic risk</h2>
               <p className="swipe-learn__next-body">
-                An expert explains how stress, diet, obesity, sun exposure, and specific nutritional choices can worsen or accelerate a range of skin conditions.
+                An expert explains how stress, diet, sleep, and activity interact to accelerate or reduce cardiovascular and metabolic risk — and what the evidence says about each.
               </p>
               <button className="swipe-learn__next-cta" onClick={() => setShowVideo2(true)}>
                 {video2Watched ? 'Keep learning →' : 'Start now →'}
               </button>
               <p className="swipe-learn__next-src">
-                <span className="brand-pill">Verywell Health</span>
+                <span className="brand-pill">Health.com</span>
                 <span>Ask an Expert Series</span>
               </p>
             </div>
@@ -49,10 +49,10 @@ export default function SwipeLearn({ onLearnClick }) {
         ) : phase === 'next' ? (
           <div className="swipe-learn__wrap swipe-learn__wrap--next">
             <div className="swipe-learn__next-card">
-              <div className="swipe-learn__next-emoji">🫁</div>
-              <h2 className="swipe-learn__next-title">3-minute breathing reset</h2>
+              <div className="swipe-learn__next-emoji">🫀</div>
+              <h2 className="swipe-learn__next-title">3-minute breathing reset for blood pressure</h2>
               <p className="swipe-learn__next-body">
-                Slow breathing measurably lowers cortisol. Just 3 minutes and your skin barrier starts recovering.
+                Slow, controlled breathing activates the parasympathetic nervous system and measurably lowers blood pressure in minutes. Used in cardiac rehab programs.
               </p>
               <button className="swipe-learn__next-cta" onClick={() => {
                 if (videoWatched) {
@@ -65,7 +65,7 @@ export default function SwipeLearn({ onLearnClick }) {
                 {videoWatched ? 'Keep learning →' : 'Start now →'}
               </button>
               <p className="swipe-learn__next-src">
-                <span className="brand-pill">Verywell Mind</span>
+                <span className="brand-pill">Verywell Health</span>
                 <span>Clinical evidence</span>
               </p>
             </div>
@@ -85,9 +85,8 @@ export default function SwipeLearn({ onLearnClick }) {
             <div className="vwm-scroll-row">
               <div className="vwm-scroll-viewport">
                 <div className="vwm-scroll-track">
-                  <img
-                    src="/VeryWell%20Mind%20Skin%20Scroll.jpg"
-                    alt="The stress-skin connection, explained — by Verywell Mind"
+                  <div
+                    style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #2E5D8E 60%, #C2673A 100%)', height: '220px', borderRadius: '16px' }}
                   />
                 </div>
               </div>

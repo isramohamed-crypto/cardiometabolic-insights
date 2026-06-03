@@ -3,30 +3,39 @@ import React, { useState } from 'react'
 const cards = [
   {
     id: 1,
-    frontLabel: 'Perception vs Reality',
-    question: 'Is eczema something people \u201cnotice less than you think\u201d?',
-    backLabel: 'Not always \u2014 and that\u2019s what makes it hard',
-    answer: 'People with eczema often experience judgment about hygiene, visible reactions from others, and social discomfort or avoidance. This can make flare-ups feel more stressful \u2014 and stress can worsen symptoms.',
-    source: 'Patient experience research',
+    frontLabel: 'The silent part',
+    question: 'Why do most people with high cholesterol feel completely fine?',
+    backLabel: 'No symptoms doesn\u2019t mean no risk',
+    answer: 'High LDL cholesterol causes no pain, no fatigue, no visible signs \u2014 which is exactly what makes it dangerous. Plaque builds quietly in arteries for years before a cardiac event. That\u2019s why regular testing matters more than how you feel.',
+    source: 'American Heart Association',
     brand: null,
   },
   {
     id: 2,
-    frontLabel: 'Relationships + Skin',
-    question: 'Why can eczema feel worse in relationships?',
-    backLabel: "It\u2019s not just the skin \u2014 it\u2019s how it\u2019s perceived",
-    answer: 'Eczema can impact self-esteem, fear of rejection, and comfort with physical closeness. Some people avoid touch or intimacy during flares, even when partners are supportive.',
-    source: null,
-    brand: 'Verywell Mind',
+    frontLabel: 'The bigger picture',
+    question: 'If you have high cholesterol, what else are you likely managing?',
+    backLabel: 'It rarely travels alone',
+    answer: 'Around 70% of people with high cholesterol also have at least one other related condition \u2014 high blood pressure, type 2 diabetes, or weight-related metabolic issues. Managing all of them together, rather than in isolation, produces significantly better outcomes.',
+    source: 'CDC, 2023',
+    brand: null,
   },
   {
     id: 3,
-    frontLabel: 'Relationships + Skin',
-    question: 'Should you hide your eczema from a partner?',
-    backLabel: 'Talking about it can actually help',
-    answer: 'Instead of assuming judgment: share what you\u2019re experiencing, explain what triggers your flares, and set expectations during flare-ups. Open communication often leads to more understanding, not less.',
+    frontLabel: 'The number that matters most',
+    question: 'Is total cholesterol actually the most important number to watch?',
+    backLabel: 'Not exactly \u2014 the ratio tells more',
+    answer: 'Total cholesterol alone is a blunt tool. Your LDL-to-HDL ratio and non-HDL cholesterol are more predictive of cardiovascular risk. Ask your doctor for the full picture at your next lipid panel.',
     source: null,
-    brand: 'Verywell Mind',
+    brand: 'Health.com',
+  },
+  {
+    id: 4,
+    frontLabel: 'The decade ahead',
+    question: 'How much can lifestyle changes actually move your cholesterol numbers?',
+    backLabel: 'More than most people expect',
+    answer: 'Diet changes alone can reduce LDL by 20\u201330%. Adding regular moderate exercise can raise HDL by 5\u201310%. Combined with medication if prescribed, these shifts meaningfully lower your 10-year cardiovascular risk score.',
+    source: 'Mayo Clinic',
+    brand: null,
   },
 ]
 
@@ -39,7 +48,7 @@ export default function QuickAnswers() {
 
   return (
     <section className="quick-answers">
-      <h2 className="quick-answers__title">Eczema in real life</h2>
+      <h2 className="quick-answers__title">What you should know</h2>
       <div className="qa-scroll">
         {cards.map(card => (
           <div

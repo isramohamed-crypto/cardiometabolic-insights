@@ -20,7 +20,7 @@ const PERSONAS = [
   { id: 'family',  label: 'For the family-focused traveler',  tone: 'brown' }, // #724413
 ]
 
-const SHARED_INTRO = 'With a bit of planning—like thoughtful packing to prepare for unexpected eczema flare-ups—and an itinerary to maximize every stop, hit the road for wonderful memories ahead.'
+const SHARED_INTRO = 'With a bit of planning — including keeping medications on hand, choosing heart-smart meals on the go, and building in downtime — travel doesn\'t have to disrupt your health routine.'
 
 // Body copy is placeholder in the Figma (same paragraph across all three
 // personas). Swap with persona-specific copy when it's ready.

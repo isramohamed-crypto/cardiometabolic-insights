@@ -4,30 +4,24 @@ import MarkAsTried from './MarkAsTried'
 const TIPS = [
   {
     id: 'fiber',
-    image: '/rs-towels.jpg',
-    avatar: '/rs-jen-davison.jpg',
+    gradient: 'linear-gradient(135deg, #0A2463 0%, #1B4FBF 100%)',
     quote: 'Eating 5–10 grams of soluble fiber daily — from oats, beans, or flaxseed — can meaningfully lower LDL cholesterol over time.',
     author: 'SARAH KOSZYK, RDN, HEALTH.COM',
   },
   {
     id: 'movement',
-    image: '/rs-robe.jpg',
-    avatar: '/rs-heather-muir.jpg',
+    gradient: 'linear-gradient(135deg, #0D5C63 0%, #0A9396 100%)',
     quote: 'Even 30 minutes of moderate walking five days a week can raise HDL (good) cholesterol and reduce cardiovascular risk — no gym required.',
     author: 'JESSICA MIGALA, HEALTH.COM',
   },
   {
-    /* Blank card — placeholder for a sponsored slot. Fill in image,
-       avatar, quote, author later. The `placeholder: true` flag lets
-       the render skip image + avatar + author markup. */
     id: 'sponsored',
     placeholder: true,
     quote: 'Sponsored Ad',
   },
   {
     id: 'stress',
-    image: '/rs-skincare-org.jpg',
-    avatar: '/rs-heather-muir.jpg',
+    gradient: 'linear-gradient(135deg, #2D1B69 0%, #5C3D8F 100%)',
     quote: 'Chronic stress raises cortisol, which can increase LDL and triglycerides. Managing stress isn\'t just good for your mind — it directly supports heart health.',
     author: 'JESSICA MIGALA, HEALTH.COM',
   },
@@ -66,12 +60,12 @@ export default function ForYouNow() {
             <article key={t.id} className="rs-card">
               <div
                 className="rs-card__image"
-                style={{ backgroundImage: `url(${t.image})` }}
+                style={{ background: t.gradient }}
                 role="img"
                 aria-label={t.quote}
               />
               <div className="rs-card__quote-block">
-                <img className="rs-card__avatar" src={t.avatar} alt="" />
+                <div className="rs-card__avatar" style={{ background: 'var(--color-teal-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>💊</div>
                 <div className="rs-card__quote-text">
                   <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
                   {t.author && (

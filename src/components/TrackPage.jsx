@@ -11,7 +11,7 @@ const CHART_DATA = {
     stress: [6,5,7,4,5,3,7,6,5,8,4,3,7,6],
     sleep:  [72,68,65,74,70,58,62,75,71,60,73,78,64,72],
     days:   ['Mar 25','31','Apr 7'],
-    note:   'Pattern detected: skin score peaks on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.',
+    note:   'Pattern detected: health score peaks on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.',
   },
   '30 days': {
     skin:   [3,2,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2,1,2,3,2,4,3,2,2,3,2],
@@ -25,7 +25,7 @@ const CHART_DATA = {
     stress: [3,4,5,4,6,5,7,4,5,3,7,6,5,8,4,3,7,6,5,4,6,5,7,4,5,3,7,6,5,8],
     sleep:  [76,75,72,68,65,74,70,58,62,75,71,60,73,78,64,72,70,68,65,74,70,58,62,75,71,60,73,78,64,70],
     days:   ['Jan 7','Feb 21','Apr 7'],
-    note:   'Long-term pattern: stress is your #1 predictor. Skin scores trend higher in weeks with consistent sleep above 70.',
+    note:   'Long-term pattern: stress is your #1 predictor. Health scores trend better in weeks with consistent sleep above 70.',
   },
 }
 
@@ -41,50 +41,50 @@ const DAYS         = ['Mar 25','26','27','28','29','30','31','Apr 1','2','3','4'
  * `skin` and `note` from here keyed by the active condition label.
  */
 const CONDITION_TREND_OVERRIDES = {
-  'Eczema': {
-    '14 days': { skin: [2,2,3,3,2,4,3,2,2,3,2,4,3,2], note: 'Eczema flares on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.' },
-    '30 days': { skin: [3,2,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2,1,2,3,2,4,3,2,2,3,2], note: 'Eczema worsens on weeks where stress > 6 and sleep < 65.' },
-    '90 days': { skin: [3,3,2,3,4,3,2,2,3,2,4,3,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2], note: 'Eczema trend improves in weeks with consistent sleep above 70.' },
+  'High cholesterol': {
+    '14 days': { skin: [2,2,3,3,2,4,3,2,2,3,2,4,3,2], note: 'Cholesterol-related health scores elevated on Apr 1 and Apr 6 — both follow high-stress days with low sleep scores.' },
+    '30 days': { skin: [3,2,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2,1,2,3,2,4,3,2,2,3,2], note: 'Cholesterol health scores worsen on weeks where stress > 6 and sleep < 65.' },
+    '90 days': { skin: [3,3,2,3,4,3,2,2,3,2,4,3,2,3,2,1,2,3,4,3,2,2,3,2,4,3,2,3,3,2], note: 'Cholesterol trend improves in weeks with consistent sleep above 70.' },
   },
-  'Psoriasis': {
-    '14 days': { skin: [3,3,3,3,2,2,2,3,3,3,3,4,3,3], note: 'Psoriasis plaques have been steady — slight worsening late this week.' },
-    '30 days': { skin: [3,3,3,3,3,2,2,2,3,3,3,4,3,3,3,3,3,3,3,3,2,2,2,3,3,3,4,3,3,3], note: 'Psoriasis is slow-changing — improvements visible across 4-week intervals.' },
-    '90 days': { skin: [4,4,3,3,3,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,3,3,3,3], note: 'Psoriasis has gradually improved over the quarter — consistent treatment showing.' },
+  'High blood pressure': {
+    '14 days': { skin: [3,3,3,3,2,2,2,3,3,3,3,4,3,3], note: 'Blood pressure readings have been steady — slight worsening late this week.' },
+    '30 days': { skin: [3,3,3,3,3,2,2,2,3,3,3,4,3,3,3,3,3,3,3,3,2,2,2,3,3,3,4,3,3,3], note: 'Blood pressure is slow-changing — improvements visible across 4-week intervals.' },
+    '90 days': { skin: [4,4,3,3,3,3,3,3,3,2,2,2,3,3,3,3,3,3,3,3,3,3,3,2,2,2,3,3,3,3], note: 'Blood pressure has gradually improved over the quarter — consistent treatment showing.' },
   },
-  'Rosacea': {
-    '14 days': { skin: [1,2,3,2,3,4,3,2,1,2,3,3,2,2], note: 'Rosacea flushing spikes on Mar 30 and Apr 4 — both warm/humid weather days.' },
-    '30 days': { skin: [2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2], note: 'Rosacea is reactive to weather and new products this month.' },
-    '90 days': { skin: [2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,3,3], note: 'Rosacea volatility highest in transitional weather periods.' },
+  'Type 2 diabetes': {
+    '14 days': { skin: [1,2,3,2,3,4,3,2,1,2,3,3,2,2], note: 'Blood sugar spikes on Mar 30 and Apr 4 — both high-stress, low-activity days.' },
+    '30 days': { skin: [2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2], note: 'Blood sugar is reactive to dietary changes and stress this month.' },
+    '90 days': { skin: [2,2,3,2,1,2,3,2,3,4,3,2,1,2,3,3,2,2,3,2,1,2,3,2,3,4,3,2,3,3], note: 'Blood sugar volatility highest in high-stress periods.' },
   },
-  'Acne': {
-    '14 days': { skin: [2,2,2,3,3,4,4,3,2,2,1,1,2,2], note: 'Acne breakouts peaked Mar 30–Apr 1, then cleared as the week went on.' },
-    '30 days': { skin: [2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,3,2], note: 'Acne shows a roughly 10-day cycle — likely hormonal.' },
-    '90 days': { skin: [3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1], note: 'Acne breakouts follow a recurring monthly pattern.' },
+  'Heart disease': {
+    '14 days': { skin: [2,2,2,3,3,4,4,3,2,2,1,1,2,2], note: 'Cardiac health scores elevated Mar 30–Apr 1, then improved as stress reduced.' },
+    '30 days': { skin: [2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,4,3,2,2,1,1,2,2,2,3,3,4,3,2], note: 'Cardiac health shows a stress-driven pattern — roughly correlating with work week stress.' },
+    '90 days': { skin: [3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1,1,2,2,3,3,4,4,3,2,2,1], note: 'Cardiac health scores follow a recurring pattern tied to activity and stress cycles.' },
   },
-  'Redness or irritation': {
-    '14 days': { skin: [2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Redness flared on Mar 29 and Apr 3 — both after trying a new product.' },
-    '30 days': { skin: [3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Redness tied to product reactivity this month.' },
-    '90 days': { skin: [3,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,3,2,3,2,3,4,3,2,2,3,4,3,2], note: 'Redness reactive to environmental and product changes.' },
+  'Weight / metabolic health': {
+    '14 days': { skin: [2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Metabolic health scores elevated on Mar 29 and Apr 3 — both after low-activity days.' },
+    '30 days': { skin: [3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2], note: 'Metabolic health tied to activity levels and dietary choices this month.' },
+    '90 days': { skin: [3,3,2,3,2,3,4,3,2,2,3,4,3,2,3,2,3,3,2,3,2,3,4,3,2,2,3,4,3,2], note: 'Metabolic health reactive to sustained lifestyle changes.' },
   },
-  'Dryness or flaking': {
-    '14 days': { skin: [3,3,4,3,3,4,4,3,3,3,2,3,3,3], note: 'Dryness highest on cold/dry days — moisturizing within 3 min of showering helps.' },
-    '30 days': { skin: [3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4], note: 'Dryness fluctuates with humidity — trends drier in winter weeks.' },
-    '90 days': { skin: [4,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,4,4], note: 'Dryness has slowly improved — barrier repair routine is working.' },
+  'Family history': {
+    '14 days': { skin: [3,3,4,3,3,4,4,3,3,3,2,3,3,3], note: 'Preventive health scores highest on high-stress, low-activity days.' },
+    '30 days': { skin: [3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4], note: 'Health scores fluctuate with lifestyle consistency — best in lower-stress weeks.' },
+    '90 days': { skin: [4,4,3,3,4,4,3,3,3,2,3,3,3,3,3,4,3,3,4,4,3,3,3,2,3,3,3,3,4,4], note: 'Health scores have slowly improved with consistent lifestyle changes.' },
   },
-  'Itching or sensitivity': {
-    '14 days': { skin: [3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Itch spikes overnight on Mar 30 and Apr 3 — both after late caffeine/stress days.' },
-    '30 days': { skin: [3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Itch worst on poor-sleep nights — strong correlation with sleep < 65.' },
-    '90 days': { skin: [3,3,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,3,2,3,3,4,3,2,3,3,3,2], note: 'Itch trends improve in weeks with regular sleep schedule.' },
+  'Borderline numbers': {
+    '14 days': { skin: [3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Borderline readings spike on high-stress nights — strong correlation with sleep < 65.' },
+    '30 days': { skin: [3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2], note: 'Borderline numbers worst on poor-sleep nights — strong correlation with sleep < 65.' },
+    '90 days': { skin: [3,3,3,3,2,3,3,4,3,2,3,3,3,2,3,3,2,3,3,3,2,3,3,4,3,2,3,3,3,2], note: 'Health trends improve in weeks with regular sleep schedule.' },
   },
-  'Breakouts or bumps': {
-    '14 days': { skin: [2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Breakouts peaked early in the cycle, then settled.' },
-    '30 days': { skin: [3,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Breakouts show a cyclical pattern, ~12 days apart.' },
-    '90 days': { skin: [3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3], note: 'Breakouts following a recurring monthly cycle.' },
+  'Recovery': {
+    '14 days': { skin: [2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Recovery scores peaked early in the period, then improved with rest.' },
+    '30 days': { skin: [3,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,2,2,3,3,4,4,3,3,2,2,1,2,2,2], note: 'Recovery shows a cyclical pattern tied to activity and stress levels.' },
+    '90 days': { skin: [3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3,2,2,1,2,2,2,3,3,4,4,3,3], note: 'Recovery following a gradual improvement trend with consistent management.' },
   },
-  'Unpredictable flare-ups': {
-    '14 days': { skin: [1,2,4,2,1,3,4,2,1,3,2,4,2,1], note: 'Flares are erratic — no clear weekly pattern, but stress days correlate strongly.' },
-    '30 days': { skin: [2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,2,1,2,4,2,1,3,4,2,1,3,2,4,2], note: 'Unpredictable flare pattern — stress is the strongest single trigger.' },
-    '90 days': { skin: [3,2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,3,2,1,2,4,2,1,3,4,2,1,3,2], note: 'Even across 90 days, the only consistent flare predictor is your stress level.' },
+  'Prevention focused': {
+    '14 days': { skin: [1,2,4,2,1,3,4,2,1,3,2,4,2,1], note: 'Health scores vary — no clear weekly pattern, but stress days correlate strongly.' },
+    '30 days': { skin: [2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,2,1,2,4,2,1,3,4,2,1,3,2,4,2], note: 'Variable health pattern — stress is the strongest single contributing factor.' },
+    '90 days': { skin: [3,2,1,2,4,2,1,3,4,2,1,3,2,4,2,1,3,3,2,1,2,4,2,1,3,4,2,1,3,2], note: 'Even across 90 days, the only consistent health predictor is your stress level.' },
   },
 }
 
@@ -135,9 +135,9 @@ function computeTriggers(checkins) {
 }
 
 const ACTIONS = [
-  { icon: '🌬️', bg: 'rgba(0, 185, 226,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → flare cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
-  { icon: '🧴', bg: 'rgba(27, 188, 60,.1)',    tag: 'SKINCARE · ROUTINE', tagC: 'var(--color-teal)', title: 'Add moisturizer timing to your daily checklist', body: 'You moisturize 4/7 nights. Making it 7/7 could improve your average skin score.', cta: 'Add to checklist', ctaBg: 'rgba(27, 188, 60,.1)', ctaC: 'var(--color-teal)' },
-  { icon: '📖', bg: 'rgba(0, 83, 226,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#0053E2', title: 'Continue: Stress + Skin journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(0, 83, 226,.1)', ctaC: '#0053E2' },
+  { icon: '🌬️', bg: 'rgba(0, 185, 226,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → elevated readings cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
+  { icon: '💊', bg: 'rgba(27, 188, 60,.1)',    tag: 'MEDICATIONS · ROUTINE', tagC: 'var(--color-teal)', title: 'Add medication timing to your daily checklist', body: 'You log your medications 5/7 days. Consistent daily timing could improve your health score average.', cta: 'Add to checklist', ctaBg: 'rgba(27, 188, 60,.1)', ctaC: 'var(--color-teal)' },
+  { icon: '📖', bg: 'rgba(0, 83, 226,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#0053E2', title: 'Continue: Stress + Heart Health journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(0, 83, 226,.1)', ctaC: '#0053E2' },
   { icon: '🥗', bg: 'rgba(232, 239, 101,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(232, 239, 101,.15)', ctaC: '#8A7A30' },
 ]
 
@@ -151,9 +151,9 @@ const METRICS = [
 ]
 
 const EPROS = [
-  { icon: '📋', iconBg: 'rgba(27, 188, 60,.1)',   title: 'DLQI — Quality of Life',    sub: 'How eczema impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(27, 188, 60,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
-  { icon: '📊', iconBg: 'rgba(0, 185, 226,.12)', title: 'POEM — Symptom Severity',   sub: 'Track eczema severity over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(0, 185, 226,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
-  { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of your skin condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
+  { icon: '📋', iconBg: 'rgba(27, 188, 60,.1)',   title: 'HRQOL — Quality of Life',    sub: 'How your condition impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(27, 188, 60,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
+  { icon: '📊', iconBg: 'rgba(0, 185, 226,.12)', title: 'PHQ-9 — Symptom Severity',   sub: 'Track how you\'ve been feeling over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(0, 185, 226,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
+  { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of managing a chronic condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
 ]
 
 function Sparkline({ data, color }) {
@@ -178,7 +178,7 @@ function TrendChart({ range, condition }) {
   return (
     <div className="tp-chart-wrap">
       <div className="tp-chart-legend">
-        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-sage)' }} />Skin score</span>
+        <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-sage)' }} />Health score</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-warm)' }} />Stress</span>
         <span className="tp-leg"><span className="tp-leg-dot" style={{ background: 'var(--color-teal)' }} />Sleep</span>
       </div>
@@ -270,9 +270,9 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   return (
     <main className="main learn-page track-page">
       <div className="pp-hero tp-hero">
-        <p className="pp-hero-eyebrow">Your skin diary</p>
+        <p className="pp-hero-eyebrow">Your health log</p>
         <h1 className="pp-hero-title">What your data is telling you</h1>
-        <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your flares.</p>
+        <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your health trends.</p>
       </div>
 
       {/* Status strip — overlaps hero */}
@@ -317,7 +317,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                 <>
                   <li className="tp-ai-summary__item">
                     <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
-                    <span><strong>Stress predicts flares.</strong> Your {(conditions[0] || 'skin').toLowerCase()} worsens 24–48 hrs after high-stress days.</span>
+                    <span><strong>Stress predicts health changes.</strong> Your {(conditions[0] || 'condition').toLowerCase()} worsens 24–48 hrs after high-stress days.</span>
                   </li>
                   <li className="tp-ai-summary__item">
                     <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
@@ -325,7 +325,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                   </li>
                   <li className="tp-ai-summary__item">
                     <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
-                    <span><strong>Moisturizer timing matters.</strong> Days you log within-3-min moisturizing trend better.</span>
+                    <span><strong>Medication timing matters.</strong> Days you log consistent medication use trend better.</span>
                   </li>
                 </>
               )}
@@ -365,7 +365,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                 {todayDone
                   ? 'Logged today — tap to view or update'
                   : (d == null
-                      ? 'Start your first skin check-in'
+                      ? 'Start your first health check-in'
                       : d === 1
                         ? 'Log today\'s check-in'
                         : `Log today\'s check-in — it\'s been ${d} days`)}
@@ -419,8 +419,8 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
               <span className="tp-insight-dot" style={{ background: 'var(--color-teal)' }} />
               Pattern detected
             </div>
-            <div className="tp-insight-title">Stressful days show up on your skin ~48 hours later</div>
-            <div className="tp-insight-body">When you report a stressful day, your skin score worsens 2 days afterward — confirmed 3 of 4 weeks. Your Oura HRV data backs this up.</div>
+            <div className="tp-insight-title">Stressful days show up in your health metrics ~48 hours later</div>
+            <div className="tp-insight-body">When you report a stressful day, your health score worsens 2 days afterward — confirmed 3 of 4 weeks. Your Oura HRV data backs this up.</div>
           </div>
         </div>
       </div>
@@ -441,7 +441,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
               <span className="tp-tx-empty__icon">🧴</span>
               <div>
                 <div className="tp-tx-empty__title">Nothing logged yet</div>
-                <div className="tp-tx-empty__sub">Add what you're using during your next skin check-in. It'll show up here.</div>
+                <div className="tp-tx-empty__sub">Add what you're using during your next health check-in. It'll show up here.</div>
               </div>
             </div>
           </div>
@@ -566,7 +566,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             </div>
             <div className="tp-er-score-body">
               <div className="tp-er-score-label">Moderate impact</div>
-              <div className="tp-er-score-interp">Your {activeCondition || 'skin condition'} has a moderate effect on daily life. Sleep, leisure, and social activity are most affected.</div>
+              <div className="tp-er-score-interp">Your {activeCondition || 'health condition'} has a moderate effect on daily life. Sleep, energy, and daily activity are most affected.</div>
             </div>
           </div>
           <div className="tp-er-trend">

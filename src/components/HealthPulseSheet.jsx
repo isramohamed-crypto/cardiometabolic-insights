@@ -2,24 +2,24 @@ import React, { useEffect, useState } from 'react'
 import './HealthPulseSheet.css'
 
 /**
- * Weekly Health Pulse — combined POEM-style + DLQI-style patient-reported
+ * Weekly Health Pulse — combined Symptom Burden + Life Impact patient-reported
  * outcomes. Saves a record to localStorage `cardiometabolicEpro[]` so PreparePage
  * can surface real symptom and life-impact scores instead of hard-coded
- * demo numbers. Question wording is paraphrased; the scoring scales and
- * interpretation bands follow the standard 0–28 (POEM) and 0–30 (DLQI)
- * instruments used in dermatology research and clinical care.
+ * demo numbers. Designed for cardiometabolic health (cholesterol, hypertension,
+ * diabetes, obesity, heart disease). Answering weekly builds a longitudinal
+ * picture the care team can use between visits.
  */
 
 const STORAGE_KEY = 'cardiometabolicEpro'
 
 const POEM_QUESTIONS = [
-  'How many days this week did you notice itching on your skin?',
-  'How many nights this week was your sleep disturbed because of your skin?',
-  'How many days this week did your skin bleed?',
-  'How many days this week did your skin weep or ooze fluid?',
-  'How many days this week was your skin cracked?',
-  'How many days this week did you notice skin flaking off?',
-  'How many days this week did your skin feel dry or rough?',
+  'How many days this week did you feel unusually fatigued or low on energy?',
+  'How many days this week did you experience headaches or pressure in your head?',
+  'How many nights this week was your sleep disrupted by stress, discomfort, or worry?',
+  'How many days this week did you feel short of breath during normal activity?',
+  'How many days this week did you notice chest tightness, pressure, or discomfort?',
+  'How many days this week did you feel anxious or worried about your health?',
+  'How many days this week did you struggle to stick to your diet or health routine?',
 ]
 const POEM_OPTIONS = [
   { label: 'No days',   value: 0 },
@@ -30,16 +30,16 @@ const POEM_OPTIONS = [
 ]
 
 const DLQI_QUESTIONS = [
-  'How much itching, soreness, pain, or stinging have you had?',
-  'How much have you felt embarrassed or self-conscious about your skin?',
-  'How much has your skin gotten in the way of shopping, household tasks, or yardwork?',
-  'How much has your skin shaped what clothes you decided to wear?',
-  'How much has your skin held you back from social or leisure activities?',
-  'How much has your skin made it harder to exercise or play sports?',
-  'Has your skin kept you from working or studying?',
-  'How much friction has your skin created with your partner, friends, or family?',
-  'How much has your skin caused difficulty in your sex life?',
-  'How much of a hassle has treating your skin been (messy products, time spent, etc.)?',
+  'How much has managing your condition affected your energy for daily tasks?',
+  'How much has health anxiety affected your mood or outlook this week?',
+  'How much has your condition gotten in the way of work or daily responsibilities?',
+  'How much has monitoring or managing your health felt like a burden?',
+  'How much has your condition held you back from social or leisure activities?',
+  'How much has it affected your ability to exercise or stay active?',
+  'How much has meal planning or eating well felt stressful or difficult?',
+  'How much friction has your health created with family or people close to you?',
+  'How much has your condition affected your confidence or self-image?',
+  'How much time and effort has managing medications or appointments taken?',
 ]
 const DLQI_OPTIONS = [
   { label: 'Not at all', value: 0 },
@@ -122,13 +122,12 @@ export default function HealthPulseSheet({ onClose, onComplete }) {
         <div className="hp-intro">
           <p className="hp-intro__title">Two short scales · about 3 minutes</p>
           <p className="hp-intro__sub">
-            POEM measures symptoms over the last week. DLQI measures life impact. These are
-            the same instruments your dermatologist uses in clinic — answering weekly gives
-            them a clearer picture between visits.
+            These questions track your symptom burden and life impact over the last week.
+            Answering weekly builds a picture your care team can use between visits.
           </p>
         </div>
 
-        <h2 className="hp-section-h">Symptoms this week<span className="hp-section-tag">POEM</span></h2>
+        <h2 className="hp-section-h">Symptoms this week<span className="hp-section-tag">BURDEN</span></h2>
         <p className="hp-section-sub">Over the last week, on how many days have you experienced each of these?</p>
         {POEM_QUESTIONS.map((q, i) => (
           <fieldset key={`poem-${i}`} className={`hp-q${poemAns[i] !== null ? ' hp-q--answered' : ''}`}>
@@ -150,8 +149,8 @@ export default function HealthPulseSheet({ onClose, onComplete }) {
           </fieldset>
         ))}
 
-        <h2 className="hp-section-h">Life impact this week<span className="hp-section-tag">DLQI</span></h2>
-        <p className="hp-section-sub">Over the last week, how much has your skin affected each of these?</p>
+        <h2 className="hp-section-h">Life impact this week<span className="hp-section-tag">IMPACT</span></h2>
+        <p className="hp-section-sub">Over the last week, how much has managing your cardiometabolic health affected each of these?</p>
         {DLQI_QUESTIONS.map((q, i) => (
           <fieldset key={`dlqi-${i}`} className={`hp-q${dlqiAns[i] !== null ? ' hp-q--answered' : ''}`}>
             <legend className="hp-q__legend">{q}</legend>

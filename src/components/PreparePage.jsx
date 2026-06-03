@@ -113,39 +113,39 @@ const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
     title: 'Bring your tracking data — even on your phone',
-    body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your Cardiometabolic360 summary does this automatically.',
+    body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your Cardiometabolic360 summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
   },
   {
-    step: '2 of 5', emoji: '📸',
-    title: 'Take photos between visits — not just during flares',
-    body: "Photos of your skin when it's clear AND when it's flaring help your dermatologist see the full picture. Don't wait for the worst day to snap a photo.",
-    cite: 'American Academy of Dermatology',
+    step: '2 of 5', emoji: '📊',
+    title: 'Know your numbers before you walk in',
+    body: "Ask your care team to share your latest cholesterol panel, blood pressure readings, and HbA1c. Coming in with your own record of trends helps your cardiologist or GP see the full picture.",
+    cite: 'American Heart Association',
     bg: 'linear-gradient(150deg,#3a2a45,#1e1428)',
     glow: 'radial-gradient(circle at 20% 75%,rgba(232,134,106,.2),transparent 55%)',
   },
   {
     step: '3 of 5', emoji: '💊',
-    title: "List every product and treatment you've tried",
-    body: 'Include OTC moisturizers, prescription creams, and anything you\'ve stopped using. "Didn\'t work" is valuable information — it helps your dermatologist narrow options faster.',
+    title: "List every medication and supplement you're taking",
+    body: 'Include prescription medications, OTC supplements, and anything you\'ve stopped using. "Didn\'t work" or "caused side effects" is valuable information — it helps your care team find better options faster.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#0D7C8F,#064a55)',
     glow: 'radial-gradient(circle at 70% 25%,rgba(232, 239, 101,.2),transparent 55%)',
   },
   {
     step: '4 of 5', emoji: '🤔',
-    title: 'Ask about the treatment ladder — not just the next cream',
-    body: 'Eczema treatment follows a progression: moisturizers → topical steroids → non-steroidal topicals → phototherapy → biologics. Knowing where you are helps you ask better questions.',
+    title: 'Ask about your cardiovascular risk score — not just your numbers',
+    body: 'Individual cholesterol or blood pressure numbers only tell part of the story. Ask your cardiologist or GP about your 10-year cardiovascular risk score and what target ranges are right for your profile.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#4a3a28,#2a1c10)',
     glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.25),transparent 55%)',
   },
   {
     step: '5 of 5', emoji: '💬',
-    title: 'Tell them about the life impact — not just the itch',
-    body: 'Your DLQI score, sleep disruption, and emotional burden matter for treatment decisions. Biologics are often approved when quality-of-life impact is documented.',
+    title: 'Tell them about the life impact — not just the numbers',
+    body: 'Fatigue, sleep disruption, and emotional burden matter for treatment decisions. Your care team needs the full picture to recommend the right lifestyle changes and therapies.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2a1a38,#140e1e)',
     glow: 'radial-gradient(circle at 50% 50%,rgba(91,107,191,.2),transparent 55%)',
@@ -153,19 +153,19 @@ const SW_SLIDES = [
 ]
 
 const CHAT_RESPONSES = {
-  'What should I ask about biologics?': "Based on your tracking, you're a potential candidate for biologic therapy. Here are questions tailored to your data:\n\n→ \"My topical hasn't controlled symptoms after 14 days of consistent use. Should we discuss biologics?\"\n→ \"My DLQI score is 9 — does that qualify for biologic treatment?\"\n→ \"What's the difference between Dupixent and newer options?\"\n→ \"How long until I'd see results?\"\n\nYour 48-hour stress → flare pattern and sleep disruption data strengthen this conversation.",
-  'Explain my stress-flare pattern to my doctor': "Here's how to frame it:\n\n\"I've been tracking for 21 days with an Oura Ring and daily check-ins. My data shows that when I report a stressful day and my HRV drops more than 15%, my skin score worsens about 48 hours later. This happened 3 out of 4 weeks.\"\n\nThis is exactly the kind of evidence dermatologists find useful — it moves the conversation from \"stress makes it worse\" (vague) to a specific, documented pattern with timing.",
-  'Is my eczema severe enough for a referral?': "Based on your data, here's what supports a treatment discussion:\n\n→ DLQI score of 9 (moderate quality-of-life impact)\n→ POEM score of 11 (moderate symptom severity)\n→ 5 flare days in 21 days of tracking\n→ 82% correlation between stress + poor sleep and flares\n→ OTC moisturizers aren't fully controlling symptoms\n\nMany dermatologists consider escalating treatment when daily management isn't achieving control. Your data tells that story clearly.",
-  'What does my DLQI score mean for treatment?': "Your DLQI is 9, which falls in the \"moderate impact\" range (6–10). This matters because:\n\n→ Scores above 10 are often used as a threshold for biologic eligibility\n→ Your score has improved from 16 → 12 → 9 over three months\n→ The areas driving your score are leisure and relationships\n\nDermatologists use DLQI alongside clinical severity to make treatment decisions. Your improving trend is positive, but the persistent moderate impact suggests there's room for further improvement.",
+  'What should I ask about my cholesterol targets?': "Based on your tracking, here are questions tailored to your data:\n\n→ \"What LDL target should I be aiming for given my cardiovascular risk profile?\"\n→ \"My LDL has dropped but my HDL is still low — does that change our approach?\"\n→ \"Are there non-statin options if I'm experiencing side effects?\"\n→ \"How often should I be retesting my lipid panel?\"\n\nYour stress and sleep data also support a conversation about lifestyle factors that affect lipid levels.",
+  'Explain my stress pattern to my doctor': "Here's how to frame it:\n\n\"I've been tracking for 21 days with an Oura Ring and daily check-ins. My data shows that when I report a stressful day and my HRV drops more than 15%, my blood pressure readings worsen about 48 hours later. This happened 3 out of 4 weeks.\"\n\nThis is exactly the kind of evidence your care team finds useful — it moves the conversation from \"stress makes it worse\" (vague) to a specific, documented pattern with timing.",
+  'What is my cardiovascular risk score?': "Based on your data, here's what supports a risk discussion:\n\n→ DLQI score of 9 (moderate quality-of-life impact)\n→ 5 high-symptom days in 21 days of tracking\n→ 82% correlation between stress + poor sleep and worse health days\n→ Current medications not fully controlling symptoms\n\nYour care team can calculate your 10-year cardiovascular risk using tools like the Pooled Cohort Equations. Your data tells a clear story to support that conversation.",
+  'What lifestyle changes should I prioritize?': "Your tracking data points to a few high-leverage changes:\n\n→ Sleep quality — nights under 65 score correlate with your worst health days\n→ Stress management — your HRV data shows a clear stress → response pattern\n→ Dietary patterns — 3 weeks of food logging shows room for more heart-healthy choices\n\nYour care team can help you prioritize based on which factors are driving your numbers most. Your data makes that conversation much more focused.",
 }
-const DEFAULT_RESPONSE = "That's a great question to bring up with Dr. Williams. Based on your tracking data, I can help you frame it effectively.\n\nYour 21 days of data show a clear stress → flare pattern with an 82% confidence level. Your DLQI and POEM scores both support a conversation about optimizing your treatment plan.\n\nWould you like me to help draft a specific question for your appointment?"
+const DEFAULT_RESPONSE = "That's a great question to bring up with your care team. Based on your tracking data, I can help you frame it effectively.\n\nYour 21 days of data show a clear stress and sleep pattern with an 82% confidence level. Your health scores both support a conversation about optimizing your treatment plan.\n\nWould you like me to help draft a specific question for your appointment?"
 
 function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
   const firstName = readProfileName()
   const greeting = firstName ? `Hi ${firstName}!` : 'Hi there!'
   const apptPhrase = apptDate
     ? `for your appointment with ${dermName} on ${apptDate}`
-    : (dermName !== 'your derm' ? `for your visit with ${dermName}` : 'for your next derm visit')
+    : (dermName !== 'your care team' ? `for your visit with ${dermName}` : 'for your next care team visit')
   const [messages, setMessages] = useState([
     { role: 'ai', text: `${greeting} I can help you prepare ${apptPhrase}.\n\nI have access to your tracking data, ePRO scores, and Oura data. Ask me anything about what to discuss or how to frame your questions.` },
   ])
@@ -296,106 +296,106 @@ function SwipeCards() {
  * (e.g. for the non-diagnosis "concerns").
  */
 const PREPARE_PLAYBOOKS = {
-  'Eczema': {
+  'High cholesterol': {
     summary: [
-      { icon: '📊', text: 'Stress → flare pattern confirmed: Wednesday stress shows up on skin by Friday, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
-      { icon: '😴', text: '82% of worst skin days follow nights with sleep score under 65', reason: 'Oura sleep data + skin score' },
-      { icon: '📋', text: 'DLQI: 9/30 (moderate impact, improving from 16 in January) · POEM: 11/28 (moderate symptoms)', reason: 'ePRO assessment results' },
-      { icon: '🧴', text: 'Currently managing with OTC moisturizers + occasional hydrocortisone. Consistent routine 4/7 nights.', reason: 'Self-reported treatment' },
+      { icon: '📊', text: 'Stress → elevated readings pattern confirmed: high-stress days correlate with worse health metrics 48 hrs later, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
+      { icon: '😴', text: '82% of worst health days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
+      { icon: '📋', text: 'LDL tracking: moderate concern, improving over past 3 months with lifestyle changes', reason: 'Self-reported health scores' },
+      { icon: '💊', text: 'Currently managing with statin therapy + dietary changes. Adherent 5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
-      { text: 'My data shows flares spike 48 hours after high-stress days. Is there a preventive intervention for that window?', reason: 'Based on 21-day stress-flare correlation' },
-      { text: '82% of my flares follow poor sleep. Are there nighttime-specific interventions beyond moisturizing?', reason: 'Based on Oura sleep + skin scores' },
-      { text: "I've been managing with OTC for 3 weeks without full control. Should we discuss stepping up treatment?", reason: 'Pre-Rx readiness assessment' },
-      { text: 'My DLQI is 9 and improving. At what point would you consider biologic therapy for my profile?', reason: 'Based on DLQI + POEM trends' },
+      { text: 'My data shows stress correlates with worse readings 48 hours later. Is there an intervention for that window?', reason: 'Based on 21-day stress correlation' },
+      { text: '82% of my worst days follow poor sleep. What sleep interventions do you recommend?', reason: 'Based on Oura sleep + health scores' },
+      { text: "I've been on my current regimen for 3 months. Should we adjust the dosage or try a different approach?", reason: 'Treatment progress review' },
+      { text: 'What is my current 10-year cardiovascular risk score, and what target should I aim for?', reason: 'Based on lipid panel trends' },
     ],
     aiSuggestions: [
-      'What should I ask about biologics?',
-      'Explain my stress-flare pattern to my doctor',
-      'Is my eczema severe enough for a referral?',
-      'What does my DLQI score mean for treatment?',
+      'What should I ask about my cholesterol targets?',
+      'Explain my stress pattern to my doctor',
+      'What is my cardiovascular risk score?',
+      'What lifestyle changes should I prioritize?',
     ],
   },
-  'Psoriasis': {
+  'High blood pressure': {
     summary: [
-      { icon: '📊', text: 'PASI score: 6.8 (moderate, body surface area ~8%) — slow improvement over 12 weeks', reason: 'Self-reported severity + photos' },
-      { icon: '🦴', text: 'Morning joint stiffness logged 4 of 21 days — possible psoriatic arthritis signal', reason: 'Daily check-in symptoms' },
-      { icon: '📋', text: 'DLQI: 9/30 (moderate impact). Plaques most disruptive in social and clothing-choice scenarios.', reason: 'ePRO assessment results' },
-      { icon: '🧴', text: 'Currently on topical calcipotriene + emollient. Stable but not clearing.', reason: 'Self-reported treatment' },
+      { icon: '📊', text: 'Blood pressure elevated on 18 of 21 tracked days — highest readings on high-stress days', reason: 'Self-reported health scores + Oura' },
+      { icon: '😴', text: 'Sleep under 65 correlates with next-day elevated readings — 4 of 4 weeks', reason: 'Oura sleep data' },
+      { icon: '📋', text: 'Quality-of-life impact rated moderate. Fatigue and headaches noted in journal entries.', reason: 'Self-reported ePRO' },
+      { icon: '💊', text: 'Currently on ACE inhibitor + lifestyle modifications. Consistent 5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
-      { text: 'My plaques are stable but not clearing on topicals. At what point should we discuss systemic therapy?', reason: 'Based on 12 weeks of topical use' },
-      { text: 'I have morning joint stiffness lasting >30 minutes. Could this be psoriatic arthritis?', reason: 'Based on check-in symptom log' },
-      { text: 'What biologics treat both my plaques and joint symptoms?', reason: 'Combination-therapy question' },
-      { text: 'My PASI has improved from 9.4 to 6.8. Is this clinically meaningful progress?', reason: 'Based on severity trend' },
+      { text: 'My readings are still elevated despite medication. Should we adjust the dosage or add a second agent?', reason: 'Based on 3 months of tracking' },
+      { text: 'I have consistent sleep disruption. Could sleep apnea be contributing to my blood pressure?', reason: 'Based on Oura sleep data' },
+      { text: 'What home blood pressure monitoring technique do you recommend for accuracy?', reason: 'Monitoring best practice' },
+      { text: 'What is my target blood pressure range given my age and other risk factors?', reason: 'Personalized target question' },
     ],
     aiSuggestions: [
-      'What should I ask about biologics for psoriasis?',
-      'Are my joint symptoms a concern?',
-      'Explain my PASI trend for my dermatologist',
-      'What questions to ask about scalp psoriasis?',
+      'What should I ask about my blood pressure targets?',
+      'Explain my stress pattern to my doctor',
+      'What is my cardiovascular risk score?',
+      'What lifestyle changes should I prioritize?',
     ],
   },
-  'Rosacea': {
+  'Type 2 diabetes': {
     summary: [
-      { icon: '🌡️', text: 'Persistent erythema across cheeks and nose on 18 of 21 days', reason: 'Daily check-in skin score' },
-      { icon: '🔍', text: 'Top triggers: heat/humidity and red wine — flushing within 30 minutes, 100% consistent', reason: 'Check-in context tags' },
-      { icon: '🫧', text: 'Papulopustular component on chin and nasolabial folds — averaging 4–6 active lesions', reason: 'Photos + check-ins' },
-      { icon: '🧴', text: 'Currently using gentle skincare + metronidazole gel ~3x/week.', reason: 'Self-reported treatment' },
+      { icon: '📊', text: 'Blood sugar management: moderate concern — stress days correlate with higher readings', reason: 'Self-reported tracking + Oura HRV' },
+      { icon: '🔍', text: 'Top contributors: poor sleep (45%) and high-carb meals (25%) — confirmed 3 of 4 weeks', reason: 'Check-in context tags' },
+      { icon: '📋', text: 'HbA1c trend: gradual improvement over 12 weeks with dietary modifications', reason: 'Self-reported progress' },
+      { icon: '💊', text: 'Currently on metformin + lifestyle program. Adherent ~5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
-      { text: 'My flushing persists for hours after triggers. Would a vascular treatment like brimonidine or oxymetazoline help?', reason: 'Based on logged trigger response' },
-      { text: 'Should I consider IPL or laser for the persistent background redness?', reason: 'Procedural treatment question' },
-      { text: 'Are there oral options like low-dose doxycycline for my bumps?', reason: 'Based on papulopustular pattern' },
-      { text: "I've been on metronidazole for 8 weeks with partial improvement. What's the next step?", reason: 'Treatment trial readiness' },
+      { text: 'My HbA1c is improving but still above target. Should we adjust medication or intensify lifestyle changes?', reason: 'Based on 12 weeks of data' },
+      { text: 'My data shows blood sugar spikes after stress. Are there short-term strategies for that?', reason: 'Based on stress-glucose correlation' },
+      { text: 'What is my kidney function status, and does it affect my medication options?', reason: 'Renal health and medication question' },
+      { text: 'When should I consider additional diabetes medications or GLP-1 therapy?', reason: 'Treatment escalation question' },
     ],
     aiSuggestions: [
-      'What questions to ask about laser for rosacea?',
-      'Explain my trigger patterns to the doctor',
-      'Should I try oral treatment for rosacea?',
-      'Is my rosacea moderate or severe?',
+      'What should I ask about my HbA1c target?',
+      'Explain my stress pattern to my doctor',
+      'What is my cardiovascular risk score?',
+      'What lifestyle changes should I prioritize?',
     ],
   },
-  'Acne': {
+  'Heart disease': {
     summary: [
-      { icon: '📊', text: 'Active inflammatory lesions: 7–10 on average, distribution along jawline + chin', reason: 'Daily check-ins + photos' },
-      { icon: '🔄', text: 'Cyclical pattern detected — breakouts cluster every 25–30 days (likely hormonal)', reason: '3 months of tracking' },
-      { icon: '📋', text: 'Quality-of-life impact rated moderate. Scarring concerns noted in journal entries.', reason: 'Self-reported ePRO' },
-      { icon: '🧴', text: 'Currently using benzoyl peroxide 2.5% + tretinoin 0.025% for 12 weeks. Marginal improvement.', reason: 'Self-reported treatment' },
+      { icon: '📊', text: 'Stress → symptom pattern confirmed: high-stress days correlate with fatigue and discomfort 48 hrs later', reason: 'Oura HRV + self-reported context' },
+      { icon: '😴', text: '82% of worst days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
+      { icon: '📋', text: 'Quality-of-life impact rated moderate. Activity limitations noted in journal entries.', reason: 'Self-reported ePRO' },
+      { icon: '💊', text: 'Currently on cardiac medications. Adherent 6/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
-      { text: "I've used my current regimen for 12 weeks without significant improvement. What's the next step?", reason: 'Based on adherent treatment period' },
-      { text: 'My breakouts follow a cyclical pattern. Should we discuss hormonal therapy like spironolactone or a combined OC?', reason: 'Based on 3-month cycle pattern' },
-      { text: 'Would you consider oral isotretinoin given the persistent cystic component and scarring risk?', reason: 'Severity + scarring concerns' },
-      { text: 'Are there in-office treatments (chemical peels, laser, cortisone injections) to help my active cysts?', reason: 'Adjunctive treatment question' },
+      { text: 'My data shows a clear stress → symptom pattern. Are there preventive strategies for high-stress periods?', reason: 'Based on 21-day stress correlation' },
+      { text: 'What is my current cardiovascular risk score and what are my treatment targets?', reason: 'Risk stratification question' },
+      { text: 'Should I be referred to cardiac rehabilitation given my activity limitations?', reason: 'Based on activity journal data' },
+      { text: 'How often should I be tested for lipids, blood pressure, and other cardiac risk markers?', reason: 'Monitoring frequency question' },
     ],
     aiSuggestions: [
-      'What questions to ask about isotretinoin?',
-      'Explain my hormonal acne pattern',
-      'What should I ask about my cystic acne?',
-      'Are there in-office options for my acne?',
+      'What should I ask about my cardiac risk targets?',
+      'Explain my stress pattern to my doctor',
+      'What is my cardiovascular risk score?',
+      'What lifestyle changes should I prioritize?',
     ],
   },
 }
 
 const GENERIC_PREPARE_PLAYBOOK = {
   summary: [
-    { icon: '📊', text: '21 days of daily skin check-ins tracked — pattern data ready to review', reason: 'Self-reported skin scores' },
-    { icon: '🔍', text: 'Top correlating factors: stress (45%), poor sleep (25%), weather changes (10%)', reason: 'Context tags across check-ins' },
-    { icon: '📸', text: 'Photos captured during both calm and symptomatic days for derm review', reason: 'AI-assisted skin photos' },
-    { icon: '🧴', text: 'Current management: OTC products + lifestyle tracking. No diagnosis yet.', reason: 'Self-reported approach' },
+    { icon: '📊', text: '21 days of daily health check-ins tracked — pattern data ready to review', reason: 'Self-reported health scores' },
+    { icon: '🔍', text: 'Top correlating factors: stress (45%), poor sleep (25%), dietary patterns (10%)', reason: 'Context tags across check-ins' },
+    { icon: '💡', text: 'Lifestyle data captured across tracked days — ready for care team review', reason: 'AI-assisted health tracking' },
+    { icon: '💊', text: 'Current management: lifestyle tracking and monitoring. No formal diagnosis yet.', reason: 'Self-reported approach' },
   ],
   questions: [
-    { text: 'Based on my photos and symptom log, what is your initial differential diagnosis?', reason: 'Pre-diagnosis exploration' },
-    { text: 'Should I consider patch testing or other allergy workups for my reactivity?', reason: 'Based on product-trigger logs' },
-    { text: 'Are there diagnostic tests (biopsy, blood work) we should consider?', reason: 'Workup question' },
-    { text: 'If this turns out to be a chronic condition, what would the first-line treatment look like?', reason: 'Planning question' },
+    { text: 'Based on my tracking data and family history, what is your initial assessment of my cardiovascular risk?', reason: 'Pre-diagnosis exploration' },
+    { text: 'Should I have a full lipid panel, blood sugar, and metabolic workup done?', reason: 'Based on risk factor logs' },
+    { text: 'Are there diagnostic tests (bloodwork, imaging, ECG) we should consider?', reason: 'Workup question' },
+    { text: 'If a condition is identified, what would first-line treatment typically look like?', reason: 'Planning question' },
   ],
   aiSuggestions: [
     'What questions should I ask without a diagnosis?',
-    'What tests might my derm order?',
+    'What tests might my care team order?',
     'How do I describe my symptoms clearly?',
-    'What conditions match my symptoms?',
+    'What is my cardiovascular risk score?',
   ],
 }
 
@@ -406,38 +406,38 @@ function playbookFor(condition) {
 
 const STORIES = [
   {
-    step: 'Story 1 of 5', avatar: 'M', name: 'Marcus, 34', detail: 'Moderate-to-severe AD · 12 years diagnosed',
-    quote: "I'd been on the same topical for six years. I didn't know there was a whole ladder of options I hadn't tried.",
-    context: "Marcus's dermatologist explained the treatment escalation pathway — from topicals to phototherapy to biologics. Understanding where he was on that spectrum gave Marcus the confidence to ask about next steps.",
-    takeaway: 'Ask: "Where am I on the treatment ladder, and what comes next?"', takeawaySub: 'A question for your upcoming visit',
+    step: 'Story 1 of 5', avatar: 'M', name: 'Marcus, 52', detail: 'High cholesterol + hypertension · 8 years managed',
+    quote: "I'd been on the same statin for six years. I didn't know there was a whole range of options — or that my risk score had changed.",
+    context: "Marcus's cardiologist walked him through his 10-year cardiovascular risk score for the first time. Understanding where he stood gave Marcus the confidence to ask about optimizing his treatment, and they agreed to add a lifestyle referral.",
+    takeaway: 'Ask: "What is my current cardiovascular risk score, and what comes next?"', takeawaySub: 'A question for your upcoming visit',
     bg: 'linear-gradient(150deg,#2B1B3D,#4A2D6B)', glow: 'radial-gradient(circle at 75% 20%,rgba(123,45,142,.25),transparent 60%)',
   },
   {
-    step: 'Story 2 of 5', avatar: 'P', name: 'Priya, 28', detail: 'Severe AD · Sleep and stress triggers',
-    quote: "My doctor kept asking about my skin. But it was the sleep loss and the anxiety at work that were destroying me.",
-    context: "Priya learned that quality-of-life impact — not just skin severity — matters for treatment decisions. Once she started describing her sleep disruption and social avoidance, her dermatologist reassessed her treatment plan.",
-    takeaway: 'Tell your doctor how eczema affects your life — not just your skin.', takeawaySub: 'Your DLQI score captures this, too',
+    step: 'Story 2 of 5', avatar: 'P', name: 'Priya, 58', detail: 'Type 2 diabetes · Sleep and stress contributors',
+    quote: "My doctor kept asking about my numbers. But it was the fatigue and the stress at work that were really affecting my management.",
+    context: "Priya learned that quality-of-life impact — not just lab values — matters for treatment decisions. Once she started describing her sleep disruption and energy levels, her GP reassessed her treatment plan and referred her to a diabetes educator.",
+    takeaway: 'Tell your doctor how your condition affects your life — not just your numbers.', takeawaySub: 'Your health scores capture this, too',
     bg: 'linear-gradient(150deg,#0D7C8F,#064a55)', glow: 'radial-gradient(circle at 20% 75%,rgba(232, 239, 101,.15),transparent 55%)',
   },
   {
-    step: 'Story 3 of 5', avatar: 'D', name: 'Diane, mom of Maya (13)', detail: "Managing her daughter's moderate AD",
-    quote: "I read that eczema is an immune condition — not just a skin thing. That changed every question I asked.",
-    context: "Diane researched how atopic dermatitis involves an overactive immune system. When she brought this understanding to Maya's appointment, her pediatric dermatologist discussed newer approaches that target specific immune pathways like OX40L.",
-    takeaway: 'Ask: "Are there newer treatments that target the immune system directly?"', takeawaySub: 'Researchers are studying new approaches',
+    step: 'Story 3 of 5', avatar: 'D', name: 'Diane, 49', detail: 'Family history of heart disease · Prevention focused',
+    quote: "I read that heart disease in women presents differently. That changed every question I asked.",
+    context: "Diane researched sex-specific cardiovascular risk. When she brought this to her cardiologist, they discussed that standard risk calculators may underestimate risk in women, and agreed on more frequent monitoring.",
+    takeaway: 'Ask: "Does my risk profile look different given my age and sex?"', takeawaySub: 'Researchers are documenting important differences',
     bg: 'linear-gradient(150deg,#3D2258,#5A3580)', glow: 'radial-gradient(circle at 65% 30%,rgba(232,134,106,.15),transparent 55%)',
   },
   {
-    step: 'Story 4 of 5', avatar: 'J', name: 'James, 45', detail: 'AD + psoriasis · Stress and sleep triggers',
-    quote: "I showed my dermatologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
-    context: "James tracked his symptoms, sleep, and stress daily. When his dermatologist saw the pattern — stress on Monday, skin flare by Wednesday — she immediately adjusted his treatment approach and discussed whether systemic therapy might help.",
+    step: 'Story 4 of 5', avatar: 'J', name: 'James, 55', detail: 'Hypertension + high cholesterol · Stress and sleep triggers',
+    quote: "I showed my cardiologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
+    context: "James tracked his blood pressure readings, sleep, and stress daily. When his cardiologist saw the pattern — stress on Monday, elevated readings by Wednesday — she immediately adjusted his treatment approach.",
     takeaway: 'Your tracking data tells a story. Share your Cardiometabolic360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
     bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
   },
   {
-    step: 'Story 5 of 5', avatar: 'A', name: 'Amira, 31', detail: 'Severe AD · Multiple treatment failures',
-    quote: "I didn't know you could ask your dermatologist about clinical trials. I thought they were only for people with no options left.",
-    context: "After trying multiple topicals and one biologic without full control, Amira's dermatologist mentioned a clinical trial studying a new approach that targets OX40L. She learned that trials are a proactive option — not a last resort.",
-    takeaway: 'Ask: "Are there any clinical trials I might be eligible for?"', takeawaySub: 'Trials are an option at any stage',
+    step: 'Story 5 of 5', avatar: 'A', name: 'Amira, 61', detail: 'Heart disease · Post-cardiac event recovery',
+    quote: "I didn't know you could ask your cardiologist about cardiac rehab. I thought it was only for people much sicker than me.",
+    context: "After her cardiac event, Amira's cardiologist mentioned a cardiac rehabilitation program. She learned that rehab is a proactive option for reducing future risk — and that most people who qualify don't ask about it.",
+    takeaway: 'Ask: "Am I a candidate for cardiac rehabilitation?"', takeawaySub: 'Rehab significantly reduces recurrence risk',
     bg: 'linear-gradient(150deg,#4a3a28,#2a1c10)', glow: 'radial-gradient(circle at 50% 50%,rgba(212,168,83,.15),transparent 55%)',
   },
 ]
@@ -508,7 +508,7 @@ function AppointmentModal({ initial, doctorFallback, onSave, onClose }) {
   const [date, setDate]                   = useState(initial?.date || '')
   const [time, setTime]                   = useState(initial?.time || '')
   const [providerName, setProviderName]   = useState(initial?.providerName || doctorFallback?.name || '')
-  const [providerSpec, setProviderSpec]   = useState(initial?.providerSpecialty || doctorFallback?.specialty || 'Dermatology')
+  const [providerSpec, setProviderSpec]   = useState(initial?.providerSpecialty || doctorFallback?.specialty || 'Cardiology / General Practice')
 
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
@@ -578,7 +578,7 @@ function AppointmentModal({ initial, doctorFallback, onSave, onClose }) {
 
         <div style={{ marginBottom: 22 }}>
           <label style={labelStyle}>Specialty</label>
-          <input type="text" value={providerSpec} onChange={e => setProviderSpec(e.target.value)} style={inputStyle} placeholder="Dermatology" />
+          <input type="text" value={providerSpec} onChange={e => setProviderSpec(e.target.value)} style={inputStyle} placeholder="Cardiology / General Practice" />
         </div>
 
         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -631,7 +631,7 @@ export default function PreparePage() {
   const eproRecords = readEproRecords()
   const eproRow     = eproSummaryItem(eproRecords)
   const hasEpro     = !!eproRow
-  const dermName = doctor.name || 'your derm'
+  const dermName = doctor.name || 'your care team'
   const dermDisplay = doctor.name
     ? (doctor.specialty ? `${doctor.name} · ${doctor.specialty}` : doctor.name)
     : ''
@@ -677,7 +677,7 @@ export default function PreparePage() {
       <div className="pp-hero">
         <p className="pp-hero-eyebrow">Walk in ready</p>
         <h1 className="pp-hero-title">{firstName ? `${firstName}, you're set` : "You're all set"}</h1>
-        <p className="pp-hero-sub">We turned your last few weeks into a conversation starter. Your derm will actually want to see this.</p>
+        <p className="pp-hero-sub">We turned your last few weeks into a conversation starter. Your cardiologist or GP will actually want to see this.</p>
         <div
           className="pp-hero-appt"
           onClick={() => setShowApptModal(true)}
@@ -693,7 +693,7 @@ export default function PreparePage() {
             <div className="pp-hero-appt-name">
               {appointment?.providerName
                 ? `${appointment.providerName}${appointment.providerSpecialty ? ' · ' + appointment.providerSpecialty : ''}`
-                : (dermDisplay || 'Add your dermatologist in Profile')}
+                : (dermDisplay || 'Add your cardiologist or GP in Profile')}
             </div>
             <div className="pp-hero-appt-date">
               {apptDisplay || 'Tap to add appointment date & time'}
@@ -711,10 +711,10 @@ export default function PreparePage() {
           </div>
           <p className="pp-ai-summary-card__lead">
             {conditions.length >= 2
-              ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions.length} conditions</strong> ({conditions.join(', ')}) with 21 days of daily check-ins. Stress and sleep below 65 affect <strong>both</strong> conditions; cycles and treatment status differ.</>
+              ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions.length} conditions</strong> ({conditions.join(', ')}) with 21 days of daily check-ins. Stress and sleep below 65 affect <strong>both</strong> conditions; risk profiles and treatment status differ.</>
               : conditions[0]
-                ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions[0].toLowerCase()}</strong> with 21 days of daily check-ins. Clear stress-sleep pattern with a defined treatment trial in progress.</>
-                : <>21 days of self-tracked skin data ready for review. No diagnosis yet — symptoms and trigger patterns documented.</>
+                ? <>{firstName ? `${firstName} is` : "You're"} tracking <strong>{conditions[0].toLowerCase()}</strong> with 21 days of daily check-ins. Clear stress-sleep pattern with a defined treatment plan in progress.</>
+                : <>21 days of self-tracked health data ready for review. No formal diagnosis yet — health trends and contributing factors documented.</>
             }
           </p>
           <p className="pp-ai-summary-card__cta">
@@ -731,9 +731,9 @@ export default function PreparePage() {
         </div>
         <div className="pp-sum-grid">
           <div className="pp-sum-tile"><div className="pp-st-label">Days tracked</div><div className="pp-st-val">21</div><div className="pp-st-detail">Daily check-ins + Oura</div></div>
-          <div className="pp-sum-tile"><div className="pp-st-label">Flare days</div><div className="pp-st-val pp-st-val--warm">7</div><div className="pp-st-detail">of 21 days (33%)</div></div>
+          <div className="pp-sum-tile"><div className="pp-st-label">High-symptom days</div><div className="pp-st-val pp-st-val--warm">7</div><div className="pp-st-detail">of 21 days (33%)</div></div>
           <div className="pp-sum-tile"><div className="pp-st-label">Top pattern</div><div className="pp-st-val pp-st-val--purple">Stress</div><div className="pp-st-detail">48-hr lag · 82% confidence</div></div>
-          <div className="pp-sum-tile"><div className="pp-st-label">Avg skin score</div><div className="pp-st-val">2.8</div><div className="pp-st-detail">Moderate · range 2–4</div></div>
+          <div className="pp-sum-tile"><div className="pp-st-label">Avg health score</div><div className="pp-st-val">2.8</div><div className="pp-st-detail">Moderate · range 2–4</div></div>
         </div>
         <div className="pp-card">
           <div className="pp-card-label">Key findings to share</div>

@@ -18,30 +18,30 @@ import React, { useState } from 'react'
  */
 const PEOPLE = [
   {
-    id: 'jane',
-    name: 'Jane',
+    id: 'michelle-albert',
+    name: 'Dr. Michelle Albert',
     color: 'teal',
     photo: '/kendra.jpg',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    bio: 'Pioneer in sex-specific cardiovascular research. Her work established that heart disease presents differently in women — and that standard risk tools often miss it.',
   },
   {
-    id: 'ashley',
-    name: 'Ashley',
+    id: 'dariush-mozaffarian',
+    name: 'Dariush Mozaffarian',
     color: 'blue',
     photo: '/valynn.jpg',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    bio: 'Dean and cardiologist whose research has shaped global dietary guidelines. Known for showing that food quality — not just calorie count — drives metabolic health.',
   },
   {
-    id: 'stacey',
-    name: 'Stacey',
+    id: 'jayne-morgan',
+    name: 'Jayne Morgan, MD',
     color: 'pink',
     photo: '/abby-tai-eczema.webp',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    bio: 'Cardiologist and health equity advocate working to close the gap in cardiovascular outcomes for underserved communities. Frequent voice on preventive heart health.',
   },
 ]
 
 export default function OnesToWatch() {
-  const [expandedId, setExpandedId] = useState('jane')
+  const [expandedId, setExpandedId] = useState('michelle-albert')
 
   function toggle(id) {
     setExpandedId(curr => (curr === id ? null : id))
@@ -49,7 +49,7 @@ export default function OnesToWatch() {
 
   return (
     <article className="otw-header">
-        <div className="otw-header__visual" role="img" aria-label="Women in sports" />
+        <div className="otw-header__visual" role="img" aria-label="Leaders in cardiometabolic health" />
 
         {/* Accordion cards — sit inside the magazine takeover card,
             replacing the previous caption line. */}
@@ -75,7 +75,7 @@ export default function OnesToWatch() {
                   />
                 </span>
                 <span className="otw-card__title-block">
-                  <span className="otw-card__label">One's to watch:</span>
+                  <span className="otw-card__label">Voices to know:</span>
                   <span className="otw-card__name">{p.name}</span>
                 </span>
                 <span className="otw-card__toggle" aria-hidden="true">

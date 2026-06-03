@@ -6,37 +6,37 @@ const VIDEOS = [
   {
     id: 1,
     tag: 'Expert Explainer',
-    title: 'How the Immune System Drives Eczema \u2014 and What\u2019s Being Done About It',
-    brand: 'Verywell Health',
-    author: 'Dr. Sarah Kim',
+    title: 'How Cholesterol Actually Builds Up in Your Arteries \u2014 and What Reverses It',
+    brand: 'Health.com',
+    author: 'Dr. Michael Shapiro, Cardiologist',
     dur: '4:32',
     thumb: '/video-thumb-1.jpg',
   },
   {
     id: 2,
-    tag: 'Celebrity Health Story',
-    title: 'After Years of Struggling with Severe Eczema, Abby Tai Has Found Healing Through Helping Others \u2018Conquer\u2019 Theirs',
-    brand: 'People',
+    tag: 'Managing Multiple Conditions',
+    title: 'When High Cholesterol, Diabetes, and Blood Pressure Overlap \u2014 How to Treat Them Together',
+    brand: 'Verywell Health',
     author: null,
-    dur: '3:18',
+    dur: '5:14',
     thumb: '/abby-tai-eczema.webp',
   },
   {
     id: 3,
-    tag: 'Patient Story',
-    title: 'Dermatologists Say This Is the Best Way to Treat Eczema on Your Face',
-    brand: 'Byrdie',
+    tag: 'Patient Perspective',
+    title: 'What I Learned After My Cardiac Event That My Doctor Never Told Me',
+    brand: 'Health.com',
     author: null,
-    dur: '5:47',
+    dur: '4:50',
     thumb: '/ellefanning.webp',
   },
   {
     id: 4,
     tag: 'Preparing for Your Visit',
-    title: 'Preparing to Talk About Newer Treatments',
+    title: 'Questions to Ask Your Cardiologist at Your Next Appointment',
     brand: 'Verywell Health',
     author: null,
-    dur: '2:55',
+    dur: '3:10',
     thumb: '/video-thumb-4.jpg',
   },
 ]
@@ -47,7 +47,7 @@ export default function WatchNow() {
 
   return (
     <>
-      {/* ── Understanding Your Eczema ───────────────────────────────────── */}
+      {/* ── Expert Advice ───────────────────────────────────────────────── */}
       <section className="watch-now watch-now--edu">
         <div className="watch-head">
           <div>

@@ -16,20 +16,20 @@ const PERSONAS = [
   { id: 'weekend', label: 'For the slow weekend cook',    tone: 'maple'   },
 ]
 
-const SHARED_INTRO = 'Power up your morning with crowd-pleasing protein picks — most of these clear 20g per serving, and many can be prepped the night before.'
+const SHARED_INTRO = 'Heart-healthy eating doesn’t have to be complicated. These crowd-pleasing recipes are built around ingredients that support healthy cholesterol and blood pressure.'
 
 const PERSONA_CONTENT = {
   quick: {
-    title: 'For the Quick Weekday Eater',
-    body: 'Five-minute mornings: cottage cheese with fresh berries, jammy eggs on toast, or a yogurt parfait layered with seeds and almonds. Pair fat + protein to stay full until lunch.',
+    title: 'For the Quick Weekday Cook',
+    body: '15-minute heart-healthy meals: salmon with roasted veg, lentil soup from a can, or a grain bowl with avocado and chickpeas. High fiber, low saturated fat, done fast.',
   },
   prep: {
     title: 'For the Make-Aheader',
-    body: 'Egg muffins, overnight oats with chia, and freezer breakfast sandwiches go from fridge to plate in minutes. Batch on Sunday, breeze through the week.',
+    body: 'Batch-cook oat groats, roast a tray of vegetables, and prep overnight oats with flaxseed. A few hours on Sunday means heart-smart choices all week with zero willpower required.',
   },
   weekend: {
     title: 'For the Slow Weekend Cook',
-    body: 'Take your time with a sheet-pan frittata, savory steel-cut oats, or smoked-salmon scrambled eggs. Lingering breakfasts that anchor your weekend.',
+    body: 'Take your time with a Mediterranean baked fish, a proper minestrone with white beans, or a roasted beet and walnut salad. Unhurried cooking that feels good and does good.',
   },
 }
 
@@ -47,10 +47,10 @@ function DefaultView({ onPersonaSelect }) {
         </h2>
         <div className="tl-card__bottom">
           <h3 className="tl-card__title mr-card__title">
-            Quick meals for sensitive skin
+            Heart-healthy meals, made easy
           </h3>
           <p className="tl-card__sub">
-            Crowd-pleasing recipes that don&rsquo;t trigger sensitivities.
+            Recipes designed to support your cholesterol and blood pressure goals.
           </p>
           <div className="tl-card__cta-list">
             {PERSONAS.map(p => (

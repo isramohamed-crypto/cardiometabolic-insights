@@ -7,8 +7,8 @@ const Q1 = {
   text: 'Who are you managing this for?',
   sub: 'This changes the content, voice, and guidance we show you.',
   options: [
-    { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m managing my own skin' },
-    { id: 'child',  icon: '👶', label: 'My child', desc: 'I\'m a parent or caregiver for a child with eczema' },
+    { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m managing my own heart health' },
+    { id: 'child',  icon: '👶', label: 'My child', desc: 'I\'m a parent or caregiver managing a child\'s health' },
     { id: 'other',  icon: '🤝', label: 'Someone else', desc: 'A partner, family member, or someone I care for' },
   ],
 }
@@ -19,14 +19,14 @@ const Q2 = {
 }
 
 const Q3 = {
-  text: 'How does your skin affect you most?',
-  sub: 'Pick the one that resonates most right now.',
+  text: 'What's driving you to take this seriously right now?',
+  sub: 'Pick the one that resonates most.',
   options: [
-    { id: 'confidence', icon: '✨', label: 'It\'s affecting my confidence', desc: 'Visibility, self-image, social situations' },
-    { id: 'sleep',      icon: '😴', label: 'It\'s disrupting my sleep', desc: 'Nighttime itch and trouble resting' },
-    { id: 'triggers',   icon: '🔍', label: 'I can\'t figure out my triggers', desc: 'Food, stress, weather, products' },
-    { id: 'treatment',  icon: '💊', label: 'I\'m trying to manage my treatment', desc: 'Sticking with my routine and seeing results' },
-    { id: 'frustrated', icon: '🌀', label: 'I\'m frustrated — nothing works', desc: 'Tried a lot already, looking for new ideas' },
+    { id: 'confidence', icon: '✨', label: 'I want to feel in control', desc: 'Of my numbers, my choices, my health' },
+    { id: 'sleep',      icon: '😴', label: 'It\'s affecting my energy and sleep', desc: 'Fatigue, poor rest, low motivation' },
+    { id: 'triggers',   icon: '🔍', label: 'I don\'t know what\'s making it worse', desc: 'Diet, stress, habits — hard to tell' },
+    { id: 'treatment',  icon: '💊', label: 'I\'m managing medications and want more', desc: 'Sticking to treatment and tracking progress' },
+    { id: 'frustrated', icon: '🌀', label: 'I\'ve tried things and nothing sticks', desc: 'Looking for a more sustainable approach' },
   ],
 }
 
@@ -34,51 +34,52 @@ const Q3 = {
 // the profile page's `topics` field (no migration needed).
 // Primary list (always visible) covers broad lifestyle categories.
 const Q5_TOPICS_PRIMARY = [
-  { label: 'Skincare routines',      icon: '🧴' },
-  { label: 'Beauty',                 icon: '💄' },
-  { label: 'Food',                   icon: '🍽️' },
-  { label: 'Home',                   icon: '🏠' },
-  { label: 'Travel',                 icon: '✈️' },
-  { label: 'Fashion',                icon: '👗' },
-  { label: 'Entertainment',          icon: '🎬' },
-  { label: 'Sleep & rest',           icon: '😴' },
-  { label: 'Stress & mental health', icon: '🧘' },
-  { label: 'Sun & outdoors',         icon: '☀️' },
+  { label: 'Heart-healthy eating',    icon: '🥗' },
+  { label: 'Exercise & movement',     icon: '🚶' },
+  { label: 'Sleep & rest',            icon: '😴' },
+  { label: 'Stress & mental health',  icon: '🧘' },
+  { label: 'Medications & treatment', icon: '💊' },
+  { label: 'Blood pressure',          icon: '🩺' },
+  { label: 'Blood sugar',             icon: '🔬' },
+  { label: 'Weight management',       icon: '⚖️' },
+  { label: 'Family & caregiving',     icon: '👨‍👩‍👧' },
+  { label: 'Work & daily life',       icon: '💼' },
 ]
-// Secondary list (revealed by "Show more") — deeper skin-specific topics.
+// Secondary list (revealed by "Show more") — deeper cardiometabolic topics.
 const Q5_TOPICS_MORE = [
-  { label: 'Triggers & flares',         icon: '🔍' },
-  { label: 'Diet & gut health',         icon: '🥗' },
-  { label: 'Pregnancy & hormones',      icon: '🤰' },
-  { label: 'Kids & caregiving',         icon: '👶' },
-  { label: 'Workouts & sweat',          icon: '💪' },
-  { label: 'Confidence & self-image',   icon: '✨' },
-  { label: 'New treatments & research', icon: '🧪' },
-  { label: 'Workplace tips',            icon: '💼' },
+  { label: 'Understanding my numbers',    icon: '📊' },
+  { label: 'Preparing for appointments',  icon: '📋' },
+  { label: 'New treatments & research',   icon: '🧪' },
+  { label: 'Alcohol & lifestyle',         icon: '🍷' },
+  { label: 'Cooking at home',             icon: '🍳' },
+  { label: 'Travel & staying on track',   icon: '✈️' },
+  { label: 'Confidence & self-image',     icon: '✨' },
+  { label: 'Community & peer support',    icon: '🤝' },
 ]
 const Q5_TOPICS = [...Q5_TOPICS_PRIMARY, ...Q5_TOPICS_MORE]
 
 const Q5 = {
-  text: 'What\'s most important to you?',
+  text: 'What matters most to you right now?',
   sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
 }
 
 const Q4 = {
-  text: 'Do you have a skin diagnosis?',
-  sub: 'Either way, we\'ll tailor the experience to where you are.',
+  text: 'Which conditions are you managing?',
+  sub: 'Select all that apply — we\'ll tailor your experience to your full picture.',
   yesOptions: [
-    { id: 'eczema',     icon: '🌿', label: 'Eczema',         desc: 'Atopic dermatitis or similar' },
-    { id: 'psoriasis',  icon: '🩹', label: 'Psoriasis',      desc: 'Plaque, guttate, or other type' },
-    { id: 'rosacea',    icon: '🌹', label: 'Rosacea',        desc: 'Redness, flushing, sensitivity' },
-    { id: 'acne',       icon: '💧', label: 'Acne',           desc: 'Hormonal, cystic, or persistent' },
-    { id: 'other_dx',   icon: '💭', label: 'Something else', desc: 'A different diagnosis' },
+    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',         desc: 'LDL, HDL, or triglyceride concerns' },
+    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',      desc: 'Hypertension or pre-hypertension' },
+    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',          desc: 'Managing blood sugar levels' },
+    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health', desc: 'BMI, metabolic syndrome, or weight-related goals' },
+    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',           desc: 'Coronary artery disease, prior cardiac event' },
+    { id: 'other_dx',    icon: '💭', label: 'Something else',            desc: 'Another diagnosis or concern' },
   ],
   noOptions: [
-    { id: 'redness',     icon: '🌡️', label: 'Redness or irritation',  desc: 'Skin gets red, blotchy, inflamed' },
-    { id: 'dryness',     icon: '🍂', label: 'Dryness or flaking',      desc: 'Tight, rough, peeling skin' },
-    { id: 'itching',     icon: '🤲', label: 'Itching or sensitivity',  desc: 'Reactive to products or environments' },
-    { id: 'breakouts',   icon: '🫧', label: 'Breakouts or bumps',      desc: 'Pimples, cysts, or texture changes' },
-    { id: 'flares',      icon: '⚡', label: 'Unpredictable flare-ups', desc: 'Comes and goes without clear cause' },
+    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',           desc: 'Heart disease, stroke, or diabetes in the family' },
+    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',        desc: 'Numbers that are elevated but not yet diagnosed' },
+    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',           desc: 'Trying to manage weight for health reasons' },
+    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',       desc: 'No diagnosis yet, but being proactive' },
+    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                 desc: 'Managing health after a cardiac event or diagnosis' },
   ],
 }
 
@@ -99,10 +100,12 @@ const CODE_TO_LABEL = {
     treatment:  'Managing my treatment',
     frustrated: 'Frustrated nothing works',
   },
-  diagnosisStatus: { yes: 'Yes, I have a diagnosis', no: 'Not yet / not sure' },
+  diagnosisStatus: { yes: 'Yes, I have a diagnosis', no: 'Not yet / exploring' },
   condition: {
-    eczema: 'Eczema', psoriasis: 'Psoriasis', rosacea: 'Rosacea', acne: 'Acne', other_dx: 'Something else (diagnosed)',
-    redness: 'Redness or irritation', dryness: 'Dryness or flaking', itching: 'Itching or sensitivity', breakouts: 'Breakouts or bumps', flares: 'Unpredictable flare-ups',
+    cholesterol: 'High cholesterol', hypertension: 'High blood pressure', diabetes: 'Type 2 diabetes',
+    obesity: 'Weight / metabolic health', heart: 'Heart disease', other_dx: 'Something else (diagnosed)',
+    family_hx: 'Family history', borderline: 'Borderline numbers', weight: 'Weight concerns',
+    prevention: 'Prevention focused', post_event: 'Recovery',
   },
 }
 function mapCode(field, v) {
@@ -314,7 +317,7 @@ export default function Onboarding({ name, onClose }) {
     : <>Let's <em>personalize</em> your experience.</>
   const heroSub = firstName
     ? `A few quick questions to tailor your feed, tracking, and guidance around what matters most to you.`
-    : `Let's personalize your skin companion — five quick questions.`
+    : `Let's personalize your health companion — five quick questions.`
 
   const progressPct = ((step + 1) / TOTAL_QS) * 100
 

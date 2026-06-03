@@ -45,7 +45,7 @@ function lastSevenDaysStreak(checkins) {
 function checkinPromptTitle(isoDate, isCheckedInToday) {
   if (isCheckedInToday) return 'Logged today — tap to view or update'
   const d = daysAgo(isoDate)
-  if (d === null) return 'Start your first skin check-in'
+  if (d === null) return 'Start your first daily check-in'
   if (d === 1)    return 'Log today\'s check-in'
   return `Log today's check-in — it's been ${d} days`
 }
@@ -66,8 +66,8 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
   // Copy mirrors the Track-page check-in banner so it tells the same story
   const titleLabel = checkinPromptTitle(last?.date, isCheckedInToday)
   const subLabel = isCheckedInToday
-    ? 'Your trend is up to date. Tap to see today\'s summary.'
-    : 'Trends, triggers, and patterns get sharper with each log.'
+    ? 'Your health trend is up to date. Tap to see today\'s summary.'
+    : 'Tracking daily builds the picture your doctor needs.'
 
   const eyebrowText = loggedCount > 0
     ? `Today · day ${loggedCount}`
@@ -89,7 +89,7 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
       >
         {/* Magazine-cover ribbon masthead */}
         <div className="dc-feat__ribbon">
-          <span className="dc-feat__ribbon-label">Skin Diary</span>
+          <span className="dc-feat__ribbon-label">Health Log</span>
           <span className="dc-feat__ribbon-day">{dayBadge}</span>
         </div>
 

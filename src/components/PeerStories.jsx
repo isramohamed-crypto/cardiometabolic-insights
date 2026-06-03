@@ -3,40 +3,40 @@ import MarkAsTried from './MarkAsTried'
 
 const SUBJECTS = [
   {
-    id: 'kendra',
-    name: 'Kendra Beauford',
-    firstName: 'Kendra',
+    id: 'marcus',
+    name: 'Marcus Oyelaran',
+    firstName: 'Marcus',
     portrait: '/kendra.jpg',
-    intro: "Has struggled with self-esteem due to flares, which she's experienced since childhood.",
-    firstSymptoms: 'Had rashes in the crease of her elbows that started as a toddler.',
-    triggers: 'Fragrance, scratchy clothing',
-    affectedAreas: 'Under the eyes, neck',
-    adviceQuote: 'The better I take care of myself, the better my skin is going to be.',
-    adviceStory: "I've dealt with eczema from the time I was a young child. My skin regularly feels itchy, and I used to be self-conscious about the rashes that appeared on my body, particularly when comparing myself to other girls my age. But I've learned to embrace my condition and find ways to manage it. For me, that means focusing on living a healthy lifestyle, including eating clean, exercising regularly, and using natural, skin-friendly products.",
+    intro: "Diagnosed with high cholesterol and hypertension at 48 after a routine checkup — with no symptoms.",
+    firstSymptoms: 'Elevated LDL found during an annual physical. Blood pressure was also high.',
+    triggers: 'Stress, poor sleep, high-sodium diet',
+    affectedAreas: 'Managing cholesterol, blood pressure, and early-stage insulin resistance',
+    adviceQuote: "The diagnosis wasn't a death sentence. It was a heads-up — and I decided to take it seriously.",
+    adviceStory: "I had no idea anything was wrong. I felt fine, exercised occasionally, thought I was doing okay. Then my doctor showed me my numbers and said we needed to talk. LDL of 162, blood pressure at 145/92, and pre-diabetic markers. I was managing three things I didn't even know about. It was overwhelming at first. But I started tracking what I ate, walking every morning, and actually taking my statin. A year later, my LDL is down to 98. I still have work to do, but I know what I'm working toward now.",
   },
   {
-    id: 'vanson',
-    name: 'Vanson Lee',
-    firstName: 'Vanson',
+    id: 'diane',
+    name: 'Diane Castillo',
+    firstName: 'Diane',
     portrait: '/vanson.jpg',
-    intro: 'Started experiencing flares two decades ago that seem to be exacerbated by stress.',
-    firstSymptoms: 'Developed a rash on his face in middle school that lasted for weeks.',
-    triggers: 'Unknown, but they seem to be more common in winter.',
-    affectedAreas: 'Legs, face',
-    adviceQuote: "I had to stop myself from thinking that I was a victim of eczema — I'm a passenger on the journey.",
-    adviceStory: "Eczema first flared for me in middle school, and I didn't really understand at the time what it was. I still don't know all of my triggers, which can make it feel like I'm in a battle with my skin that I can't win. Since having children of my own — who also have atopic dermatitis — I've been more motivated to live a full life and find treatment strategies that work for me and for my son.",
+    intro: 'Managing high cholesterol alongside type 2 diabetes for the past six years.',
+    firstSymptoms: 'Diagnosed with type 2 diabetes at 52; cholesterol issues identified at the same visit.',
+    triggers: 'Refined carbohydrates, sedentary periods, high-stress weeks at work',
+    affectedAreas: 'Cholesterol, blood sugar, weight management',
+    adviceQuote: "I used to think managing my health meant giving things up. Now I think of it as getting ahead.",
+    adviceStory: "When I was diagnosed with diabetes, my doctor told me my cholesterol was also a problem. Two conditions at once felt like too much. I went home and cried. But then I started making one change at a time — first swapping white rice for more vegetables, then adding a short walk after dinner. My A1C came down. My LDL followed. What I've learned is that these conditions are connected. When I take care of one, the others tend to respond too.",
   },
   {
-    id: 'valynn',
-    name: 'Valynn Turkovich',
-    firstName: 'Valynn',
+    id: 'raymond',
+    name: 'Raymond Hsu',
+    firstName: 'Raymond',
     portrait: '/valynn.jpg',
-    intro: 'Experienced an eczema flare for the first time after having twins.',
-    firstSymptoms: 'Developed a rash six months postpartum.',
-    triggers: 'Cleaning products, dogs, sunscreen, harsh soaps',
-    affectedAreas: 'Hands, neck, shoulders, back, and feet',
-    adviceQuote: "I'm getting a handle on this and learning how to live freely and comfortably.",
-    adviceStory: "I had my first eczema flare after having my twins. At the time, my healthcare provider told me that it was likely hormonal and would go away. But after a year of struggling with symptoms, I knew this was something bigger. It was difficult because I had never dealt with anything like this before, and I was also new to juggling life as the mother of young twins. Now, I've learned the importance of focusing on my health, even while caring for my family.",
+    intro: 'Had a minor cardiac event at 57 and has been actively managing his cardiometabolic health since.',
+    firstSymptoms: 'Chest tightness during a morning run led to an ER visit and a diagnosis of early coronary artery disease.',
+    triggers: 'Family history, years of untreated high LDL, high-stress career',
+    affectedAreas: 'Cholesterol, blood pressure, cardiac recovery',
+    adviceQuote: "I wish I had started paying attention ten years earlier. But the second-best time is now.",
+    adviceStory: "I had a family history of heart disease but I ignored it. I was busy, I felt healthy, and I kept putting off the follow-up appointments my doctor recommended. Then came the chest tightness on a run that turned into an ER visit, a stent, and a very serious conversation with a cardiologist. Since then I've completely changed how I approach my health. I track my numbers, I show up to every appointment, and I've made peace with the fact that this is a long game — not a quick fix.",
   },
 ]
 
@@ -79,15 +79,15 @@ function FlipCard({ subject }) {
           </div>
           <div className="lbe-card__facts">
             <div className="lbe-fact">
-              <p className="lbe-fact__label">FIRST SYMPTOMS</p>
+              <p className="lbe-fact__label">HOW IT WAS FOUND</p>
               <p className="lbe-fact__value">{subject.firstSymptoms}</p>
             </div>
             <div className="lbe-fact">
-              <p className="lbe-fact__label">TOP TRIGGERS</p>
+              <p className="lbe-fact__label">KEY CONTRIBUTING FACTORS</p>
               <p className="lbe-fact__value">{subject.triggers}</p>
             </div>
             <div className="lbe-fact">
-              <p className="lbe-fact__label">MOST COMMON AFFECTED AREAS ON BODY</p>
+              <p className="lbe-fact__label">CONDITIONS MANAGED</p>
               <p className="lbe-fact__value">{subject.affectedAreas}</p>
             </div>
           </div>
@@ -118,7 +118,7 @@ function FlipCard({ subject }) {
               <MarkAsTried
                 id={`peer-stories:${subject.id}`}
                 title={subject.adviceQuote}
-                source={`Living Beyond Eczema · ${subject.firstName}`}
+                source={`Verywell Health · ${subject.firstName}`}
                 variant="helpful"
               />
             </div>
@@ -136,22 +136,22 @@ export default function PeerStories() {
         <div>
           <span className="watch-badge">Sponsored series</span>
           <h2 className="watch-title">Real stories</h2>
-          <p className="watch-subtitle">People living with eczema, in their own words</p>
+          <p className="watch-subtitle">People managing cardiometabolic conditions, in their own words</p>
         </div>
       </div>
       <div className="peer-carousel lbe-carousel">
         {/* COVER */}
         <article className="lbe-cover">
           <div className="lbe-cover__head">
-            <p className="lbe-cover__masthead">People</p>
+            <p className="lbe-cover__masthead">Verywell Health</p>
             <span className="lbe-cover__chip">REAL PEOPLE, REAL STORIES:</span>
-            <h2 className="lbe-cover__title">Living Beyond Eczema</h2>
+            <h2 className="lbe-cover__title">Living Ahead</h2>
           </div>
           <div
             className="lbe-cover__hero"
-            style={{ backgroundImage: 'url(/living-beyond-cover.jpg)' }}
+            style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #2E5D8E 60%, #C2673A 100%)' }}
             role="img"
-            aria-label="Three people featured in the Living Beyond Eczema series"
+            aria-label="Three people featured in the Living Ahead series"
           />
         </article>
 
