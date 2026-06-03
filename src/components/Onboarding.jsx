@@ -19,7 +19,7 @@ const Q2 = {
 }
 
 const Q3 = {
-  text: 'What's driving you to take this seriously right now?',
+  text: "What's driving you to take this seriously right now?",
   sub: 'Pick the one that resonates most.',
   options: [
     { id: 'confidence', icon: '✨', label: 'I want to feel in control', desc: 'Of my numbers, my choices, my health' },
