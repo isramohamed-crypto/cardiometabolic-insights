@@ -20,6 +20,7 @@ import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
 import AskAI from './components/AskAI'
 import ConditionStrip from './components/ConditionStrip'
+import DashboardRow from './components/DashboardRow'
 import ForYouNow from './components/ForYouNow'
 import SwipeLearn from './components/SwipeLearn'
 import Breathe from './components/Breathe'
@@ -222,7 +223,10 @@ export default function App() {
               5 tips for you · 6 peer stories · 7 watch now ·
               8 interests · 9 swipe learn */}
 
-          {/* 3 — Condition strip: personalized per user's conditions */}
+          {/* 3 — Dashboard row: streak + last reading + next appt */}
+          <DashboardRow tick={checkinTick} />
+
+          {/* 4 — Condition strip: personalized per user's conditions */}
           <ConditionStrip />
 
           {/* 4 — Daily check-in: strike while engaged after AI interaction */}
