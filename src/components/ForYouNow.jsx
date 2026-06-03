@@ -3,18 +3,18 @@ import MarkAsTried from './MarkAsTried'
 
 const TIPS = [
   {
-    id: 'towels',
+    id: 'fiber',
     image: '/rs-towels.jpg',
     avatar: '/rs-jen-davison.jpg',
-    quote: 'Store towels in well-ventilated areas to prevent mold, a well-known trigger of eczema.',
-    author: 'JEN DAVISON, EDITORIAL DIRECTOR, REAL SIMPLE',
+    quote: 'Eating 5–10 grams of soluble fiber daily — from oats, beans, or flaxseed — can meaningfully lower LDL cholesterol over time.',
+    author: 'SARAH KOSZYK, RDN, HEALTH.COM',
   },
   {
-    id: 'robe',
+    id: 'movement',
     image: '/rs-robe.jpg',
     avatar: '/rs-heather-muir.jpg',
-    quote: 'The best robes for eczema are made from breathable, natural materials. Look for loose-fitting styles with flat seams and no tags to prevent friction.',
-    author: 'HEATHER MUIR, BEAUTY DIRECTOR, REAL SIMPLE',
+    quote: 'Even 30 minutes of moderate walking five days a week can raise HDL (good) cholesterol and reduce cardiovascular risk — no gym required.',
+    author: 'JESSICA MIGALA, HEALTH.COM',
   },
   {
     /* Blank card — placeholder for a sponsored slot. Fill in image,
@@ -25,11 +25,11 @@ const TIPS = [
     quote: 'Sponsored Ad',
   },
   {
-    id: 'skincare-org',
+    id: 'stress',
     image: '/rs-skincare-org.jpg',
     avatar: '/rs-heather-muir.jpg',
-    quote: 'Keep dermatologist-recommended creams or ointments immediately available on the vanity or in a nearby drawer to apply after showering.',
-    author: 'HEATHER MUIR, BEAUTY DIRECTOR, REAL SIMPLE',
+    quote: 'Chronic stress raises cortisol, which can increase LDL and triglycerides. Managing stress isn\'t just good for your mind — it directly supports heart health.',
+    author: 'JESSICA MIGALA, HEALTH.COM',
   },
 ]
 
@@ -38,10 +38,10 @@ export default function ForYouNow() {
     <div className="for-you-now">
       <h2 className="for-you-now__title">Tips for you</h2>
       <div className="for-you-now__scroll">
-        <article className="rs-cover" aria-label="Real Simple — The Eczema Reset">
-          <p className="rs-cover__brand">REAL SIMPLE</p>
-          <h3 className="rs-cover__title">The Eczema Reset</h3>
-          <p className="rs-cover__sub">Discover calming routines, gentle care, and everyday ways to help soothe the cycle of irritation.</p>
+        <article className="rs-cover" aria-label="Health.com — Know Your Numbers">
+          <p className="rs-cover__brand">HEALTH.COM</p>
+          <h3 className="rs-cover__title">Know Your Numbers</h3>
+          <p className="rs-cover__sub">Practical steps to understand your cholesterol, reduce your risk, and take control of your heart health.</p>
         </article>
 
         {TIPS.map(t => {

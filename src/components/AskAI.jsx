@@ -2,104 +2,104 @@ import React, { useState, useEffect, useRef } from 'react'
 import MarkAsTried from './MarkAsTried'
 
 const SUGGESTED = [
-  'Why does my face burn after I wash it?',
-  "I'm exhausted trying to figure out what makes my skin better or worse.",
-  "What can I eat on the go that won't make my skin worse?",
-  'What are the best tips you have for someone living with eczema?',
+  'What do my cholesterol numbers actually mean?',
+  "I'm overwhelmed trying to change my diet and lifestyle at the same time.",
+  "What can I eat on the go that's good for my cholesterol?",
+  'What are the best tips you have for someone managing high cholesterol?',
 ]
 
-// Single-turn responses for the first two questions
+// Single-turn responses for the first three questions
 const CANNED_RESPONSES = {
-  'Why does my face burn after I wash it?':
-    "When your face burns or stings after washing, that's often a sign your skin barrier is irritated. The most common culprits:\n\n• A cleanser with sulfates or fragrance\n• Water that's too hot or too cold\n• Towel-drying too aggressively\n• Waiting more than 3 minutes before moisturizing\n\nFor eczema-prone skin, swapping to a fragrance-free, sulfate-free cleanser and moisturizing within 3 minutes of washing can dramatically reduce that burning sensation. Want me to walk through what to look for in a cleanser?",
-  "I'm exhausted trying to figure out what makes my skin better or worse.":
-    "You're not alone — figuring out personal triggers is one of the hardest parts of eczema, and it's exhausting because the connections aren't obvious in the moment.\n\nWhat actually works:\n\n• Track a small set of things daily (skin score, sleep, stress, weather, products) — patterns emerge after 2–3 weeks, not 2–3 days\n• Don't try to track everything at once\n• Look for triggers that show up 24–48 hours later, not the same day\n\nYour daily check-in is doing this work in the background. After three weeks, you'll have data your derm can actually use. Would you like to see what patterns we've spotted so far?",
-  "What can I eat on the go that won't make my skin worse?":
-    "Eczema and food connections are real but very individual — what flares your skin may not flare someone else's. That said, a few generally low-risk, on-the-go picks:\n\nSolid bets:\n\n• Unsalted almonds or walnuts (omega-3s support the skin barrier)\n• Fresh fruit — berries, apples, oranges\n• Single-serve hummus with carrots or cucumber\n• A salmon or tuna pouch\n• Hard-boiled eggs, if you tolerate them\n\nWorth being cautious with:\n\n• Dairy and eggs — the most common adult-eczema food triggers in studies\n• Aged cheeses, kombucha, alcohol — high in histamine\n• Heavily processed snacks (sugar + seed oils tend to spike inflammation)\n\nOne pattern worth knowing: food-related flares tend to show up 24–48 hours later, not the same day. If you suspect something, log it and check your skin score two days out.\n\nWant me to set up a food-tracking field in your daily check-in?",
+  'What do my cholesterol numbers actually mean?':
+    "Cholesterol results can feel like alphabet soup, but here's what matters most:\n\n• LDL (\"bad\" cholesterol) — ideally below 100 mg/dL. This is the number most linked to heart disease risk.\n• HDL (\"good\" cholesterol) — ideally above 60 mg/dL. Higher is better; it helps clear LDL from your arteries.\n• Triglycerides — ideally below 150 mg/dL. Elevated levels are often tied to diet, alcohol, and activity.\n• Total cholesterol — less useful on its own. The ratio of LDL to HDL matters more.\n\nOne number alone rarely tells the full story. Your doctor will look at your full lipid panel alongside other risk factors — age, blood pressure, family history, diabetes — to assess your overall cardiovascular risk.\n\nWant me to explain what moves these numbers up or down?",
+  "I'm overwhelmed trying to change my diet and lifestyle at the same time.":
+    "That overwhelm is real — and it's one of the most common things people with high cholesterol describe.\n\nThe research actually supports a simpler approach:\n\n• Pick one change at a time. Stacking too many at once leads to burnout, not results.\n• Diet changes tend to move the needle faster than exercise alone for LDL.\n• Small, consistent shifts — like swapping one meal per day — compound over months.\n• Stress and sleep both affect cholesterol too, so managing overwhelm is genuinely part of the plan.\n\nYour daily check-in is tracking these patterns in the background. After a few weeks, you'll start to see what's actually making a difference.\n\nWould it help to focus on just one area first?",
+  "What can I eat on the go that's good for my cholesterol?":
+    "Good news — heart-healthy eating on the go is more doable than it sounds. A few solid options:\n\nGood bets:\n\n• A small handful of unsalted walnuts or almonds (omega-3s help raise HDL)\n• Fresh fruit — apples, berries, oranges (soluble fiber lowers LDL)\n• Single-serve hummus with carrots or cucumber\n• A salmon or tuna pouch (omega-3s, high protein)\n• Oat-based snack bars with minimal added sugar\n\nWorth limiting:\n\n• Anything with partially hydrogenated oils (trans fats raise LDL and lower HDL)\n• High-sodium processed snacks (linked to blood pressure, a compounding risk)\n• Sweetened drinks — excess sugar raises triglycerides\n\nThe pattern that matters most: replacing saturated fat with unsaturated fat consistently over weeks, not perfecting every meal.\n\nWant me to suggest some simple meal swaps for the week?",
 }
 
 const DEFAULT_RESPONSE =
-  "That's a great question. Based on what we know about eczema and stress, the connection between your skin and your nervous system is real and well-documented.\n\nI'd recommend checking in with your care team about this specifically. In the meantime, your daily check-in data can help you spot patterns over time.\n\nIs there anything more specific I can help you with?"
+  "That's a thoughtful question. Managing cardiometabolic health involves a lot of moving parts — diet, activity, stress, medications, and regular monitoring all play a role.\n\nI'd recommend discussing this specifically with your care team. In the meantime, your daily check-in data can help you track patterns and bring clearer information to your next appointment.\n\nIs there something more specific I can help you with?"
 
-// Multi-turn scripted flow for "What are the best tips you have for someone living with eczema?"
+// Multi-turn scripted flow for managing high cholesterol
 const HELPS_FLOW = [
-  // Turn 0 — initial AI response after Claire's question
+  // Turn 0 — initial AI response
   {
     text:
-      "You're not alone in feeling that way.\n\nA lot of people with eczema realize it's less about finding one miracle product — and more about reducing irritation throughout daily life.\n\nWhat's bothering you most right now?",
+      "You're not alone in asking that.\n\nFor most people, managing high cholesterol isn't one big change — it's a series of smaller adjustments that add up over time.\n\nWhat feels hardest for you right now?",
     chips: [
-      'Burning/stinging',
-      'Itching',
-      'Dryness/tightness',
-      'Sleep disruption',
-      'Stress/flare unpredictability',
+      'Changing my diet',
+      'Staying consistent with exercise',
+      'Understanding my medications',
+      'Knowing what to track',
+      'Talking to my doctor',
     ],
   },
-  // Turn 1 — after user picks what's bothering them
+  // Turn 1 — after user picks what's hardest
   {
     text:
-      "That's really common when the skin barrier is irritated.\n\nA few things can quietly make it worse:\n• Harsh cleansing\n• Waiting too long to moisturize\n• Dry indoor air\n• Stressful nighttime routines\n\nWhat does your nighttime routine usually look like?",
+      "That's one of the most common friction points.\n\nA few things that quietly get in the way:\n• Not knowing which foods matter most\n• All-or-nothing thinking about \"healthy eating\"\n• Conflicting information online\n• Busy schedules making meal planning hard\n\nWhat does a typical day of eating look like for you?",
   },
-  // Turn 2 — after user describes routine
+  // Turn 2 — after user describes eating
   {
     text:
-      'That tells me a lot already.\n\nPeople with eczema often say they\'re "always aware of their skin" — especially at night.\n\nDo you usually shower at night too?',
-    chips: ['Yes', 'No', 'Sometimes'],
+      "That's helpful context.\n\nPeople managing cholesterol often find the biggest wins come from a few targeted swaps — not a total diet overhaul.\n\nDo you usually cook at home or eat out most days?",
+    chips: ['Mostly cook at home', 'Mix of both', 'Mostly eat out'],
   },
-  // Turn 3 — after shower question, includes Real Simple recommended reading
+  // Turn 3 — after cooking question, includes Health.com recommended reading
   {
     text:
-      'That post-shower window is actually one of the biggest moisture-loss moments for eczema-prone skin.',
+      "That context really shapes what's practical for you.",
     reading: {
-      source: 'REAL SIMPLE',
-      url: 'https://www.realsimple.com/',
-      title: 'The Eczema Reset: Gentle Home Changes That Actually Help',
-      quote: 'Keep creams or ointments immediately available after showering.',
-      attribution: 'Heather Muir, Beauty Director, REAL SIMPLE',
+      source: 'HEALTH.COM',
+      url: 'https://www.health.com/',
+      title: 'The Best Foods to Lower Cholesterol, According to Dietitians',
+      quote: 'Soluble fiber from oats, beans, and fruit can lower LDL by binding cholesterol in the digestive tract before it enters your bloodstream.',
+      attribution: 'Sarah Koszyk, RDN, HEALTH.COM',
     },
     followText:
-      'A lot of people find it helps to create:\n• A "safe skincare" area\n• Bedside hydration products\n• Simpler nighttime routines\n\nWould you describe your bathroom as:',
-    chips: ['Calm and organized', 'Functional but cluttered', 'Stressful/chaotic'],
+      'A few changes that consistently move the needle:\n• Replace saturated fats (butter, red meat) with unsaturated fats (olive oil, avocado)\n• Add soluble fiber daily — oats, beans, flaxseed\n• Reduce processed and fried foods\n\nHow would you describe your current activity level?',
+    chips: ['Mostly sedentary', 'Some light activity', 'Moderately active', 'Very active'],
   },
-  // Turn 4 — after bathroom answer, includes The Spruce recommended reading
+  // Turn 4 — after activity answer, includes Health.com recommended reading
   {
     text:
-      "That's more connected to eczema than it sounds.\n\nReducing visual clutter and routine friction can make nighttime care feel easier and less exhausting.",
+      "Exercise has a direct effect on HDL — the \"good\" cholesterol.\n\nEven moderate activity 5 days a week can meaningfully improve your lipid profile over 3–6 months.",
     reading: {
-      source: 'The Spruce',
-      url: 'https://www.thespruce.com/',
-      title: 'How to Create a Calming Bathroom Routine for Sensitive Skin',
-      tipsLabel: 'Popular tips:',
+      source: 'HEALTH.COM',
+      url: 'https://www.health.com/',
+      title: 'How Exercise Affects Your Cholesterol Levels',
+      tipsLabel: 'Most effective activities:',
       tips: [
-        'Keep "safe" products visible',
-        'Separate fragrance-heavy products',
-        'Use softer towels',
-        'Simplify the counter before bed',
+        '30-minute brisk walks, 5x per week',
+        'Swimming or cycling (low joint impact)',
+        'Resistance training 2x per week',
+        'Breaking up long periods of sitting',
       ],
     },
-    followText: 'What tends to trigger your flares most?',
-    chips: ['Stress', 'Weather', 'Fabrics', 'New products', 'Hard to tell'],
+    followText: 'What feels like the biggest barrier to being more active?',
+    chips: ['No time', 'Low energy', 'Joint pain or health limits', 'Not sure where to start'],
   },
   // Turn 5 — final summary with curated recommendations
   {
     text:
-      "That pattern is extremely common.\n\nBased on what you've shared, your biggest opportunities may be:\n• Reducing nighttime irritation\n• Improving moisture retention after showers\n• Simplifying products\n• Supporting dry indoor air",
+      "That's really common, and it's worth acknowledging.\n\nBased on what you've shared, your biggest opportunities may be:\n• Small, consistent dietary swaps (not a full overhaul)\n• Adding 20–30 minutes of movement most days\n• Tracking patterns to see what's actually working\n• Preparing clear questions before your next cardiology or GP visit",
     recommendations: {
       label: 'Recommended For You',
       sources: [
         {
-          source: 'REAL SIMPLE',
-          url: 'https://www.realsimple.com/',
+          source: 'HEALTH.COM',
+          url: 'https://www.health.com/',
           articles: [
-            'The Best Fabrics and Towels for Sensitive Skin',
-            '7 Home Products People With Eczema Say Were Worth Buying',
-            'How to Build a Low-Stress Night Routine',
+            'The 10 Best Foods to Lower Cholesterol Naturally',
+            'How to Talk to Your Doctor About High Cholesterol',
+            'A 7-Day Heart-Healthy Meal Plan',
           ],
         },
         {
-          source: 'Better Homes & Gardens',
-          url: 'https://www.bhg.com/',
-          articles: ['Simple Ways to Reduce Dry Winter Air at Home'],
+          source: 'Health Monitor',
+          url: 'https://www.healthmonitor.com/',
+          articles: ['Understanding Your Lipid Panel Results'],
         },
       ],
     },
@@ -108,17 +108,17 @@ const HELPS_FLOW = [
   // Turn 6 — auto-follow with next-step chips
   {
     text:
-      'I can also help you:\n• Simplify your nighttime routine\n• Identify irritating products\n• Create an eczema-friendly home setup\n• Track flare patterns without obsessing over triggers\n\nWhat would help most right now?',
+      'I can also help you:\n• Prepare questions for your next appointment\n• Understand your medications\n• Build a simple heart-healthy meal plan\n• Track your numbers and patterns over time\n\nWhat would help most right now?',
     chips: [
-      'Simplify my routine',
-      'Identify products',
-      'Eczema-friendly home',
-      'Track patterns',
+      'Prepare for my appointment',
+      'Understand my medications',
+      'Meal plan ideas',
+      'Track my numbers',
     ],
   },
 ]
 
-const FLOW_TRIGGER = 'What are the best tips you have for someone living with eczema?'
+const FLOW_TRIGGER = 'What are the best tips you have for someone managing high cholesterol?'
 
 function TypingIndicator() {
   return (
