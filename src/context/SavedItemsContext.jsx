@@ -13,7 +13,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
  *     markedAt: number,    Date.now() at the moment it was marked
  *   }
  */
-const STORAGE_KEY = 'skinsights.savedItems.v1'
+const STORAGE_KEY = 'cardiometabolic.savedItems.v1'
 
 const SavedItemsContext = createContext(null)
 

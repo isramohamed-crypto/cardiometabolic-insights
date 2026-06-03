@@ -112,7 +112,7 @@ export default function AccountDrawer({ profile, completionPct, strengthLabel, o
         </nav>
 
         <div className="ad-footer">
-          <p>Skinsights360 · v0.1</p>
+          <p>Cardiometabolic360 · v0.1</p>
         </div>
       </aside>
     </div>

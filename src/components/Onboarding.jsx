@@ -153,7 +153,7 @@ export default function Onboarding({ name, onClose }) {
   // Skip: persist whatever's been answered so far, then jump to the summary
   function skip() {
     let existing = {}
-    try { existing = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}') } catch (_) {}
+    try { existing = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}') } catch (_) {}
     const trimmedName = (ans.q2 || '').trim()
     const onboardingSources = new Set(existing.onboardingSources || [])
     const profile = { ...existing }
@@ -173,10 +173,10 @@ export default function Onboarding({ name, onClose }) {
     delete profile.treatmentList
     delete profile.aiSources
     delete profile.aiSeededAt
-    try { localStorage.setItem('skinsightsProfile', JSON.stringify(profile)) } catch (_) {}
+    try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(profile)) } catch (_) {}
     try {
-      localStorage.removeItem('skinsightsLastCheckin')
-      localStorage.removeItem('skinsightsCheckins')
+      localStorage.removeItem('cardiometabolicLastCheckin')
+      localStorage.removeItem('cardiometabolicCheckins')
     } catch (_) {}
     setStep(5)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -195,7 +195,7 @@ export default function Onboarding({ name, onClose }) {
   // Persist on completion (entering step 5 - summary)
   function complete() {
     let existing = {}
-    try { existing = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}') } catch (_) {}
+    try { existing = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}') } catch (_) {}
     const trimmedName = ans.q2.trim()
     const onboardingSources = new Set(existing.onboardingSources || [])
     const fields = {
@@ -221,10 +221,10 @@ export default function Onboarding({ name, onClose }) {
     delete next_data.treatmentList
     delete next_data.aiSources
     delete next_data.aiSeededAt
-    try { localStorage.setItem('skinsightsProfile', JSON.stringify(next_data)) } catch (_) {}
+    try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(next_data)) } catch (_) {}
     try {
-      localStorage.removeItem('skinsightsLastCheckin')
-      localStorage.removeItem('skinsightsCheckins')
+      localStorage.removeItem('cardiometabolicLastCheckin')
+      localStorage.removeItem('cardiometabolicCheckins')
     } catch (_) {}
     next()
   }
@@ -261,7 +261,7 @@ export default function Onboarding({ name, onClose }) {
     const summaryName = (ans.q2 || '').trim().split(' ')[0]
     const title = skipped
       ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
-      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Skinsights360 is ready.')
+      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Cardiometabolic360 is ready.')
     const sub = skipped
       ? <>No problem — you can finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your feed.</>
       : <>We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Profile settings</strong>.</>
@@ -323,7 +323,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to Skinsights360</p>
+          <p className="ob-hero__eyebrow">Welcome to Cardiometabolic360</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>

@@ -299,7 +299,7 @@ export const NOTIFICATION_SECTIONS = [
     id: 'email',
     label: 'Email',
     icon: '✉️',
-    requiresContact: { storageKey: 'skinsightsAccount', field: 'email', label: 'email', navigateTo: 'account' },
+    requiresContact: { storageKey: 'cardiometabolicAccount', field: 'email', label: 'email', navigateTo: 'account' },
     fields: [
       { id: 'email_digest', label: 'Weekly skin summary',    type: 'toggle' },
       { id: 'email_tips',   label: 'Personalized tips',      type: 'toggle' },
@@ -310,7 +310,7 @@ export const NOTIFICATION_SECTIONS = [
     id: 'sms',
     label: 'SMS',
     icon: '💬',
-    requiresContact: { storageKey: 'skinsightsAccount', field: 'phone', label: 'phone', navigateTo: 'account' },
+    requiresContact: { storageKey: 'cardiometabolicAccount', field: 'phone', label: 'phone', navigateTo: 'account' },
     fields: [
       { id: 'sms_reminders', label: 'Treatment reminders by text', type: 'toggle' },
     ],

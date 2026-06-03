@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import './HealthPulseSheet.css'
 
-const STORAGE_KEY = 'skinsightsEpro'
+const STORAGE_KEY = 'cardiometabolicEpro'
 
 function readEproRecords() {
   try {

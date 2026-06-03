@@ -8,7 +8,7 @@ const PEOPLE_INC_BRANDS = new Set([
 
 function readProfileName() {
   try {
-    const raw = localStorage.getItem('skinsightsProfile')
+    const raw = localStorage.getItem('cardiometabolicProfile')
     const name = raw ? (JSON.parse(raw)?.name || '').trim() : ''
     return name ? name.split(' ')[0] : ''
   } catch (_) { return '' }
@@ -16,7 +16,7 @@ function readProfileName() {
 
 function readConditions() {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     const raw = Array.isArray(p.condition) ? p.condition : (p.condition ? [p.condition] : [])
     return raw.filter(Boolean)
   } catch (_) { return [] }
@@ -24,7 +24,7 @@ function readConditions() {
 
 function readDoctor() {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     return {
       name:      (p.doctor_name || '').trim(),
       specialty: (p.doctor_specialty || '').trim(),
@@ -35,23 +35,23 @@ function readDoctor() {
 
 function readAppointment() {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     return p.nextAppointment || null
   } catch (_) { return null }
 }
 
 function writeAppointment(appt) {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     if (appt) p.nextAppointment = appt
     else delete p.nextAppointment
-    localStorage.setItem('skinsightsProfile', JSON.stringify(p))
+    localStorage.setItem('cardiometabolicProfile', JSON.stringify(p))
   } catch (_) {}
 }
 
 function readEproRecords() {
   try {
-    const raw = localStorage.getItem('skinsightsEpro')
+    const raw = localStorage.getItem('cardiometabolicEpro')
     const arr = raw ? JSON.parse(raw) : []
     return Array.isArray(arr) ? arr : []
   } catch (_) { return [] }
@@ -113,7 +113,7 @@ const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
     title: 'Bring your tracking data — even on your phone',
-    body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your Skinsights360 summary does this automatically.',
+    body: 'Dermatologists say the single most useful thing a patient can bring is a log of symptoms over time. Your Cardiometabolic360 summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
@@ -205,7 +205,7 @@ function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
         </button>
         <div className="pp-chat-title">
           <span className="pp-chat-dot" />
-          Skinsights360 AI · Visit Prep
+          Cardiometabolic360 AI · Visit Prep
         </div>
         <div style={{ width: 36 }} />
       </div>
@@ -430,7 +430,7 @@ const STORIES = [
     step: 'Story 4 of 5', avatar: 'J', name: 'James, 45', detail: 'AD + psoriasis · Stress and sleep triggers',
     quote: "I showed my dermatologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
     context: "James tracked his symptoms, sleep, and stress daily. When his dermatologist saw the pattern — stress on Monday, skin flare by Wednesday — she immediately adjusted his treatment approach and discussed whether systemic therapy might help.",
-    takeaway: 'Your tracking data tells a story. Share your Skinsights360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
+    takeaway: 'Your tracking data tells a story. Share your Cardiometabolic360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
     bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
   },
   {
@@ -502,7 +502,7 @@ function StoriesSwipe() {
 
 /**
  * Small modal for setting / editing the next dermatology appointment.
- * Writes to skinsightsProfile.nextAppointment so Prepare can read it back.
+ * Writes to cardiometabolicProfile.nextAppointment so Prepare can read it back.
  */
 function AppointmentModal({ initial, doctorFallback, onSave, onClose }) {
   const [date, setDate]                   = useState(initial?.date || '')
@@ -774,7 +774,7 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Ask the AI</h2>
         </div>
         <div className="pp-ai-bar">
-          <div className="pp-ai-label"><span className="pp-ai-dot" />Skinsights360 AI · Visit prep mode</div>
+          <div className="pp-ai-label"><span className="pp-ai-dot" />Cardiometabolic360 AI · Visit prep mode</div>
           <div className="pp-ai-input-row">
             <input
               className="pp-ai-input"

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import SponsorBanner from './SponsorBanner'
 
 function readCheckins() {
-  try { return JSON.parse(localStorage.getItem('skinsightsCheckins') || '[]') } catch (_) { return [] }
+  try { return JSON.parse(localStorage.getItem('cardiometabolicCheckins') || '[]') } catch (_) { return [] }
 }
 
 const CHART_DATA = {
@@ -198,12 +198,12 @@ function TrendChart({ range, condition }) {
 }
 
 function readLastCheckin() {
-  try { return JSON.parse(localStorage.getItem('skinsightsLastCheckin') || 'null') } catch (_) { return null }
+  try { return JSON.parse(localStorage.getItem('cardiometabolicLastCheckin') || 'null') } catch (_) { return null }
 }
 
 function readConditions() {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     const raw = Array.isArray(p.condition) ? p.condition : (p.condition ? [p.condition] : [])
     return raw.filter(Boolean)
   } catch (_) { return [] }
@@ -211,7 +211,7 @@ function readConditions() {
 
 function readTreatments() {
   try {
-    const p = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
     const raw = Array.isArray(p.treatmentList) ? p.treatmentList : []
     return raw.map(t => typeof t === 'string' ? { name: t } : t).filter(t => t?.name)
   } catch (_) { return [] }

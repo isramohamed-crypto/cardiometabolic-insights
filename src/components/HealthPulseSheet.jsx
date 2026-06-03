@@ -3,14 +3,14 @@ import './HealthPulseSheet.css'
 
 /**
  * Weekly Health Pulse — combined POEM-style + DLQI-style patient-reported
- * outcomes. Saves a record to localStorage `skinsightsEpro[]` so PreparePage
+ * outcomes. Saves a record to localStorage `cardiometabolicEpro[]` so PreparePage
  * can surface real symptom and life-impact scores instead of hard-coded
  * demo numbers. Question wording is paraphrased; the scoring scales and
  * interpretation bands follow the standard 0–28 (POEM) and 0–30 (DLQI)
  * instruments used in dermatology research and clinical care.
  */
 
-const STORAGE_KEY = 'skinsightsEpro'
+const STORAGE_KEY = 'cardiometabolicEpro'
 
 const POEM_QUESTIONS = [
   'How many days this week did you notice itching on your skin?',

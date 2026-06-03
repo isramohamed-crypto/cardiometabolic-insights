@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
-const CHECKIN_KEY  = 'skinsightsLastCheckin'
-const CHECKINS_KEY = 'skinsightsCheckins'
+const CHECKIN_KEY  = 'cardiometabolicLastCheckin'
+const CHECKINS_KEY = 'cardiometabolicCheckins'
 
 function readLastCheckin() {
   try { return JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) { return null }

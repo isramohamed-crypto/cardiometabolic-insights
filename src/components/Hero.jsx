@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 function readProfileName() {
   try {
-    const raw = localStorage.getItem('skinsightsProfile')
+    const raw = localStorage.getItem('cardiometabolicProfile')
     const name = raw ? (JSON.parse(raw)?.name || '').trim() : ''
     return name ? name.split(' ')[0] : ''
   } catch (_) {

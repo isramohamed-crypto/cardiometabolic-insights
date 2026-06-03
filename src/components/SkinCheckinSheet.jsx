@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 
-const CHECKIN_KEY  = 'skinsightsLastCheckin'
-const CHECKINS_KEY = 'skinsightsCheckins'
+const CHECKIN_KEY  = 'cardiometabolicLastCheckin'
+const CHECKINS_KEY = 'cardiometabolicCheckins'
 
 /* ── Personalization by condition ─────────────────────────────────── */
 
@@ -262,7 +262,7 @@ const DAY_CONTEXT = [
 /* ── Storage helpers ──────────────────────────────────────────────── */
 
 function readProfile() {
-  try { return JSON.parse(localStorage.getItem('skinsightsProfile') || '{}') } catch (_) { return {} }
+  try { return JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}') } catch (_) { return {} }
 }
 function readCheckins() {
   try { return JSON.parse(localStorage.getItem(CHECKINS_KEY) || '[]') } catch (_) { return [] }
@@ -555,7 +555,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     // Persist to profile.treatmentList as tagged items, preserving any existing
     // rich detail (dose/freq) the user added in their profile.
     try {
-      const profile = JSON.parse(localStorage.getItem('skinsightsProfile') || '{}')
+      const profile = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
       const existingMap = new Map(
         (profile.treatmentList || []).map(t => {
           const n = typeof t === 'string' ? t : t?.name
@@ -567,7 +567,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
         const key = `${condition || ''}::${name}`
         return existingMap.get(key) || { name, condition, addedAt: new Date().toISOString() }
       })
-      localStorage.setItem('skinsightsProfile', JSON.stringify(profile))
+      localStorage.setItem('cardiometabolicProfile', JSON.stringify(profile))
     } catch (_) {}
 
     onComplete?.(checkin)

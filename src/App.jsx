@@ -39,13 +39,13 @@ import BottomNav from './components/BottomNav'
 
 function readProfile() {
   try {
-    const raw = localStorage.getItem('skinsightsProfile')
+    const raw = localStorage.getItem('cardiometabolicProfile')
     return raw ? JSON.parse(raw) : {}
   } catch (_) { return {} }
 }
 
 function writeProfile(p) {
-  try { localStorage.setItem('skinsightsProfile', JSON.stringify(p)) } catch (_) {}
+  try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(p)) } catch (_) {}
 }
 
 export default function App() {
@@ -154,7 +154,7 @@ export default function App() {
       {showNotifications && (
         <SettingsPage
           title="Notifications"
-          storageKey="skinsightsNotifications"
+          storageKey="cardiometabolicNotifications"
           sections={NOTIFICATION_SECTIONS}
           onClose={closeOverlay(setShowNotifications)}
           onNavigate={target => {
@@ -169,7 +169,7 @@ export default function App() {
       {showAccount && (
         <SettingsPage
           title="Account settings"
-          storageKey="skinsightsAccount"
+          storageKey="cardiometabolicAccount"
           sections={ACCOUNT_SECTIONS}
           onClose={closeOverlay(setShowAccount)}
           onNavigate={target => {

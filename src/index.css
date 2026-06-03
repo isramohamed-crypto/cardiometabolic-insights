@@ -22,10 +22,10 @@
   /* Token names retained for backward compatibility; only values change. */
 
   /* Primary — Leaf green */
-  --color-teal:          #1BBC3C;
-  --color-teal-mid:      #3FD15F;
-  --color-teal-light:    #E3F8E8;
-  --color-teal-dark:     #004620;   /* Seaweed */
+  --color-teal:          #0A2463;
+  --color-teal-mid:      #1B4FBF;
+  --color-teal-light:    #E0E8F9;
+  --color-teal-dark:     #040F33;   /* Seaweed */
 
   /* Secondary — Mineral Blue */
   --color-sage:          #00B9E2;
