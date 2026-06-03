@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 const OPTIONS = [
-  { emoji: '🧠', label: 'I\u2019ve been under a lot of stress lately',                     pct: 38, fill: 'var(--color-teal-light)'  },
-  { emoji: '😴', label: 'My sleep has been off',                                            pct: 29, fill: 'var(--color-lime-light)'  },
-  { emoji: '🌤️', label: 'Something in my environment changed (weather, products, etc.)',   pct: 21, fill: 'var(--color-warm-light)'  },
-  { emoji: '🤷', label: 'I\u2019m not sure \u2014 it feels unpredictable',                 pct: 12, fill: 'var(--color-sage-light)'  },
+  { emoji: '🍽️', label: 'Staying consistent with healthy eating',              pct: 41, fill: 'var(--color-teal-light)'  },
+  { emoji: '💊', label: 'Remembering to take medications every day',            pct: 27, fill: 'var(--color-lime-light)'  },
+  { emoji: '🧠', label: 'Managing stress without it affecting my health',       pct: 22, fill: 'var(--color-warm-light)'  },
+  { emoji: '🩺', label: 'Knowing what to ask my doctor',                        pct: 10, fill: 'var(--color-sage-light)'  },
 ]
 
 export default function CommunityPoll() {
@@ -22,8 +22,8 @@ export default function CommunityPoll() {
       <div className="poll-card">
         {/* Header */}
         <div className="poll-card__head">
-          <p className="poll-card__tag">Poll &middot; 1,247 patients voted</p>
-          <p className="poll-card__q">When your eczema flares, what feels most true for you?</p>
+          <p className="poll-card__tag">Poll &middot; 2,341 patients voted</p>
+          <p className="poll-card__q">When it comes to managing your heart health, what feels hardest right now?</p>
         </div>
 
         {/* Options */}
@@ -53,7 +53,7 @@ export default function CommunityPoll() {
 
         {/* Footer */}
         {voted !== null && (
-          <p className="poll-card__total">1,247 patients voted &middot; Your answer helps others like you</p>
+          <p className="poll-card__total">2,341 patients voted &middot; Your answer helps others like you</p>
         )}
       </div>
     </section>

@@ -19,6 +19,7 @@ import CareTeamCard from './components/CareTeamCard'
 import ProgressCard from './components/ProgressCard'
 import ProgramCard from './components/ProgramCard'
 import AskAI from './components/AskAI'
+import ConditionStrip from './components/ConditionStrip'
 import ForYouNow from './components/ForYouNow'
 import SwipeLearn from './components/SwipeLearn'
 import Breathe from './components/Breathe'
@@ -221,7 +222,10 @@ export default function App() {
               5 tips for you · 6 peer stories · 7 watch now ·
               8 interests · 9 swipe learn */}
 
-          {/* 3 — Daily check-in: strike while engaged after AI interaction */}
+          {/* 3 — Condition strip: personalized per user's conditions */}
+          <ConditionStrip />
+
+          {/* 4 — Daily check-in: strike while engaged after AI interaction */}
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 

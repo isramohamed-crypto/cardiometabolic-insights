@@ -42,10 +42,10 @@ export default function HealthPulseCard({ onOpen, tick = 0 }) {
         <div className="hp-card__body">
           <div className="hp-card__eyebrow">Weekly Health Pulse · 3 min</div>
           <div className="hp-card__title">
-            {isFirst ? 'Take your first Health Pulse' : "Time for this week's Health Pulse"}
+            {isFirst ? 'Take your first Weekly Health Pulse' : "Time for this week's Health Pulse"}
           </div>
           <div className="hp-card__sub">
-            Two short scales (POEM + DLQI). Same data your derm collects in clinic.
+            Tracks symptoms and life impact. The data builds a clearer picture for your care team between visits.
           </div>
         </div>
         <div className="hp-card__arrow" aria-hidden="true">→</div>

@@ -9,16 +9,18 @@ import './ProfilePage.css'
 const MIGRATION_MAP = {
   role: { myself: 'Myself', child: 'My child', other: 'Someone else' },
   focus: {
-    confidence: 'Affecting my confidence',
-    sleep:      'Disrupting my sleep',
-    triggers:   'Figuring out my triggers',
-    treatment:  'Managing my treatment',
-    frustrated: 'Frustrated nothing works',
+    confidence: 'Taking control of my numbers',
+    sleep:      'Improving my energy and sleep',
+    triggers:   'Understanding what drives my condition',
+    treatment:  'Managing my treatment plan',
+    frustrated: 'Finding an approach that actually sticks',
   },
   diagnosisStatus: { yes: 'Yes, I have a diagnosis', no: 'Not yet / not sure' },
   condition: {
-    eczema: 'Eczema', psoriasis: 'Psoriasis', rosacea: 'Rosacea', acne: 'Acne', other_dx: 'Something else (diagnosed)',
-    redness: 'Redness or irritation', dryness: 'Dryness or flaking', itching: 'Itching or sensitivity', breakouts: 'Breakouts or bumps', flares: 'Unpredictable flare-ups',
+    cholesterol: 'High cholesterol', hypertension: 'High blood pressure', diabetes: 'Type 2 diabetes',
+    obesity: 'Weight / metabolic health', heart: 'Heart disease', other_dx: 'Something else (diagnosed)',
+    family_hx: 'Family history', borderline: 'Borderline numbers', weight: 'Weight concerns',
+    prevention: 'Prevention focused', post_event: 'Recovery',
   },
 }
 
@@ -53,9 +55,9 @@ const SECTIONS = [
     fields: [
       { id: 'role',            label: 'Managing for',          type: 'select',      options: ['Myself', 'My child', 'Someone else'] },
       { id: 'diagnosisStatus', label: 'Diagnosis status',      type: 'select',      options: ['Yes, I have a diagnosis', 'Not yet / not sure'] },
-      { id: 'condition',       label: 'Conditions / concerns', type: 'multiselect', options: ['Eczema', 'Psoriasis', 'Rosacea', 'Acne', 'Something else (diagnosed)', 'Redness or irritation', 'Dryness or flaking', 'Itching or sensitivity', 'Breakouts or bumps', 'Unpredictable flare-ups'] },
-      { id: 'triggers',        label: 'Known triggers',        type: 'multiselect', options: ['Stress', 'Heat / humidity', 'Cold / dry air', 'Specific foods', 'Sweating / exercise', 'Fragrances', 'Soaps / detergents', 'Pets', 'Pollen / allergies', 'Hormonal cycles'] },
-      { id: 'comorbidities',   label: 'Other conditions',      type: 'multiselect', options: ['Asthma', 'Seasonal allergies', 'Food allergies', 'Hay fever', 'Anxiety', 'Depression', 'None of these'] },
+      { id: 'condition',       label: 'Conditions / concerns', type: 'multiselect', options: ['High cholesterol', 'High blood pressure', 'Type 2 diabetes', 'Weight / metabolic health', 'Heart disease', 'Something else (diagnosed)', 'Family history', 'Borderline numbers', 'Weight concerns', 'Prevention focused', 'Recovery'] },
+      { id: 'triggers',        label: 'Known contributors',    type: 'multiselect', options: ['Stress', 'Poor sleep', 'Unhealthy diet', 'Physical inactivity', 'Smoking', 'Excess alcohol', 'Hormonal changes', 'Medications', 'Family history', 'Other'] },
+      { id: 'comorbidities',   label: 'Other conditions',      type: 'multiselect', options: ['Hypertension', 'Type 2 diabetes', 'Obesity / metabolic syndrome', 'Heart disease', 'Anxiety or depression', 'Kidney disease', 'None of these'] },
     ],
   },
   {
@@ -63,8 +65,8 @@ const SECTIONS = [
     label: 'Care team',
     icon: '👩‍⚕️',
     fields: [
-      { id: 'doctor_name',      label: 'Dermatologist',  type: 'text', placeholder: 'Dr. Sarah Williams' },
-      { id: 'doctor_specialty', label: 'Specialty',      type: 'text', placeholder: 'Dermatology' },
+      { id: 'doctor_name',      label: 'Cardiologist or GP',  type: 'text', placeholder: 'Dr. Sarah Williams' },
+      { id: 'doctor_specialty', label: 'Specialty',           type: 'text', placeholder: 'Cardiology / General Practice' },
       { id: 'doctor_location',  label: 'Practice',       type: 'text', placeholder: 'City, State' },
     ],
   },
@@ -73,7 +75,7 @@ const SECTIONS = [
     label: 'Lifestyle',
     icon: '🌿',
     fields: [
-      { id: 'sleep',          label: 'Typical sleep quality', type: 'select', options: ['Great — wake up rested', 'Okay most nights', 'Poor — itch wakes me up', 'It really varies'] },
+      { id: 'sleep',          label: 'Typical sleep quality', type: 'select', options: ['Great — wake up rested', 'Okay most nights', 'Poor — often disrupted', 'It really varies'] },
       { id: 'stress_level',   label: 'Day-to-day stress',     type: 'select', options: ['Low — pretty calm', 'Moderate — some pressure', 'High — frequently stressed', 'Very high — constant'] },
       { id: 'diet',           label: 'Diet pattern',          type: 'select', options: ['No restrictions', 'Vegetarian', 'Vegan', 'Pescatarian', 'Gluten-free', 'Dairy-free', 'Other'] },
       { id: 'climate',        label: 'Climate where you live',type: 'select', options: ['Hot and humid', 'Hot and dry', 'Temperate / mild', 'Cold and dry', 'Cold and humid', 'Four distinct seasons'] },
@@ -85,10 +87,10 @@ const SECTIONS = [
     label: 'Topics & preferences',
     icon: '🎯',
     fields: [
-      { id: 'focus',          label: 'What matters most',           type: 'select',      options: ['Affecting my confidence', 'Disrupting my sleep', 'Figuring out my triggers', 'Managing my treatment', 'Frustrated nothing works'] },
-      { id: 'topics',         label: 'Topics I want to see more of',type: 'multiselect', options: ['Skincare routines', 'Beauty', 'Food', 'Home', 'Travel', 'Fashion', 'Entertainment', 'Sleep & rest', 'Stress & mental health', 'Sun & outdoors', 'Triggers & flares', 'Diet & gut health', 'Pregnancy & hormones', 'Kids & caregiving', 'Workouts & sweat', 'Confidence & self-image', 'New treatments & research', 'Workplace tips', 'Home organization', 'Quick recipes', 'Family meals'] },
+      { id: 'focus',          label: 'What matters most',           type: 'select',      options: ['Taking control of my numbers', 'Improving my energy and sleep', 'Understanding what drives my condition', 'Managing my treatment plan', 'Finding an approach that actually sticks'] },
+      { id: 'topics',         label: 'Topics I want to see more of',type: 'multiselect', options: ['Heart-healthy eating', 'Exercise & movement', 'Sleep & rest', 'Stress & mental health', 'Medications & treatment', 'Blood pressure', 'Blood sugar', 'Weight management', 'Understanding my numbers', 'Preparing for appointments', 'New treatments & research', 'Alcohol & lifestyle', 'Cooking at home', 'Travel & staying on track', 'Confidence & self-image', 'Community & peer support', 'Family & caregiving', 'Work & daily life'] },
       { id: 'comms_freq',     label: 'How often to hear from us',   type: 'select',      options: ['Daily check-ins', 'A few times a week', 'Weekly digest', 'Only the essentials'] },
-      { id: 'goal',           label: 'Top goal for the next 90 days', type: 'select',    options: ['Find a routine that works', 'Identify my triggers', 'Sleep better', 'Reduce stress', 'Try a new treatment', 'Feel more confident', 'Just learn for now'] },
+      { id: 'goal',           label: 'Top goal for the next 90 days', type: 'select',    options: ['Improve my cholesterol or blood pressure', 'Lose weight or improve metabolic health', 'Sleep better', 'Reduce stress', 'Stick to my treatment plan', 'Feel more in control', 'Just learn for now'] },
     ],
   },
 ]
@@ -343,7 +345,7 @@ function TreatmentsSection({ profile, onUpdate }) {
           <div className="pp-field" style={{ padding: '14px 16px' }}>
             <div className="pp-field__label">No treatments logged yet</div>
             <div className="pp-field__value pp-field__value--empty">
-              Add what you're using during your next skin check-in. They'll show up here for you to add dose &amp; frequency.
+              Add what you're using during your next health check-in. They'll show up here for you to add dose &amp; frequency.
             </div>
           </div>
         </div>
@@ -415,7 +417,7 @@ function TreatmentsSection({ profile, onUpdate }) {
             </React.Fragment>
           ))}
           <p className="pp-tx-foot">
-            💡 Add or remove items during your next skin check-in. Dose &amp; frequency tracked here power adherence insights.
+            💡 Add or remove items during your next health check-in. Dose &amp; frequency tracked here power adherence insights.
           </p>
         </div>
       )}

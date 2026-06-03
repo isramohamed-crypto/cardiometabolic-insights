@@ -8,210 +8,188 @@ const CHECKINS_KEY = 'cardiometabolicCheckins'
 // Generic fallback scale, used only when a condition-specific playbook doesn't
 // define its own severity options.
 const FALLBACK_SEVERITY = [
-  { e: '✨', l: 'Clear — skin looks normal' },
-  { e: '🙂', l: 'Mild — minor dryness or irritation' },
-  { e: '😐', l: 'Moderate — noticeable in spots' },
-  { e: '😣', l: 'Bad — affecting how I feel today' },
-  { e: '🔥', l: 'Severe — flaring or painful' },
+  { e: '✨', l: 'Feeling great — lots of energy today' },
+  { e: '🙂', l: 'Pretty good — minor tiredness or tension' },
+  { e: '😐', l: 'So-so — low energy or a bit stressed' },
+  { e: '😣', l: 'Rough day — hard to stay on track' },
+  { e: '😫', l: 'Really struggling — need some support' },
 ]
 
 const CONDITION_PLAYBOOKS = {
-  'Eczema': {
-    severityQ: 'How is your eczema today?',
-    severitySub: 'Pick what best matches your usual problem areas right now.',
+  'High cholesterol': {
+    severityQ: 'How are you feeling about your cholesterol management today?',
+    severitySub: 'Think about your habits, stress, and how in control you feel.',
     severityOpts: [
-      { e: '✨', l: 'Clear — eczema isn\'t visible today' },
-      { e: '🙂', l: 'Mild eczema — slight dryness, no real itch' },
-      { e: '😐', l: 'Moderate eczema — itchy patches in usual spots' },
-      { e: '😣', l: 'Bad eczema — large red areas, frequent itch' },
-      { e: '🔥', l: 'Severe eczema flare — bleeding, weeping, or constant itch' },
+      { e: '✨', l: 'On track — sticking to my plan' },
+      { e: '🙂', l: 'Pretty good — minor slip but nothing major' },
+      { e: '😐', l: 'Mixed — some good choices, some not so much' },
+      { e: '😣', l: 'Off track — struggling with diet or routine' },
+      { e: '😔', l: 'Struggling — feel like I\'ve slipped a lot today' },
     ],
-    symptomsQ: 'How bothered were you by eczema itch in the last 24 hours?',
-    symptomsSub: 'Include both daytime and overnight itching.',
+    symptomsQ: 'What\'s most on your mind about your heart health today?',
+    symptomsSub: 'Pick what resonates most right now.',
     symptoms: [
-      { e: '😌', l: 'I didn\'t really itch' },
-      { e: '🤏', l: 'A few brief moments of itching' },
-      { e: '😬', l: 'Itched several times — distracting' },
-      { e: '😖', l: 'Constant itch most of the day' },
-      { e: '😫', l: 'Itch woke me up or kept me from sleeping' },
+      { e: '😌', l: 'Feeling good — no concerns today' },
+      { e: '🧪', l: 'Worried about my last lab results' },
+      { e: '🍔', l: 'Struggling with diet today' },
+      { e: '💊', l: 'Skipped or forgot my medication' },
+      { e: '😰', l: 'High stress or didn\'t sleep well' },
     ],
   },
-  'Psoriasis': {
-    severityQ: 'How is your psoriasis today?',
-    severitySub: 'Look at your usual plaque areas.',
+  'High blood pressure': {
+    severityQ: 'How is your blood pressure feeling today?',
+    severitySub: 'Think about physical sensations, stress, and your readings if you have them.',
     severityOpts: [
-      { e: '✨', l: 'Clear — no visible plaques today' },
-      { e: '🙂', l: 'Mild psoriasis — flat, faintly pink areas' },
-      { e: '😐', l: 'Moderate psoriasis — raised, scaly plaques' },
-      { e: '😣', l: 'Bad psoriasis — thicker plaques, itch or burn' },
-      { e: '🔥', l: 'Severe psoriasis flare — spreading, cracking, or bleeding' },
+      { e: '✨', l: 'Calm — feeling relaxed, readings look good' },
+      { e: '🙂', l: 'Mostly okay — a little tension but manageable' },
+      { e: '😐', l: 'Unsettled — some stress or a higher reading' },
+      { e: '😣', l: 'Elevated — headache, tension, or a concerning reading' },
+      { e: '🚨', l: 'Worried — symptoms feel significant today' },
     ],
-    symptomsQ: 'What\'s bothering you most about your psoriasis today?',
-    symptomsSub: 'Pick the most prominent issue right now.',
+    symptomsQ: 'What physical or emotional signs are you noticing today?',
+    symptomsSub: 'Include how your body feels and your stress level.',
     symptoms: [
-      { e: '😌', l: 'Nothing in particular' },
-      { e: '🩹', l: 'Visible scaling or flaking on plaques' },
-      { e: '🔥', l: 'Burning or stinging on the patches' },
-      { e: '😣', l: 'Itching that won\'t quit' },
-      { e: '🦴', l: 'Joint pain or stiffness too' },
+      { e: '😌', l: 'Feeling fine — no symptoms today' },
+      { e: '🤕', l: 'Headache or pressure in my head' },
+      { e: '😤', l: 'Tense, stressed, or on edge' },
+      { e: '💊', l: 'Missed a dose of my medication' },
+      { e: '🧂', l: 'Ate more salt than usual today' },
     ],
   },
-  'Rosacea': {
-    severityQ: 'How is your rosacea today?',
-    severitySub: 'Cheeks, nose, forehead, chin.',
+  'Type 2 diabetes': {
+    severityQ: 'How is your blood sugar management feeling today?',
+    severitySub: 'Think about your energy, eating, and how in balance you feel.',
     severityOpts: [
-      { e: '✨', l: 'Calm — no visible flushing today' },
-      { e: '🙂', l: 'Mild rosacea — slight warmth or pinkness' },
-      { e: '😐', l: 'Moderate rosacea — visible redness' },
-      { e: '😣', l: 'Bad rosacea — persistent redness with bumps' },
-      { e: '🔥', l: 'Severe rosacea flare — burning, stinging, or strong flushing' },
+      { e: '✨', l: 'Balanced — energy steady and on plan' },
+      { e: '🙂', l: 'Pretty good — minor blips but overall okay' },
+      { e: '😐', l: 'Uneven — energy dipping or choices were mixed' },
+      { e: '😣', l: 'Off — noticeably high or low energy, struggled today' },
+      { e: '😔', l: 'Really hard day — way off routine or unwell' },
     ],
-    symptomsQ: 'What rosacea symptoms are you noticing today?',
-    symptomsSub: 'Pick the most prominent.',
+    symptomsQ: 'What are you noticing most about your health today?',
+    symptomsSub: 'How your body and energy feel matters — pick what fits.',
     symptoms: [
-      { e: '😌', l: 'Skin feels fine' },
-      { e: '🌡️', l: 'Warmth or flushing in patches' },
-      { e: '🫧', l: 'Bumps or pustules visible' },
-      { e: '🔥', l: 'Burning or stinging on touch' },
-      { e: '👁️', l: 'Eye irritation or dryness too' },
+      { e: '😌', l: 'Feeling good — energy and mood are steady' },
+      { e: '😴', l: 'Tired or sluggish after eating' },
+      { e: '🍞', l: 'Ate more carbs or sugar than planned' },
+      { e: '💊', l: 'Missed a dose of medication or insulin' },
+      { e: '🧃', l: 'Had a low — needed to treat hypoglycemia' },
     ],
   },
-  'Acne': {
-    severityQ: 'How is your acne today?',
-    severitySub: 'Active breakouts and overall condition.',
+  'Weight / metabolic health': {
+    severityQ: 'How are you feeling about your health and habits today?',
+    severitySub: 'This is about how you feel — not a number on a scale.',
     severityOpts: [
-      { e: '✨', l: 'Clear — no active acne today' },
-      { e: '🙂', l: 'Mild acne — a few small spots or blackheads' },
-      { e: '😐', l: 'Moderate acne — several active pimples' },
-      { e: '😣', l: 'Bad acne — multiple inflamed lesions' },
-      { e: '🔥', l: 'Severe acne — painful or cystic breakout' },
+      { e: '✨', l: 'Great — motivated and making good choices' },
+      { e: '🙂', l: 'Good — mostly on track today' },
+      { e: '😐', l: 'Neutral — going through the motions' },
+      { e: '😣', l: 'Struggling — cravings, low motivation, or stress eating' },
+      { e: '😔', l: 'Really hard — feel like today was a step back' },
     ],
-    symptomsQ: 'Where are you seeing the most acne breakouts today?',
-    symptomsSub: 'Helps us spot what areas are reacting.',
+    symptomsQ: 'What feels most relevant to your wellbeing today?',
+    symptomsSub: 'Pick what best describes your day so far.',
     symptoms: [
-      { e: '😌', l: 'Nothing today' },
-      { e: '🙂', l: 'One area — chin or T-zone' },
-      { e: '😐', l: 'Spread across face' },
-      { e: '😣', l: 'Face + body (chest, back, shoulders)' },
-      { e: '🔴', l: 'Painful or deep cystic spots' },
+      { e: '😌', l: 'Feeling good — in a positive groove' },
+      { e: '🏃', l: 'Was active or exercised today' },
+      { e: '🍽️', l: 'Overate or emotional eating happened' },
+      { e: '😴', l: 'Low energy or didn\'t move much' },
+      { e: '😤', l: 'Stress made healthy choices harder' },
     ],
   },
-
-  /* ─── Non-diagnosis concerns (from onboarding "Not yet / not sure" branch) ─── */
-  'Redness or irritation': {
-    severityQ: 'How is your redness or irritation today?',
-    severitySub: 'Look at usual reactive spots.',
+  'Heart disease': {
+    severityQ: 'How is your heart health feeling today?',
+    severitySub: 'Think about physical comfort, energy, and your emotional state.',
     severityOpts: [
-      { e: '✨', l: 'Clear — no visible redness' },
-      { e: '🙂', l: 'Mild — slight pinkness in spots' },
-      { e: '😐', l: 'Moderate — visible redness across areas' },
-      { e: '😣', l: 'Significant — large red, irritated areas' },
-      { e: '🔥', l: 'Severe — angry, inflamed skin' },
+      { e: '✨', l: 'Comfortable — no symptoms, feeling well' },
+      { e: '🙂', l: 'Good — slight tiredness but nothing concerning' },
+      { e: '😐', l: 'Mixed — some discomfort or lower energy than usual' },
+      { e: '😣', l: 'Concerning — symptoms I\'m aware of today' },
+      { e: '🚨', l: 'Significant — symptoms that worry me' },
     ],
-    symptomsQ: 'How does the redness feel today?',
-    symptomsSub: 'Pick the most prominent sensation.',
+    symptomsQ: 'What are you noticing today?',
+    symptomsSub: 'Physical and emotional — both count.',
     symptoms: [
-      { e: '😌', l: 'Just looks red — feels fine' },
-      { e: '🌡️', l: 'Warmth or flushing' },
-      { e: '🔥', l: 'Burning or stinging' },
-      { e: '😖', l: 'Tight, sensitive, or painful' },
-      { e: '👁️', l: 'Reactive to products or environment' },
+      { e: '😌', l: 'Feeling well — no symptoms today' },
+      { e: '😮‍💨', l: 'Breathlessness with normal activity' },
+      { e: '😩', l: 'Unusual tiredness or fatigue' },
+      { e: '💓', l: 'Chest discomfort or palpitations' },
+      { e: '😟', l: 'Anxious or emotionally drained about my condition' },
     ],
   },
-  'Dryness or flaking': {
-    severityQ: 'How dry is your skin today?',
-    severitySub: 'Across your usual problem areas.',
+  'Recovery': {
+    severityQ: 'How is your recovery going today?',
+    severitySub: 'Think about how your body feels and how you\'re coping emotionally.',
     severityOpts: [
-      { e: '✨', l: 'Hydrated — skin feels comfortable' },
-      { e: '🙂', l: 'Mild dryness — tight after washing' },
-      { e: '😐', l: 'Moderate — visible flaking or rough patches' },
-      { e: '😣', l: 'Significant — cracking or peeling' },
-      { e: '🔥', l: 'Severe — bleeding cracks or raw areas' },
+      { e: '✨', l: 'Great — feeling strong and confident' },
+      { e: '🙂', l: 'Good — steady progress, a few hard moments' },
+      { e: '😐', l: 'Mixed — okay physically but emotionally tiring' },
+      { e: '😣', l: 'Tough day — setbacks or symptoms affecting me' },
+      { e: '😔', l: 'Really hard — physically or emotionally overwhelmed' },
     ],
-    symptomsQ: 'What goes with the dryness?',
-    symptomsSub: 'Pick the most prominent.',
+    symptomsQ: 'What\'s most present for you today?',
+    symptomsSub: 'Both physical and emotional are worth logging.',
     symptoms: [
-      { e: '😌', l: 'Just dry — nothing else' },
-      { e: '🤏', l: 'Tightness when I move' },
-      { e: '😬', l: 'Itching from dryness' },
-      { e: '😖', l: 'Stinging or burning' },
-      { e: '🩸', l: 'Cracks that bleed or weep' },
+      { e: '😌', l: 'Feeling good — a strong recovery day' },
+      { e: '😩', l: 'More fatigue than expected' },
+      { e: '💓', l: 'Heart or chest awareness today' },
+      { e: '😟', l: 'Feeling anxious or worried about my health' },
+      { e: '💊', l: 'Medication side effects or questions came up' },
     ],
   },
-  'Itching or sensitivity': {
-    severityQ: 'How is your itch or sensitivity today?',
-    severitySub: 'Include both day and overnight.',
+  'Family history': {
+    severityQ: 'How are you feeling about your cardiovascular health today?',
+    severitySub: 'Managing risk with family history is an ongoing effort — how\'s today going?',
     severityOpts: [
-      { e: '😌', l: 'No itch — skin feels calm' },
-      { e: '🙂', l: 'Mild — occasional, easy to ignore' },
-      { e: '😐', l: 'Moderate — distracting, multiple times' },
-      { e: '😣', l: 'Severe — constant, hard to focus' },
-      { e: '🔥', l: 'Disruptive — interfering with sleep or daily life' },
+      { e: '✨', l: 'On it — making proactive choices today' },
+      { e: '🙂', l: 'Pretty good — mostly following my plan' },
+      { e: '😐', l: 'Neutral — not bad, but not my best effort' },
+      { e: '😣', l: 'Off track — stress or habits working against me' },
+      { e: '😔', l: 'Worried — anxiety about risk is weighing on me' },
     ],
-    symptomsQ: 'What seems to set it off today?',
-    symptomsSub: 'The closest trigger you noticed.',
+    symptomsQ: 'What\'s on your mind about your health today?',
+    symptomsSub: 'Log what\'s most present — physical or emotional.',
     symptoms: [
-      { e: '😌', l: 'Nothing in particular' },
-      { e: '🧴', l: 'Products or fragrance' },
-      { e: '🌡️', l: 'Heat or sweat' },
-      { e: '🥶', l: 'Cold or dry air' },
-      { e: '🤔', l: 'Random — no clear cause' },
+      { e: '😌', l: 'Feeling good — no concerns today' },
+      { e: '🧪', l: 'Thinking about upcoming tests or results' },
+      { e: '🏃', l: 'Got some exercise in — felt good' },
+      { e: '😰', l: 'Anxious about my family history today' },
+      { e: '🍽️', l: 'Struggled with heart-healthy eating' },
     ],
   },
-  'Breakouts or bumps': {
-    severityQ: 'How many breakouts today?',
-    severitySub: 'Pimples, cysts, painful spots.',
+  'Prevention focused': {
+    severityQ: 'How are your prevention habits feeling today?',
+    severitySub: 'Staying ahead of risk takes consistency — how\'s today looking?',
     severityOpts: [
-      { e: '✨', l: 'None today' },
-      { e: '🙂', l: 'One or two small spots' },
-      { e: '😐', l: 'A handful of active pimples' },
-      { e: '😣', l: 'Multiple, including inflamed ones' },
-      { e: '🔥', l: 'Painful or cystic breakout' },
+      { e: '✨', l: 'Excellent — all my healthy habits in place' },
+      { e: '🙂', l: 'Good — mostly on track today' },
+      { e: '😐', l: 'Okay — some habits slipped a little' },
+      { e: '😣', l: 'Struggling — hard to stay consistent today' },
+      { e: '😔', l: 'Off — lots of habits missed, need a reset' },
     ],
-    symptomsQ: 'Where are the breakouts today?',
-    symptomsSub: 'Helps spot what areas are reacting.',
+    symptomsQ: 'What\'s most relevant to your health today?',
+    symptomsSub: 'Pick what fits your day best.',
     symptoms: [
-      { e: '😌', l: 'Nothing notable' },
-      { e: '🙂', l: 'One area — chin or T-zone' },
-      { e: '😐', l: 'Spread across face' },
-      { e: '😣', l: 'Face + body (chest, back, shoulders)' },
-      { e: '🔴', l: 'Painful or cystic spots' },
-    ],
-  },
-  'Unpredictable flare-ups': {
-    severityQ: 'Are you in a flare right now?',
-    severitySub: 'Right now, not necessarily yesterday.',
-    severityOpts: [
-      { e: '✨', l: 'Calm — no flare today' },
-      { e: '🙂', l: 'Slight irritation — might be starting' },
-      { e: '😐', l: 'Moderate flare in progress' },
-      { e: '😣', l: 'Strong flare — affecting daily life' },
-      { e: '🔥', l: 'Major flare — worst it gets' },
-    ],
-    symptomsQ: 'What does this flare look like?',
-    symptomsSub: 'Most prominent symptom right now.',
-    symptoms: [
-      { e: '😌', l: 'Nothing visible — just feels off' },
-      { e: '🌡️', l: 'Redness and warmth' },
-      { e: '🩹', l: 'Dryness or scaling' },
-      { e: '😣', l: 'Itching that won\'t stop' },
-      { e: '🔥', l: 'Burning, stinging, or bleeding' },
+      { e: '😌', l: 'Feeling well — energy and mood are good' },
+      { e: '🏃', l: 'Was active — got movement in today' },
+      { e: '🥗', l: 'Ate well — mostly whole foods' },
+      { e: '😴', l: 'Slept poorly or feeling run down' },
+      { e: '😤', l: 'Stressful day — harder to stick to good habits' },
     ],
   },
 }
 
 const GENERIC_PLAYBOOK = {
-  severityQ: 'How is your skin today?',
-  severitySub: 'A quick overall read of how it looks and feels.',
+  severityQ: 'How are you feeling about your health today?',
+  severitySub: 'A quick read on your energy, mood, and how in control you feel.',
   severityOpts: FALLBACK_SEVERITY,
-  symptomsQ: 'What are you experiencing today?',
+  symptomsQ: 'What\'s most on your mind about your health today?',
   symptomsSub: 'Pick the most prominent thing.',
   symptoms: [
-    { e: '😌', l: 'Nothing notable' },
-    { e: '🤏', l: 'Some dryness or tightness' },
-    { e: '🌶️', l: 'Stinging or burning' },
-    { e: '😬', l: 'Persistent itch' },
-    { e: '🩸', l: 'Visible damage (cracking, bleeding)' },
+    { e: '😌', l: 'Feeling good — no real concerns' },
+    { e: '😴', l: 'Tired or low energy' },
+    { e: '😤', l: 'Stressed or emotionally drained' },
+    { e: '💊', l: 'Medication or treatment question came up' },
+    { e: '🍽️', l: 'Struggled with healthy eating or habits' },
   ],
 }
 
@@ -221,41 +199,42 @@ const GENERIC_PLAYBOOK = {
 // user can also enter freeform text. Grouped roughly by category so the
 // suggestion list feels relevant. Not meant to be exhaustive — a starter set.
 const COMMON_TREATMENTS = [
-  // Moisturizers / barrier
-  'CeraVe Moisturizing Cream', 'CeraVe Hydrating Cleanser', 'Cetaphil Moisturizing Cream',
-  'Vanicream Moisturizing Cream', 'Aquaphor Healing Ointment', 'Eucerin Advanced Repair',
-  'La Roche-Posay Lipikar', 'Aveeno Eczema Therapy', 'Vaseline',
-  // Rx topicals — eczema/psoriasis
-  'Hydrocortisone 1%', 'Hydrocortisone 2.5%', 'Triamcinolone 0.1%',
-  'Clobetasol propionate', 'Betamethasone', 'Tacrolimus (Protopic)',
-  'Pimecrolimus (Elidel)', 'Crisaborole (Eucrisa)', 'Ruxolitinib (Opzelura)',
-  'Calcipotriene (Dovonex)',
-  // Biologics / systemic
-  'Dupixent (dupilumab)', 'Adbry (tralokinumab)', 'Cibinqo (abrocitinib)',
-  'Rinvoq (upadacitinib)', 'Skyrizi (risankizumab)', 'Cosentyx (secukinumab)',
-  'Humira (adalimumab)',
-  // Acne
-  'Tretinoin 0.025%', 'Tretinoin 0.05%', 'Adapalene (Differin) 0.1%',
-  'Benzoyl peroxide 2.5%', 'Benzoyl peroxide 10%', 'Clindamycin gel',
-  'Salicylic acid', 'Azelaic acid', 'Spironolactone', 'Isotretinoin (Accutane)',
-  // Rosacea
-  'Metronidazole gel', 'Ivermectin (Soolantra)', 'Brimonidine (Mirvaso)',
-  'Oxymetazoline (Rhofade)', 'Doxycycline',
-  // Cleansers / actives
-  'Niacinamide serum', 'Hyaluronic acid serum', 'Vitamin C serum',
-  // Sun
-  'SPF 30 sunscreen', 'SPF 50 sunscreen', 'EltaMD UV Clear',
+  // Statins — cholesterol
+  'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
+  'Pravastatin (Pravachol)', 'Lovastatin', 'Fluvastatin',
+  // Other lipid-lowering
+  'Ezetimibe (Zetia)', 'Fenofibrate', 'Niacin (extended release)',
+  'Evolocumab (Repatha)', 'Alirocumab (Praluent)', 'Inclisiran (Leqvio)',
+  // Blood pressure
+  'Lisinopril', 'Amlodipine (Norvasc)', 'Losartan (Cozaar)',
+  'Metoprolol succinate', 'Metoprolol tartrate', 'Atenolol',
+  'Hydrochlorothiazide (HCTZ)', 'Chlorthalidone', 'Valsartan (Diovan)',
+  'Ramipril', 'Carvedilol', 'Spironolactone',
+  // Diabetes
+  'Metformin', 'Semaglutide (Ozempic / Wegovy)', 'Liraglutide (Victoza)',
+  'Empagliflozin (Jardiance)', 'Dapagliflozin (Farxiga)', 'Canagliflozin (Invokana)',
+  'Sitagliptin (Januvia)', 'Pioglitazone (Actos)', 'Glipizide', 'Glimepiride',
+  'Insulin glargine (Lantus / Basaglar)', 'Insulin aspart (NovoLog)',
+  'Insulin lispro (Humalog)',
+  // Heart disease / anticoagulation
+  'Aspirin 81mg', 'Clopidogrel (Plavix)', 'Ticagrelor (Brilinta)',
+  'Warfarin (Coumadin)', 'Apixaban (Eliquis)', 'Rivaroxaban (Xarelto)',
+  'Digoxin', 'Amiodarone', 'Sacubitril/valsartan (Entresto)',
   // Supplements
-  'Omega-3 / fish oil', 'Vitamin D', 'Probiotics', 'Zinc',
+  'Omega-3 / fish oil', 'CoQ10', 'Berberine', 'Magnesium glycinate',
+  'Vitamin D', 'Vitamin K2', 'Psyllium husk', 'Red yeast rice',
+  // Lifestyle programs
+  'Mediterranean diet', 'DASH diet', 'Cardiac rehab program',
+  'Continuous glucose monitor (CGM)', 'Daily blood pressure monitor',
 ]
 
 const DAY_CONTEXT = [
-  { e: '😰', l: 'Stressful day',   detail: { prompt: 'What was stressful?',          placeholder: 'Work, family, deadline…' } },
-  { e: '😴', l: 'Rough night',     detail: { prompt: 'What was off?',                 placeholder: 'Couldn\'t sleep, itched all night…' } },
-  { e: '🌤️', l: 'Weather change',  detail: { prompt: 'What changed?',                 placeholder: 'Got hot/cold/humid/dry…' } },
-  { e: '🍽️', l: 'New food',        detail: { prompt: 'Which food?',                   placeholder: 'Dairy, gluten, citrus, alcohol…' } },
-  { e: '🧴', l: 'Tried new product', detail: { prompt: 'Which product did you try for the first time today?', placeholder: 'Detergent, soap, sunscreen…' } },
-  { e: '🏃', l: 'Routine changed', detail: { prompt: 'What changed?',                 placeholder: 'Workout, travel, schedule…' } },
+  { e: '😰', l: 'Stressful day',    detail: { prompt: 'What was stressful?',             placeholder: 'Work, family, finances…' } },
+  { e: '😴', l: 'Rough night',      detail: { prompt: 'What was off?',                   placeholder: 'Couldn\'t sleep, woke up a lot…' } },
+  { e: '🍔', l: 'Ate off plan',     detail: { prompt: 'What did you eat?',               placeholder: 'Fast food, salty meal, alcohol…' } },
+  { e: '🏃', l: 'Exercised today',  detail: { prompt: 'What did you do?',                placeholder: 'Walk, gym, swimming, cycling…' } },
+  { e: '💊', l: 'Missed a dose',    detail: { prompt: 'Which medication?',               placeholder: 'Statin, blood pressure, diabetes med…' } },
+  { e: '🧪', l: 'Got lab results',  detail: { prompt: 'What came back?',                 placeholder: 'Cholesterol, A1C, blood pressure reading…' } },
   { e: '👍', l: 'Normal day', wide: true },
 ]
 
@@ -279,9 +258,9 @@ function writeCheckin(c) {
 }
 
 function playbookFor(condition) {
-  if (!condition) return { pb: GENERIC_PLAYBOOK, label: 'skin' }
+  if (!condition) return { pb: GENERIC_PLAYBOOK, label: 'health' }
   const pb = CONDITION_PLAYBOOKS[condition]
-  return pb ? { pb, label: condition.toLowerCase() } : { pb: GENERIC_PLAYBOOK, label: 'skin' }
+  return pb ? { pb, label: condition.toLowerCase() } : { pb: GENERIC_PLAYBOOK, label: 'health' }
 }
 
 // All onboarding-tracked conditions that have a dedicated playbook. If none,
@@ -394,7 +373,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   const conditions = useMemo(() => trackedConditionsFor(profile), [profile])
   // Resolve current playbook based on the active condition
   const { pb, label: conditionLabel } = useMemo(() => {
-    if (!activeCondition || activeCondition === '__generic') return { pb: GENERIC_PLAYBOOK, label: 'skin' }
+    if (!activeCondition || activeCondition === '__generic') return { pb: GENERIC_PLAYBOOK, label: 'health' }
     return playbookFor(activeCondition)
   }, [activeCondition])
 
@@ -525,7 +504,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     const topSymptoms = symptomsByCond[primaryC] ?? null
     const topSeverityAi = !!severityAiByCond[primaryC]
     const skinScore = topSeverity == null ? null : (5 - topSeverity)
-    const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'skin'
+    const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'health'
 
     // Flatten the per-condition map into a single array of tagged items
     const allTreatments = []
@@ -581,18 +560,18 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   let insightIcon = '📊', insightHead = '', insightBody = ''
   if (stressDay && severity != null && severity >= 2) {
     insightIcon = '⚠️'
-    insightHead = 'Stress + moderate skin — your 48-hour window is open'
-    insightBody = `Stress can flare ${conditionLabel} 24–48 hours later. A short wind-down tonight + moisturizing within 3 minutes of showering tomorrow tends to help.`
+    insightHead = 'Stress + a harder day — worth keeping an eye on'
+    insightBody = `Stress can raise blood pressure and blood sugar, and make it harder to stick to your routine. A short wind-down tonight can help your body recover.`
   } else if (stressDay) {
-    insightHead = 'Stressful day logged — we\'ll watch the next 48 hours'
-    insightBody = 'A short wind-down routine tonight can lower tomorrow\'s flare risk.'
+    insightHead = 'Stressful day logged — we\'ll keep watching'
+    insightBody = 'Chronic stress is a real cardiovascular risk factor. Even a 10-minute walk or breathing exercise can take the edge off.'
   } else if (normalDay || severity === 0) {
     insightIcon = '✅'
-    insightHead = 'Calm day logged — your record keeps building'
-    insightBody = 'Consistent check-ins build the trigger map your derm actually wants to see.'
+    insightHead = 'Steady day logged — consistency is the work'
+    insightBody = 'Consistent check-ins reveal the patterns that matter most for long-term cardiometabolic health.'
   } else {
     insightHead = 'Check-in logged — patterns take shape over time'
-    insightBody = 'Every check-in adds to your skin story. We\'ll flag patterns as they emerge.'
+    insightBody = 'Every check-in adds to your health story. We\'ll flag patterns as they emerge.'
   }
 
   const lastDateStr = lastCheckinLabel(readCheckins().slice(-1)[0]?.date)
@@ -608,15 +587,15 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
-            <h2 className="ci-title">Let's check in on your skin.</h2>
-            <p className="ci-sub">Add a photo or sync a wearable to make this faster — or skip and just answer a few questions.</p>
+            <h2 className="ci-title">Let's check in on your health.</h2>
+            <p className="ci-sub">Sync a wearable to make this faster — or skip and just answer a few questions.</p>
 
             <div className="ci-start-list">
               <button className="ci-start-card" type="button" onClick={useDemoPhoto}>
-                <span className="ci-start-card__icon">📷</span>
+                <span className="ci-start-card__icon">📊</span>
                 <span className="ci-start-card__body">
-                  <span className="ci-start-card__title">Upload a skin photo</span>
-                  <span className="ci-start-card__desc">Our AI will pre-fill what it sees so you can adjust.</span>
+                  <span className="ci-start-card__title">Import recent readings</span>
+                  <span className="ci-start-card__desc">Pull in blood pressure, glucose, or cholesterol data to pre-fill.</span>
                 </span>
                 <span className="ci-start-card__arrow">›</span>
               </button>
@@ -645,7 +624,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             {analyzing && (
               <div className="ci-analyzing">
                 <span className="ci-analyzing__spinner" />
-                AI is analyzing your photo…
+                Importing your latest readings…
               </div>
             )}
           </>
@@ -674,7 +653,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                       className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
                       onClick={() => setActiveCondition(c)}
                     >
-                      {c === '__generic' ? 'Skin' : c}
+                      {c === '__generic' ? 'Health' : c}
                       {answered && <span className="ci-cond-toggle__dot" aria-hidden="true">✓</span>}
                     </button>
                   )
@@ -700,9 +679,9 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <div className="ci-ai-note">
                 <span className="ci-ai-note__icon">✨</span>
                 <span>
-                  Based on your photo, AI thinks your {conditionLabel} looks like {' '}
+                  Based on your imported data, we pre-filled your {conditionLabel} status as {' '}
                   <strong>{pb.severityOpts[severity].l.split('—')[0].trim()}</strong>. {' '}
-                  Tap a different option if you disagree.
+                  Tap a different option if that doesn't feel right.
                 </span>
               </div>
             )}
@@ -750,7 +729,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                       className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
                       onClick={() => setActiveCondition(c)}
                     >
-                      {c === '__generic' ? 'Skin' : c}
+                      {c === '__generic' ? 'Health' : c}
                       {answered && <span className="ci-cond-toggle__dot" aria-hidden="true">✓</span>}
                     </button>
                   )
@@ -863,7 +842,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                       className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
                       onClick={() => setActiveCondition(c)}
                     >
-                      {c === '__generic' ? 'Skin' : c}
+                      {c === '__generic' ? 'Health' : c}
                     </button>
                   )
                 })}
@@ -876,13 +855,13 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <h2 className="ci-title">
               {treatments.length === 0
                 ? (conditions.length > 1
-                    ? `What are you using for your ${(activeCondition || 'skin').toLowerCase()}?`
-                    : 'What are you using to treat your skin?')
+                    ? `What are you using for your ${(activeCondition || 'health').toLowerCase()}?`
+                    : 'What medications or treatments are you currently using?')
                 : 'Still using these treatments?'}
             </h2>
             <p className="ci-sub">
               {treatments.length === 0
-                ? <>Search common products below, or <strong>type your own</strong> and add it as a chip. Next time you check in, you'll just confirm this list — no need to re-enter.</>
+                ? <>Search common medications and programs below, or <strong>type your own</strong> and add it as a chip. Next time you check in, you'll just confirm this list — no need to re-enter.</>
                 : 'Confirm what\'s still active, remove anything you\'ve stopped, or add something new.'}
             </p>
 
@@ -932,7 +911,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             </div>
 
             <p className="ci-done__where" style={{ marginTop: 12 }}>
-              💡 Don't see it? Just type the name and tap <strong>Add</strong>. You can add dose &amp; frequency in your <strong>profile</strong> later.
+              💡 Don't see it? Just type the medication or program name and tap <strong>Add</strong>. You can add dose &amp; frequency in your <strong>profile</strong> later.
             </p>
 
             <div className="ci-nav-row">
@@ -949,9 +928,9 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <div className="ci-done__emoji">🎉</div>
             <h3 className="ci-done__title">Check-in logged.</h3>
             <p className="ci-done__sub">
-              We saved your skin status, symptoms, and what's going on today.
+              We saved your health status, symptoms, and what's going on today.
               {wearableSynced && <> Wearable data synced.</>}
-              {photoUrl && <> Photo attached for AI reference.</>}
+              {photoUrl && <> Readings imported for reference.</>}
             </p>
             <div className="ci-insight">
               <div className="ci-insight__tag"><span className="ci-insight__dot" />Insight · Based on your check-in</div>
@@ -1026,7 +1005,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                         <>
                           {sevLabel && (
                             <div className="ci-summary-row">
-                              <div className="ci-summary-row__key">{viewing.conditionLabel ? `Your ${viewing.conditionLabel}` : 'Your skin'}</div>
+                              <div className="ci-summary-row__key">{viewing.conditionLabel ? `Your ${viewing.conditionLabel}` : 'Your health'}</div>
                               <div className="ci-summary-row__val">{sevLabel}</div>
                             </div>
                           )}
