@@ -56,21 +56,21 @@ export default function Registration({ onClose, onStartOnboarding }) {
           <div className="reg-hero__bg">
             <div className="reg-hero__icons">
               <span className="reg-hero__icon">🫀</span>
-              <span className="reg-hero__icon">🌙</span>
+              <span className="reg-hero__icon">🌸</span>
               <span className="reg-hero__icon">🩺</span>
-              <span className="reg-hero__icon">✨</span>
+              <span className="reg-hero__icon">⏳</span>
               <span className="reg-hero__icon">📊</span>
               <span className="reg-hero__icon">💊</span>
             </div>
           </div>
           <div className="reg-hero__content">
             <div className="reg-hero__wordmark">
-              Ahead
+              AHEAD
               <span className="reg-hero__wordmark-sep">|</span>
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
             <h1 className="reg-hero__headline">
-              Welcome to <em>Ahead</em>
+              Welcome to <em>AHEAD</em>
             </h1>
           </div>
           <button className="reg-close" onClick={onClose} aria-label="Close">✕</button>
@@ -79,7 +79,10 @@ export default function Registration({ onClose, onStartOnboarding }) {
         {/* BODY */}
         <div className="reg-body">
           <p className="reg-value-prop">
-            A personalized cardiometabolic health companion that helps you understand your numbers, stay ahead of risk, and manage your heart health in the context of your real life.
+            A personalized health companion that connects your conditions, your choices, and your future — so you always know what's happening and what to do next.
+          </p>
+          <p className="reg-value-prop">
+            Track your numbers, identify patterns, and build lasting habits — across cholesterol, blood pressure, weight, menopause, and more.
           </p>
 
           <div className="reg-divider">

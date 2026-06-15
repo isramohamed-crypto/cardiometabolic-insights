@@ -4,11 +4,10 @@ import './Onboarding.css'
 const TOTAL_QS = 5
 
 const Q1 = {
-  text: 'Who are you managing this for?',
-  sub: 'This changes the content, voice, and guidance we show you.',
+  text: 'Who are you using AHEAD for?',
+  sub: 'This shapes the content, voice, and guidance we show you.',
   options: [
-    { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m managing my own heart health' },
-    { id: 'child',  icon: '👶', label: 'My child', desc: 'I\'m a parent or caregiver managing a child\'s health' },
+    { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m focused on my own health journey' },
     { id: 'other',  icon: '🤝', label: 'Someone else', desc: 'A partner, family member, or someone I care for' },
   ],
 }
@@ -19,14 +18,15 @@ const Q2 = {
 }
 
 const Q3 = {
-  text: "What's driving you to take this seriously right now?",
+  text: "What's driving you to focus on your health right now?",
   sub: 'Pick the one that resonates most.',
   options: [
-    { id: 'confidence', icon: '✨', label: 'I want to feel in control', desc: 'Of my numbers, my choices, my health' },
-    { id: 'sleep',      icon: '😴', label: 'It\'s affecting my energy and sleep', desc: 'Fatigue, poor rest, low motivation' },
-    { id: 'triggers',   icon: '🔍', label: 'I don\'t know what\'s making it worse', desc: 'Diet, stress, habits — hard to tell' },
-    { id: 'treatment',  icon: '💊', label: 'I\'m managing medications and want more', desc: 'Sticking to treatment and tracking progress' },
-    { id: 'frustrated', icon: '🌀', label: 'I\'ve tried things and nothing sticks', desc: 'Looking for a more sustainable approach' },
+    { id: 'risk',       icon: '🔭', label: 'I want to get ahead of my risk', desc: 'Proactive about future health before problems develop' },
+    { id: 'confidence', icon: '✨', label: 'I want to feel in control', desc: 'Of my numbers, my choices, my direction' },
+    { id: 'sleep',      icon: '😴', label: "It's affecting my energy and sleep", desc: 'Fatigue, poor rest, low motivation' },
+    { id: 'triggers',   icon: '🔍', label: "I don't understand what's happening", desc: 'My body feels different and I want answers' },
+    { id: 'treatment',  icon: '💊', label: "I'm managing a lot and want support", desc: 'Conditions, medications, appointments — it adds up' },
+    { id: 'frustrated', icon: '🌀', label: "I've tried things and nothing sticks", desc: 'Looking for a more sustainable approach' },
   ],
 }
 
@@ -45,16 +45,19 @@ const Q5_TOPICS_PRIMARY = [
   { label: 'Family & caregiving',     icon: '👨‍👩‍👧' },
   { label: 'Work & daily life',       icon: '💼' },
 ]
-// Secondary list (revealed by "Show more") — deeper cardiometabolic topics.
+// Secondary list (revealed by "Show more") — deeper topics.
 const Q5_TOPICS_MORE = [
-  { label: 'Understanding my numbers',    icon: '📊' },
-  { label: 'Preparing for appointments',  icon: '📋' },
-  { label: 'New treatments & research',   icon: '🧪' },
-  { label: 'Alcohol & lifestyle',         icon: '🍷' },
-  { label: 'Cooking at home',             icon: '🍳' },
-  { label: 'Travel & staying on track',   icon: '✈️' },
-  { label: 'Confidence & self-image',     icon: '✨' },
-  { label: 'Community & peer support',    icon: '🤝' },
+  { label: 'Menopause & hormonal health',        icon: '🌸' },
+  { label: 'GLP-1 & weight loss medications',    icon: '💉' },
+  { label: 'Healthy aging & longevity',          icon: '⏳' },
+  { label: 'Understanding my numbers',           icon: '📊' },
+  { label: 'Preparing for appointments',         icon: '📋' },
+  { label: 'New treatments & research',          icon: '🧪' },
+  { label: 'Alcohol & lifestyle',                icon: '🍷' },
+  { label: 'Cooking at home',                    icon: '🍳' },
+  { label: 'Travel & staying on track',          icon: '✈️' },
+  { label: 'Confidence & self-image',            icon: '✨' },
+  { label: 'Community & peer support',           icon: '🤝' },
 ]
 const Q5_TOPICS = [...Q5_TOPICS_PRIMARY, ...Q5_TOPICS_MORE]
 
@@ -64,22 +67,25 @@ const Q5 = {
 }
 
 const Q4 = {
-  text: 'Which conditions are you managing?',
-  sub: 'Select all that apply — we\'ll tailor your experience to your full picture.',
+  text: 'What does your health picture look like right now?',
+  sub: 'Select all that apply — the more we know, the better we can tailor your experience.',
   yesOptions: [
-    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',         desc: 'LDL, HDL, or triglyceride concerns' },
-    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',      desc: 'Hypertension or pre-hypertension' },
-    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',          desc: 'Managing blood sugar levels' },
-    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health', desc: 'BMI, metabolic syndrome, or weight-related goals' },
-    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',           desc: 'Coronary artery disease, prior cardiac event' },
-    { id: 'other_dx',    icon: '💭', label: 'Something else',            desc: 'Another diagnosis or concern' },
+    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',              desc: 'LDL, HDL, or triglyceride concerns' },
+    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',           desc: 'Hypertension or pre-hypertension' },
+    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',               desc: 'Managing blood sugar levels' },
+    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health',     desc: 'BMI, metabolic syndrome, or weight-related goals' },
+    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event' },
+    { id: 'menopause',   icon: '🌸', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms' },
+    { id: 'glp1',        icon: '💉', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar' },
+    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Another diagnosis or concern' },
   ],
   noOptions: [
-    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',           desc: 'Heart disease, stroke, or diabetes in the family' },
-    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',        desc: 'Numbers that are elevated but not yet diagnosed' },
-    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',           desc: 'Trying to manage weight for health reasons' },
-    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',       desc: 'No diagnosis yet, but being proactive' },
-    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                 desc: 'Managing health after a cardiac event or diagnosis' },
+    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family' },
+    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed' },
+    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',                desc: 'Trying to manage weight for long-term health' },
+    { id: 'longevity',   icon: '⏳', label: 'Longevity & healthy aging',      desc: 'Planning ahead for quality of life as I get older' },
+    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive' },
+    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis' },
   ],
 }
 
@@ -94,18 +100,21 @@ const roleLabels = {
 const CODE_TO_LABEL = {
   role: { myself: 'Myself', child: 'My child', other: 'Someone else' },
   focus: {
-    confidence: 'Affecting my confidence',
-    sleep:      'Disrupting my sleep',
-    triggers:   'Figuring out my triggers',
-    treatment:  'Managing my treatment',
-    frustrated: 'Frustrated nothing works',
+    risk:       'Getting ahead of my risk',
+    confidence: 'Wanting to feel in control',
+    sleep:      'Affecting my energy and sleep',
+    triggers:   'Not understanding what\'s happening',
+    treatment:  'Managing a lot at once',
+    frustrated: 'Frustrated nothing sticks',
   },
   diagnosisStatus: { yes: 'Yes, I have a diagnosis', no: 'Not yet / exploring' },
   condition: {
     cholesterol: 'High cholesterol', hypertension: 'High blood pressure', diabetes: 'Type 2 diabetes',
-    obesity: 'Weight / metabolic health', heart: 'Heart disease', other_dx: 'Something else (diagnosed)',
+    obesity: 'Weight / metabolic health', heart: 'Heart disease',
+    menopause: 'Menopause / hormonal changes', glp1: 'Weight loss medication (GLP-1)',
+    other_dx: 'Something else (diagnosed)',
     family_hx: 'Family history', borderline: 'Borderline numbers', weight: 'Weight concerns',
-    prevention: 'Prevention focused', post_event: 'Recovery',
+    longevity: 'Longevity & healthy aging', prevention: 'Prevention focused', post_event: 'Recovery',
   },
 }
 function mapCode(field, v) {
@@ -189,8 +198,8 @@ export default function Onboarding({ name, onClose }) {
   const canContinue = (() => {
     if (step === 0) return !!ans.q1
     if (step === 1) return ans.q2.trim().length >= 1
-    if (step === 2) return !!ans.q3
-    if (step === 3) return !!ans.q4Branch && Array.isArray(ans.q4) && ans.q4.length > 0
+    if (step === 2) return !!ans.q4Branch && Array.isArray(ans.q4) && ans.q4.length > 0
+    if (step === 3) return !!ans.q3
     if (step === 4) return Array.isArray(ans.q5) && ans.q5.length > 0
     return false
   })()
@@ -264,7 +273,7 @@ export default function Onboarding({ name, onClose }) {
     const summaryName = (ans.q2 || '').trim().split(' ')[0]
     const title = skipped
       ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
-      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Ahead is ready.')
+      : (summaryName ? `You're all set, ${summaryName}.`                    : "You're all set.")
     const sub = skipped
       ? <>No problem — you can finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your feed.</>
       : <>We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Profile settings</strong>.</>
@@ -313,11 +322,11 @@ export default function Onboarding({ name, onClose }) {
   // ── QUESTION SCREENS (1–4) ──────────────────────────────────────────
   const firstName = (ans.q2 || name || '').trim().split(' ')[0]
   const heroHeadline = firstName
-    ? <>{firstName}, let's <em>personalize</em> your experience.</>
-    : <>Let's <em>personalize</em> your experience.</>
+    ? <>{firstName}, let's build your <em>health picture.</em></>
+    : <>Let's build your <em>health picture.</em></>
   const heroSub = firstName
-    ? `A few quick questions to tailor your feed, tracking, and guidance around what matters most to you.`
-    : `Let's personalize your health companion — five quick questions.`
+    ? `A few quick questions so we can tailor your experience around what matters most to you.`
+    : `A few quick questions so we can tailor your experience around what matters most to you.`
 
   const progressPct = ((step + 1) / TOTAL_QS) * 100
 
@@ -326,7 +335,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to Ahead</p>
+          <p className="ob-hero__eyebrow">Welcome to AHEAD</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>
@@ -375,18 +384,6 @@ export default function Onboarding({ name, onClose }) {
 
             {step === 2 && (
               <>
-                <div className="ob-q-text">{Q3.text}</div>
-                <div className="ob-q-sub">{Q3.sub}</div>
-                <OptionList
-                  options={Q3.options}
-                  selectedId={ans.q3}
-                  onSelect={id => selectOpt('q3', id)}
-                />
-              </>
-            )}
-
-            {step === 3 && (
-              <>
                 <div className="ob-q-text">{Q4.text}</div>
                 <div className="ob-q-sub">{Q4.sub}</div>
 
@@ -396,12 +393,12 @@ export default function Onboarding({ name, onClose }) {
                     className={`ob-toggle__btn${ans.q4Branch === 'yes' ? ' ob-toggle__btn--active' : ''}`}
                     onClick={() => setQ4Branch('yes')}
                     type="button"
-                  >Yes, I do</button>
+                  >I have a diagnosis</button>
                   <button
                     className={`ob-toggle__btn${ans.q4Branch === 'no' ? ' ob-toggle__btn--active' : ''}`}
                     onClick={() => setQ4Branch('no')}
                     type="button"
-                  >Not yet / not sure</button>
+                  >Not yet / being proactive</button>
                 </div>
 
                 {ans.q4Branch && (
@@ -419,6 +416,18 @@ export default function Onboarding({ name, onClose }) {
                     />
                   </>
                 )}
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <div className="ob-q-text">{Q3.text}</div>
+                <div className="ob-q-sub">{Q3.sub}</div>
+                <OptionList
+                  options={Q3.options}
+                  selectedId={ans.q3}
+                  onSelect={id => selectOpt('q3', id)}
+                />
               </>
             )}
 

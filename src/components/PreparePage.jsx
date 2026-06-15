@@ -113,7 +113,7 @@ const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
     title: 'Bring your tracking data — even on your phone',
-    body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your Ahead summary does this automatically.',
+    body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your AHEAD summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
@@ -205,7 +205,7 @@ function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
         </button>
         <div className="pp-chat-title">
           <span className="pp-chat-dot" />
-          Ahead AI · Visit Prep
+          AHEAD AI · Visit Prep
         </div>
         <div style={{ width: 36 }} />
       </div>
