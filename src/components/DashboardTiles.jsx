@@ -69,7 +69,7 @@ const TILE_DEFS = [
     type: 'daily',
     badge: 'Daily',
     placeholder: 'e.g. 95',
-    desc: 'Blood sugar (glucose) measures how much sugar is in your blood. Fasting levels under 100 mg/dL are normal. Log after fasting for the most consistent tracking.',
+    desc: 'Blood sugar (glucose) measures how much sugar is in your blood. Normal fasting levels are under 100 mg/dL; post-meal levels should stay under 140 mg/dL.',
     defaultOn: false,
     removable: true,
     getStatus: v => {
@@ -234,9 +234,9 @@ const PREVIEW_SYMPTOMS = ['Cramps', 'Fatigue', 'Bloating', 'Hot flashes', 'Mood 
 function buildDateStrip() {
   const days = []
   const today = new Date()
-  for (let i = 6; i >= 0; i--) {
+  for (let i = -60; i <= 14; i++) {
     const d = new Date(today)
-    d.setDate(today.getDate() - i)
+    d.setDate(today.getDate() + i)
     days.push(d)
   }
   return days
@@ -248,6 +248,16 @@ function CycleLogModal({ current, onClose, onSave }) {
   const [flow, setFlow] = useState(parsed.flow || null)
   const [symptoms, setSymptoms] = useState(new Set(parsed.symptoms || []))
   const [query, setQuery] = useState('')
+  const stripRef = React.useRef(null)
+  const todayRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if (todayRef.current && stripRef.current) {
+      const strip = stripRef.current
+      const card = todayRef.current
+      strip.scrollLeft = card.offsetLeft - strip.clientWidth / 2 + card.offsetWidth / 2
+    }
+  }, [])
 
   const dateStrip = buildDateStrip()
   const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
@@ -290,30 +300,45 @@ function CycleLogModal({ current, onClose, onSave }) {
         </div>
 
         {/* Date strip */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 20, overflowX: 'auto' }}>
+        <div ref={stripRef} style={{ display: 'flex', gap: 6, marginBottom: 20, overflowX: 'auto', paddingTop: 24, scrollbarWidth: 'none' }}>
           {dateStrip.map(d => {
             const isSelected = d.toDateString() === selectedDate.toDateString()
             const isToday = d.toDateString() === new Date().toDateString()
             return (
-              <button
-                key={d.toDateString()}
-                type="button"
-                onClick={() => setSelectedDate(d)}
-                style={{
-                  flex: '0 0 40px', height: 56, display: 'flex', flexDirection: 'column',
-                  alignItems: 'center', justifyContent: 'center', gap: 2,
-                  borderRadius: 12, cursor: 'pointer',
-                  border: `1.5px solid ${isSelected ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                  background: isSelected ? 'var(--color-teal)' : 'var(--color-card)',
-                }}
-              >
-                <span style={{ fontSize: 10, fontWeight: 500, color: isSelected ? 'rgba(255,255,255,0.75)' : 'var(--color-text-muted)' }}>
-                  {dayNames[d.getDay()]}
-                </span>
-                <span style={{ fontSize: 15, fontWeight: 600, color: isSelected ? '#fff' : isToday ? 'var(--color-teal)' : 'var(--color-text)' }}>
-                  {d.getDate()}
-                </span>
-              </button>
+              <div key={d.toDateString()} ref={isToday ? todayRef : null} style={{ position: 'relative', flex: '0 0 40px' }}>
+                {isToday && (
+                  <div style={{
+                    position: 'absolute', top: -22, left: '50%', transform: 'translateX(-50%)',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center',
+                    pointerEvents: 'none', whiteSpace: 'nowrap',
+                  }}>
+                    <span style={{
+                      fontSize: 9, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase',
+                      color: 'var(--color-teal)', background: 'rgba(15,110,86,0.1)',
+                      padding: '1px 5px', borderRadius: 4,
+                    }}>Today</span>
+                    <span style={{ fontSize: 7, color: 'var(--color-teal)', lineHeight: 1 }}>▾</span>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setSelectedDate(d)}
+                  style={{
+                    width: '100%', height: 56, display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center', gap: 2,
+                    borderRadius: 12, cursor: 'pointer',
+                    border: `1.5px solid ${isSelected ? 'var(--color-teal)' : isToday ? 'var(--color-teal)' : 'var(--color-border)'}`,
+                    background: isSelected ? 'var(--color-teal)' : 'var(--color-card)',
+                  }}
+                >
+                  <span style={{ fontSize: 10, fontWeight: 500, color: isSelected ? 'rgba(255,255,255,0.75)' : 'var(--color-text-muted)' }}>
+                    {dayNames[d.getDay()]}
+                  </span>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: isSelected ? '#fff' : isToday ? 'var(--color-teal)' : 'var(--color-text)' }}>
+                    {d.getDate()}
+                  </span>
+                </button>
+              </div>
             )
           })}
         </div>
@@ -417,12 +442,110 @@ function CycleLogModal({ current, onClose, onSave }) {
   )
 }
 
+// ─── Glucose Log Modal ───────────────────────────────────────────────────────
+function GlucoseLogModal({ current, onClose, onSave }) {
+  const parsed = (() => { try { return JSON.parse(current?.value || '{}') } catch (_) { return {} } })()
+  const nowTime = new Date().toTimeString().slice(0, 5)
+  const [reading, setReading] = useState(parsed.reading || '')
+  const [meal, setMeal] = useState(parsed.meal || 'before')
+  const [time, setTime] = useState(parsed.time || nowTime)
+
+  const thresholds = meal === 'before'
+    ? [{ max: 100, label: 'Normal', color: 'green' }, { max: 126, label: 'Pre-diabetes', color: 'amber' }, { label: 'High', color: 'red' }]
+    : [{ max: 140, label: 'Normal', color: 'green' }, { max: 200, label: 'Pre-diabetes', color: 'amber' }, { label: 'High', color: 'red' }]
+
+  const n = parseFloat(reading)
+  const status = !isNaN(n) ? thresholds.find(t => !t.max || n < t.max) : null
+
+  function save() {
+    if (!reading.trim()) return
+    onSave(JSON.stringify({ reading: reading.trim(), meal, time }))
+    onClose()
+  }
+
+  const MEAL_OPTS = [
+    { id: 'before', label: 'Before meal', sub: 'Fasting / pre-meal' },
+    { id: 'after',  label: 'After meal',  sub: '1–2 hrs post-meal' },
+  ]
+
+  return (
+    <div className="reading-modal-overlay" onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="reading-modal">
+        <div className="reading-modal__header">
+          <div>
+            <p className="reading-modal__title">🔬 Log Blood sugar</p>
+            <p style={{ margin: 0, fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500 }}>
+              {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+            </p>
+          </div>
+          <button className="reading-modal__close" onClick={onClose}>✕</button>
+        </div>
+
+        {/* Before / After meal */}
+        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 8px' }}>When did you measure?</p>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          {MEAL_OPTS.map(o => (
+            <button key={o.id} type="button" onClick={() => setMeal(o.id)}
+              style={{
+                flex: 1, padding: '10px 8px', borderRadius: 12, cursor: 'pointer', textAlign: 'left',
+                border: `1.5px solid ${meal === o.id ? 'var(--color-teal)' : 'var(--color-border)'}`,
+                background: meal === o.id ? 'rgba(27,58,92,0.07)' : 'var(--color-card)',
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, color: meal === o.id ? 'var(--color-teal)' : 'var(--color-text)' }}>{o.label}</div>
+              <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2 }}>{o.sub}</div>
+            </button>
+          ))}
+        </div>
+
+        {/* Time */}
+        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 8px' }}>Time</p>
+        <input type="time" value={time} onChange={e => setTime(e.target.value)}
+          style={{
+            width: '100%', padding: '9px 12px', borderRadius: 10, fontSize: 14, marginBottom: 20,
+            border: '1.5px solid var(--color-border)', background: 'var(--color-card)',
+            color: 'var(--color-text)', boxSizing: 'border-box', outline: 'none',
+          }}
+        />
+
+        {/* Reading */}
+        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 8px' }}>Reading</p>
+        <div className="reading-modal__input-wrap" style={{ marginBottom: status ? 10 : 20 }}>
+          <input className="reading-modal__input" type="text" inputMode="decimal"
+            placeholder="e.g. 95" value={reading} onChange={e => setReading(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && save()} autoFocus
+          />
+          <span className="reading-modal__unit">mg/dL</span>
+        </div>
+
+        {status && (
+          <p style={{ fontSize: 12, fontWeight: 600, color: STATUS[status.color]?.color || 'var(--color-text-muted)', margin: '0 0 16px' }}>
+            {status.label} · {meal === 'before' ? 'Fasting range' : 'Post-meal range'}
+          </p>
+        )}
+
+        {current?.value && (() => {
+          try {
+            const p = JSON.parse(current.value)
+            return <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', margin: '0 0 12px' }}>Last: {p.reading} mg/dL · {p.meal === 'before' ? 'Before meal' : 'After meal'} · {formatDate(current.date)}</p>
+          } catch (_) { return null }
+        })()}
+
+        <button className="reading-modal__save" onClick={save} disabled={!reading.trim()}>Save →</button>
+      </div>
+    </div>
+  )
+}
+
 // ─── Log Modal ───────────────────────────────────────────────────────────────
 function LogModal({ def, current, onClose, onSave }) {
   const [value, setValue] = useState(current?.value || '')
 
   if (def.id === 'cycle') {
     return <CycleLogModal current={current} onClose={onClose} onSave={onSave} />
+  }
+  if (def.id === 'glucose') {
+    return <GlucoseLogModal current={current} onClose={onClose} onSave={onSave} />
   }
 
   function save() {
@@ -622,6 +745,25 @@ function Tile({ def, reading, streak, appt, onTap }) {
       sub = formatApptDate(appt?.date)
       isEmpty = false
     }
+  } else if (def.id === 'glucose') {
+    if (reading?.value) {
+      try {
+        const p = JSON.parse(reading.value)
+        value = p.reading
+        const mealLabel = p.meal === 'after' ? 'After meal' : 'Before meal'
+        const timeLabel = p.time ? ` · ${p.time}` : ''
+        sub = mealLabel + timeLabel
+        status = def.getStatus?.(p.reading) || null
+        isEmpty = false
+      } catch (_) {
+        value = reading.value
+        sub = formatDate(reading.date)
+        status = def.getStatus?.(reading.value) || null
+        isEmpty = false
+      }
+    } else {
+      value = '—'; sub = 'Tap to log'; isEmpty = true
+    }
   } else if (def.id === 'cycle') {
     if (reading?.value) {
       try {
@@ -713,6 +855,7 @@ export default function DashboardTiles({ tick = 0 }) {
   return (
     <>
       <div className="dash-tiles-wrap">
+        <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text)', margin: '0 0 12px', padding: '0 16px' }}>My Numbers</h2>
         <div className="dash-tiles">
           {activeTiles.map(def => (
             <Tile

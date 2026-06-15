@@ -51,7 +51,7 @@ export default function WatchNow() {
       <section className="watch-now watch-now--edu">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid content for Sanofi</span>
+            <span className="watch-badge">Paid content for Amgen</span>
             <h2 className="watch-title">Expert advice</h2>
             <p className="watch-subtitle">Videos and expert insights</p>
           </div>
@@ -94,9 +94,9 @@ export default function WatchNow() {
         </div>
 
         <div className="edu-disclaimer">
-          <span className="edu-disclaimer__eyebrow">Paid content for Sanofi</span>
+          <span className="edu-disclaimer__eyebrow">Paid content for Amgen</span>
           <span className="edu-disclaimer__body">
-            <strong>Sponsored content.</strong> Videos and content produced in partnership with Sanofi.
+            <strong>Sponsored content.</strong> Videos and content produced in partnership with Amgen.
           </span>
         </div>
       </section>

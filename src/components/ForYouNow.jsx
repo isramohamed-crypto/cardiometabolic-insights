@@ -41,18 +41,14 @@ export default function ForYouNow() {
         {TIPS.map(t => {
           if (t.placeholder) {
             // Sponsored slot — keep the exact card dimensions but show
-            // a centered Sanofi logo instead of image + quote + author.
+            // a centered Amgen logo instead of image + quote + author.
             return (
               <article
                 key={t.id}
                 className="rs-card rs-card--sponsored"
-                aria-label="Sponsored by Sanofi"
+                aria-label="Sponsored by Amgen"
               >
-                <img
-                  className="rs-card__sponsor-logo"
-                  src="/sanofi.jpg"
-                  alt="Sanofi"
-                />
+                <span style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
               </article>
             )
           }

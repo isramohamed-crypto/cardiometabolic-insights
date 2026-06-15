@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * Sanofi sponsor banner.
+ * Amgen sponsor banner.
  * variant="bar"  (default) — full-bleed 48px strip used between feed
  *                            sections on Today and Track.
  * variant="card" — inset card style for contexts like Learn where the
@@ -12,12 +12,8 @@ export default function SponsorBanner({ variant = 'bar' }) {
     ? 'sponsor-banner sponsor-banner--card'
     : 'sponsor-banner'
   return (
-    <aside className={cls} aria-label="Sponsored by Sanofi">
-      <img
-        className="sponsor-banner__logo"
-        src="/sanofi.jpg"
-        alt="Sanofi"
-      />
+    <aside className={cls} aria-label="Sponsored by Amgen">
+      <span className="sponsor-banner__logo" style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
     </aside>
   )
 }

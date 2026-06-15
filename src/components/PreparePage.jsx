@@ -487,7 +487,7 @@ function StoriesSwipe() {
           </div>
           <div className="pp-story-src">
             <span className="brand-pill">Verywell Health</span>
-            <span>In Partnership with Sanofi</span>
+            <span>In Partnership with Amgen</span>
           </div>
         </div>
       </div>
@@ -754,12 +754,8 @@ export default function PreparePage() {
                   </div>
                 </div>
                 {i === 0 && (
-                  <div className="pp-q-row pp-q-row--sponsor" aria-label="Sponsored by Sanofi">
-                    <img
-                      src="/sanofi.jpg"
-                      alt="Sanofi"
-                      className="pp-q-sponsor-logo"
-                    />
+                  <div className="pp-q-row pp-q-row--sponsor" aria-label="Sponsored by Amgen">
+                    <span style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
                   </div>
                 )}
               </React.Fragment>
@@ -849,15 +845,15 @@ export default function PreparePage() {
       <section className="pp-stories-sec">
         <div className="watch-head">
           <div>
-            <span className="watch-badge">Paid content for Sanofi</span>
+            <span className="watch-badge">Paid content for Amgen</span>
             <h2 className="watch-title">Stories from others</h2>
           </div>
         </div>
         <StoriesSwipe />
         <div className="edu-disclaimer" style={{ margin: 'var(--space-3) 0 0' }}>
-          <span className="edu-disclaimer__eyebrow">Paid content for Sanofi</span>
+          <span className="edu-disclaimer__eyebrow">Paid content for Amgen</span>
           <span className="edu-disclaimer__body">
-            <strong>Sponsored content.</strong> Videos and content produced in partnership with Sanofi.
+            <strong>Sponsored content.</strong> Videos and content produced in partnership with Amgen.
           </span>
         </div>
       </section>

@@ -94,6 +94,88 @@
 
 /* ── TOKENS ─────────────────────────────────────────────────── */
 /* ── Dashboard Row ───────────────────────────────────────────────── */
+/* ── Dashboard Tiles ─────────────────────────────────────────────── */
+.dash-tiles-wrap {
+  padding: 0 var(--space-4) var(--space-4);
+}
+.dash-tiles {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.dash-tiles::-webkit-scrollbar { display: none; }
+.dash-tile {
+  flex: 0 0 110px;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 12px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-card);
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  gap: 2px;
+  transition: transform 0.1s;
+}
+.dash-tile:active { transform: scale(0.97); }
+.dash-tile__icon { font-size: 18px; margin-bottom: 4px; }
+.dash-tile__value {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-teal);
+  line-height: 1;
+  margin: 0;
+}
+.dash-tile__value--empty {
+  font-size: 18px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.dash-tile__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+}
+.dash-tile__sub {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+.dash-tile__unit {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+.dash-tile__status {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+.dash-tile--add {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  border-color: var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  gap: 4px;
+  border-top: 1px dashed var(--color-border) !important;
+}
+.dash-tile__add-icon { font-size: 20px; color: var(--color-text-muted); }
+.dash-tile__add-label { font-size: 11px; color: var(--color-text-muted); font-weight: 500; }
+
 .dashboard-row {
   display: flex;
   align-items: stretch;
@@ -5437,7 +5519,7 @@ h2 {
 .pp-q-icon--acne      { background: var(--color-cond-acne-light); }
 
 /* Sponsor row inside the Key-findings list — same vertical rhythm as
-   a regular .pp-q-row but centers a Sanofi logo in place of the icon
+   a regular .pp-q-row but centers a Amgen logo in place of the icon
    + text + reason content. */
 .pp-q-row--sponsor {
   display: flex;
@@ -6132,7 +6214,7 @@ h2 {
   background-color: #ececec;
 }
 
-/* Full-width Sanofi sponsor banner — sits inline in the Today feed
+/* Full-width Amgen sponsor banner — sits inline in the Today feed
    where Weekly Health Pulse used to live. ~48px tall, logo centered.
    Uses the full-bleed trick so it breaks out of .main's max-width and
    touches the viewport edges with zero side padding. */
