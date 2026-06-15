@@ -66,17 +66,12 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
   // Copy mirrors the Track-page check-in banner so it tells the same story
   const titleLabel = checkinPromptTitle(last?.date, isCheckedInToday)
   const subLabel = isCheckedInToday
-    ? 'Your health trend is up to date. Tap to see today\'s summary.'
-    : 'Tracking daily builds the picture your doctor needs.'
+    ? 'Logged today. Tap to see your summary or update.'
+    : 'Your symptoms and habits connect to your numbers — log both to see the full picture.'
 
-  const eyebrowText = loggedCount > 0
-    ? `Today · day ${loggedCount}`
-    : 'Today · start your streak'
-  const ctaText = isCheckedInToday ? 'Update →' : 'Log today →'
-
-  // Magazine ribbon "DAY N" badge — shows the current streak count, or a
-  // 'NEW' badge when there's no streak yet (first-time user).
-  const dayBadge = loggedCount > 0 ? `DAY ${loggedCount}` : 'NEW'
+  const eyebrowText = isCheckedInToday ? 'Checked in today' : 'Daily check-in'
+  const ctaText = isCheckedInToday ? 'View today →' : 'Check in →'
+  const dayBadge = loggedCount > 0 ? `${loggedCount} days` : 'NEW'
 
   return (
     <section className="checkin-section">
@@ -89,7 +84,7 @@ export default function DailyCheckin({ onOpen, tick = 0 }) {
       >
         {/* Magazine-cover ribbon masthead */}
         <div className="dc-feat__ribbon">
-          <span className="dc-feat__ribbon-label">Health Log</span>
+          <span className="dc-feat__ribbon-label">How are you feeling?</span>
           <span className="dc-feat__ribbon-day">{dayBadge}</span>
         </div>
 

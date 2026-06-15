@@ -311,10 +311,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   const [treatmentInput, setTreatmentInput] = useState('')
   const fileRef = useRef(null)
 
-  // Prototype: when the user taps "Upload a skin photo", auto-load this
-  // bundled demo image instead of opening a file picker. Swap the path
-  // here for a different photo if you want.
-  const DEMO_PHOTO = '/abby-tai-eczema.webp'
+  const DEMO_PHOTO = null
 
   // Reset whenever the sheet opens. If today's check-in already exists,
   // open in summary-view mode so the user can see what they logged.
@@ -587,26 +584,15 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
-            <h2 className="ci-title">Let's check in on your health.</h2>
-            <p className="ci-sub">Sync a wearable to make this faster — or skip and just answer a few questions.</p>
+            <h2 className="ci-title">How are you feeling today?</h2>
+            <p className="ci-sub">Takes about a minute. Your symptoms and habits help us connect the dots between how you feel and what your numbers show.</p>
 
             <div className="ci-start-list">
-              <button className="ci-start-card" type="button" onClick={useDemoPhoto}>
-                <span className="ci-start-card__icon">📊</span>
-                <span className="ci-start-card__body">
-                  <span className="ci-start-card__title">Import recent readings</span>
-                  <span className="ci-start-card__desc">Pull in blood pressure, glucose, or cholesterol data to pre-fill.</span>
-                </span>
-                <span className="ci-start-card__arrow">›</span>
-              </button>
-              {/* Hidden file picker kept for future real uploads */}
-              <input ref={fileRef} type="file" accept="image/*" hidden onChange={onPickFile} />
-
               <button className={`ci-start-card${wearableSynced ? ' ci-start-card--done' : ''}`} type="button" onClick={syncWearable}>
                 <span className="ci-start-card__icon">⌚</span>
                 <span className="ci-start-card__body">
                   <span className="ci-start-card__title">Sync wearable</span>
-                  <span className="ci-start-card__desc">Oura, Apple Watch, Whoop — pull in sleep, HRV, stress.</span>
+                  <span className="ci-start-card__desc">Apple Watch, Oura, Whoop — pull in sleep, HRV, and activity.</span>
                 </span>
                 <span className="ci-start-card__arrow">{wearableSynced ? '✓' : '›'}</span>
               </button>
@@ -614,19 +600,12 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <button className="ci-start-card ci-start-card--ghost" type="button" onClick={skipExtras}>
                 <span className="ci-start-card__icon">✏️</span>
                 <span className="ci-start-card__body">
-                  <span className="ci-start-card__title">Just answer questions</span>
-                  <span className="ci-start-card__desc">No photo, no wearable — quick and manual.</span>
+                  <span className="ci-start-card__title">Just answer a few questions</span>
+                  <span className="ci-start-card__desc">Quick and manual — no devices needed.</span>
                 </span>
                 <span className="ci-start-card__arrow">›</span>
               </button>
             </div>
-
-            {analyzing && (
-              <div className="ci-analyzing">
-                <span className="ci-analyzing__spinner" />
-                Importing your latest readings…
-              </div>
-            )}
           </>
         )}
 
@@ -928,9 +907,8 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <div className="ci-done__emoji">🎉</div>
             <h3 className="ci-done__title">Check-in logged.</h3>
             <p className="ci-done__sub">
-              We saved your health status, symptoms, and what's going on today.
+              We saved how you're feeling and what's going on today.
               {wearableSynced && <> Wearable data synced.</>}
-              {photoUrl && <> Readings imported for reference.</>}
             </p>
             <div className="ci-insight">
               <div className="ci-insight__tag"><span className="ci-insight__dot" />Insight · Based on your check-in</div>
