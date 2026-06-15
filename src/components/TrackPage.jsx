@@ -1,5 +1,74 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import SponsorBanner from './SponsorBanner'
+
+const COMMON_TREATMENTS = [
+  'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
+  'Pravastatin (Pravachol)', 'Lovastatin', 'Fluvastatin',
+  'Ezetimibe (Zetia)', 'Fenofibrate', 'Niacin (extended release)',
+  'Evolocumab (Repatha)', 'Alirocumab (Praluent)', 'Inclisiran (Leqvio)',
+  'Lisinopril', 'Amlodipine (Norvasc)', 'Losartan (Cozaar)',
+  'Metoprolol succinate', 'Metoprolol tartrate', 'Atenolol',
+  'Hydrochlorothiazide (HCTZ)', 'Chlorthalidone', 'Valsartan (Diovan)',
+  'Ramipril', 'Carvedilol', 'Spironolactone',
+  'Metformin', 'Semaglutide (Ozempic / Wegovy)', 'Liraglutide (Victoza)',
+  'Empagliflozin (Jardiance)', 'Dapagliflozin (Farxiga)', 'Canagliflozin (Invokana)',
+  'Sitagliptin (Januvia)', 'Pioglitazone (Actos)', 'Glipizide', 'Glimepiride',
+  'Insulin glargine (Lantus / Basaglar)', 'Insulin aspart (NovoLog)', 'Insulin lispro (Humalog)',
+  'Aspirin 81mg', 'Clopidogrel (Plavix)', 'Ticagrelor (Brilinta)',
+  'Warfarin (Coumadin)', 'Apixaban (Eliquis)', 'Rivaroxaban (Xarelto)',
+  'Digoxin', 'Amiodarone', 'Sacubitril/valsartan (Entresto)',
+  'Estradiol', 'Progesterone', 'Estradiol patch', 'Vaginal estrogen',
+  'Tirzepatide (Mounjaro / Zepbound)', 'Naltrexone/bupropion (Contrave)', 'Orlistat (Xenical)',
+  'Omega-3 / fish oil', 'CoQ10', 'Berberine', 'Magnesium glycinate',
+  'Vitamin D', 'Vitamin K2', 'Psyllium husk', 'Red yeast rice',
+  'Mediterranean diet', 'DASH diet', 'Cardiac rehab program',
+  'Continuous glucose monitor (CGM)', 'Daily blood pressure monitor',
+]
+
+const TX_CATEGORY_RULES = [
+  { cat: '💊 Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
+  { cat: '🫀 Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
+  { cat: '🩸 Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
+  { cat: '⚖️ Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
+  { cat: '🌸 Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
+  { cat: '❤️ Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
+  { cat: '🥗 Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
+]
+
+function categoryForTx(name) {
+  const lower = name.toLowerCase()
+  for (const rule of TX_CATEGORY_RULES) {
+    if (rule.keys.some(k => lower.includes(k))) return rule.cat
+  }
+  return '📋 Other'
+}
+
+function groupTxByCategory(names) {
+  const map = {}
+  for (const name of names) {
+    const cat = categoryForTx(name)
+    if (!map[cat]) map[cat] = []
+    map[cat].push(name)
+  }
+  return map
+}
+
+// All available tile types for My Numbers
+const ALL_TILE_DEFS = [
+  { id: 'ldl',     label: 'LDL Cholesterol', icon: '🫀' },
+  { id: 'bp',      label: 'Blood Pressure',  icon: '💉' },
+  { id: 'glucose', label: 'Blood Sugar',      icon: '🔬' },
+  { id: 'weight',  label: 'Weight',           icon: '⚖️' },
+  { id: 'a1c',     label: 'A1C',              icon: '🩸' },
+  { id: 'cycle',   label: 'Cycle',            icon: '🌸' },
+]
+
+function readTileConfig() {
+  try { return JSON.parse(localStorage.getItem('aheadTileConfig') || 'null') } catch (_) { return null }
+}
+function saveTileConfig(ids) {
+  try { localStorage.setItem('aheadTileConfig', JSON.stringify(ids)) } catch (_) {}
+}
 
 function readCheckins() {
   try { return JSON.parse(localStorage.getItem('cardiometabolicCheckins') || '[]') } catch (_) { return [] }
@@ -156,6 +225,35 @@ const EPROS = [
   { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of managing a chronic condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
 ]
 
+const MOOD_LABELS = [
+  { e: '😄', l: 'Great' },
+  { e: '🙂', l: 'Good' },
+  { e: '😐', l: 'Neutral' },
+  { e: '😔', l: 'Low' },
+  { e: '😫', l: 'Rough day' },
+]
+const SYMPTOM_LABELS = [
+  { e: '😌', l: 'No symptoms' },
+  { e: '😩', l: 'Fatigue' },
+  { e: '🤕', l: 'Headache' },
+  { e: '😣', l: 'Cramps' },
+  { e: '💓', l: 'Palpitations' },
+  { e: '😮‍💨', l: 'Shortness of breath' },
+  { e: '🌡️', l: 'Dizziness' },
+  { e: '🔥', l: 'Hot flashes' },
+  { e: '😟', l: 'Chest tightness' },
+]
+
+function formatCheckinDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const today = new Date()
+  const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1)
+  if (d.toDateString() === today.toDateString()) return 'Today'
+  if (d.toDateString() === yesterday.toDateString()) return 'Yesterday'
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
 function Sparkline({ data, color }) {
   const W = 80, H = 24
   const min = Math.min(...data), max = Math.max(...data)
@@ -209,6 +307,65 @@ function readConditions() {
   } catch (_) { return [] }
 }
 
+// Mock sparkline fallback trends per tile (shows a plausible recent trend)
+const TILE_MOCK_TRENDS = {
+  ldl:     [145,142,140,138,141,137,135,132,130,128,132,129,126,124],
+  bp:      [135,133,130,128,132,129,127,125,128,124,122,126,123,120],
+  glucose: [112,108,115,110,107,113,109,105,111,108,104,110,107,103],
+  weight:  [175,174,174,173,174,173,172,173,172,171,172,171,170,170],
+  a1c:     [7.2,7.1,7.1,7.0,7.0,6.9,6.9,6.8,6.8,6.8,6.7,6.7,6.6,6.6],
+  cycle:   [3,4,3,2,3,4,3,3,2,3,4,3,2,3],
+}
+
+function readMyNumbers() {
+  try {
+    const readings = JSON.parse(localStorage.getItem('aheadReadings') || '{}')
+    const config = JSON.parse(localStorage.getItem('aheadTileConfig') || 'null')
+    const TILE_META = {
+      ldl:     { label: 'LDL Cholesterol', icon: '🫀', unit: 'mg/dL', periodic: true },
+      bp:      { label: 'Blood Pressure',  icon: '💉', unit: '',      periodic: false },
+      glucose: { label: 'Blood Sugar',     icon: '🔬', unit: 'mg/dL', periodic: false },
+      weight:  { label: 'Weight',          icon: '⚖️', unit: 'lbs',   periodic: false },
+      a1c:     { label: 'A1C',             icon: '🩸', unit: '%',     periodic: true },
+      cycle:   { label: 'Cycle',           icon: '🌸', unit: '',      periodic: false },
+    }
+    const activeIds = config || ['ldl', 'bp']
+    return activeIds
+      .filter(id => readings[id]?.value)
+      .map(id => {
+        const meta = TILE_META[id] || { label: id, icon: '📊', unit: '' }
+        const r = readings[id]
+        let display = r.value
+        let numericVal = null
+        if (id === 'cycle') {
+          try { const p = JSON.parse(r.value); display = p.flow ? `${p.flow} flow` : `${p.symptoms?.length || 0} symptoms` } catch (_) {}
+        } else if (id === 'glucose') {
+          try { const p = JSON.parse(r.value); numericVal = p.reading; display = `${p.reading} mg/dL · ${p.meal === 'after' ? 'After meal' : 'Before meal'}` } catch (_) {}
+        } else if (id === 'bp') {
+          // use systolic for sparkline
+          const m = String(r.value).match(/(\d+)/)
+          if (m) numericVal = Number(m[1])
+        } else {
+          numericVal = parseFloat(r.value)
+        }
+        // Build sparkline data: real history values if available, else mock trend
+        const rawHistory = Array.isArray(r.history) ? r.history : []
+        const sparkData = rawHistory.length >= 3
+          ? rawHistory.map(h => {
+              if (id === 'glucose') { try { return JSON.parse(h.value).reading } catch (_) { return parseFloat(h.value) || 0 } }
+              if (id === 'bp') { const m = String(h.value).match(/(\d+)/); return m ? Number(m[1]) : 0 }
+              return parseFloat(h.value) || 0
+            })
+          : (TILE_MOCK_TRENDS[id] || [50,52,49,53,51,55,53,57,54,58,55,59,56,60])
+        // Append current numeric value to end of mock if using mock (so the last point matches current)
+        const finalSparkData = rawHistory.length >= 3
+          ? sparkData
+          : [...sparkData.slice(0, -1), numericVal ?? sparkData[sparkData.length - 1]]
+        return { id, ...meta, value: display, date: r.date, sparkData: finalSparkData }
+      })
+  } catch (_) { return [] }
+}
+
 function readTreatments() {
   try {
     const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
@@ -239,6 +396,45 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [conditions, setConditions] = useState(() => readConditions())
   const [activeCondition, setActiveCondition] = useState(() => readConditions()[0] || null)
   const [treatments, setTreatments] = useState(() => readTreatments())
+  const [myNumbers, setMyNumbers] = useState(() => readMyNumbers())
+  const [tileConfig, setTileConfig] = useState(() => readTileConfig() || ['ldl', 'bp'])
+  const [addingTile, setAddingTile] = useState(false)
+  const [addingTx, setAddingTx] = useState(false)
+  const [txInput, setTxInput] = useState('')
+  const txInputRef = useRef(null)
+
+  function saveTreatmentList(list) {
+    try {
+      const profile = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+      profile.treatmentList = list
+      localStorage.setItem('cardiometabolicProfile', JSON.stringify(profile))
+      setTreatments(readTreatments())
+    } catch (_) {}
+  }
+  function addTreatment(name) {
+    if (!name.trim()) return
+    const current = readTreatments()
+    if (current.some(t => t.name.toLowerCase() === name.trim().toLowerCase())) return
+    saveTreatmentList([...current, { name: name.trim(), addedAt: new Date().toISOString() }])
+    setTxInput('')
+    setAddingTx(false)
+  }
+  function removeTreatment(name) {
+    const current = readTreatments()
+    saveTreatmentList(current.filter(t => t.name !== name))
+  }
+
+  function toggleTile(id) {
+    const current = tileConfig
+    const next = current.includes(id) ? current.filter(x => x !== id) : [...current, id]
+    saveTileConfig(next)
+    setTileConfig(next)
+    setMyNumbers(readMyNumbers())
+  }
+
+  const txSuggestions = txInput.length >= 1
+    ? COMMON_TREATMENTS.filter(t => t.toLowerCase().includes(txInput.toLowerCase())).slice(0, 5)
+    : []
 
   // Re-read whenever a new check-in is logged (parent bumps checkinTick) or on focus
   useEffect(() => {
@@ -246,6 +442,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       setCheckins(readCheckins())
       setLastCheckin(readLastCheckin())
       setTreatments(readTreatments())
+      setMyNumbers(readMyNumbers())
       const conds = readConditions()
       setConditions(conds)
       // Keep activeCondition in sync if it's no longer in the list
@@ -275,12 +472,37 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your health trends.</p>
       </div>
 
-      {/* Status strip — overlaps hero */}
-      <div className="tp-status-strip">
-        <div className="tp-sc"><div className="tp-sc-label">Days tracked</div><div className="tp-sc-val">{daysTracked}</div></div>
-        <div className="tp-sc"><div className="tp-sc-label">Top pattern</div><div className="tp-sc-val" style={{ color: 'var(--color-teal)' }}>{topPattern}</div></div>
-        <div className="tp-sc"><div className="tp-sc-label">Confidence</div><div className="tp-sc-val">82%</div></div>
-      </div>
+      {/* Check-in prompt banner — right below the hero copy */}
+      {(() => {
+        const d = daysAgoUtil(lastCheckin?.date)
+        const todayDone = d === 0
+        return (
+          <button
+            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
+            type="button"
+            onClick={() => onOpenCheckin?.()}
+          >
+            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
+            <span className="tp-checkin-banner__body">
+              <span className="tp-checkin-banner__title">
+                {todayDone
+                  ? 'Logged today — tap to view or update'
+                  : (d == null
+                      ? 'Start your first health check-in'
+                      : d === 1
+                        ? 'Log today\'s check-in'
+                        : `Log today\'s check-in — it\'s been ${d} days`)}
+              </span>
+              <span className="tp-checkin-banner__sub">
+                {todayDone
+                  ? 'Your trend is up to date. Tap to see today\'s summary.'
+                  : 'Adds to your trend, triggers, and pattern detection.'}
+              </span>
+            </span>
+            <span className="tp-checkin-banner__arrow">→</span>
+          </button>
+        )
+      })()}
 
       {/* AI Insights — compact, expandable */}
       <div className={`tp-ai-summary${aiOpen ? ' tp-ai-summary--open' : ''}`}>
@@ -333,67 +555,151 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           )}
         </div>
 
-      {/* Condition toggle — only renders for users with 2+ tracked conditions */}
-      {conditions.length > 1 && (
-        <div className="tp-cond-toggle" role="tablist">
-          {conditions.map(c => (
-            <button
-              key={c}
-              role="tab"
-              type="button"
-              aria-selected={c === activeCondition}
-              className={`tp-cond-toggle__btn${c === activeCondition ? ' tp-cond-toggle__btn--active' : ''}`}
-              onClick={() => setActiveCondition(c)}
-            >{c}</button>
-          ))}
+      {/* ── My Numbers ── */}
+      <div className="tp-section">
+        <div className="tp-sec-head" style={{ marginBottom: 10 }}>
+          <h2 className="tp-sec-title">My Numbers</h2>
+          <button
+            style={{ background: 'var(--color-teal)', color: '#fff', border: 'none', borderRadius: 8, padding: '4px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+            onClick={() => setAddingTile(o => !o)}
+          >{addingTile ? 'Done' : '+ Add'}</button>
+        </div>
+
+        {/* Tile picker */}
+        {addingTile && (
+          <div className="tp-card" style={{ padding: '12px 14px', marginBottom: 10 }}>
+            <p style={{ fontSize: 12, color: 'var(--color-text-muted)', marginBottom: 10, marginTop: 0 }}>Choose which numbers to track — checked tiles appear on your home screen and here.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {ALL_TILE_DEFS.map(td => {
+                const on = tileConfig.includes(td.id)
+                return (
+                  <button key={td.id} onClick={() => toggleTile(td.id)} style={{
+                    display: 'flex', alignItems: 'center', gap: 10, background: on ? 'rgba(27,188,60,.08)' : 'var(--color-surface)',
+                    border: `1.5px solid ${on ? 'var(--color-teal)' : 'var(--color-border)'}`,
+                    borderRadius: 10, padding: '8px 12px', cursor: 'pointer', textAlign: 'left',
+                  }}>
+                    <span style={{ fontSize: 18, width: 24 }}>{td.icon}</span>
+                    <span style={{ flex: 1, fontSize: 14, fontWeight: 500, color: 'var(--color-text)' }}>{td.label}</span>
+                    <span style={{ fontSize: 16, color: on ? 'var(--color-teal)' : 'var(--color-border)' }}>{on ? '✓' : '+'}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {myNumbers.length === 0 && !addingTile ? (
+          <div className="tp-card" style={{ color: 'var(--color-text-muted)', fontSize: 13, textAlign: 'center', padding: '24px 16px' }}>
+            Tap <strong>+ Add</strong> to choose which numbers to track.
+          </div>
+        ) : myNumbers.length > 0 ? (
+          <div style={{ display: 'flex', overflowX: 'auto', gap: 10, paddingBottom: 4, marginLeft: -4, paddingLeft: 4 }}>
+            {myNumbers.map((n) => (
+              <div key={n.id} style={{
+                minWidth: 150, maxWidth: 165, flexShrink: 0,
+                background: 'var(--color-surface)', borderRadius: 16, padding: '14px 14px 10px',
+                border: '1px solid var(--color-border)',
+                display: 'flex', flexDirection: 'column',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                  <span style={{ fontSize: 16 }}>{n.icon}</span>
+                  <span style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500, lineHeight: 1.2 }}>{n.label}</span>
+                </div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, marginBottom: 2 }}>
+                  {n.value.split('·')[0].trim()}
+                </div>
+                {n.value.includes('·') && (
+                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginBottom: 4 }}>
+                    {n.value.split('·').slice(1).join('·').trim()}
+                  </div>
+                )}
+                <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginBottom: 8 }}>
+                  {n.periodic ? 'Periodic reading' : formatCheckinDate(n.date)}
+                </div>
+                {n.sparkData && n.sparkData.length >= 3 && (
+                  <div style={{ marginTop: 'auto' }}>
+                    <Sparkline data={n.sparkData} color="var(--color-teal)" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      {/* Recent check-ins */}
+      {checkins.length > 0 && (
+        <div className="tp-section">
+          <div className="tp-sec-head">
+            <h2 className="tp-sec-title">Recent check-ins</h2>
+            <span className="tp-sec-badge" style={{ background: 'rgba(27,188,60,.1)', color: 'var(--color-teal)' }}>
+              {checkins.length} logged
+            </span>
+          </div>
+          <div className="tp-card" style={{ padding: 0, overflow: 'hidden' }}>
+            {[...checkins].reverse().slice(0, 5).map((c, i) => {
+              const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
+              const sevIdx = primary?.severity ?? c.severity ?? null
+              const sympIdx = primary?.symptoms ?? c.symptoms ?? null
+              const mood = sevIdx != null ? MOOD_LABELS[sevIdx] : null
+              const symp = sympIdx != null ? SYMPTOM_LABELS[sympIdx] : null
+              const txCount = c.treatments?.length || 0
+              return (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px',
+                  borderBottom: i < 4 ? '1px solid var(--color-border)' : 'none',
+                }}>
+                  <div style={{ fontSize: 22, width: 32, textAlign: 'center', flexShrink: 0 }}>
+                    {mood?.e || '📋'}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>
+                        {mood?.l || 'Logged'}
+                      </span>
+                      {symp && symp.l !== 'No symptoms' && (
+                        <span style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface)', padding: '1px 7px', borderRadius: 10 }}>
+                          {symp.e} {symp.l}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                      {txCount > 0 ? `${txCount} medication${txCount > 1 ? 's' : ''} active` : 'No medications logged'}
+                      {c.wearableSynced ? ' · Wearable synced' : ''}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', flexShrink: 0 }}>
+                    {formatCheckinDate(c.date)}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
-      {/* Check-in prompt banner */}
-      {(() => {
-        const d = daysAgoUtil(lastCheckin?.date)
-        const todayDone = d === 0
-        return (
-          <button
-            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
-            type="button"
-            onClick={() => onOpenCheckin?.()}
-          >
-            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
-            <span className="tp-checkin-banner__body">
-              <span className="tp-checkin-banner__title">
-                {todayDone
-                  ? 'Logged today — tap to view or update'
-                  : (d == null
-                      ? 'Start your first health check-in'
-                      : d === 1
-                        ? 'Log today\'s check-in'
-                        : `Log today\'s check-in — it\'s been ${d} days`)}
-              </span>
-              <span className="tp-checkin-banner__sub">
-                {todayDone
-                  ? 'Your trend is up to date. Tap to see today\'s summary.'
-                  : 'Adds to your trend, triggers, and pattern detection.'}
-              </span>
-            </span>
-            <span className="tp-checkin-banner__arrow">→</span>
-          </button>
-        )
-      })()}
-
-      {/* Trend */}
-      <div className="tp-section">
-        <div className="tp-sec-head">
-          <h2 className="tp-sec-title">{activeCondition ? `${activeCondition} trend` : 'Trend'}</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Live</span>
+      {/* Mood trend chart */}
+      {checkins.length >= 3 && (
+        <div className="tp-section">
+          <div className="tp-sec-head">
+            <h2 className="tp-sec-title">Mood trend</h2>
+            <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>From check-ins</span>
+          </div>
+          <div className="tp-card">
+            {(() => {
+              const recent = [...checkins].reverse().slice(0, 14)
+              const moodVals = recent.map(c => {
+                const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
+                const sevIdx = primary?.severity ?? c.severity ?? null
+                return sevIdx != null ? (4 - sevIdx) : null // invert so higher = better mood
+              }).filter(v => v !== null)
+              if (moodVals.length < 3) return <div style={{ fontSize: 13, color: 'var(--color-text-muted)', padding: '8px 0' }}>Log more check-ins to see your mood trend.</div>
+              return <Sparkline data={moodVals} color="var(--color-sage)" />
+            })()}
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 6 }}>Higher = better mood · last {Math.min(checkins.length, 14)} check-ins</div>
+          </div>
         </div>
-        <div className="tp-time-toggle">
-          {['14 days','30 days','90 days'].map(t => (
-            <button key={t} className={`tp-tt-btn${timeRange === t ? ' tp-tt-btn--on' : ''}`} onClick={() => setTimeRange(t)}>{t}</button>
-          ))}
-        </div>
-        <div className="tp-card"><TrendChart range={timeRange} condition={activeCondition} /></div>
-      </div>
+      )}
 
       {/* What's been going on */}
       <div className="tp-section">
@@ -425,57 +731,75 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         </div>
       </div>
 
-      {/* Treatments & products — from check-in chips */}
+      {/* My medications & products */}
       <div className="tp-section">
         <div className="tp-sec-head">
-          <h2 className="tp-sec-title">Treatments &amp; products</h2>
-          {treatments.length > 0 && (
-            <span className="tp-sec-badge" style={{ background: 'var(--color-teal-light)', color: 'var(--color-teal)' }}>
-              {treatments.length} active
-            </span>
-          )}
+          <h2 className="tp-sec-title">My medications &amp; products</h2>
         </div>
-        {treatments.length === 0 ? (
-          <div className="tp-card">
-            <div className="tp-tx-empty">
-              <span className="tp-tx-empty__icon">🧴</span>
-              <div>
-                <div className="tp-tx-empty__title">Nothing logged yet</div>
-                <div className="tp-tx-empty__sub">Add what you're using during your next health check-in. It'll show up here.</div>
+
+        <div className="tp-card" style={{ padding: '16px' }}>
+          {/* Title / sub copy */}
+          <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 4px', color: 'var(--color-text)' }}>
+            {treatments.length === 0 ? 'What are you currently taking or using?' : 'Still using these?'}
+          </h3>
+          <p style={{ fontSize: 13, color: 'var(--color-text-muted)', margin: '0 0 14px', lineHeight: 1.4 }}>
+            {treatments.length === 0
+              ? 'Search by name or type your own. We\'ll organize them for you.'
+              : 'Remove anything you\'ve stopped, or add something new.'}
+          </p>
+
+          {/* Grouped chip display */}
+          {treatments.length > 0 && (() => {
+            const grouped = groupTxByCategory(treatments.map(t => t.name))
+            return (
+              <div style={{ marginBottom: 14 }}>
+                {Object.entries(grouped).map(([cat, names]) => (
+                  <div key={cat} style={{ marginBottom: 12 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 6px' }}>{cat}</p>
+                    <div className="ci-tx-chips">
+                      {names.map(name => (
+                        <span key={name} className="ci-tx-chip">
+                          <span className="ci-tx-chip__name">{name}</span>
+                          <button type="button" className="ci-tx-chip__x" aria-label={`Remove ${name}`} onClick={() => removeTreatment(name)}>✕</button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
+            )
+          })()}
+
+          {/* Typeahead input */}
+          <div className="ci-tx-input-wrap">
+            <input
+              ref={txInputRef}
+              className="ci-tx-input"
+              type="text"
+              placeholder="Search medications, supplements, programs…"
+              value={txInput}
+              onChange={e => setTxInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' && txInput.trim()) { addTreatment(txInput) } }}
+            />
+            {txInput.trim() && (
+              <button type="button" className="ci-tx-add" onClick={() => addTreatment(txInput)}>
+                + Add "{txInput.trim()}"
+              </button>
+            )}
+            {txSuggestions.length > 0 && (
+              <ul className="ci-tx-suggest">
+                {txSuggestions.map(s => (
+                  <li key={s}>
+                    <button type="button" className="ci-tx-suggest__btn" onClick={() => addTreatment(s)}>
+                      <span className="ci-tx-suggest__plus">+</span>{s}
+                      <span style={{ fontSize: 10, color: 'var(--color-text-muted)', marginLeft: 6 }}>{categoryForTx(s)}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        ) : (
-          <>
-            <div className="tp-tx-scroll">
-              {treatments.map(t => {
-                const days = daysSinceUtil(t.addedAt)
-                const cond = t.condition || null
-                return (
-                  <article key={`${cond || ''}::${t.name}`} className="tp-tx-card">
-                    <div className="tp-tx-card__top">
-                      {cond
-                        ? <span className="tp-tx-card__tag">{cond}</span>
-                        : <span className="tp-tx-card__tag tp-tx-card__tag--generic">General</span>}
-                      <span className="tp-tx-card__status">●</span>
-                    </div>
-                    <div className="tp-tx-card__name">{t.name}</div>
-                    <div className="tp-tx-card__meta">
-                      <span className="tp-tx-card__meta-icon">⏱</span>
-                      {days == null
-                        ? 'Just added'
-                        : days === 0 ? 'New today' : days === 1 ? '1 day active' : `${days} days active`}
-                    </div>
-                  </article>
-                )
-              })}
-              <div style={{ minWidth: 'var(--space-4)', flexShrink: 0 }} />
-            </div>
-            <p className="tp-tx-note">
-              💡 Add dose &amp; frequency in your <strong>profile</strong> to power adherence insights.
-            </p>
-          </>
-        )}
+        </div>
       </div>
 
       <div className="sponsor-card-wrap">
@@ -503,21 +827,24 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       <div className="tp-section">
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Your body signals</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Oura</span>
+          <span className="tp-sec-badge" style={{ background: 'var(--color-border)', color: 'var(--color-text-muted)' }}>Not connected</span>
         </div>
-        <div className="tp-metrics-grid">
-          {METRICS.map((m, i) => (
-            <div key={i} className="tp-metric-tile">
-              <div className="tp-mt-header">
-                <span className="tp-mt-emoji">{m.e}</span>
-                <span className="tp-mt-label">{m.l}</span>
+        <div className="tp-card" style={{ textAlign: 'center', padding: '32px 16px' }}>
+          <div style={{ fontSize: 32, marginBottom: 10 }}>⌚</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--color-text)', marginBottom: 6 }}>Sync your device</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 20, lineHeight: 1.5 }}>
+            Connect Apple Watch, Oura, or Whoop to see sleep, HRV, stress, and readiness alongside your check-ins.
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', opacity: 0.35, marginBottom: 20 }}>
+            {METRICS.map((m, i) => (
+              <div key={i} style={{ background: 'var(--color-surface)', borderRadius: 10, padding: '8px 12px', fontSize: 12, color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span>{m.e}</span><span>{m.l}</span>
               </div>
-              <div className="tp-mt-val">{m.v}<span className="tp-mt-unit">{m.u}</span></div>
-              <div className="tp-mt-detail">{m.d}</div>
-              <Sparkline data={m.sp} color={m.tc} />
-              <div className="tp-mt-trend" style={{ color: m.tc }}>{m.tl}</div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <button style={{ background: 'var(--color-teal)', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+            Connect a device →
+          </button>
         </div>
       </div>
 

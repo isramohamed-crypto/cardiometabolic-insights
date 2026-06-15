@@ -199,34 +199,57 @@ const GENERIC_PLAYBOOK = {
 // user can also enter freeform text. Grouped roughly by category so the
 // suggestion list feels relevant. Not meant to be exhaustive — a starter set.
 const COMMON_TREATMENTS = [
-  // Statins — cholesterol
   'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
   'Pravastatin (Pravachol)', 'Lovastatin', 'Fluvastatin',
-  // Other lipid-lowering
   'Ezetimibe (Zetia)', 'Fenofibrate', 'Niacin (extended release)',
   'Evolocumab (Repatha)', 'Alirocumab (Praluent)', 'Inclisiran (Leqvio)',
-  // Blood pressure
   'Lisinopril', 'Amlodipine (Norvasc)', 'Losartan (Cozaar)',
   'Metoprolol succinate', 'Metoprolol tartrate', 'Atenolol',
   'Hydrochlorothiazide (HCTZ)', 'Chlorthalidone', 'Valsartan (Diovan)',
   'Ramipril', 'Carvedilol', 'Spironolactone',
-  // Diabetes
   'Metformin', 'Semaglutide (Ozempic / Wegovy)', 'Liraglutide (Victoza)',
   'Empagliflozin (Jardiance)', 'Dapagliflozin (Farxiga)', 'Canagliflozin (Invokana)',
   'Sitagliptin (Januvia)', 'Pioglitazone (Actos)', 'Glipizide', 'Glimepiride',
-  'Insulin glargine (Lantus / Basaglar)', 'Insulin aspart (NovoLog)',
-  'Insulin lispro (Humalog)',
-  // Heart disease / anticoagulation
+  'Insulin glargine (Lantus / Basaglar)', 'Insulin aspart (NovoLog)', 'Insulin lispro (Humalog)',
   'Aspirin 81mg', 'Clopidogrel (Plavix)', 'Ticagrelor (Brilinta)',
   'Warfarin (Coumadin)', 'Apixaban (Eliquis)', 'Rivaroxaban (Xarelto)',
   'Digoxin', 'Amiodarone', 'Sacubitril/valsartan (Entresto)',
-  // Supplements
+  'Estradiol', 'Progesterone', 'Estradiol patch', 'Vaginal estrogen',
+  'Tirzepatide (Mounjaro / Zepbound)', 'Naltrexone/bupropion (Contrave)', 'Orlistat (Xenical)',
   'Omega-3 / fish oil', 'CoQ10', 'Berberine', 'Magnesium glycinate',
   'Vitamin D', 'Vitamin K2', 'Psyllium husk', 'Red yeast rice',
-  // Lifestyle programs
   'Mediterranean diet', 'DASH diet', 'Cardiac rehab program',
   'Continuous glucose monitor (CGM)', 'Daily blood pressure monitor',
 ]
+
+// Category lookup — maps keywords in a treatment name to a display category
+const TREATMENT_CATEGORY_RULES = [
+  { cat: '💊 Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
+  { cat: '🫀 Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
+  { cat: '🩸 Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
+  { cat: '⚖️ Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
+  { cat: '🌸 Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
+  { cat: '❤️ Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
+  { cat: '🥗 Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
+]
+
+function categoryFor(name) {
+  const lower = name.toLowerCase()
+  for (const rule of TREATMENT_CATEGORY_RULES) {
+    if (rule.keys.some(k => lower.includes(k))) return rule.cat
+  }
+  return '📋 Other'
+}
+
+function groupByCategory(names) {
+  const map = {}
+  for (const name of names) {
+    const cat = categoryFor(name)
+    if (!map[cat]) map[cat] = []
+    map[cat].push(name)
+  }
+  return map
+}
 
 const DAY_CONTEXT = [
   { e: '😰', l: 'Stressful day',    detail: { prompt: 'What was stressful?',             placeholder: 'Work, family, finances…' } },
@@ -305,9 +328,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   const [wearableSynced, setWearableSynced] = useState(false)
   const [analyzing, setAnalyzing] = useState(false)
   const [viewing, setViewing]   = useState(null)              // saved record shown in summary-view mode
-  // Treatments & products (Q1 — per-condition for multi-condition users)
-  // { [conditionName]: [productName, ...] }
-  const [treatmentsByCond, setTreatmentsByCond] = useState({})
+  const [treatments, setTreatments] = useState([])
   const [treatmentInput, setTreatmentInput] = useState('')
   const fileRef = useRef(null)
 
@@ -331,24 +352,13 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     setTreatmentInput('')
     document.body.style.overflow = 'hidden'
 
-    // Pick the first tracked condition as active by default
     const profile = readProfile()
     const conds = trackedConditionsFor(profile)
     setActiveCondition(conds[0])
-    // Pre-load saved treatments, grouped by condition. Legacy items
-    // (strings or {name} without condition) get assigned to the first tracked condition.
+    // Pre-load saved treatments as a flat list
     const saved = profile.treatmentList || []
-    const byCond = {}
-    for (const c of conds) byCond[c] = []
-    for (const item of saved) {
-      const name = typeof item === 'string' ? item : item?.name
-      if (!name) continue
-      const tagged = (typeof item === 'object' && item?.condition && byCond[item.condition] != null)
-        ? item.condition
-        : conds[0]
-      byCond[tagged] = (byCond[tagged] || []).concat(name)
-    }
-    setTreatmentsByCond(byCond)
+    const flat = saved.map(t => (typeof t === 'string' ? t : t?.name)).filter(Boolean)
+    setTreatments([...new Set(flat)])
 
     let last = null
     try { last = JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) {}
@@ -421,13 +431,13 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   function syncWearable() { setWearableSynced(true); setStep(1) }
   function skipExtras()   { setStep(1) }
   function pickSeverity(i) {
-    if (!activeCondition) return
-    setSeverityByCond(s => ({ ...s, [activeCondition]: i }))
-    setSeverityAiByCond(s => ({ ...s, [activeCondition]: false }))
+    const key = activeCondition || '__generic'
+    setSeverityByCond(s => ({ ...s, [key]: i }))
+    setSeverityAiByCond(s => ({ ...s, [key]: false }))
   }
   function pickSymptoms(i) {
-    if (!activeCondition) return
-    setSymptomsByCond(s => ({ ...s, [activeCondition]: i }))
+    const key = activeCondition || '__generic'
+    setSymptomsByCond(s => ({ ...s, [key]: i }))
   }
 
   // At least one condition has an answer
@@ -448,34 +458,20 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     setContextDetails(d => ({ ...d, [i]: val }))
   }
 
-  // Active-condition slice of the treatments map. All add/remove flows through here.
-  const treatments = (activeCondition && treatmentsByCond[activeCondition]) || []
-
   function addTreatment(name) {
-    if (!activeCondition) return
     const v = (name ?? treatmentInput).trim()
     if (!v) return
-    setTreatmentsByCond(prev => {
-      const current = prev[activeCondition] || []
-      if (current.includes(v)) return prev
-      return { ...prev, [activeCondition]: [...current, v] }
-    })
+    setTreatments(prev => prev.includes(v) ? prev : [...prev, v])
     setTreatmentInput('')
   }
   function removeTreatment(name) {
-    if (!activeCondition) return
-    setTreatmentsByCond(prev => ({
-      ...prev,
-      [activeCondition]: (prev[activeCondition] || []).filter(x => x !== name),
-    }))
+    setTreatments(prev => prev.filter(x => x !== name))
   }
-  // Filter common-treatments suggestions by current input
-  const treatmentSuggestions = (treatmentInput.trim().length >= 1
+  const treatmentSuggestions = treatmentInput.trim().length >= 1
     ? COMMON_TREATMENTS.filter(t =>
         t.toLowerCase().includes(treatmentInput.trim().toLowerCase()) && !treatments.includes(t)
       ).slice(0, 6)
     : []
-  )
 
   function finish() {
     const contextLabels = (context || []).map(i => DAY_CONTEXT[i]?.l).filter(Boolean)
@@ -503,46 +499,23 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     const skinScore = topSeverity == null ? null : (5 - topSeverity)
     const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'health'
 
-    // Flatten the per-condition map into a single array of tagged items
-    const allTreatments = []
-    for (const [cond, names] of Object.entries(treatmentsByCond)) {
-      for (const name of names) {
-        allTreatments.push({ name, condition: cond === '__generic' ? null : cond })
-      }
-    }
-
     const checkin = {
       date: new Date().toISOString(),
-      // top-level (back-compat)
       severity: topSeverity, severityAi: topSeverityAi, skinScore,
       symptoms: topSymptoms,
       conditionLabel: primaryLabel,
-      // per-condition
       conditionAnswers,
       contextLabels,
       contextEntries,
-      treatments: allTreatments.map(t => t.name),  // flat list — back-compat for summary view
-      treatmentsByCondition: allTreatments,        // richer per-condition list
-      photoAttached: !!photoUrl,
+      treatments,
+      photoAttached: false,
       wearableSynced,
     }
     writeCheckin(checkin)
 
-    // Persist to profile.treatmentList as tagged items, preserving any existing
-    // rich detail (dose/freq) the user added in their profile.
     try {
       const profile = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
-      const existingMap = new Map(
-        (profile.treatmentList || []).map(t => {
-          const n = typeof t === 'string' ? t : t?.name
-          const c = (typeof t === 'object' ? t?.condition : null) || ''
-          return [`${c}::${n}`, t]
-        })
-      )
-      profile.treatmentList = allTreatments.map(({ name, condition }) => {
-        const key = `${condition || ''}::${name}`
-        return existingMap.get(key) || { name, condition, addedAt: new Date().toISOString() }
-      })
+      profile.treatmentList = treatments.map(name => ({ name, category: categoryFor(name), addedAt: new Date().toISOString() }))
       localStorage.setItem('cardiometabolicProfile', JSON.stringify(profile))
     } catch (_) {}
 
@@ -612,76 +585,38 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
         {step === 2 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 2 of 4</span>
+              <span className="ci-label">Question 2 of 3</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
 
-            {/* Condition toggle — only renders for users with 2+ tracked conditions */}
-            {conditions.length > 1 && (
-              <div className="ci-cond-toggle" role="tablist">
-                {conditions.map(c => {
-                  const answered = severityByCond[c] != null
-                  const sel = c === activeCondition
-                  return (
-                    <button
-                      key={c}
-                      role="tab"
-                      type="button"
-                      aria-selected={sel}
-                      className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
-                      onClick={() => setActiveCondition(c)}
-                    >
-                      {c === '__generic' ? 'Health' : c}
-                      {answered && <span className="ci-cond-toggle__dot" aria-hidden="true">✓</span>}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {/* Single-condition users: small chip so the condition name is visible */}
-            {conditions.length === 1 && activeCondition && activeCondition !== '__generic' && (
-              <div className="ci-cond-chip">Tracking your {activeCondition.toLowerCase()}</div>
-            )}
-
-            <h2 className="ci-title">{pb.severityQ}</h2>
-            <p className="ci-sub">{pb.severitySub}</p>
-
-            {photoUrl && (
-              <div className="ci-photo-pill">
-                <img src={photoUrl} alt="" />
-                <span>Your photo</span>
-              </div>
-            )}
-            {severityAi && severity != null && (
-              <div className="ci-ai-note">
-                <span className="ci-ai-note__icon">✨</span>
-                <span>
-                  Based on your imported data, we pre-filled your {conditionLabel} status as {' '}
-                  <strong>{pb.severityOpts[severity].l.split('—')[0].trim()}</strong>. {' '}
-                  Tap a different option if that doesn't feel right.
-                </span>
-              </div>
-            )}
+            <h2 className="ci-title">How has your mood been today?</h2>
+            <p className="ci-sub">Your emotional state is part of your health picture — stress and anxiety can directly affect your numbers.</p>
 
             <div className="ci-opts ci-opts--list">
-              {pb.severityOpts.map((opt, i) => (
+              {[
+                { e: '😄', l: 'Great — feeling positive and energized' },
+                { e: '🙂', l: 'Good — mostly fine, nothing major' },
+                { e: '😐', l: 'Neutral — getting through the day' },
+                { e: '😔', l: 'Low — stressed, anxious, or drained' },
+                { e: '😫', l: 'Rough — really struggling today' },
+              ].map((opt, i) => (
                 <button
                   key={i}
-                  className={`ci-opt ci-opt--row${severity === i ? ' ci-opt--sel' : ''}${severityAi && severity === i ? ' ci-opt--ai' : ''}`}
+                  className={`ci-opt ci-opt--row${severity === i ? ' ci-opt--sel' : ''}`}
                   onClick={() => pickSeverity(i)}
                 >
                   <span className="ci-opt__emoji">{opt.e}</span>
                   <span className="ci-opt__label">{opt.l}</span>
-                  {severityAi && severity === i && <span className="ci-opt__ai-tag">✨ AI</span>}
                 </button>
               ))}
             </div>
 
             <div className="ci-nav-row">
               <button className="ci-back" onClick={() => setStep(1)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" disabled={!anySeverityAnswered} onClick={() => setStep(3)}>Continue →</button>
+              <button className="ci-btn ci-btn--inline" onClick={() => setStep(3)}>
+                {anySeverityAnswered ? 'Continue →' : 'Skip →'}
+              </button>
             </div>
           </>
         )}
@@ -689,42 +624,26 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
         {step === 3 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 3 of 4</span>
+              <span className="ci-label">Question 3 of 3</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
 
-            {conditions.length > 1 && (
-              <div className="ci-cond-toggle" role="tablist">
-                {conditions.map(c => {
-                  const answered = symptomsByCond[c] != null
-                  const sel = c === activeCondition
-                  return (
-                    <button
-                      key={c}
-                      role="tab"
-                      type="button"
-                      aria-selected={sel}
-                      className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
-                      onClick={() => setActiveCondition(c)}
-                    >
-                      {c === '__generic' ? 'Health' : c}
-                      {answered && <span className="ci-cond-toggle__dot" aria-hidden="true">✓</span>}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {conditions.length === 1 && activeCondition && activeCondition !== '__generic' && (
-              <div className="ci-cond-chip">Tracking your {activeCondition.toLowerCase()}</div>
-            )}
-
-            <h2 className="ci-title">{pb.symptomsQ}</h2>
-            <p className="ci-sub">{pb.symptomsSub}</p>
+            <h2 className="ci-title">Any physical symptoms today?</h2>
+            <p className="ci-sub">Pick the one that's most present — or nothing if you're feeling fine.</p>
 
             <div className="ci-opts ci-opts--list">
-              {pb.symptoms.map((opt, i) => (
+              {[
+                { e: '😌', l: 'Feeling fine — no symptoms' },
+                { e: '😩', l: 'Fatigue or low energy' },
+                { e: '🤕', l: 'Headache or head pressure' },
+                { e: '😣', l: 'Cramps or abdominal discomfort' },
+                { e: '💓', l: 'Heart racing or palpitations' },
+                { e: '😮‍💨', l: 'Shortness of breath' },
+                { e: '🌡️', l: 'Dizziness or lightheadedness' },
+                { e: '🔥', l: 'Hot flashes or night sweats' },
+                { e: '😟', l: 'Chest tightness or discomfort' },
+              ].map((opt, i) => (
                 <button
                   key={i}
                   className={`ci-opt ci-opt--row${symptoms === i ? ' ci-opt--sel' : ''}`}
@@ -738,143 +657,66 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
 
             <div className="ci-nav-row">
               <button className="ci-back" onClick={() => setStep(2)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" disabled={!anySymptomsAnswered} onClick={() => setStep(4)}>Continue →</button>
-            </div>
-          </>
-        )}
-
-        {step === 4 && (
-          <>
-            <div className="ci-header">
-              <span className="ci-label">Question 4 of 4</span>
-              <button className="ci-close" onClick={onClose}>✕</button>
-            </div>
-            <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
-            <h2 className="ci-title">What's been going on today?</h2>
-            <p className="ci-sub">Select all that apply — we'll help you spot patterns over time.</p>
-
-            <div className="ci-opts ci-opts--grid">
-              {DAY_CONTEXT.map((opt, i) => (
-                <button
-                  key={i}
-                  className={`ci-opt ci-opt--chip${opt.wide ? ' ci-opt--wide' : ''}${context.includes(i) ? ' ci-opt--sel' : ''}`}
-                  onClick={() => toggleContext(i)}
-                >
-                  <span className="ci-opt__emoji">{opt.e}</span>
-                  <span className="ci-opt__label">{opt.l}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Detail inputs for selected chips that have a follow-up prompt */}
-            {context.some(i => DAY_CONTEXT[i]?.detail) && (
-              <div className="ci-detail-list">
-                {context.filter(i => DAY_CONTEXT[i]?.detail).map(i => {
-                  const opt = DAY_CONTEXT[i]
-                  return (
-                    <div className="ci-detail" key={i}>
-                      <label className="ci-detail__label">
-                        <span className="ci-detail__emoji">{opt.e}</span>
-                        {opt.detail.prompt}
-                      </label>
-                      <input
-                        className="ci-detail__input"
-                        type="text"
-                        placeholder={opt.detail.placeholder}
-                        value={contextDetails[i] || ''}
-                        onChange={e => setContextDetail(i, e.target.value)}
-                      />
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-
-            <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(3)}>← Back</button>
               <button className="ci-btn ci-btn--inline" onClick={finish}>
-                {context.length === 0 ? 'Skip & log →' : 'Log check-in →'}
+                {anySymptomsAnswered ? 'Log check-in →' : 'Skip & log →'}
               </button>
             </div>
           </>
         )}
 
+
         {step === 1 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 1 of 4 · Treatments</span>
+              <span className="ci-label">Question 1 of 3 · My medications & products</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
             <div className="ci-progress"><div className="ci-fill" style={{ width: '25%' }} /></div>
 
-            {/* Condition toggle — same pattern as severity / symptoms screens */}
-            {conditions.length > 1 && (
-              <div className="ci-cond-toggle" role="tablist">
-                {conditions.map(c => {
-                  const sel = c === activeCondition
-                  return (
-                    <button
-                      key={c}
-                      role="tab"
-                      type="button"
-                      aria-selected={sel}
-                      className={`ci-cond-toggle__btn${sel ? ' ci-cond-toggle__btn--active' : ''}`}
-                      onClick={() => setActiveCondition(c)}
-                    >
-                      {c === '__generic' ? 'Health' : c}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-            {conditions.length === 1 && activeCondition && activeCondition !== '__generic' && (
-              <div className="ci-cond-chip">Tracking your {activeCondition.toLowerCase()}</div>
-            )}
-
             <h2 className="ci-title">
-              {treatments.length === 0
-                ? (conditions.length > 1
-                    ? `What are you using for your ${(activeCondition || 'health').toLowerCase()}?`
-                    : 'What medications or treatments are you currently using?')
-                : 'Still using these treatments?'}
+              {treatments.length === 0 ? 'What are you currently taking or using?' : 'Still using these?'}
             </h2>
             <p className="ci-sub">
               {treatments.length === 0
-                ? <>Search common medications and programs below, or <strong>type your own</strong> and add it as a chip. Next time you check in, you'll just confirm this list — no need to re-enter.</>
-                : 'Confirm what\'s still active, remove anything you\'ve stopped, or add something new.'}
+                ? <>Search by name or type your own. We'll organize them for you.</>
+                : <>Confirm what's still active, remove anything you've stopped, or add something new.</>}
             </p>
 
-            {treatments.length > 0 && (
-              <div className="ci-tx-chips">
-                {treatments.map(name => (
-                  <span key={name} className="ci-tx-chip">
-                    <span className="ci-tx-chip__name">{name}</span>
-                    <button
-                      type="button"
-                      className="ci-tx-chip__x"
-                      aria-label={`Remove ${name}`}
-                      onClick={() => removeTreatment(name)}
-                    >✕</button>
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* Grouped display */}
+            {treatments.length > 0 && (() => {
+              const grouped = groupByCategory(treatments)
+              return (
+                <div style={{ marginBottom: 16 }}>
+                  {Object.entries(grouped).map(([cat, names]) => (
+                    <div key={cat} style={{ marginBottom: 12 }}>
+                      <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 6px' }}>{cat}</p>
+                      <div className="ci-tx-chips">
+                        {names.map(name => (
+                          <span key={name} className="ci-tx-chip">
+                            <span className="ci-tx-chip__name">{name}</span>
+                            <button type="button" className="ci-tx-chip__x" aria-label={`Remove ${name}`} onClick={() => removeTreatment(name)}>✕</button>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            })()}
 
             <div className="ci-tx-input-wrap">
               <input
                 className="ci-tx-input"
                 type="text"
-                placeholder="Type a product, medication, or brand…"
+                placeholder="Search medications, supplements, programs…"
                 value={treatmentInput}
                 onChange={e => setTreatmentInput(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTreatment() } }}
               />
               {treatmentInput.trim() && (
-                <button
-                  type="button"
-                  className="ci-tx-add"
-                  onClick={() => addTreatment()}
-                >+ Add "{treatmentInput.trim()}"</button>
+                <button type="button" className="ci-tx-add" onClick={() => addTreatment()}>
+                  + Add "{treatmentInput.trim()}"
+                </button>
               )}
               {treatmentSuggestions.length > 0 && (
                 <ul className="ci-tx-suggest">
@@ -882,6 +724,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                     <li key={s}>
                       <button type="button" className="ci-tx-suggest__btn" onClick={() => addTreatment(s)}>
                         <span className="ci-tx-suggest__plus">+</span>{s}
+                        <span style={{ fontSize: 10, color: 'var(--color-text-muted)', marginLeft: 6 }}>{categoryFor(s)}</span>
                       </button>
                     </li>
                   ))}
@@ -889,14 +732,10 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               )}
             </div>
 
-            <p className="ci-done__where" style={{ marginTop: 12 }}>
-              💡 Don't see it? Just type the medication or program name and tap <strong>Add</strong>. You can add dose &amp; frequency in your <strong>profile</strong> later.
-            </p>
-
             <div className="ci-nav-row">
               <button className="ci-back" onClick={() => setStep(0)}>← Back</button>
               <button className="ci-btn ci-btn--inline" onClick={() => setStep(2)}>
-                {treatments.length === 0 ? 'Skip → next' : 'Continue →'}
+                {treatments.length === 0 ? 'Skip →' : 'Continue →'}
               </button>
             </div>
           </>
@@ -1009,12 +848,15 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                     </div>
                   </div>
                 )}
-                {viewing.treatments?.length > 0 && (
-                  <div className="ci-summary-row">
-                    <div className="ci-summary-row__key">Active treatments</div>
-                    <div className="ci-summary-row__val">{viewing.treatments.join(', ')}</div>
-                  </div>
-                )}
+                {viewing.treatments?.length > 0 && (() => {
+                  const grouped = groupByCategory(viewing.treatments)
+                  return Object.entries(grouped).map(([cat, names]) => (
+                    <div key={cat} className="ci-summary-row">
+                      <div className="ci-summary-row__key">{cat}</div>
+                      <div className="ci-summary-row__val">{names.join(', ')}</div>
+                    </div>
+                  ))
+                })()}
                 {viewing.photoAttached && (
                   <div className="ci-summary-row">
                     <div className="ci-summary-row__key">Photo</div>

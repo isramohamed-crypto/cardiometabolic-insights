@@ -149,7 +149,12 @@ function readReadings() {
 
 function writeReading(id, value, date) {
   const all = readReadings()
-  all[id] = { value, date: date ? new Date(date).toISOString() : new Date().toISOString() }
+  const isoDate = date ? new Date(date).toISOString() : new Date().toISOString()
+  const prev = all[id] || {}
+  const history = Array.isArray(prev.history) ? prev.history : []
+  // Keep last 30 readings for sparkline
+  const newHistory = [...history, { value, date: isoDate }].slice(-30)
+  all[id] = { value, date: isoDate, history: newHistory }
   try { localStorage.setItem('aheadReadings', JSON.stringify(all)) } catch (_) {}
   // Also write LDL status to profile so other components can use it
   if (id === 'ldl') {
