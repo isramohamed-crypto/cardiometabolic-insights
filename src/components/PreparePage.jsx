@@ -113,7 +113,7 @@ const SW_SLIDES = [
   {
     step: '1 of 5', emoji: '📋',
     title: 'Bring your tracking data — even on your phone',
-    body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your Cardiometabolic360 summary does this automatically.',
+    body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your Ahead summary does this automatically.',
     cite: 'Verywell Health',
     bg: 'linear-gradient(150deg,#2D3E50,#1a2332)',
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
@@ -205,7 +205,7 @@ function ChatOverlay({ initialQ, onClose, dermName, apptDate }) {
         </button>
         <div className="pp-chat-title">
           <span className="pp-chat-dot" />
-          Cardiometabolic360 AI · Visit Prep
+          Ahead AI · Visit Prep
         </div>
         <div style={{ width: 36 }} />
       </div>
@@ -430,7 +430,7 @@ const STORIES = [
     step: 'Story 4 of 5', avatar: 'J', name: 'James, 55', detail: 'Hypertension + high cholesterol · Stress and sleep triggers',
     quote: "I showed my cardiologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
     context: "James tracked his blood pressure readings, sleep, and stress daily. When his cardiologist saw the pattern — stress on Monday, elevated readings by Wednesday — she immediately adjusted his treatment approach.",
-    takeaway: 'Your tracking data tells a story. Share your Cardiometabolic360 summary.', takeawaySub: 'Your 21-day summary is ready to share',
+    takeaway: 'Your tracking data tells a story. Share your Ahead summary.', takeawaySub: 'Your 21-day summary is ready to share',
     bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
   },
   {
@@ -774,7 +774,7 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Ask the AI</h2>
         </div>
         <div className="pp-ai-bar">
-          <div className="pp-ai-label"><span className="pp-ai-dot" />Cardiometabolic360 AI · Visit prep mode</div>
+          <div className="pp-ai-label"><span className="pp-ai-dot" />Ahead AI · Visit prep mode</div>
           <div className="pp-ai-input-row">
             <input
               className="pp-ai-input"

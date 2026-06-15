@@ -264,7 +264,7 @@ export default function Onboarding({ name, onClose }) {
     const summaryName = (ans.q2 || '').trim().split(' ')[0]
     const title = skipped
       ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
-      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Cardiometabolic360 is ready.')
+      : (summaryName ? `You're all set, ${summaryName}.`                    : 'Your Ahead is ready.')
     const sub = skipped
       ? <>No problem — you can finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your feed.</>
       : <>We'll personalize your daily feed around what matters to you. You can update your answers anytime in <strong>Profile settings</strong>.</>
@@ -326,7 +326,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to Cardiometabolic360</p>
+          <p className="ob-hero__eyebrow">Welcome to Ahead</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>
