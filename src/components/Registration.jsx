@@ -65,12 +65,12 @@ export default function Registration({ onClose, onStartOnboarding }) {
           </div>
           <div className="reg-hero__content">
             <div className="reg-hero__wordmark">
-              AHEAD
+              VITALIST
               <span className="reg-hero__wordmark-sep">|</span>
               <span className="reg-hero__wordmark-partner">People Inc.</span>
             </div>
             <h1 className="reg-hero__headline">
-              Welcome to <em>AHEAD</em>
+              Welcome to <em>Vitalist</em>
             </h1>
           </div>
           <button className="reg-close" onClick={onClose} aria-label="Close">✕</button>

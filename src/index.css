@@ -1,6 +1,6 @@
 /* ── Condition Strip ─────────────────────────────────────────────── */
 .condition-strip {
-  padding: var(--space-4) var(--space-4) 0;
+  padding: 0 var(--space-4) var(--space-6);
 }
 .condition-strip__card {
   border-radius: var(--radius-lg);
@@ -96,7 +96,7 @@
 /* ── Dashboard Row ───────────────────────────────────────────────── */
 /* ── Dashboard Tiles ─────────────────────────────────────────────── */
 .dash-tiles-wrap {
-  padding: 0 var(--space-4) var(--space-4);
+  padding: 0 var(--space-4) var(--space-6);
 }
 .dash-tiles {
   display: flex;
@@ -627,7 +627,7 @@ h2 {
 
 /* ── For You Now ─────────────────────────────────────────────── */
 .for-you-now {
-  padding: var(--space-5) 0 0;
+  padding: var(--space-6) 0 0;
 }
 .for-you-now__title {
   font-family: var(--font-serif);
@@ -1822,7 +1822,7 @@ h2 {
    Sits directly under the "Tips for you" carousel as one section, so
    top padding is removed to let the Skin Diary card visually attach. */
 .checkin-section {
-  padding: 0 var(--space-5) var(--space-4);
+  padding: var(--space-6) var(--space-5) var(--space-6);
 }
 
 .dc-feat {
@@ -2512,7 +2512,7 @@ h2 {
 
 /* ── SWIPE LEARN ────────────────────────────────────────────── */
 .swipe-learn {
-  padding: var(--space-5) 0 var(--space-2);
+  padding: var(--space-6) 0 var(--space-2);
 }
 .swipe-learn__head {
   display: flex;
@@ -3061,7 +3061,7 @@ h2 {
   padding: var(--space-6) 0 var(--space-4);
   background: var(--color-sage);
   position: relative;
-  margin: var(--space-6) 0 var(--space-4);
+  margin: var(--space-6) 0 var(--space-6);
 }
 .quick-answers::before {
   content: '';
@@ -3171,7 +3171,7 @@ h2 {
 /* ── WATCH NOW ──────────────────────────────────────────────── */
 .watch-now {
   padding: var(--space-6) 0 var(--space-6);
-  margin-top: var(--space-5);
+  margin-top: 0;
 }
 
 /* ── Understanding Your Eczema (edu) ────────────────────────── */

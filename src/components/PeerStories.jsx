@@ -145,13 +145,13 @@ export default function PeerStories() {
           <div className="lbe-cover__head">
             <p className="lbe-cover__masthead">Verywell Health</p>
             <span className="lbe-cover__chip">REAL PEOPLE, REAL STORIES:</span>
-            <h2 className="lbe-cover__title">Living Ahead</h2>
+            <h2 className="lbe-cover__title">Living Vitalist</h2>
           </div>
           <div
             className="lbe-cover__hero"
             style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #2E5D8E 60%, #C2673A 100%)' }}
             role="img"
-            aria-label="Three people featured in the Living Ahead series"
+            aria-label="Three people featured in the Living Vitalist series"
           />
         </article>
 

@@ -430,7 +430,7 @@ const STORIES = [
     step: 'Story 4 of 5', avatar: 'J', name: 'James, 55', detail: 'Hypertension + high cholesterol · Stress and sleep triggers',
     quote: "I showed my cardiologist three weeks of tracking data. She said it was the most useful thing a patient had ever brought in.",
     context: "James tracked his blood pressure readings, sleep, and stress daily. When his cardiologist saw the pattern — stress on Monday, elevated readings by Wednesday — she immediately adjusted his treatment approach.",
-    takeaway: 'Your tracking data tells a story. Share your Ahead summary.', takeawaySub: 'Your 21-day summary is ready to share',
+    takeaway: 'Your tracking data tells a story. Share your Vitalist summary.', takeawaySub: 'Your 21-day summary is ready to share',
     bg: 'linear-gradient(150deg,#2D4A38,#1a2e22)', glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.2),transparent 55%)',
   },
   {
@@ -770,7 +770,7 @@ export default function PreparePage() {
           <h2 className="pp-sec-title">Ask the AI</h2>
         </div>
         <div className="pp-ai-bar">
-          <div className="pp-ai-label"><span className="pp-ai-dot" />Ahead AI · Visit prep mode</div>
+          <div className="pp-ai-label"><span className="pp-ai-dot" />Vitalist AI · Visit prep mode</div>
           <div className="pp-ai-input-row">
             <input
               className="pp-ai-input"

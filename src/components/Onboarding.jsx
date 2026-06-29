@@ -522,7 +522,7 @@ function OptionList({ options, selectedId, selectedIds, multiSelect, onSelect })
               <div className="ob-opt__label">{o.label}</div>
               <div className="ob-opt__desc">{o.desc}</div>
             </div>
-            <div className="ob-opt__check">{sel ? '✓' : ''}</div>
+            <div className={`ob-opt__check${multiSelect ? ' ob-opt__check--multi' : ''}`}>{sel ? '✓' : ''}</div>
           </button>
         )
       })}

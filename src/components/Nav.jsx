@@ -17,7 +17,7 @@ export default function Nav({ activePage, setActivePage, onLogoClick, onAvatarCl
     <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' && activePage !== 'Learn' && activePage !== 'Track' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
       <div className="nav__brand">
         <button className="nav__wordmark" onClick={onLogoClick} style={{background:'none',border:'none',cursor:'pointer',padding:0}}>
-          <span style={{display:'block',fontWeight:700,letterSpacing:'0.05em'}}>AHEAD</span>
+          <span style={{display:'block',fontWeight:700,letterSpacing:'0.05em'}}>VITALIST</span>
           <span style={{display:'block',fontSize:'10px',fontWeight:400,opacity:0.6,letterSpacing:'0.04em',textTransform:'uppercase',marginTop:'-2px'}}>by People Inc.</span>
         </button>
       </div>
