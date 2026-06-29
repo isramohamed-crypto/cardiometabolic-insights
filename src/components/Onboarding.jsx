@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Onboarding.css'
 
-const TOTAL_QS = 5
+const TOTAL_QS = 6
 
 const Q1 = {
   text: 'Who are you using AHEAD for?',
@@ -65,6 +65,20 @@ const Q5 = {
   text: 'What matters most to you right now?',
   sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
 }
+
+const Q6 = {
+  text: 'Who are you becoming?',
+  sub: 'Habits stick when they\'re tied to who you are, not just what you want. Finish this sentence — or write your own.',
+}
+
+const IDENTITY_CHIPS = [
+  "I'm someone who takes care of my heart.",
+  "I'm someone who manages my health, one day at a time.",
+  "I'm someone who shows up for myself, even on hard days.",
+  "I'm someone who makes choices that protect my future.",
+  "I'm someone who puts their health first.",
+  "I'm someone who is learning to listen to my body.",
+]
 
 const Q4 = {
   text: 'What does your health picture look like right now?',
@@ -133,6 +147,7 @@ export default function Onboarding({ name, onClose }) {
     q4Branch: 'yes',          // 'yes' | 'no' — defaults to 'yes' so the list shows on entry
     q4: [],                   // multi-select: array of diagnosis or struggle ids
     q5: [],                   // multi-select: array of interest topic labels
+    q6: '',                   // identity statement (free text)
   })
 
   function selectOpt(key, id) {
@@ -179,6 +194,7 @@ export default function Onboarding({ name, onClose }) {
     maybeSet('diagnosisStatus', mapCode('diagnosisStatus', ans.q4Branch))
     maybeSet('condition',       mapCode('condition',       ans.q4))
     maybeSet('topics',          ans.q5)
+    maybeSet('identity',        ans.q6.trim())
     profile.onboardingSources = Array.from(onboardingSources)
     profile.skippedAt = new Date().toISOString()
     // Fresh onboarding = clear stale per-session state.
@@ -201,6 +217,7 @@ export default function Onboarding({ name, onClose }) {
     if (step === 2) return !!ans.q4Branch && Array.isArray(ans.q4) && ans.q4.length > 0
     if (step === 3) return !!ans.q3
     if (step === 4) return Array.isArray(ans.q5) && ans.q5.length > 0
+    if (step === 5) return true   // identity is optional
     return false
   })()
 
@@ -217,6 +234,7 @@ export default function Onboarding({ name, onClose }) {
       diagnosisStatus: mapCode('diagnosisStatus', ans.q4Branch),
       condition:       mapCode('condition',       ans.q4),
       topics:          ans.q5,    // topics are already stored as labels
+      identity:        ans.q6.trim(),
     }
     const next_data = { ...existing }
     for (const [k, v] of Object.entries(fields)) {
@@ -260,6 +278,7 @@ export default function Onboarding({ name, onClose }) {
     if (focusLabel)       rows.push({ icon: '🎯', key: 'What matters most',  val: focusLabel })
     if (conditionLabel)   rows.push({ icon: '📍', key: conditionKey,         val: conditionLabel })
     if (ans.q5?.length)   rows.push({ icon: '💡', key: 'Interests',           val: ans.q5.join(', ') })
+    if (ans.q6?.trim())   rows.push({ icon: '🪞', key: 'Identity',            val: ans.q6.trim() })
 
     // Skipped items — list of what they didn't answer
     const missing = []
@@ -428,6 +447,40 @@ export default function Onboarding({ name, onClose }) {
                   selectedId={ans.q3}
                   onSelect={id => selectOpt('q3', id)}
                 />
+              </>
+            )}
+
+            {step === 5 && (
+              <>
+                <div className="ob-q-text">{Q6.text}</div>
+                <div className="ob-q-sub">{Q6.sub}</div>
+                <div className="ob-identity-chips">
+                  {IDENTITY_CHIPS.map(chip => (
+                    <button
+                      key={chip}
+                      type="button"
+                      className={`ob-identity-chip${ans.q6 === chip ? ' ob-identity-chip--sel' : ''}`}
+                      onClick={() => setAns(a => ({ ...a, q6: a.q6 === chip ? '' : chip }))}
+                    >
+                      {chip}
+                    </button>
+                  ))}
+                </div>
+                <div className="ob-q-sub" style={{ marginTop: 'var(--space-4)' }}>Or write your own:</div>
+                <input
+                  className="ob-input"
+                  type="text"
+                  placeholder="I'm someone who…"
+                  value={ans.q6}
+                  onChange={e => setAns(a => ({ ...a, q6: e.target.value }))}
+                />
+                <button
+                  className="ob-skip-inline"
+                  type="button"
+                  onClick={() => setAns(a => ({ ...a, q6: '' }))}
+                >
+                  Skip this for now
+                </button>
               </>
             )}
 
