@@ -24,7 +24,7 @@ const PERSONA_CONTENT = {
     body: '15-minute heart-healthy meals: salmon with roasted veg, lentil soup from a can, or a grain bowl with avocado and chickpeas. High fiber, low saturated fat, done fast.',
   },
   prep: {
-    title: 'For the Make-Aheader',
+    title: 'For the Meal Prepper',
     body: 'Batch-cook oat groats, roast a tray of vegetables, and prep overnight oats with flaxseed. A few hours on Sunday means heart-smart choices all week with zero willpower required.',
   },
   weekend: {

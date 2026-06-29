@@ -4,7 +4,7 @@ import './Onboarding.css'
 const TOTAL_QS = 6
 
 const Q1 = {
-  text: 'Who are you using AHEAD for?',
+  text: 'Who are you using Vitalist for?',
   sub: 'This shapes the content, voice, and guidance we show you.',
   options: [
     { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m focused on my own health journey' },
@@ -354,7 +354,7 @@ export default function Onboarding({ name, onClose }) {
       <div className="ob-screen">
         {/* Hero / Header */}
         <div className="ob-hero">
-          <p className="ob-hero__eyebrow">Welcome to AHEAD</p>
+          <p className="ob-hero__eyebrow">Welcome to Vitalist</p>
           <h1 className="ob-hero__title">{heroHeadline}</h1>
           <p className="ob-hero__sub">{heroSub}</p>
         </div>
