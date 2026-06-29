@@ -227,6 +227,9 @@ export default function App() {
           {/* 3 — Dashboard tiles: customizable health readings */}
           <DashboardTiles tick={checkinTick} />
 
+          {/* AI Insights */}
+          <InsightSection />
+
           {/* 4 — Condition strip: personalized per user's conditions */}
           <ConditionStrip />
 
@@ -265,7 +268,6 @@ export default function App() {
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <SponsorBanner />
           {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
-          {/* <InsightSection /> */}
         </main>
       )}
 

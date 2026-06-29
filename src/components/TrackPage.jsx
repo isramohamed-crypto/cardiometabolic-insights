@@ -457,7 +457,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   }, [checkinTick])
 
   // AI Insights expand/collapse state (always visible, just toggleable)
-  const [aiOpen, setAiOpen] = useState(false)
+  const [aiOpen, setAiOpen] = useState(true)
 
   const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(checkins), [checkins])
   // Days tracked = baseline mock (21) + actual check-ins logged
@@ -474,46 +474,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         <h1 className="pp-hero-title">What your data is telling you</h1>
         <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your health trends.</p>
       </div>
-
-      {/* Check-in prompt banner — right below the hero copy */}
-      {(() => {
-        const d = daysAgoUtil(lastCheckin?.date)
-        const todayDone = d === 0
-        return (
-          <button
-            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
-            type="button"
-            onClick={() => onOpenCheckin?.()}
-          >
-            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
-            <span className="tp-checkin-banner__body">
-              <span className="tp-checkin-banner__title">
-                {todayDone
-                  ? 'Logged today — tap to view or update'
-                  : (d == null
-                      ? 'Start your first health check-in'
-                      : d === 1
-                        ? 'Log today\'s check-in'
-                        : `Log today\'s check-in — it\'s been ${d} days`)}
-              </span>
-              <span className="tp-checkin-banner__sub">
-                {todayDone
-                  ? 'Your trend is up to date. Tap to see today\'s summary.'
-                  : 'Adds to your trend, triggers, and pattern detection.'}
-              </span>
-            </span>
-            <span className="tp-checkin-banner__arrow">→</span>
-          </button>
-        )
-      })()}
-
-      {/* Habit tracker */}
-      <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
-      <HabitCheckinSheet
-        open={showHabitSheet}
-        onClose={() => setShowHabitSheet(false)}
-        onComplete={() => setShowHabitSheet(false)}
-      />
 
       {/* AI Insights — compact, expandable */}
       <div className={`tp-ai-summary${aiOpen ? ' tp-ai-summary--open' : ''}`}>
@@ -565,6 +525,46 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             </ul>
           )}
         </div>
+
+      {/* Check-in prompt banner */}
+      {(() => {
+        const d = daysAgoUtil(lastCheckin?.date)
+        const todayDone = d === 0
+        return (
+          <button
+            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
+            type="button"
+            onClick={() => onOpenCheckin?.()}
+          >
+            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
+            <span className="tp-checkin-banner__body">
+              <span className="tp-checkin-banner__title">
+                {todayDone
+                  ? 'Logged today — tap to view or update'
+                  : (d == null
+                      ? 'Start your first health check-in'
+                      : d === 1
+                        ? 'Log today\'s check-in'
+                        : `Log today\'s check-in — it\'s been ${d} days`)}
+              </span>
+              <span className="tp-checkin-banner__sub">
+                {todayDone
+                  ? 'Your trend is up to date. Tap to see today\'s summary.'
+                  : 'Adds to your trend, triggers, and pattern detection.'}
+              </span>
+            </span>
+            <span className="tp-checkin-banner__arrow">→</span>
+          </button>
+        )
+      })()}
+
+      {/* Habit tracker */}
+      <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
+      <HabitCheckinSheet
+        open={showHabitSheet}
+        onClose={() => setShowHabitSheet(false)}
+        onComplete={() => setShowHabitSheet(false)}
+      />
 
       {/* ── My Numbers ── */}
       <div className="tp-section">
