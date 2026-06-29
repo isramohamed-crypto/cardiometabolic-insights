@@ -321,6 +321,53 @@
   letter-spacing: 0.02em;
 }
 
+/* ── IDENTITY CHIPS (Q6) ── */
+.ob-identity-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: var(--space-4);
+}
+
+.ob-identity-chip {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: border-color .15s, background .15s, color .15s;
+}
+
+.ob-identity-chip:hover {
+  border-color: var(--color-teal);
+  color: var(--color-text-primary);
+}
+
+.ob-identity-chip--sel {
+  border-color: var(--color-teal);
+  background: var(--color-teal-light);
+  color: var(--color-teal);
+  font-weight: 600;
+}
+
+.ob-skip-inline {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
 /* ── BRANCH TOGGLE (Q4) ── */
 .ob-toggle {
   display: flex;

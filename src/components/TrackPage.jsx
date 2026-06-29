@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import SponsorBanner from './SponsorBanner'
+import HabitSection from './HabitSection'
+import HabitCheckinSheet from './HabitCheckinSheet'
 
 const COMMON_TREATMENTS = [
   'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
@@ -400,6 +402,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [tileConfig, setTileConfig] = useState(() => readTileConfig() || ['ldl', 'bp'])
   const [addingTile, setAddingTile] = useState(false)
   const [addingTx, setAddingTx] = useState(false)
+  const [showHabitSheet, setShowHabitSheet] = useState(false)
   const [txInput, setTxInput] = useState('')
   const txInputRef = useRef(null)
 
@@ -503,6 +506,14 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           </button>
         )
       })()}
+
+      {/* Habit tracker */}
+      <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
+      <HabitCheckinSheet
+        open={showHabitSheet}
+        onClose={() => setShowHabitSheet(false)}
+        onComplete={() => setShowHabitSheet(false)}
+      />
 
       {/* AI Insights — compact, expandable */}
       <div className={`tp-ai-summary${aiOpen ? ' tp-ai-summary--open' : ''}`}>
