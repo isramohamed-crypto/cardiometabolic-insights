@@ -7045,6 +7045,86 @@ h2 {
   100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 }
 
+/* Your why banner — always visible, dark teal */
+.hcs-why {
+  background: var(--color-teal);
+  padding: var(--space-4) var(--space-5);
+  flex-shrink: 0;
+}
+
+.hcs-why__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 4px;
+}
+
+.hcs-why__body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hcs-why__text {
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  color: #fff;
+  line-height: 1.45;
+  flex: 1;
+}
+
+.hcs-why__edit-btn {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.6);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.hcs-why__edit-btn:hover { color: #fff; }
+
+.hcs-why__edit-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.hcs-why__input {
+  flex: 1;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: var(--radius-md);
+  padding: 7px 10px;
+  font-size: var(--font-size-sm);
+  color: #fff;
+  font-family: inherit;
+  font-style: italic;
+}
+.hcs-why__input::placeholder { color: rgba(255,255,255,.45); }
+.hcs-why__input:focus { outline: none; border-color: rgba(255,255,255,.7); }
+
+.hcs-why__save {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  background: rgba(255,255,255,.2);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.hcs-why__save:hover { background: rgba(255,255,255,.3); }
+
 /* Identity reinforcement banner */
 .hcs-identity {
   display: flex;
