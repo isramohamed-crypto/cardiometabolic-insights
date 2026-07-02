@@ -1,0 +1,269 @@
+/* ── EatingWell Section ──────────────────────────────────────────────────── */
+
+.ew-section {
+  padding: var(--space-6) 0 var(--space-6);
+}
+
+/* Header */
+.ew-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.ew-header__eyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #639a3a;
+  margin-bottom: 4px;
+}
+
+.ew-header__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.ew-header__sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.ew-header__badge {
+  flex-shrink: 0;
+  background: #639a3a;
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+}
+
+.ew-header__logo {
+  display: block;
+  width: 80px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* Scroll row */
+.ew-scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding: 0 var(--space-5) var(--space-2);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ew-scroll::-webkit-scrollbar { display: none; }
+
+.ew-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+/* Intro card */
+.ew-intro-card {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ew-intro-card__video-wrap {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background: #000;
+}
+
+.ew-intro-card__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ew-intro-card__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.ew-intro-card__logo {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.ew-intro-card__panel {
+  background: #639a3a;
+  padding: 12px 14px 14px;
+  flex-shrink: 0;
+}
+
+.ew-intro-card__title {
+  font-family: 'manofa', sans-serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: #1a1a1a;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+
+.ew-intro-card__sub {
+  font-family: 'salais', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* Flip card */
+.ew-card {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  perspective: 1000px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ew-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(.4, 0, .2, 1);
+  border-radius: 16px;
+}
+
+.ew-card--flipped .ew-card__inner {
+  transform: rotateY(180deg);
+}
+
+.ew-card__front,
+.ew-card__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front */
+.ew-card__front {
+  display: flex;
+  flex-direction: column;
+  background: #1a2e1a;
+}
+
+.ew-card__front-body {
+  background: #639a3a;
+  padding: 12px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ew-card__get-to-know {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 0;
+}
+
+.ew-card__front-title {
+  font-family: 'manofa', sans-serif;
+  font-size: 19px;
+  font-weight: 300;
+  color: #1a1a1a;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+
+.ew-card__flip-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+}
+
+.ew-card__img {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+}
+
+/* Back */
+.ew-card__back {
+  background: #639a3a;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  justify-content: center;
+}
+
+.ew-card__quote-mark {
+  font-size: 72px;
+  line-height: .7;
+  color: rgba(255,255,255,.25);
+  font-family: Georgia, serif;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ew-card__back-text {
+  font-family: 'manofa', sans-serif;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.6;
+  text-align: left;
+}

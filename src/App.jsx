@@ -36,6 +36,7 @@ import BHGCard from './components/BHGCard'
 import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
+import EatingWellSection from './components/EatingWellSection'
 import TrackPage from './components/TrackPage'
 import PreparePage from './components/PreparePage'
 import BottomNav from './components/BottomNav'
@@ -250,16 +251,8 @@ export default function App() {
           {/* 7 — Watch Now: video for deeper learning */}
           <WatchNow />
 
-          {/* 8 — Interests row */}
-          <section className="interests-row">
-            <h2 className="interests-row__heading">Based on your interests</h2>
-            <div className="interests-row__scroll">
-              <div className="interests-row__item"><OnesToWatch /></div>
-              <div className="interests-row__item"><AutumnTravelCard /></div>
-              <div className="interests-row__item"><BHGCard /></div>
-              <div className="interests-row__item"><MyRecipesCard /></div>
-            </div>
-          </section>
+          {/* 8 — EatingWell featured content */}
+          <EatingWellSection />
 
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />

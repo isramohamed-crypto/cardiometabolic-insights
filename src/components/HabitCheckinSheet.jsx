@@ -9,8 +9,11 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
   const [celebrating, setCelebrating] = useState(null)
   const [earnedFlash, setEarnedFlash] = useState(false)
   const [shimmer, setShimmer] = useState(false)
+  const [editingWhy, setEditingWhy] = useState(false)
+  const [whyDraft, setWhyDraft] = useState('')
   const earnedTimerRef = useRef(null)
   const shimmerTimer = useRef(null)
+  const whyInputRef = useRef(null)
 
   useEffect(() => {
     if (open) setCompletions(readTodayCompletions())
@@ -73,6 +76,27 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
     try { return JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}').identity || '' } catch (_) { return '' }
   })()
 
+  const [why, setWhy] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}').why || '' } catch (_) { return '' }
+  })
+
+  function saveWhy() {
+    const val = whyDraft.trim()
+    try {
+      const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+      p.why = val
+      localStorage.setItem('cardiometabolicProfile', JSON.stringify(p))
+    } catch (_) {}
+    setWhy(val)
+    setEditingWhy(false)
+  }
+
+  function startEditWhy() {
+    setWhyDraft(why)
+    setEditingWhy(true)
+    setTimeout(() => whyInputRef.current?.focus(), 50)
+  }
+
   if (!open) return null
 
   return (
@@ -99,6 +123,35 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
               <path d="M1 1L13 13M13 1L1 13"/>
             </svg>
           </button>
+        </div>
+
+        {/* Your why — always visible, B styling */}
+        <div className="hcs-why">
+          <div className="hcs-why__label">
+            {why ? "You're doing this because" : "What's driving you?"}
+          </div>
+          {editingWhy ? (
+            <div className="hcs-why__edit-row">
+              <input
+                ref={whyInputRef}
+                className="hcs-why__input"
+                value={whyDraft}
+                onChange={e => setWhyDraft(e.target.value)}
+                placeholder="I want to be around to see my kids grow up…"
+                onKeyDown={e => { if (e.key === 'Enter') saveWhy() }}
+              />
+              <button className="hcs-why__save" onClick={saveWhy}>Save</button>
+            </div>
+          ) : (
+            <div className="hcs-why__body">
+              <span className="hcs-why__text">
+                {why ? `"${why}"` : 'Add your why →'}
+              </span>
+              <button className="hcs-why__edit-btn" onClick={startEditWhy}>
+                {why ? 'Edit' : 'Add'}
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="hcs-progress-wrap">
