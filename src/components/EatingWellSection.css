@@ -4,6 +4,34 @@
   padding: var(--space-6) 0 var(--space-6);
 }
 
+/* Title row */
+.ew-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.ew-title-row__logo {
+  height: 20px;
+  width: auto;
+}
+
+.ew-title-row__divider {
+  width: 1px;
+  height: 22px;
+  background: #000;
+  opacity: 0.7;
+}
+
+.ew-title-row__title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: -0.01em;
+}
+
 /* Header */
 .ew-header {
   display: flex;
