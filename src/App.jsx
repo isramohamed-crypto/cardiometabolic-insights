@@ -37,6 +37,10 @@ import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
 import EatingWellSection from './components/EatingWellSection'
+import VerywellMindSection from './components/VerywellMindSection'
+import NutritionBuildingBlocksSection from './components/NutritionBuildingBlocksSection'
+import VeryWellSection from './components/VeryWellSection'
+import InStyleSection from './components/InStyleSection'
 import TrackPage from './components/TrackPage'
 import PreparePage from './components/PreparePage'
 import BottomNav from './components/BottomNav'
@@ -244,6 +248,9 @@ export default function App() {
           {/* 5 — Tips for you: credible, Health.com sourced */}
           <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
 
+          {/* Nutrition Building Blocks — EatingWell featured content */}
+          <NutritionBuildingBlocksSection />
+
           <div className="sponsor-card-wrap">
             <SponsorBanner variant="card" />
           </div>
@@ -256,6 +263,15 @@ export default function App() {
 
           {/* 8 — EatingWell featured content */}
           <EatingWellSection />
+
+          {/* 9 — Verywell Mind: Embracing Mindfulness */}
+          <VerywellMindSection />
+
+          {/* 9 — VeryWell Health + Mind */}
+          <VeryWellSection />
+
+          {/* 10 — InStyle featured content */}
+          <InStyleSection />
 
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
