@@ -48,7 +48,7 @@ export default function ForYouNow() {
                 className="rs-card rs-card--sponsored"
                 aria-label="Sponsored by Amgen"
               >
-                <span style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
+                <img src="/images/amgen/amgen-logo-blue.svg" alt="Amgen" className="rs-card__sponsor-logo" />
               </article>
             )
           }

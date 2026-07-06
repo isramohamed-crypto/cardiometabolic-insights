@@ -77,11 +77,10 @@ export default function EatingWellSection() {
   return (
     <section className="ew-section">
       {/* Header */}
-      <div className="ew-header">
-        <div className="ew-header__text" />
-        <div className="ew-header__badge">
-          <img src="/ew-logo.png" alt="EatingWell" className="ew-header__logo" />
-        </div>
+      <div className="ew-title-row">
+        <img src="/ew-logo.png" alt="EatingWell" className="ew-title-row__logo" />
+        <span className="ew-title-row__divider" />
+        <span className="ew-title-row__title">Simple &amp; Satisfying Swaps</span>
       </div>
 
       {/* Card scroll row */}

@@ -13,7 +13,7 @@ export default function SponsorBanner({ variant = 'bar' }) {
     : 'sponsor-banner'
   return (
     <aside className={cls} aria-label="Sponsored by Amgen">
-      <span className="sponsor-banner__logo" style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
+      <img src="/images/amgen/amgen-logo-blue.svg" alt="Amgen" className="sponsor-banner__logo" />
     </aside>
   )
 }

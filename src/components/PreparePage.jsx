@@ -755,7 +755,7 @@ export default function PreparePage() {
                 </div>
                 {i === 0 && (
                   <div className="pp-q-row pp-q-row--sponsor" aria-label="Sponsored by Amgen">
-                    <span style={{fontWeight:700,fontSize:15,letterSpacing:'0.08em',color:'var(--color-text-primary)'}}>AMGEN</span>
+                    <img src="/images/amgen/amgen-logo-blue.svg" alt="Amgen" style={{height:28,width:'auto'}} />
                   </div>
                 )}
               </React.Fragment>
