@@ -7239,3 +7239,19 @@ h2 {
   font-weight: 600;
 }
 .chat-reco__list li { margin-bottom: 3px; }
+
+/* ── Archived section ─────────────────────────────────────────────── */
+.archived-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px dashed var(--color-border);
+}
+.archived-section__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0 var(--space-4) var(--space-4);
+}

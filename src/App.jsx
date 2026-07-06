@@ -37,10 +37,10 @@ import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
 import LearnPage from './components/LearnPage'
 import EatingWellSection from './components/EatingWellSection'
-import VerywellMindSection from './components/VerywellMindSection'
 import NutritionBuildingBlocksSection from './components/NutritionBuildingBlocksSection'
 import VeryWellSection from './components/VeryWellSection'
 import InStyleSection from './components/InStyleSection'
+import ParentsCaregiverSupportSection from './components/ParentsCaregiverSupportSection'
 import TrackPage from './components/TrackPage'
 import PreparePage from './components/PreparePage'
 import BottomNav from './components/BottomNav'
@@ -235,18 +235,9 @@ export default function App() {
           {/* AI Insights */}
           <InsightSection />
 
-          {/* 4 — Condition strip: personalized per user's conditions */}
-          <ConditionStrip />
-
           {/* 4 — Daily check-in: strike while engaged after AI interaction */}
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-
-          {/* 4 — Quick Answers: facts-first for this audience */}
-          <QuickAnswers />
-
-          {/* 5 — Tips for you: credible, Health.com sourced */}
-          <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
 
           {/* Nutrition Building Blocks — EatingWell featured content */}
           <NutritionBuildingBlocksSection />
@@ -255,17 +246,11 @@ export default function App() {
             <SponsorBanner variant="card" />
           </div>
 
-          {/* 6 — Peer Stories: social proof from people like them */}
-          <PeerStories />
-
           {/* 7 — Watch Now: video for deeper learning */}
           <WatchNow />
 
           {/* 8 — EatingWell featured content */}
           <EatingWellSection />
-
-          {/* 9 — Verywell Mind: Embracing Mindfulness */}
-          <VerywellMindSection />
 
           {/* 9 — VeryWell Health + Mind */}
           <VeryWellSection />
@@ -273,10 +258,23 @@ export default function App() {
           {/* 10 — InStyle featured content */}
           <InStyleSection />
 
+          {/* 11 — Parents: Caregiver Support */}
+          <ParentsCaregiverSupportSection />
+
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <SponsorBanner />
           {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
+
+          {/* Archived — retired sections kept for reference */}
+          <section className="archived-section">
+            <h2 className="archived-section__title">Archived</h2>
+
+            <QuickAnswers />
+            <ConditionStrip />
+            <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
+            <PeerStories />
+          </section>
         </main>
       )}
 
