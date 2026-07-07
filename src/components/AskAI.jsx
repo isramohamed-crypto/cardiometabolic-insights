@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import MarkAsTried from './MarkAsTried'
+import NutritionBuildingBlocksSection from './NutritionBuildingBlocksSection'
+import ParentsCaregiverSupportSection from './ParentsCaregiverSupportSection'
+import VeryWellSection from './VeryWellSection'
 
 const SUGGESTED = [
+  'Eating changes feel hard when I’m stressed.',
   'What do my cholesterol numbers actually mean?',
   "I'm overwhelmed trying to change my diet and lifestyle at the same time.",
   "What can I eat on the go that's good for my cholesterol?",
@@ -120,6 +124,90 @@ const HELPS_FLOW = [
 
 const FLOW_TRIGGER = 'What are the best tips you have for someone managing high cholesterol?'
 
+// Opening feed — three EatingWell recipes shown after Beth's first answer
+const OPENING_RECIPES = [
+  { id: 'casserole', title: 'Philly Chicken Cheesesteak Casserole', image: '/images/ew/casserole.png' },
+  { id: 'fajita', title: 'Chicken Fajita Soup', image: '/images/ew/fajita.png' },
+  { id: 'shrimp', title: 'Spicy Jerk Shrimp', image: '/images/ew/shrimp.png' },
+]
+
+// Multi-turn scripted flow for the Beth / Headspace-"Ebb"-style demo
+const BETH_FLOW = [
+  // Turn 0 — ask what happens when stressed
+  {
+    text: "Thanks for sharing that, Beth. To make my recommendations more realistic, what usually happens when you're stressed?",
+    chips: [
+      'I reach for comfort food',
+      "I don't have time to cook",
+      'I lose motivation',
+      'I snack throughout the day',
+    ],
+  },
+  // Turn 1 — opening feed + next suggested chip
+  {
+    text: "That makes sense - and you're definitely not alone. Instead of trying to change everything at once, let's start with a few meals that feel comforting while supporting your long-term health.\n\nHere are three recipes I think you'll actually enjoy making this week.",
+    feed: 'opening',
+    chips: [
+      "I'm caring for my kids and my parents. Help me make this realistic.",
+      "I don't have much time to plan meals.",
+      "I want something that works for my whole family.",
+      "What takeout can I order quickly that will still meet my goals?",
+    ],
+  },
+  // Turn 2 — ask about time for dinner
+  {
+    text: 'That changes what success looks like.\n\nAbout how much time do you usually have to make dinner?',
+    chips: ['15 minutes or less', 'About 30 minutes', 'It depends on the day'],
+  },
+  // Turn 3 — updated feed with three carousels + memory note
+  {
+    text: "Thanks, that helps.\n\nI'll prioritize quick meals, small habits, and support that fits into a busy caregiving life. Because you're balancing nutrition, caregiving, and your own well-being, I've pulled together resources across all three.",
+    feed: 'updated',
+    memory: "I'll remember that caregiving is part of your life, so future recommendations fit the time and energy you actually have.",
+  },
+]
+
+const BETH_TRIGGER = 'Eating changes feel hard when I’m stressed.'
+
+function OpeningFeed() {
+  return (
+    <div className="chat-feed">
+      <div className="chat-feed__header">
+        <span className="chat-feed__brand">EatingWell</span>
+        <span className="chat-feed__divider" />
+        <span className="chat-feed__title">Simple &amp; Satisfying Swaps</span>
+      </div>
+      <div className="chat-feed__scroll">
+        {OPENING_RECIPES.map(r => (
+          <div key={r.id} className="chat-recipe-card">
+            <img src={r.image} alt="" className="chat-recipe-card__img" />
+            <p className="chat-recipe-card__title">{r.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function UpdatedFeed() {
+  return (
+    <div className="chat-feed chat-feed--stack">
+      <NutritionBuildingBlocksSection />
+      <ParentsCaregiverSupportSection />
+      <VeryWellSection />
+    </div>
+  )
+}
+
+function MemoryNote({ text }) {
+  return (
+    <div className="chat-memory">
+      <span className="chat-memory__icon" aria-hidden="true">✨</span>
+      <p>{text}</p>
+    </div>
+  )
+}
+
 function TypingIndicator() {
   return (
     <div className="chat-bubble chat-bubble--ai chat-bubble--typing">
@@ -224,24 +312,30 @@ function ChatBubble({ msg, onChip }) {
     )
   }
   return (
-    <div className="chat-bubble chat-bubble--ai">
+    <div className={`chat-bubble chat-bubble--ai${msg.feed ? ' chat-bubble--feed' : ''}`}>
       {msg.text && renderText(msg.text)}
       {msg.reading && <ReadingCard reading={msg.reading} />}
       {msg.followText && renderText(msg.followText)}
       {msg.recommendations && <Recommendations data={msg.recommendations} />}
+      {msg.feed === 'opening' && <OpeningFeed />}
+      {msg.feed === 'updated' && <UpdatedFeed />}
+      {msg.memory && <MemoryNote text={msg.memory} />}
       {msg.chips && (
-        <div className="chat-chips">
-          {msg.chips.map((c, i) => (
-            <button
-              key={i}
-              type="button"
-              className="chat-chip"
-              onClick={() => onChip(c)}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className="chat-chips">
+            {msg.chips.map((c, i) => (
+              <button
+                key={i}
+                type="button"
+                className="chat-chip"
+                onClick={() => onChip(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+          <p className="chat-chips__hint">Tap one, or type your own answer below</p>
+        </>
       )}
     </div>
   )
@@ -253,20 +347,23 @@ export default function AskAI() {
   const [messages, setMessages] = useState([])
   const [typing, setTyping] = useState(false)
   const [followUp, setFollowUp] = useState('')
-  const [flowActive, setFlowActive] = useState(false)
+  const [activeFlow, setActiveFlow] = useState(null) // null | 'helps' | 'beth'
   const [flowTurn, setFlowTurn] = useState(0) // index of NEXT flow turn to show
   const [showSuggestions, setShowSuggestions] = useState(true)
   const bottomRef = useRef(null)
 
-  function showAITurn(idx) {
+  const FLOWS = { helps: HELPS_FLOW, beth: BETH_FLOW }
+
+  function showAITurn(flowName, idx) {
+    const flow = FLOWS[flowName]
     setTyping(true)
     setTimeout(() => {
-      const turn = HELPS_FLOW[idx]
+      const turn = flow[idx]
       setTyping(false)
       setMessages(m => [...m, { role: 'ai', ...turn }])
       setFlowTurn(idx + 1)
-      if (turn?.autoNext && HELPS_FLOW[idx + 1]) {
-        setTimeout(() => showAITurn(idx + 1), 1400)
+      if (turn?.autoNext && flow[idx + 1]) {
+        setTimeout(() => showAITurn(flowName, idx + 1), 1400)
       }
     }, 1600)
   }
@@ -280,15 +377,24 @@ export default function AskAI() {
     if (text === FLOW_TRIGGER) {
       // Start the multi-turn helps flow
       setMessages([{ role: 'user', text }])
-      setFlowActive(true)
+      setActiveFlow('helps')
       setFlowTurn(0)
-      showAITurn(0)
+      showAITurn('helps', 0)
+      return
+    }
+
+    if (text === BETH_TRIGGER) {
+      // Start the Beth / caregiving demo flow
+      setMessages([{ role: 'user', text }])
+      setActiveFlow('beth')
+      setFlowTurn(0)
+      showAITurn('beth', 0)
       return
     }
 
     // Single-turn for other suggested questions
     setMessages([{ role: 'user', text }])
-    setFlowActive(false)
+    setActiveFlow(null)
     setTyping(true)
     const response = CANNED_RESPONSES[text] || DEFAULT_RESPONSE
     setTimeout(() => {
@@ -302,8 +408,8 @@ export default function AskAI() {
     if (!t) return
     setMessages(prev => [...prev, { role: 'user', text: t }])
 
-    if (flowActive && flowTurn < HELPS_FLOW.length) {
-      showAITurn(flowTurn)
+    if (activeFlow && flowTurn < FLOWS[activeFlow].length) {
+      showAITurn(activeFlow, flowTurn)
     } else {
       setTyping(true)
       setTimeout(() => {

@@ -6543,6 +6543,102 @@ h2 {
 .chat-chip:hover { background: var(--color-teal-light); }
 .chat-chip:active { transform: translateY(1px); }
 
+.chat-chips__hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* AI chat — embedded feeds (Beth / caregiving demo) */
+.chat-bubble--feed {
+  max-width: 96%;
+}
+
+.chat-feed {
+  margin-top: var(--space-3);
+}
+
+.chat-feed__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.chat-feed__brand {
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: #639a3a;
+}
+
+.chat-feed__divider {
+  width: 1px;
+  height: 16px;
+  background: #000;
+  opacity: 0.4;
+}
+
+.chat-feed__title {
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.chat-feed__scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.chat-feed__scroll::-webkit-scrollbar { display: none; }
+
+.chat-recipe-card {
+  flex-shrink: 0;
+  width: 120px;
+}
+
+.chat-recipe-card__img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.chat-recipe-card__title {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+.chat-feed--stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: var(--space-3) calc(var(--space-4) * -1) 0;
+}
+.chat-feed--stack > * { padding-left: 0; padding-right: 0; }
+
+.chat-memory {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: var(--space-4);
+  padding: 10px 12px;
+  background: var(--color-teal-light);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-teal-dark);
+  line-height: 1.5;
+}
+.chat-memory p { margin: 0; font-style: italic; }
+.chat-memory__icon { flex-shrink: 0; line-height: 1.4; }
+
 .chat-reading {
   border-left: 3px solid var(--color-warm);
   background: var(--color-warm-light);
