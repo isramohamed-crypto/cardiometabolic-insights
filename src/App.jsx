@@ -29,6 +29,7 @@ import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
 import InsightSection from './components/InsightSection'
+import MyRituals from './components/MyRituals'
 import CommunityPoll from './components/CommunityPoll'
 import AutumnTravelCard from './components/AutumnTravelCard'
 import MyRecipesCard from './components/MyRecipesCard'
@@ -234,6 +235,9 @@ export default function App() {
 
           {/* AI Insights */}
           <InsightSection />
+
+          {/* My Rituals — new daily habits component */}
+          <MyRituals />
 
           {/* 4 — Daily check-in: strike while engaged after AI interaction */}
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
