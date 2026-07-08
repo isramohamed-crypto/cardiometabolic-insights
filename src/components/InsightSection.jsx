@@ -1,6 +1,31 @@
 import React from 'react'
+import { useProfileStage } from '../context/ProfileStageContext'
 
 export default function InsightSection() {
+  const { isNew } = useProfileStage()
+
+  if (isNew) {
+    return (
+      <section className="insight-section">
+        <h2 className="insight-section__heading">Today's insight</h2>
+
+        <div className="insight-card insight-card--locked">
+          <div className="insight-tag">
+            <div className="itag-dot" />
+            AI insight · Locked
+          </div>
+          <h4 className="insight-title">Your personalized insights are on the way</h4>
+          <p className="insight-body">
+            Vitalist AI looks for patterns across your check-ins and readings —
+            things like how stress or sleep affect your numbers. Log a few
+            check-ins this week to unlock your first insight.
+          </p>
+          <p className="insight-source">Vitalist AI · Needs a bit more data from you</p>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="insight-section">
       <h2 className="insight-section__heading">Today's insight</h2>

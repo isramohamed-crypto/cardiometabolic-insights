@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useProfileStage } from '../context/ProfileStageContext'
 
 function readProfileName() {
   try {
@@ -19,6 +20,7 @@ function timeOfDayGreeting(date = new Date()) {
 }
 
 export default function Hero({ firstName }) {
+  const { isNew } = useProfileStage()
   // Prefer the prop (App is the source of truth). Fall back to localStorage if rendered standalone.
   const propName = (firstName || '').trim()
   const [fallbackName, setFallbackName] = useState(() => propName || readProfileName())
@@ -50,6 +52,11 @@ export default function Hero({ firstName }) {
     <section className="hero">
       <p className="hero__greeting-eyebrow">
         {name ? `${greeting}, ${name}` : greeting}
+      </p>
+      <p className="hero__greeting-sub">
+        {isNew
+          ? 'Let’s start building your health picture.'
+          : 'You’re on a roll — here’s what’s new today.'}
       </p>
     </section>
   )
