@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import './AccountDrawer.css'
+import { useProfileStage } from '../context/ProfileStageContext'
 
 const MENU = [
   { id: 'profile',       icon: '👤', label: 'Profile',           desc: 'View and complete your profile' },
@@ -12,6 +13,7 @@ const MENU = [
 
 export default function AccountDrawer({ profile, completionPct, strengthLabel, onClose, onSelect, onAvatarChange }) {
   const fileRef = useRef(null)
+  const { stage, setStage } = useProfileStage()
 
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
@@ -94,6 +96,24 @@ export default function AccountDrawer({ profile, completionPct, strengthLabel, o
                 Complete profile →
               </button>
             </div>
+          </div>
+
+          {/* Demo control: switch between a brand-new and an established user state */}
+          <div className="ad-stage-toggle" role="group" aria-label="Demo profile stage">
+            <button
+              type="button"
+              className={`ad-stage-toggle__opt${stage === 'new' ? ' ad-stage-toggle__opt--active' : ''}`}
+              onClick={() => setStage('new')}
+            >
+              New user
+            </button>
+            <button
+              type="button"
+              className={`ad-stage-toggle__opt${stage === 'mature' ? ' ad-stage-toggle__opt--active' : ''}`}
+              onClick={() => setStage('mature')}
+            >
+              Established user
+            </button>
           </div>
         </div>
 

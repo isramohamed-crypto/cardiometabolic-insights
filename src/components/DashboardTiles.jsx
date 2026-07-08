@@ -1,4 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import { useProfileStage } from '../context/ProfileStageContext'
+
+// ─── Demo sample data for the "Established user" stage ──────────────────────
+// Only used to fill in tiles that have no real logged reading, so the app can
+// be flipped to a populated, lived-in-looking state without touching real
+// localStorage data.
+const MATURE_SAMPLE_STREAK = 12
+function matureSampleApptDate() {
+  const d = new Date()
+  d.setDate(d.getDate() + 6)
+  return d.toISOString().slice(0, 10)
+}
+const MATURE_SAMPLE_READINGS = {
+  ldl:     { value: '118', date: new Date(Date.now() - 5 * 86400000).toISOString() },
+  bp:      { value: '122/78', date: new Date(Date.now() - 1 * 86400000).toISOString() },
+  glucose: { value: JSON.stringify({ reading: '98', meal: 'before', time: '07:15' }), date: new Date().toISOString() },
+  weight:  { value: '168', date: new Date(Date.now() - 2 * 86400000).toISOString() },
+  a1c:     { value: '5.6', date: new Date(Date.now() - 20 * 86400000).toISOString() },
+}
 
 // ─── Status helpers ──────────────────────────────────────────────────────────
 const STATUS = {
@@ -824,6 +843,7 @@ function Tile({ def, reading, streak, appt, onTap }) {
 
 // ─── Main component ──────────────────────────────────────────────────────────
 export default function DashboardTiles({ tick = 0 }) {
+  const { stage } = useProfileStage()
   const [activeIds, setActiveIds] = useState(() => readTileConfig())
   const [readings, setReadings] = useState(() => readReadings())
   const [streak, setStreak] = useState(0)
@@ -857,6 +877,13 @@ export default function DashboardTiles({ tick = 0 }) {
     .map(id => TILE_DEFS.find(d => d.id === id))
     .filter(Boolean)
 
+  // Demo stage overrides — "New user" always shows the empty/starter state
+  // regardless of any data that's actually been logged; "Established user"
+  // fills in plausible sample data for any tile that's still empty.
+  const effectiveReadings = stage === 'new' ? {} : stage === 'mature' ? { ...MATURE_SAMPLE_READINGS, ...readings } : readings
+  const effectiveStreak = stage === 'new' ? 0 : stage === 'mature' ? (streak || MATURE_SAMPLE_STREAK) : streak
+  const effectiveAppt = stage === 'new' ? null : stage === 'mature' ? (appt || { date: matureSampleApptDate() }) : appt
+
   return (
     <>
       <div className="dash-tiles-wrap">
@@ -866,9 +893,9 @@ export default function DashboardTiles({ tick = 0 }) {
             <Tile
               key={def.id}
               def={def}
-              reading={readings[def.id]}
-              streak={streak}
-              appt={appt}
+              reading={effectiveReadings[def.id]}
+              streak={effectiveStreak}
+              appt={effectiveAppt}
               onTap={() => {
                 if (def.type === 'computed' || def.type === 'appointment') return
                 setLogTile(def)

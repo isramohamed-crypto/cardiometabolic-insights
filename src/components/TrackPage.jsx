@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react'
 import SponsorBanner from './SponsorBanner'
 import HabitSection from './HabitSection'
 import HabitCheckinSheet from './HabitCheckinSheet'
+import { useProfileStage } from '../context/ProfileStageContext'
 
 const COMMON_TREATMENTS = [
   'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
@@ -392,6 +393,7 @@ function daysAgoUtil(isoDate) {
 }
 
 export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
+  const { isNew } = useProfileStage()
   const [timeRange, setTimeRange] = useState('14 days')
   const [checkins, setCheckins] = useState(() => readCheckins())
   const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
@@ -472,7 +474,11 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       <div className="pp-hero tp-hero">
         <p className="pp-hero-eyebrow">Your health log</p>
         <h1 className="pp-hero-title">What your data is telling you</h1>
-        <p className="pp-hero-sub">Log how you're feeling to help identify the patterns behind your health trends.</p>
+        <p className="pp-hero-sub">
+          {isNew
+            ? 'Start logging check-ins and readings — your patterns will show up here.'
+            : "Log how you're feeling to help identify the patterns behind your health trends."}
+        </p>
       </div>
 
       {/* AI Insights — compact, expandable */}
@@ -485,11 +491,18 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         >
           <span className="tp-ai-summary__badge">✨ AI Insights</span>
           <span className="tp-ai-summary__teaser">
-            {aiOpen ? 'Tap to collapse' : '3 patterns to know'}
+            {isNew ? 'Not enough data yet' : (aiOpen ? 'Tap to collapse' : '3 patterns to know')}
           </span>
           <span className="tp-ai-summary__chev" aria-hidden="true">{aiOpen ? '▴' : '▾'}</span>
         </button>
-          {aiOpen && (
+          {aiOpen && (isNew ? (
+            <ul className="tp-ai-summary__list">
+              <li className="tp-ai-summary__item">
+                <span className="tp-ai-summary__dot" style={{ background: 'var(--color-text-muted)' }} />
+                <span>Log a few check-ins and readings, and Vitalist AI will start surfacing patterns like this here.</span>
+              </li>
+            </ul>
+          ) : (
             <ul className="tp-ai-summary__list">
               {conditions.length >= 2 ? (
                 <>
@@ -523,7 +536,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                 </>
               )}
             </ul>
-          )}
+          ))}
         </div>
 
       {/* Check-in prompt banner */}
@@ -889,8 +902,15 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       <div className="tp-section" style={{ marginBottom: 'var(--space-6)' }}>
         <div className="tp-sec-head">
           <h2 className="tp-sec-title">Your assessment results</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>Trend</span>
+          <span className="tp-sec-badge" style={{ background: isNew ? 'var(--color-border)' : 'rgba(0, 185, 226,.12)', color: isNew ? 'var(--color-text-muted)' : 'var(--color-teal)' }}>
+            {isNew ? 'Not started' : 'Trend'}
+          </span>
         </div>
+        {isNew ? (
+          <div className="tp-card" style={{ textAlign: 'center', padding: '28px 16px', color: 'var(--color-text-muted)', fontSize: 13 }}>
+            Complete a health assessment above to see your results and trend here.
+          </div>
+        ) : (
         <div className="tp-card">
           <div className="tp-er-header"><span className="tp-er-title">DLQI — Quality of Life</span></div>
           <div className="tp-er-score-row">
@@ -921,6 +941,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
             ))}
           </div>
         </div>
+        )}
       </div>
 
     </main>

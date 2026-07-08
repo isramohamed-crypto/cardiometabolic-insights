@@ -190,6 +190,34 @@
 }
 .ad-strength__cta:hover { color: var(--color-teal-dark) }
 
+/* Demo stage toggle */
+.ad-stage-toggle {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 3px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: 9999px;
+}
+.ad-stage-toggle__opt {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.ad-stage-toggle__opt--active {
+  background: var(--color-teal);
+  color: #fff;
+}
+
 /* Menu */
 .ad-menu { padding: 12px 12px 0; flex: 1; }
 

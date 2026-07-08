@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import MarkAsTried from './MarkAsTried'
-import NutritionBuildingBlocksSection from './NutritionBuildingBlocksSection'
 import ParentsCaregiverSupportSection from './ParentsCaregiverSupportSection'
-import VeryWellSection from './VeryWellSection'
+import { useProfileStage } from '../context/ProfileStageContext'
 
 const SUGGESTED = [
   'Eating changes feel hard when I’m stressed.',
@@ -143,33 +142,39 @@ const BETH_FLOW = [
       'I snack throughout the day',
     ],
   },
-  // Turn 1 — opening feed + next suggested chip
+  // Turn 1 — collapsed preview card; expands in place when tapped. No chips —
+  // Beth answers this one by typing her own message.
   {
-    text: "That makes sense - and you're definitely not alone. Instead of trying to change everything at once, let's start with a few meals that feel comforting while supporting your long-term health.\n\nHere are three recipes I think you'll actually enjoy making this week.",
-    feed: 'opening',
-    chips: [
-      "I'm caring for my kids and my parents. Help me make this realistic.",
-      "I don't have much time to plan meals.",
-      "I want something that works for my whole family.",
-      "What takeout can I order quickly that will still meet my goals?",
-    ],
+    text: "That makes sense - and you're definitely not alone.\nInstead of trying to change everything at once, let's start with meals that feel comforting while supporting your long-term health.\nDo any of these feel like something you'd actually try this week?",
+    feed: 'openingPreview',
   },
-  // Turn 2 — ask about time for dinner
+  // Turn 2 — ask what feels hardest
   {
-    text: 'That changes what success looks like.\n\nAbout how much time do you usually have to make dinner?',
-    chips: ['15 minutes or less', 'About 30 minutes', 'It depends on the day'],
+    text: "That gives me a much better picture of your situation.\nWhen you're taking care of everyone else, it's easy for your own needs to end up at the bottom of the list.\nWhat feels hardest right now?",
+    chips: ['Finding time to cook', 'Taking care of myself', 'Managing stress', 'Staying consistent'],
   },
-  // Turn 3 — updated feed with three carousels + memory note
+  // Turn 3 — reflect back and check in
   {
-    text: "Thanks, that helps.\n\nI'll prioritize quick meals, small habits, and support that fits into a busy caregiving life. Because you're balancing nutrition, caregiving, and your own well-being, I've pulled together resources across all three.",
-    feed: 'updated',
-    memory: "I'll remember that caregiving is part of your life, so future recommendations fit the time and energy you actually have.",
+    text: 'That resonates with a lot of caregivers.\nWhen self-care starts feeling like another responsibility instead of something that helps you recharge, healthy habits become much harder to sustain.\nDoes that feel true for you?',
+    chips: ['Yes, exactly', 'Sometimes', 'Not really'],
+  },
+  // Turn 4 — expanded Parents caregiver content, auto-follows with the closing note
+  {
+    text: 'That helps me understand what’s getting in your way.\nThis might be especially helpful right now. It includes some helpful tips on self-care.',
+    feed: 'parents',
+    autoNext: true,
+  },
+  // Turn 5 — memory note + open-ended close
+  {
+    text: "I'll remember that caregiving is part of your daily life, so future recommendations fit the time and energy you actually have.\nIs there anything else I can help you with today?",
   },
 ]
 
 const BETH_TRIGGER = 'Eating changes feel hard when I’m stressed.'
 
 function OpeningFeed() {
+  const [expanded, setExpanded] = useState(false)
+
   return (
     <div className="chat-feed">
       <div className="chat-feed__header">
@@ -177,24 +182,40 @@ function OpeningFeed() {
         <span className="chat-feed__divider" />
         <span className="chat-feed__title">Simple &amp; Satisfying Swaps</span>
       </div>
-      <div className="chat-feed__scroll">
-        {OPENING_RECIPES.map(r => (
-          <div key={r.id} className="chat-recipe-card">
-            <img src={r.image} alt="" className="chat-recipe-card__img" />
-            <p className="chat-recipe-card__title">{r.title}</p>
+
+      {!expanded ? (
+        <button
+          type="button"
+          className="chat-preview-card"
+          onClick={() => setExpanded(true)}
+        >
+          <div className="chat-preview-card__media">
+            <img src="/images/ew/casserole.png" alt="" className="chat-preview-card__img" />
+            <span className="chat-preview-card__play" aria-hidden="true">▶</span>
           </div>
-        ))}
-      </div>
+          <div className="chat-preview-card__panel">
+            <p className="chat-preview-card__title">Dietitian-Approved<br />Comfort Food</p>
+            <span className="chat-preview-card__hint">Tap to see recipes</span>
+          </div>
+        </button>
+      ) : (
+        <div className="chat-feed__scroll">
+          {OPENING_RECIPES.map(r => (
+            <div key={r.id} className="chat-recipe-card">
+              <img src={r.image} alt="" className="chat-recipe-card__img" />
+              <p className="chat-recipe-card__title">{r.title}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
 
-function UpdatedFeed() {
+function ParentsFeed() {
   return (
     <div className="chat-feed chat-feed--stack">
-      <NutritionBuildingBlocksSection />
       <ParentsCaregiverSupportSection />
-      <VeryWellSection />
     </div>
   )
 }
@@ -317,8 +338,8 @@ function ChatBubble({ msg, onChip }) {
       {msg.reading && <ReadingCard reading={msg.reading} />}
       {msg.followText && renderText(msg.followText)}
       {msg.recommendations && <Recommendations data={msg.recommendations} />}
-      {msg.feed === 'opening' && <OpeningFeed />}
-      {msg.feed === 'updated' && <UpdatedFeed />}
+      {msg.feed === 'openingPreview' && <OpeningFeed />}
+      {msg.feed === 'parents' && <ParentsFeed />}
       {msg.memory && <MemoryNote text={msg.memory} />}
       {msg.chips && (
         <>
@@ -342,6 +363,7 @@ function ChatBubble({ msg, onChip }) {
 }
 
 export default function AskAI() {
+  const { isNew } = useProfileStage()
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([])
@@ -438,7 +460,7 @@ export default function AskAI() {
             <input
               className="ask-ai__input"
               type="text"
-              placeholder="✨ Hi! Ask me anything…"
+              placeholder={isNew ? '✨ New here? Ask me anything…' : '✨ Hi! Ask me anything…'}
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setShowSuggestions(true)}
@@ -453,7 +475,7 @@ export default function AskAI() {
           </div>
           {showSuggestions && (
             <>
-              <p className="ask-ai__label">Here's what people like you ask</p>
+              <p className="ask-ai__label">{isNew ? 'New here? Try one of these to get started' : "Here's what people like you ask"}</p>
               <ul className="ask-ai__suggestions">
                 {SUGGESTED.map((q, i) => (
                   <li

@@ -616,6 +616,13 @@ h2 {
   text-align: center;
   margin-bottom: var(--space-2);
 }
+.hero-wrap .hero__greeting-sub {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-align: center;
+  margin: calc(var(--space-2) * -1) 0 var(--space-3);
+}
 
 .hero-wrap .today-wrap {
   padding-top: 0;
@@ -4275,6 +4282,13 @@ h2 {
   position: relative;
   overflow: hidden;
 }
+.insight-card--locked {
+  background: var(--color-bg);
+  border-style: dashed;
+}
+.insight-card--locked .itag-dot {
+  background: var(--color-text-muted);
+}
 .insight-card__decoration {
   position: absolute;
   top: -20px;
@@ -6622,6 +6636,72 @@ h2 {
   margin: var(--space-3) calc(var(--space-4) * -1) 0;
 }
 .chat-feed--stack > * { padding-left: 0; padding-right: 0; }
+
+/* Tap-to-expand preview card (collapsed state of a feed) */
+.chat-preview-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.chat-preview-card:hover { background: var(--color-surface-2); }
+.chat-preview-card:active { transform: translateY(1px); }
+
+.chat-preview-card__media {
+  position: relative;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.chat-preview-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.chat-preview-card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(0,0,0,0.35);
+}
+
+.chat-preview-card__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.chat-preview-card__title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.chat-preview-card__hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-teal);
+}
 
 .chat-memory {
   display: flex;
