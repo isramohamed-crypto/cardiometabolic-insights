@@ -177,8 +177,8 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
           </div>
           <p className="insight-source">Vitalist AI · Based on your check-in history</p>
 
-          {/* Actionable recommendation — only when user has real check-in data */}
-          {!!last?.date && <div style={{
+          {/* Actionable recommendation tied to the insight */}
+          <div style={{
             marginTop: 14,
             background: '#f8fafc',
             border: '1px solid #e2e8f0',
@@ -211,7 +211,7 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
                 <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · 5 min</div>
               </div>
             </div>
-          </div>}
+          </div>
         </div>
 
         <div className="tic-divider" />
