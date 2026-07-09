@@ -86,7 +86,7 @@ export default function SwipeLearn({ onLearnClick }) {
               <div className="vwm-scroll-viewport">
                 <div className="vwm-scroll-track">
                   <div
-                    style={{ background: 'linear-gradient(135deg, #1B3A5C 0%, #2E5D8E 60%, #C2673A 100%)', height: '220px', borderRadius: '16px' }}
+                    style={{ background: 'linear-gradient(135deg, #0E8C7F 0%, #4FC3B5 60%, #C2673A 100%)', height: '220px', borderRadius: '16px' }}
                   />
                 </div>
               </div>

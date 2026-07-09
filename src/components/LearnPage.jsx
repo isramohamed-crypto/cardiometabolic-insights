@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import SponsorBanner from './SponsorBanner'
 
 const TYPE_COLORS = {
-  'Swipe to learn':   { color: '#1B3A5C', bg: 'rgba(27, 58, 92,0.1)' },
+  'Swipe to learn':   { color: '#0E8C7F', bg: 'rgba(14, 140, 127,0.1)' },
   'Interactive':      { color: '#4A7C9E', bg: 'rgba(74, 124, 158,0.1)' },
   'Quiz':             { color: '#4A7C9E', bg: 'rgba(74, 124, 158,0.1)' },
   'Step-by-step':     { color: '#C2673A', bg: 'rgba(194, 103, 58,0.1)' },
   'Patient story':    { color: '#C2673A', bg: 'rgba(194, 103, 58,0.1)' },
-  'Expert Q&A':       { color: '#1B3A5C', bg: 'rgba(27, 58, 92,0.1)' },
+  'Expert Q&A':       { color: '#0E8C7F', bg: 'rgba(14, 140, 127,0.1)' },
   'Micro-challenge':  { color: '#4A7C9E', bg: 'rgba(74, 124, 158,0.15)' },
   'Poll':             { color: '#C2673A', bg: 'rgba(194, 103, 58,0.1)' },
   'Tap to learn':     { color: '#4A7C9E', bg: 'rgba(74, 124, 158,0.1)' },
-  'Article':          { color: '#1B3A5C', bg: 'rgba(27, 58, 92,0.1)' },
+  'Article':          { color: '#0E8C7F', bg: 'rgba(14, 140, 127,0.1)' },
 }
 
 const JOURNEYS = [

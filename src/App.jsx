@@ -9,7 +9,7 @@ import SavedItemsPage from './components/SavedItemsPage'
 import SkinCheckinSheet from './components/SkinCheckinSheet'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
-import DailyCheckin from './components/DailyCheckin'
+import TodayInsightCheckin from './components/TodayInsightCheckin'
 import HealthPulseCard from './components/HealthPulseCard'
 import HealthPulseSheet from './components/HealthPulseSheet'
 import SponsorBanner from './components/SponsorBanner'
@@ -28,7 +28,6 @@ import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
-import InsightSection from './components/InsightSection'
 import CommunityPoll from './components/CommunityPoll'
 import AutumnTravelCard from './components/AutumnTravelCard'
 import MyRecipesCard from './components/MyRecipesCard'
@@ -232,11 +231,11 @@ export default function App() {
           {/* 3 — Dashboard tiles: customizable health readings */}
           <DashboardTiles tick={checkinTick} />
 
-          {/* AI Insights */}
-          <InsightSection />
-
-          {/* 4 — Daily check-in: strike while engaged after AI interaction */}
-          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
+          {/* AI insight + daily check-in — combined into one card. New users
+              get a single compact check-in card with the insight folded in
+              as a pill; established users get the full insight and the
+              check-in entry point as two sections of the same card. */}
+          <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 
           {/* Nutrition Building Blocks — EatingWell featured content */}
