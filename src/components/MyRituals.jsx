@@ -374,7 +374,7 @@ export default function MyRituals() {
       <div className="mr-header">
         <div>
           <p className="mr-eyebrow">Daily rituals</p>
-          <h2 className="mr-title">My Rituals</h2>
+          <h2 className="mr-title">Complete your rituals</h2>
         </div>
         <div className="mr-header__right">
           {selectedHabits.length > 0 && (
