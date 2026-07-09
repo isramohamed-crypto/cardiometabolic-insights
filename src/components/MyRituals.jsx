@@ -314,7 +314,7 @@ export default function MyRituals() {
   })
   const [completions, setCompletions] = useState(readTodayCompletions)
   const [showPicker, setShowPicker]   = useState(false)
-  const [pickerCat, setPickerCat]     = useState('All')
+  const [pickerCat, setPickerCat]     = useState('Move')
   const [expandedWhy, setExpandedWhy] = useState(new Set())
   const [justDone, setJustDone]       = useState(new Set())
 
