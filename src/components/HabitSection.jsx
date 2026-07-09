@@ -163,7 +163,7 @@ export default function HabitSection({ onOpenSheet }) {
             <button
               key={habit.id}
               type="button"
-              className={`habit-item${isDone ? ' habit-item--done' : ''}`}
+              className={`habit-item${isDone ? ' habit-item--done' : ''}${habit.isFocus ? ' habit-item--focus' : ''}`}
               onClick={() => handleToggle(habit.id)}
             >
               <div className={`habit-item__check${isDone ? ' habit-item__check--done' : ''}`}>
@@ -175,7 +175,10 @@ export default function HabitSection({ onOpenSheet }) {
               </div>
               <span className="habit-item__icon">{habit.icon}</span>
               <div className="habit-item__body">
-                <div className="habit-item__label">{habit.label}</div>
+                <div className="habit-item__label">
+                  {habit.label}
+                  {habit.isFocus && <span className="habit-item__focus-badge">Focus</span>}
+                </div>
                 <div className="habit-item__desc">{habit.desc}</div>
               </div>
               {(() => {

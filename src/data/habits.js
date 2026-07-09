@@ -202,6 +202,34 @@ const INTEREST_HABITS = {
     morning: { id: 'int_wl_am',  icon: '🗓️', label: 'Schedule a movement break',   desc: 'Blocking it like a meeting makes it 3× more likely to happen.' },
     evening: { id: 'int_wl_pm',  icon: '📊', label: 'Log your stress level (1–5)',  desc: 'Work stress is one of the strongest lifestyle drivers of BP.' },
   },
+  'Medications & treatment': {
+    morning: { id: 'int_mt_am',  icon: '💊', label: 'Take all medications on schedule', desc: 'Consistent timing improves how well treatments work.' },
+    evening: { id: 'int_mt_pm',  icon: '📋', label: 'Log any side effects',        desc: 'Tracking side effects helps your care team adjust treatment faster.' },
+  },
+  'Blood pressure': {
+    morning: { id: 'int_bp_am',  icon: '🩺', label: 'Log your blood pressure',     desc: 'Morning readings before activity give the clearest baseline.' },
+    evening: { id: 'int_bp_pm',  icon: '🧂', label: 'Limit sodium today',          desc: 'Under 1,500 mg/day is the hypertension target.' },
+  },
+  'Blood sugar': {
+    morning: { id: 'int_bs_am',  icon: '🔬', label: 'Check your blood sugar',      desc: 'Fasting readings before food give the cleanest signal.' },
+    evening: { id: 'int_bs_pm',  icon: '🚶', label: '10-min post-dinner walk',     desc: 'A short walk after eating lowers post-meal glucose by ~22%.' },
+  },
+  'Menopause & hormonal health': {
+    morning: { id: 'int_mh_am',  icon: '🌸', label: 'Log any symptoms today',      desc: 'Tracking hot flashes and mood shifts reveals patterns over time.' },
+    evening: { id: 'int_mh_pm',  icon: '❄️', label: 'Cool-down routine before bed', desc: 'A cooler bedroom reduces hot flash disruption.' },
+  },
+  'GLP-1 & weight loss medications': {
+    morning: { id: 'int_gl_am',  icon: '💉', label: 'Log your dose (if due today)', desc: 'Tracking injection day helps you stay on schedule.' },
+    evening: { id: 'int_gl_pm',  icon: '🥩', label: 'Hit your protein target at dinner', desc: 'Maintaining muscle during rapid weight loss requires high protein.' },
+  },
+  'New treatments & research': {
+    morning: { id: 'int_nt_am',  icon: '🧪', label: 'Read one health article today', desc: 'Staying informed helps you have better conversations with your care team.' },
+    evening: { id: 'int_nt_pm',  icon: '❓', label: 'Note a question for your provider', desc: 'Bringing questions to appointments leads to more useful answers.' },
+  },
+  'Travel & staying on track': {
+    morning: { id: 'int_tr_am',  icon: '✈️', label: "Pack today's medications/supplies", desc: 'Planning ahead prevents missed doses while traveling.' },
+    evening: { id: 'int_tr_pm',  icon: '📋', label: "Note how today's routine held up", desc: 'Noticing what worked on the road helps you plan the next trip.' },
+  },
 }
 
 // Interests that overlap with condition playbooks — don't add duplicate habits
@@ -254,25 +282,25 @@ export function getHabits() {
     matchedCondition ? (CONDITION_INTEREST_OVERLAP[matchedCondition] || []) : []
   )
 
-  // 4. Pick up to 2 interest habits (one morning slot, one evening slot)
+  // 4. Add both habits (morning + evening) for every selected "manageable
+  // change" — no cap. The first topic the user picked (their onboarding
+  // focus) is flagged `isFocus` so the UI can emphasize starting there;
+  // anything added later via the profile page shows up too, just unflagged.
   const interestExtras = []
-  let gotMorning = false
-  let gotEvening = false
+  let isFirstTopic = true
   for (const topic of interests) {
     if (skipInterests.has(topic)) continue
     const entry = INTEREST_HABITS[topic]
     if (!entry) continue
-    if (!gotMorning && entry.morning && !usedIds.has(entry.morning.id)) {
-      interestExtras.push(entry.morning)
+    if (entry.morning && !usedIds.has(entry.morning.id)) {
+      interestExtras.push({ ...entry.morning, isFocus: isFirstTopic })
       usedIds.add(entry.morning.id)
-      gotMorning = true
     }
-    if (!gotEvening && entry.evening && !usedIds.has(entry.evening.id)) {
-      interestExtras.push(entry.evening)
+    if (entry.evening && !usedIds.has(entry.evening.id)) {
+      interestExtras.push({ ...entry.evening, isFocus: isFirstTopic })
       usedIds.add(entry.evening.id)
-      gotEvening = true
     }
-    if (gotMorning && gotEvening) break
+    isFirstTopic = false
   }
 
   return [...base, ...interestExtras]
