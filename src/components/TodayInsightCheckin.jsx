@@ -45,7 +45,7 @@ function lastSevenDaysStreak(checkins) {
 function checkinPromptTitle(isoDate, isCheckedInToday) {
   if (isCheckedInToday) return 'Logged today — tap to view or update'
   const d = daysAgo(isoDate)
-  if (d === null) return 'Start your first daily check-in'
+  if (d === null) return 'Log your first check-in!'
   if (d === 1)    return 'Log today\'s check-in'
   return `Log today's check-in — it's been ${d} days`
 }
@@ -85,9 +85,12 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
 
   // Copy mirrors the Track-page check-in banner so it tells the same story
   const titleLabel = checkinPromptTitle(effectiveLastDate, isCheckedInToday)
+  const isNewUser = !last?.date
   const subLabel = isCheckedInToday
     ? 'Logged today. Tap to see your summary or update.'
-    : 'Your symptoms and habits connect to your numbers — log both to see the full picture.'
+    : isNewUser
+      ? 'Start tracking how you feel — it only takes a minute.'
+      : 'Your symptoms and habits connect to your numbers — log both to see the full picture.'
 
   const eyebrowText = isCheckedInToday ? 'Checked in today' : 'Daily check-in'
   const ctaText = isCheckedInToday ? 'View today →' : 'Check in →'
