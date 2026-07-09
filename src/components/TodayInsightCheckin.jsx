@@ -5,6 +5,10 @@ import { generateHistoricCheckins } from '../data/mockCheckins'
 const CHECKIN_KEY  = 'cardiometabolicLastCheckin'
 const CHECKINS_KEY = 'cardiometabolicCheckins'
 
+// Number of logged check-ins a new user needs before an AI insight has
+// enough data points to be generated.
+const INSIGHT_THRESHOLD = 3
+
 function readLastCheckin() {
   try { return JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) { return null }
 }
@@ -51,17 +55,17 @@ function checkinPromptTitle(isoDate, isCheckedInToday) {
 }
 
 /**
- * Combines "Today's insight" and the daily check-in entry point into one
- * unit on the Today feed.
+ * Renders "Today's insight" and the daily check-in entry point on the Today
+ * feed.
  *
- * - New users: the insight card has no real content yet (it's just a locked
+ * - New users: the insight has no real content yet (it's just a locked
  *   placeholder), so it's folded entirely into the check-in card as a small
  *   pill — one compact card total, and its CTA opens the check-in sheet.
  * - Established users: the insight is the actual payoff of their tracking
- *   history (title, narrative, 3-stat breakdown) and deserves to stay full
- *   size, so it keeps its own section — just consolidated into the *same*
- *   card as the check-in entry point, divided rather than duplicated as two
- *   separate cards with their own headers/borders/shadows.
+ *   history (title, narrative, 3-stat breakdown, a recommended video) and is
+ *   substantial enough to stand on its own — so it renders as its own card,
+ *   stacked above a separate "How are you feeling?" check-in card, rather
+ *   than dividing one card in two.
  */
 export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
   const { isNew, isMature } = useProfileStage()
@@ -107,12 +111,6 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
           <p className="dc-feat__eyebrow">{eyebrowText}</p>
           <h2 className="dc-feat__title">{titleLabel}</h2>
           <p className="dc-feat__sub">{subLabel}</p>
-          {isNew && (
-            <p className="tic-pill">
-              <span className="tic-pill__icon" aria-hidden="true">✨</span>
-              AI insights unlock as you log more
-            </p>
-          )}
         </div>
         <div className="dc-feat__foot">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -132,8 +130,34 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
   )
 
   if (isNew) {
+    // Progress toward the first AI insight populates as real check-ins come
+    // in — it starts at "log 3 to unlock" and fills in one dot per check-in
+    // logged, until there are enough data points for an insight.
+    const checkinCount = checkins.length
+    const isInsightReady = checkinCount >= INSIGHT_THRESHOLD
+    const remaining = Math.max(0, INSIGHT_THRESHOLD - checkinCount)
+    const unlockTitle = isInsightReady
+      ? "Your first insight is ready — check back after today's check-in"
+      : checkinCount === 0
+        ? `Log ${INSIGHT_THRESHOLD} check-ins to unlock your first insight`
+        : `${checkinCount} of ${INSIGHT_THRESHOLD} check-ins logged — ${remaining} more to go`
+
     return (
-      <section className="checkin-section">
+      <section className="checkin-section checkin-section--split">
+        <div className={`tic-unlock${isInsightReady ? ' tic-unlock--ready' : ''}`}>
+          <p className="ai-eyebrow">
+            <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
+            AI Insights
+          </p>
+          <p className="tic-unlock__title">{unlockTitle}</p>
+          {!isInsightReady && (
+            <div className="tic-unlock__dots" aria-hidden="true">
+              {Array.from({ length: INSIGHT_THRESHOLD }).map((_, i) => (
+                <span key={i} className={`tic-unlock__dot${i < checkinCount ? ' tic-unlock__dot--on' : ''}`} />
+              ))}
+            </div>
+          )}
+        </div>
         <div
           className="dc-feat"
           onClick={onOpenCheckin}
@@ -148,13 +172,14 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
   }
 
   return (
-    <section className="checkin-section">
-      <div className="tic-card">
+    <section className="checkin-section checkin-section--split">
+      {/* AI insight — its own card, the payoff of the user's tracking history */}
+      <div className="tic-card tic-card--standalone">
         <div className="tic-insight">
-          <div className="insight-tag">
-            <div className="itag-dot" />
-            AI insight · From your tracking
-          </div>
+          <p className="ai-eyebrow">
+            <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
+            AI Insights · From your tracking
+          </p>
           <h4 className="insight-title">Stress is showing up in your numbers 48 hrs later</h4>
           <p className="insight-body">
             On days you log high stress, your blood pressure and blood sugar trend
@@ -213,12 +238,17 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="tic-divider" />
-
-        <button type="button" className="tic-checkin" onClick={onOpenCheckin}>
-          {checkinBody}
-        </button>
+      {/* How are you feeling? — its own separate check-in card */}
+      <div
+        className="dc-feat"
+        onClick={onOpenCheckin}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpenCheckin?.() }}
+      >
+        {checkinBody}
       </div>
     </section>
   )

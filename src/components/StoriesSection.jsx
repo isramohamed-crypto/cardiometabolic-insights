@@ -46,7 +46,7 @@ const STORIES = [
 export default function StoriesSection() {
   return (
     <section className="pp-stories-sec">
-      <div className="watch-head" style={{ padding: '0 16px 12px', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+      <div className="watch-head" style={{ padding: '0 var(--space-5) var(--space-4)', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
         <span className="watch-badge">Paid content for Amgen</span>
         <h2 className="watch-title">Stories from others</h2>
       </div>
@@ -56,7 +56,7 @@ export default function StoriesSection() {
         display: 'flex',
         gap: 12,
         overflowX: 'auto',
-        padding: '0 16px 8px',
+        padding: '0 var(--space-5) var(--space-2)',
         scrollSnapType: 'x mandatory',
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none',
@@ -117,7 +117,7 @@ export default function StoriesSection() {
         ))}
       </div>
 
-      <div className="edu-disclaimer" style={{ margin: '4px 16px 0' }}>
+      <div className="edu-disclaimer">
         <span className="edu-disclaimer__eyebrow">Paid content for Amgen</span>
         <span className="edu-disclaimer__body">
           <strong>Sponsored content.</strong> Videos and content produced in partnership with Amgen.
