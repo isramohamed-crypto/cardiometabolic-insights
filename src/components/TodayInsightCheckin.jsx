@@ -85,7 +85,7 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
 
   // Copy mirrors the Track-page check-in banner so it tells the same story
   const titleLabel = checkinPromptTitle(effectiveLastDate, isCheckedInToday)
-  const isNewUser = !last?.date
+  const isNewUser = !effectiveLastDate
   const subLabel = isCheckedInToday
     ? 'Logged today. Tap to see your summary or update.'
     : isNewUser
