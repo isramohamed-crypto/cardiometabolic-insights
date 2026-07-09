@@ -178,6 +178,29 @@ const CONDITION_PLAYBOOKS = {
   },
 }
 
+// Shared physical-symptom list used by the generic step-3 question — kept
+// separate from the per-condition CONDITION_PLAYBOOKS symptom lists (those
+// mix physical + emotional and are only used to label historical per-
+// condition answers). Order must match TrackPage.jsx's SYMPTOM_LABELS.
+const PHYSICAL_SYMPTOMS = [
+  { e: '😌', l: 'Feeling fine — no symptoms' },
+  { e: '😩', l: 'Fatigue or low energy' },
+  { e: '🤕', l: 'Headache or head pressure' },
+  { e: '😣', l: 'Cramps or abdominal discomfort' },
+  { e: '💓', l: 'Heart racing or palpitations' },
+  { e: '😮‍💨', l: 'Shortness of breath' },
+  { e: '🌡️', l: 'Dizziness or lightheadedness' },
+  { e: '🔥', l: 'Hot flashes or night sweats' },
+  { e: '😟', l: 'Chest tightness or discomfort' },
+]
+
+// Resolves a stored symptoms value (array of indices — or, for older saved
+// check-ins, a single index) into an array of labels.
+function resolveSymptomLabels(val) {
+  const idxs = Array.isArray(val) ? val : (val != null ? [val] : [])
+  return idxs.map(i => PHYSICAL_SYMPTOMS[i]?.l).filter(Boolean)
+}
+
 const GENERIC_PLAYBOOK = {
   severityQ: 'How are you feeling about your health today?',
   severitySub: 'A quick read on your energy, mood, and how in control you feel.',
@@ -387,7 +410,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   // Convenience for the currently active condition's answers
   const severity   = activeCondition ? severityByCond[activeCondition] ?? null : null
   const severityAi = activeCondition ? !!severityAiByCond[activeCondition]     : false
-  const symptoms   = activeCondition ? symptomsByCond[activeCondition] ?? null : null
+  const symptoms   = activeCondition && Array.isArray(symptomsByCond[activeCondition]) ? symptomsByCond[activeCondition] : []
 
   const totalSteps = 5
   const progressPct = ((step + 1) / totalSteps) * 100
@@ -435,14 +458,27 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
     setSeverityByCond(s => ({ ...s, [key]: i }))
     setSeverityAiByCond(s => ({ ...s, [key]: false }))
   }
-  function pickSymptoms(i) {
+  // Multi-select: toggles a symptom in/out of the active condition's list.
+  // "Feeling fine" (index 0) is exclusive — picking it clears everything
+  // else, and picking any real symptom clears "feeling fine".
+  function toggleSymptom(i) {
     const key = activeCondition || '__generic'
-    setSymptomsByCond(s => ({ ...s, [key]: i }))
+    setSymptomsByCond(s => {
+      const current = Array.isArray(s[key]) ? s[key] : []
+      let next
+      if (i === 0) {
+        next = current.includes(0) ? [] : [0]
+      } else {
+        const withoutFine = current.filter(x => x !== 0)
+        next = withoutFine.includes(i) ? withoutFine.filter(x => x !== i) : [...withoutFine, i]
+      }
+      return { ...s, [key]: next }
+    })
   }
 
   // At least one condition has an answer
   const anySeverityAnswered = Object.values(severityByCond).some(v => v != null)
-  const anySymptomsAnswered = Object.values(symptomsByCond).some(v => v != null)
+  const anySymptomsAnswered = Object.values(symptomsByCond).some(v => Array.isArray(v) && v.length > 0)
   function toggleContext(i) {
     setContext(prev => {
       const has = prev.includes(i)
@@ -482,19 +518,19 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
 
     // Build per-condition answer list (only conditions that got at least one answer)
     const conditionAnswers = conditions
-      .filter(c => severityByCond[c] != null || symptomsByCond[c] != null)
+      .filter(c => severityByCond[c] != null || (Array.isArray(symptomsByCond[c]) && symptomsByCond[c].length > 0))
       .map(c => ({
         condition: c === '__generic' ? null : c,
         severity:    severityByCond[c] ?? null,
         severityAi:  !!severityAiByCond[c],
-        symptoms:    symptomsByCond[c] ?? null,
+        symptoms:    Array.isArray(symptomsByCond[c]) ? symptomsByCond[c] : [],
       }))
 
     // Pick the first answered condition for top-level fields (backwards compat
     // with the Track page's skinScore reading + the summary view)
     const primaryC = conditions.find(c => severityByCond[c] != null) || conditions[0]
     const topSeverity = severityByCond[primaryC] ?? null
-    const topSymptoms = symptomsByCond[primaryC] ?? null
+    const topSymptoms = Array.isArray(symptomsByCond[primaryC]) ? symptomsByCond[primaryC] : []
     const topSeverityAi = !!severityAiByCond[primaryC]
     const skinScore = topSeverity == null ? null : (5 - topSeverity)
     const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'health'
@@ -630,24 +666,14 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
 
             <h2 className="ci-title">Any physical symptoms today?</h2>
-            <p className="ci-sub">Pick the one that's most present — or nothing if you're feeling fine.</p>
+            <p className="ci-sub">Pick as many as apply — focus on the ones that are most persistent, or nothing if you're feeling fine.</p>
 
             <div className="ci-opts ci-opts--list">
-              {[
-                { e: '😌', l: 'Feeling fine — no symptoms' },
-                { e: '😩', l: 'Fatigue or low energy' },
-                { e: '🤕', l: 'Headache or head pressure' },
-                { e: '😣', l: 'Cramps or abdominal discomfort' },
-                { e: '💓', l: 'Heart racing or palpitations' },
-                { e: '😮‍💨', l: 'Shortness of breath' },
-                { e: '🌡️', l: 'Dizziness or lightheadedness' },
-                { e: '🔥', l: 'Hot flashes or night sweats' },
-                { e: '😟', l: 'Chest tightness or discomfort' },
-              ].map((opt, i) => (
+              {PHYSICAL_SYMPTOMS.map((opt, i) => (
                 <button
                   key={i}
-                  className={`ci-opt ci-opt--row${symptoms === i ? ' ci-opt--sel' : ''}`}
-                  onClick={() => pickSymptoms(i)}
+                  className={`ci-opt ci-opt--row${symptoms.includes(i) ? ' ci-opt--sel' : ''}`}
+                  onClick={() => toggleSymptom(i)}
                 >
                   <span className="ci-opt__emoji">{opt.e}</span>
                   <span className="ci-opt__label">{opt.l}</span>
@@ -784,7 +810,8 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                 const condName = ca.condition || 'Skin'
                 const cpb = ca.condition && CONDITION_PLAYBOOKS[ca.condition] ? CONDITION_PLAYBOOKS[ca.condition] : GENERIC_PLAYBOOK
                 const sev  = ca.severity != null ? cpb.severityOpts[ca.severity]?.l : null
-                const symp = ca.symptoms != null ? cpb.symptoms[ca.symptoms]?.l : null
+                const sympLabels = resolveSymptomLabels(ca.symptoms)
+                const symp = sympLabels.length > 0 ? sympLabels.join(', ') : null
                 return { condName, sev, symp }
               })
             : null
@@ -816,8 +843,8 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                       // Legacy single-condition format
                       const sevLabel = viewing.severity != null && pb.severityOpts[viewing.severity]
                         ? pb.severityOpts[viewing.severity].l : null
-                      const sympLabel = viewing.symptoms != null && pb.symptoms[viewing.symptoms]
-                        ? pb.symptoms[viewing.symptoms].l : null
+                      const legacySympLabels = resolveSymptomLabels(viewing.symptoms)
+                      const sympLabel = legacySympLabels.length > 0 ? legacySympLabels.join(', ') : null
                       return (
                         <>
                           {sevLabel && (

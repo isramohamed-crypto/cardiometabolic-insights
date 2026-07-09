@@ -4,6 +4,7 @@ import HabitSection from './HabitSection'
 import HabitCheckinSheet from './HabitCheckinSheet'
 import DashboardTiles from './DashboardTiles'
 import { useProfileStage } from '../context/ProfileStageContext'
+import { generateHistoricCheckins } from '../data/mockCheckins'
 
 const COMMON_TREATMENTS = [
   'Atorvastatin (Lipitor)', 'Rosuvastatin (Crestor)', 'Simvastatin (Zocor)',
@@ -523,9 +524,17 @@ function ArchivedSection({ children }) {
 }
 
 export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
-  const { isNew } = useProfileStage()
+  const { isNew, isMature } = useProfileStage()
   const [timeRange, setTimeRange] = useState('14 days')
   const [checkins, setCheckins] = useState(() => readCheckins())
+  // Established users get a lived-in-looking history (most days over the
+  // past ~8 weeks, not every day) merged ahead of whatever real check-ins
+  // exist — so trends/triggers/mood have real data to show instead of
+  // relying purely on mock fallbacks. Real check-ins are never mutated.
+  const displayCheckins = useMemo(
+    () => (isMature ? [...generateHistoricCheckins(), ...checkins] : checkins),
+    [isMature, checkins]
+  )
   const [lastCheckin, setLastCheckin] = useState(() => readLastCheckin())
   const [conditions, setConditions] = useState(() => readConditions())
   const [activeCondition, setActiveCondition] = useState(() => readConditions()[0] || null)
@@ -579,9 +588,9 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   // AI Insights expand/collapse state (always visible, just toggleable)
   const [aiOpen, setAiOpen] = useState(true)
 
-  const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(checkins), [checkins])
+  const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(displayCheckins), [displayCheckins])
   // Days tracked = baseline mock (21) + actual check-ins logged
-  const daysTracked = 21 + checkins.length
+  const daysTracked = 21 + displayCheckins.length
   const topPattern = useMemo(() => {
     const top = [...triggerRows].sort((a, b) => b.p - a.p)[0]
     return top?.p > 0 ? top.l.replace('Stressful day', 'Stress').replace(' day', '') : 'Stress'
@@ -659,7 +668,13 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
 
       {/* Check-in prompt banner */}
       {(() => {
-        const d = daysAgoUtil(lastCheckin?.date)
+        // Established users with no real check-in yet still fall back to the
+        // synthetic history's most recent date, so the banner reads like an
+        // ongoing routine ("it's been 1 day") rather than "start your first
+        // check-in" — the real check-in flow itself is untouched either way.
+        const effectiveLastDate = lastCheckin?.date
+          || (isMature && displayCheckins.length > 0 ? displayCheckins[displayCheckins.length - 1].date : null)
+        const d = daysAgoUtil(effectiveLastDate)
         const todayDone = d === 0
         return (
           <button
@@ -710,21 +725,24 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       )}
 
       {/* Recent check-ins */}
-      {checkins.length > 0 && (
+      {displayCheckins.length > 0 && (
         <div className="tp-section">
           <div className="tp-sec-head">
             <h2 className="tp-sec-title">Recent check-ins</h2>
             <span className="tp-sec-badge" style={{ background: 'rgba(27,188,60,.1)', color: 'var(--color-teal)' }}>
-              {checkins.length} logged
+              {displayCheckins.length} logged
             </span>
           </div>
           <div className="tp-card" style={{ padding: 0, overflow: 'hidden' }}>
-            {[...checkins].reverse().slice(0, 5).map((c, i) => {
+            {[...displayCheckins].reverse().slice(0, 5).map((c, i) => {
               const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
               const sevIdx = primary?.severity ?? c.severity ?? null
-              const sympIdx = primary?.symptoms ?? c.symptoms ?? null
+              const sympRaw = primary?.symptoms ?? c.symptoms ?? null
+              const sympIdxs = Array.isArray(sympRaw) ? sympRaw : (sympRaw != null ? [sympRaw] : [])
               const mood = sevIdx != null ? MOOD_LABELS[sevIdx] : null
-              const symp = sympIdx != null ? SYMPTOM_LABELS[sympIdx] : null
+              const symptomLabels = sympIdxs
+                .map(i => SYMPTOM_LABELS[i])
+                .filter(s => s && s.l !== 'No symptoms')
               const txCount = c.treatments?.length || 0
               return (
                 <div key={i} style={{
@@ -739,11 +757,11 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                       <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>
                         {mood?.l || 'Logged'}
                       </span>
-                      {symp && symp.l !== 'No symptoms' && (
-                        <span style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface)', padding: '1px 7px', borderRadius: 10 }}>
-                          {symp.e} {symp.l}
+                      {symptomLabels.map((s, si) => (
+                        <span key={si} style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface)', padding: '1px 7px', borderRadius: 10 }}>
+                          {s.e} {s.l}
                         </span>
-                      )}
+                      ))}
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
                       {txCount > 0 ? `${txCount} medication${txCount > 1 ? 's' : ''} active` : 'No medications logged'}
@@ -761,7 +779,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       )}
 
       {/* Mood trend chart */}
-      {checkins.length >= 3 && (
+      {displayCheckins.length >= 3 && (
         <div className="tp-section">
           <div className="tp-sec-head">
             <h2 className="tp-sec-title">Mood trend</h2>
@@ -769,7 +787,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           </div>
           <div className="tp-card">
             {(() => {
-              const recent = [...checkins].reverse().slice(0, 14)
+              const recent = [...displayCheckins].reverse().slice(0, 14)
               const moodVals = recent.map(c => {
                 const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
                 const sevIdx = primary?.severity ?? c.severity ?? null
@@ -778,7 +796,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
               if (moodVals.length < 3) return <div style={{ fontSize: 13, color: 'var(--color-text-muted)', padding: '8px 0' }}>Log more check-ins to see your mood trend.</div>
               return <Sparkline data={moodVals} color="var(--color-sage)" />
             })()}
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 6 }}>Higher = better mood · last {Math.min(checkins.length, 14)} check-ins</div>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 6 }}>Higher = better mood · last {Math.min(displayCheckins.length, 14)} check-ins</div>
           </div>
         </div>
       )}

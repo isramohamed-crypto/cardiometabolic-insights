@@ -634,7 +634,7 @@ h2 {
 
 /* ── For You Now ─────────────────────────────────────────────── */
 .for-you-now {
-  padding: var(--space-6) 0 0;
+  padding: var(--space-8) 0 0;
 }
 .for-you-now__title {
   font-family: var(--font-serif);
@@ -2530,7 +2530,7 @@ h2 {
 
 /* ── SWIPE LEARN ────────────────────────────────────────────── */
 .swipe-learn {
-  padding: var(--space-6) 0 var(--space-2);
+  padding: var(--space-8) 0 var(--space-2);
 }
 .swipe-learn__head {
   display: flex;
@@ -3076,10 +3076,10 @@ h2 {
 
 /* ── QUICK ANSWERS ──────────────────────────────────────────── */
 .quick-answers {
-  padding: var(--space-6) 0 var(--space-4);
+  padding: var(--space-8) 0 var(--space-4);
   background: var(--color-sage);
   position: relative;
-  margin: var(--space-6) 0 var(--space-6);
+  margin: 0 0 var(--space-6);
 }
 .quick-answers::before {
   content: '';
@@ -3117,7 +3117,7 @@ h2 {
 .qa-scroll::-webkit-scrollbar { display: none; }
 .qa-card {
   min-width: 280px;
-  height: 250px;
+  height: 340px;
   border-radius: var(--radius-lg);
   cursor: pointer;
   perspective: 800px;
@@ -3188,7 +3188,7 @@ h2 {
 
 /* ── WATCH NOW ──────────────────────────────────────────────── */
 .watch-now {
-  padding: var(--space-6) 0 var(--space-6);
+  padding: var(--space-8) 0 var(--space-6);
   margin-top: 0;
 }
 
@@ -3233,6 +3233,7 @@ h2 {
 /* Video card */
 .edu-card {
   flex: 0 0 82vw;
+  height: 340px;
   scroll-snap-align: start;
   border-radius: 16px;
   overflow: hidden;
@@ -3254,7 +3255,7 @@ h2 {
 .edu-card__bg {
   position: relative;
   width: 100%;
-  aspect-ratio: 9/14;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -3465,7 +3466,7 @@ h2 {
 
 /* ── Peer Stories ────────────────────────────────────────── */
 .peer-section {
-  padding: var(--space-6) 0 var(--space-4);
+  padding: var(--space-8) 0 var(--space-4);
 }
 .peer-section__head {
   display: flex;
@@ -5769,8 +5770,8 @@ h2 {
 
 /* ── Stories from others ─────────────────────────────────── */
 .pp-stories-sec {
-  margin: var(--space-5) 0 0;
-  padding: var(--space-6) 0 var(--space-5);
+  margin: 0;
+  padding: var(--space-8) 0 var(--space-5);
 }
 .pp-stories-sec .watch-head { padding: 0 0 var(--space-4); }
 .pp-stories-swipe { padding: 0; }
@@ -6005,7 +6006,6 @@ h2 {
 }
 
 /* ── Living Beyond Eczema (peer stories) ───────────────────── */
-.lbe-section { padding-top: var(--space-5); }
 
 .lbe-cover {
   flex: 0 0 78vw;
@@ -6272,6 +6272,7 @@ h2 {
 .rs-card {
   flex: 0 0 78vw;
   max-width: 280px;
+  height: 340px;
   scroll-snap-align: start;
   background: white;
   border-radius: var(--radius-lg);
@@ -6488,6 +6489,7 @@ h2 {
 .rs-cover {
   flex: 0 0 78vw;
   max-width: 260px;
+  height: 340px;
   scroll-snap-align: start;
   background: white;
   border-radius: var(--radius-lg);

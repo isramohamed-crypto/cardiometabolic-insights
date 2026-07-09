@@ -1,7 +1,7 @@
 /* ── Parents Caregiver Support Section ───────────────────────────────────── */
 
 .pcs-section {
-  padding: var(--space-6) 0 var(--space-6);
+  padding: var(--space-8) 0 var(--space-6);
 }
 
 .pcs-title-row {
@@ -25,10 +25,11 @@
 
 .pcs-title-row__title {
   font-family: var(--font-serif);
-  font-size: 20px;
-  font-weight: 700;
-  color: #000;
-  letter-spacing: -0.01em;
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 /* Scroll row */
@@ -110,7 +111,7 @@
   position: relative;
   flex-shrink: 0;
   width: 260px;
-  height: 400px;
+  height: 340px;
   scroll-snap-align: start;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -190,7 +191,7 @@
 .pcs-fact {
   flex-shrink: 0;
   width: 260px;
-  height: 400px;
+  height: 340px;
   scroll-snap-align: start;
   perspective: 1000px;
   background: none;
