@@ -908,14 +908,22 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <p className="ci-done__where">
                 📊 Your trends, triggers, and patterns live on <strong>Track</strong>.
               </p>
-              <div className="ci-nav-row" style={{ marginTop: 0 }}>
-                <button className="ci-back" type="button" onClick={() => { setViewing(null); setStep(0) }}>
-                  Re-do today's
-                </button>
-                {onViewTrack
-                  ? <button className="ci-btn ci-btn--inline" onClick={onViewTrack}>View on Track →</button>
-                  : <button className="ci-btn ci-btn--inline" onClick={onClose}>Back to feed</button>}
-              </div>
+              <button className="ci-close" onClick={onClose} style={{ position: 'absolute', top: 16, right: 16 }}>✕</button>
+              {onViewTrack && (
+                <div style={{ textAlign: 'center', marginTop: 8 }}>
+                  <button
+                    type="button"
+                    onClick={onViewTrack}
+                    style={{
+                      background: 'none', border: '1.5px solid #2D9B83',
+                      color: '#2D9B83', borderRadius: 99, padding: '8px 18px',
+                      fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                    }}
+                  >
+                    View more on Track →
+                  </button>
+                </div>
+              )}
             </div>
           )
         })()}

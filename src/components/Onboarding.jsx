@@ -358,7 +358,7 @@ export default function Onboarding({ name, onClose }) {
               </div>
             )}
 
-            <button className="ob-cta" onClick={onClose}>Let's get started →</button>
+            <button className="ob-cta" onClick={() => { skip(); onClose() }}>Let's get started →</button>
           </div>
         </div>
       </div>
