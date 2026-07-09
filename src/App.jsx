@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import Nav from './components/Nav'
 import Registration from './components/Registration'
 import Onboarding from './components/Onboarding'
@@ -36,6 +36,7 @@ import MyRecipesCard from './components/MyRecipesCard'
 import BHGCard from './components/BHGCard'
 import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
+import StoriesSection from './components/StoriesSection'
 import LearnPage from './components/LearnPage'
 import EatingWellSection from './components/EatingWellSection'
 import NutritionBuildingBlocksSection from './components/NutritionBuildingBlocksSection'
@@ -55,6 +56,23 @@ function readProfile() {
 
 function writeProfile(p) {
   try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(p)) } catch (_) {}
+}
+
+function ArchivedSection({ children }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <section className="archived-section">
+      <button
+        className="archived-section__title"
+        onClick={() => setOpen(o => !o)}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8 }}
+      >
+        Archived
+        <span style={{ fontSize: 10, opacity: 0.5 }}>{open ? '▲' : '▼'}</span>
+      </button>
+      {open && children}
+    </section>
+  )
 }
 
 export default function App() {
@@ -246,6 +264,8 @@ export default function App() {
             <SponsorBanner variant="card" />
           </div>
 
+          <StoriesSection />
+
           <PeerStories />
 
           {/* 7 — Watch Now: video for deeper learning */}
@@ -268,14 +288,12 @@ export default function App() {
           <SponsorBanner />
           {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
 
-          {/* Archived — retired sections kept for reference */}
-          <section className="archived-section">
-            <h2 className="archived-section__title">Archived</h2>
-
+          {/* Archived — collapsed by default */}
+          <ArchivedSection>
             <QuickAnswers />
             <ConditionStrip />
             <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
-          </section>
+          </ArchivedSection>
         </main>
       )}
 

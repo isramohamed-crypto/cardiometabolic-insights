@@ -505,6 +505,23 @@ function daysAgoUtil(isoDate) {
   return Math.round((a - b) / (1000 * 60 * 60 * 24))
 }
 
+function ArchivedSection({ children }) {
+  const [open, setOpen] = React.useState(false)
+  return (
+    <section className="archived-section" style={{ marginTop: 8 }}>
+      <button
+        className="archived-section__title"
+        onClick={() => setOpen(o => !o)}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8 }}
+      >
+        Archived
+        <span style={{ fontSize: 10, opacity: 0.5 }}>{open ? '▲' : '▼'}</span>
+      </button>
+      {open && children}
+    </section>
+  )
+}
+
 export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const { isNew } = useProfileStage()
   const [timeRange, setTimeRange] = useState('14 days')
@@ -985,16 +1002,15 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         )}
       </div>
 
-      {/* ── Archived ── */}
-      <section className="archived-section" style={{ marginTop: 8 }}>
-        <h2 className="archived-section__title">Archived</h2>
+      {/* ── Archived (collapsed by default) ── */}
+      <ArchivedSection>
         <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
         <HabitCheckinSheet
           open={showHabitSheet}
           onClose={() => setShowHabitSheet(false)}
           onComplete={() => setShowHabitSheet(false)}
         />
-      </section>
+      </ArchivedSection>
 
     </main>
   )
