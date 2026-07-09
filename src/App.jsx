@@ -69,6 +69,7 @@ export default function App() {
   const [showAccount, setShowAccount] = useState(false)
   const [showCheckin, setShowCheckin] = useState(false)
   const [checkinTick, setCheckinTick] = useState(0)   // bumps after a check-in is logged
+  const [ritualsKey, setRitualsKey]   = useState(0)   // bumps after onboarding to force MyRituals remount
   const [showPulse, setShowPulse] = useState(false)
   const [pulseTick, setPulseTick]   = useState(0)   // bumps after a Health Pulse is logged
   const [profile, setProfile] = useState(() => readProfile())
@@ -128,9 +129,8 @@ export default function App() {
       {onboarding && <Onboarding name={onboarding.name} onClose={() => {
         setOnboarding(null)
         refreshProfile()
-        // Onboarding clears check-in storage — bump the tick so the home-feed
-        // card and Track banner re-read and reflect the empty state.
         setCheckinTick(t => t + 1)
+        setRitualsKey(k => k + 1)   // always forces MyRituals to remount with fresh profile
       }} />}
 
       {showDrawer && (
@@ -236,8 +236,7 @@ export default function App() {
           {/* AI Insights */}
           <InsightSection />
 
-          {/* My Rituals — new daily habits component */}
-          <MyRituals />
+          <MyRituals key={ritualsKey} />
 
           {/* 4 — Daily check-in: strike while engaged after AI interaction */}
           <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
