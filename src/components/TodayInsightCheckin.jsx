@@ -100,7 +100,6 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
     <>
       <div className="dc-feat__ribbon">
         <span className="dc-feat__ribbon-label">How are you feeling?</span>
-        <span className="dc-feat__ribbon-day">{dayBadge}</span>
       </div>
       <div className="dc-feat__body">
         <div className="dc-feat__blob" aria-hidden="true" />
@@ -116,10 +115,15 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
           )}
         </div>
         <div className="dc-feat__foot">
-          <div className="dc-feat__dots" aria-label={`${loggedCount} of 7 days logged this week`}>
-            {streak.map((logged, i) => (
-              <span key={i} className={`dc-feat__dot${logged ? ' dc-feat__dot--on' : ''}`} />
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div className="dc-feat__dots">
+              {streak.map((logged, i) => (
+                <span key={i} className={`dc-feat__dot${logged ? ' dc-feat__dot--on' : ''}`} />
+              ))}
+            </div>
+            <span style={{ fontSize: 10, color: '#64748b', fontWeight: 600 }}>
+              {loggedCount} of 7 days logged this week
+            </span>
           </div>
           <span className="dc-feat__cta">{ctaText}</span>
         </div>
