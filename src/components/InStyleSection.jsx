@@ -31,7 +31,16 @@ export default function InStyleSection() {
       </div>
 
       <div className="is-card">
-        <img src="/images/instyle/photo.jpg" alt="" className="is-card__photo" />
+        <video
+          className="is-card__photo"
+          src="/instyle-wardrobe.mp4"
+          poster="/images/instyle/photo.jpg"
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-hidden="true"
+        />
         <div className="is-card__scrim" />
 
         <div className="is-card__content">

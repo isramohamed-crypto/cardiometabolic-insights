@@ -21,7 +21,6 @@ import ProgramCard from './components/ProgramCard'
 import AskAI from './components/AskAI'
 import ConditionStrip from './components/ConditionStrip'
 import DashboardRow from './components/DashboardRow'
-import DashboardTiles from './components/DashboardTiles'
 import ForYouNow from './components/ForYouNow'
 import SwipeLearn from './components/SwipeLearn'
 import Breathe from './components/Breathe'
@@ -247,10 +246,7 @@ export default function App() {
               5 tips for you · 6 peer stories · 7 watch now ·
               8 interests · 9 swipe learn */}
 
-          {/* 3 — Dashboard tiles: customizable health readings */}
-          <DashboardTiles tick={checkinTick} />
-
-          <MyRituals key={ritualsKey} />
+          {/* My Numbers now lives on the Track tab only — see TrackPage.jsx */}
 
           {/* AI insight + daily check-in — combined into one card. New users
               get a single compact check-in card with the insight folded in
@@ -258,6 +254,8 @@ export default function App() {
               check-in entry point as two sections of the same card. */}
           <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
+
+          <MyRituals key={ritualsKey} />
 
           {/* Nutrition Building Blocks — EatingWell featured content */}
           <NutritionBuildingBlocksSection />
@@ -268,13 +266,11 @@ export default function App() {
 
           <StoriesSection />
 
-          <PeerStories />
+          {/* 8 — EatingWell featured content */}
+          <EatingWellSection />
 
           {/* 7 — Watch Now: video for deeper learning */}
           <WatchNow />
-
-          {/* 8 — EatingWell featured content */}
-          <EatingWellSection />
 
           {/* 9 — VeryWell Health + Mind */}
           <VeryWellSection />
@@ -289,6 +285,7 @@ export default function App() {
           {/* Archived — collapsed by default */}
           <ArchivedSection>
             <ParentsCaregiverSupportSection />
+            <PeerStories />
             <QuickAnswers />
             <ConditionStrip />
             <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
