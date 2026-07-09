@@ -4382,9 +4382,14 @@ h2 {
   font-weight: 400;
 }
 
-/* ── Today insight + check-in, combined card (established users) ──
-   One card, two sections: full insight on top, daily check-in below,
-   separated by a divider — instead of two separate cards. */
+/* ── Today insight + check-in (established users) ──
+   Two separate cards stacked with a gap: the AI insight on top, the
+   "How are you feeling?" check-in prompt below. */
+.checkin-section--split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
 .tic-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border, rgba(0,0,0,.07));
@@ -4396,40 +4401,60 @@ h2 {
 .tic-insight {
   padding: 18px 18px 14px;
 }
-.tic-divider {
-  height: 1px;
-  background: var(--color-border-light);
-  margin: 0 18px;
-}
-.tic-checkin {
-  display: block;
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  font-family: inherit;
-  cursor: pointer;
-}
-.tic-checkin:active { transform: scale(0.99); }
-
-/* Small pill folded into the check-in card for new users, replacing the
-   standalone locked-insight card entirely. */
-.tic-pill {
-  display: inline-flex;
+/* Shared "AI Insights" section-eyebrow — uppercase, letter-spaced, no
+   background/border. Used both by the new-user progress teaser below and
+   by the established-user insight card, so the two read as one family. */
+.ai-eyebrow {
+  display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-teal-dark);
-  background: var(--color-teal-light);
-  padding: 4px 10px;
-  border-radius: 9999px;
-  margin: 8px 0 0;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-lime);
+  margin-bottom: 8px;
 }
-.tic-pill__icon {
-  font-size: 12px;
+.ai-eyebrow__icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* Standalone "AI insights unlock" progress teaser — sits above the check-in
+   card for new users. Populates as they log check-ins: shows how many of
+   the 3 data points needed for a first insight they've logged so far. */
+.tic-unlock {
+  padding: 14px 16px;
+  background: var(--color-lime-light);
+  border-radius: var(--radius-md);
+}
+.tic-unlock .ai-eyebrow {
+  margin-bottom: 4px;
+}
+.tic-unlock__title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+}
+.tic-unlock--ready .tic-unlock__title {
+  color: var(--color-teal-dark);
+}
+.tic-unlock__dots {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+.tic-unlock__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+.tic-unlock__dot--on {
+  background: var(--color-lime);
 }
 
 /* Reel carousel */
@@ -5866,7 +5891,7 @@ h2 {
   gap: 8px;
   flex-wrap: wrap;
 }
-.pp-stories-sec .edu-disclaimer { margin: var(--space-4) 0 0; }
+.pp-stories-sec .edu-disclaimer { margin-top: var(--space-4); }
 
 .pp-share-btn {
   width: 100%;
