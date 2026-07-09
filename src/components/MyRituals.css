@@ -146,6 +146,21 @@
   transition: border-color 0.2s;
 }
 
+/* Recommended pill for personalized habits */
+.mr-recommended-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--color-teal, #2D9B83);
+  background: rgba(45, 155, 131, 0.10);
+  border-radius: 99px;
+  padding: 2px 8px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
 /* Teal left-border stripe for personalized habits */
 .mr-card--personal::before {
   content: '';

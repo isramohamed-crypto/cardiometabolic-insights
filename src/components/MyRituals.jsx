@@ -409,7 +409,7 @@ export default function MyRituals() {
         )}
         {selectedHabits.map(habit => {
           const isDone     = completions.includes(habit.id)
-          const isPersonal = personalizedIds.has(habit.id)
+          const isPersonal = personalizedIds.has(habit.id) || habit.conditions.length > 0
           const count      = getTotalCount(habit.id)
           const isExpanded = expandedWhy.has(habit.id)
           const isPopping  = justDone.has(habit.id)
@@ -443,6 +443,9 @@ export default function MyRituals() {
                   <span className="mr-card__icon">{habit.icon}</span>
                 </div>
                 <div className="mr-card__body">
+                  {isPersonal && (
+                    <span className="mr-recommended-pill">✦ Recommended</span>
+                  )}
                   <span className="mr-card__label">{habit.label}</span>
                   <p className="mr-card__subdesc">{habit.desc}</p>
                 </div>
@@ -519,7 +522,7 @@ export default function MyRituals() {
 
           <div className="mr-picker__list">
             {pickerFiltered.map(habit => {
-              const isPersonal = personalizedIds.has(habit.id)
+              const isPersonal = personalizedIds.has(habit.id) || habit.conditions.length > 0
               const catStyle   = CAT[habit.category] || {}
               return (
                 <button key={habit.id} className="mr-picker__item" onClick={() => handleAdd(habit.id)}>
