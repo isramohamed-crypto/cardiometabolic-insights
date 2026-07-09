@@ -264,7 +264,7 @@ export default function App() {
             <SponsorBanner variant="card" />
           </div>
 
-          <StoriesSection />
+          <StoriesSection onNavigate={target => { setActivePage(target); window.scrollTo(0, 0) }} />
 
           {/* 8 — EatingWell featured content */}
           <EatingWellSection />

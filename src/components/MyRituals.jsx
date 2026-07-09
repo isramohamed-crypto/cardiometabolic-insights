@@ -300,6 +300,21 @@ const MATURE_DOT_PATTERNS = {
   default:     [true, false, true, true, false, false, true],
 }
 
+// Realistic varied completion counts for established users (past ~30 days)
+const MATURE_COUNTS = {
+  hl_walk:     22,
+  hl_sleep:    17,
+  hl_water:    24,
+  hl_bp_med:   28,
+  hl_chol_med: 26,
+  hl_dm_med:   29,
+  hl_breathe:  14,
+  hl_stretch:  11,
+  hl_journal:  9,
+  hl_steps:    20,
+  default:     16,
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 export default function MyRituals() {
   const { stage } = useProfileStage()
@@ -421,7 +436,8 @@ export default function MyRituals() {
           // If logged today, set last dot to true
           const todayDots  = [...realDots.slice(0, 6), isDone]
           const dots         = isMature ? (isDone ? [...matureDots.slice(0, 6), true] : matureDots) : todayDots
-          const displayCount = isMature ? (isDone ? 19 : 18) : count
+          const baseCount    = MATURE_COUNTS[habit.id] ?? MATURE_COUNTS.default
+          const displayCount = isMature ? (isDone ? baseCount + 1 : baseCount) : count
 
           return (
             <div
@@ -490,7 +506,7 @@ export default function MyRituals() {
                 </div>
                 <div className="mr-card__footer-right">
                   <span className="mr-card__count">
-                    {displayCount > 0 ? `${displayCount} times` : 'Start today'}
+                    {displayCount > 0 ? `${displayCount} completions` : 'Start today'}
                   </span>
                 </div>
                 <button className="mr-card__remove" onClick={e => handleRemove(e, habit.id)}>Remove</button>

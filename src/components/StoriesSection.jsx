@@ -43,7 +43,7 @@ const STORIES = [
   },
 ]
 
-export default function StoriesSection() {
+export default function StoriesSection({ onNavigate }) {
   return (
     <section className="pp-stories-sec">
       <div className="watch-head" style={{ padding: '0 var(--space-5) var(--space-4)', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
@@ -63,7 +63,52 @@ export default function StoriesSection() {
         msOverflowStyle: 'none',
       }}>
         {STORIES.map((s, i) => (
-          <div key={i} style={{
+          <React.Fragment key={i}>
+          {i === 2 && onNavigate && (
+            <div
+              onClick={() => onNavigate('Prepare')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onNavigate('Prepare') }}
+              style={{
+                flexShrink: 0,
+                width: 'calc(100vw - 48px)',
+                maxWidth: 360,
+                scrollSnapAlign: 'start',
+                borderRadius: 16,
+                background: 'linear-gradient(150deg, #1a4a3a, #0d2e22)',
+                padding: '20px 18px 18px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: 16,
+                color: '#fff',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', opacity: 0.6, textTransform: 'uppercase' }}>
+                Your next appointment
+              </div>
+              <div>
+                <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1.2, marginBottom: 10 }}>
+                  Ready to talk to your doctor?
+                </div>
+                <div style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.55 }}>
+                  The stories you've read are full of questions worth asking. Vitalist turns them into a personalized prep kit for your visit.
+                </div>
+              </div>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                background: '#2D9B83', borderRadius: 99,
+                padding: '10px 18px', fontWeight: 700, fontSize: 13,
+                alignSelf: 'flex-start',
+              }}>
+                Prepare for your visit →
+              </div>
+              <div style={{ fontSize: 10, opacity: 0.5 }}>Vitalist · Personalized for you</div>
+            </div>
+          )}
+          <div style={{
             flexShrink: 0,
             width: 'calc(100vw - 48px)',
             maxWidth: 360,
@@ -114,6 +159,7 @@ export default function StoriesSection() {
               <span>In Partnership with Amgen</span>
             </div>
           </div>
+          </React.Fragment>
         ))}
       </div>
 
