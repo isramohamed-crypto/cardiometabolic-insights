@@ -280,16 +280,13 @@ export default function App() {
           {/* 10 — InStyle featured content */}
           <InStyleSection />
 
-          {/* 11 — Parents: Caregiver Support */}
-          <ParentsCaregiverSupportSection />
-
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <SponsorBanner />
-          {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
 
           {/* Archived — collapsed by default */}
           <ArchivedSection>
+            <ParentsCaregiverSupportSection />
             <QuickAnswers />
             <ConditionStrip />
             <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
