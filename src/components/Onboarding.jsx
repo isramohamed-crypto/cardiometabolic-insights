@@ -99,13 +99,14 @@ const Q4 = {
     { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event', group: 'diagnosed' },
     { id: 'menopause',   icon: '🌸', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms', group: 'diagnosed' },
     { id: 'glp1',        icon: '💉', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar', group: 'diagnosed' },
-    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Another diagnosis or concern', group: 'diagnosed' },
     { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family', group: 'proactive' },
     { id: 'borderline',  icon: '📊', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed', group: 'proactive' },
-    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',                desc: 'Trying to manage weight for long-term health', group: 'proactive' },
     { id: 'longevity',   icon: '⏳', label: 'Longevity & healthy aging',      desc: 'Planning ahead for quality of life as I get older', group: 'proactive' },
     { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive', group: 'proactive' },
     { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis', group: 'proactive' },
+    // Kept last on purpose — this is the catch-all, so it reads as a final
+    // option rather than competing with the specific diagnoses above it.
+    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Tell us in your own words', group: 'diagnosed' },
   ],
 }
 
@@ -141,10 +142,21 @@ const CODE_TO_LABEL = {
     cholesterol: 'High cholesterol', hypertension: 'High blood pressure', diabetes: 'Type 2 diabetes',
     obesity: 'Weight / metabolic health', heart: 'Heart disease',
     menopause: 'Menopause / hormonal changes', glp1: 'Weight loss medication (GLP-1)',
-    other_dx: 'Something else (diagnosed)',
-    family_hx: 'Family history', borderline: 'Borderline numbers', weight: 'Weight concerns',
+    other_dx: 'Something else',
+    family_hx: 'Family history', borderline: 'Borderline numbers',
     longevity: 'Longevity & healthy aging', prevention: 'Prevention focused', post_event: 'Recovery',
   },
+}
+
+// 'Something else' captures free text instead of a generic label — this
+// resolves the stored condition labels for ans.q4, substituting the user's
+// own words for the other_dx chip when they typed something.
+function resolveConditionLabels(ids, otherText) {
+  const trimmedOther = (otherText || '').trim()
+  return (ids || []).map(id => {
+    if (id === 'other_dx' && trimmedOther) return trimmedOther
+    return CODE_TO_LABEL.condition[id] || id
+  })
 }
 function mapCode(field, v) {
   if (Array.isArray(v)) return v.map(x => CODE_TO_LABEL[field]?.[x] || x)
@@ -160,6 +172,7 @@ export default function Onboarding({ name, onClose }) {
     q2: name || '',           // first name (free text), pre-filled from Registration if provided
     q3: null,                 // primary impact
     q4: [],                   // multi-select: array of diagnosis/risk-factor ids (unified list)
+    q4OtherText: '',          // free text for the 'Something else' chip
     q5: [],                   // multi-select: array of interest topic labels
     q6: '',                   // identity statement (free text)
   })
@@ -171,8 +184,12 @@ export default function Onboarding({ name, onClose }) {
   function toggleQ4(id) {
     setAns(a => {
       const set = new Set(a.q4)
-      if (set.has(id)) set.delete(id); else set.add(id)
-      return { ...a, q4: Array.from(set) }
+      const wasSelected = set.has(id)
+      if (wasSelected) set.delete(id); else set.add(id)
+      const next = { ...a, q4: Array.from(set) }
+      // Clear the free-text field if "Something else" gets deselected
+      if (id === 'other_dx' && wasSelected) next.q4OtherText = ''
+      return next
     })
   }
 
@@ -201,7 +218,7 @@ export default function Onboarding({ name, onClose }) {
     maybeSet('role',            mapCode('role',            ans.q1))
     maybeSet('focus',           mapCode('focus',           ans.q3))
     maybeSet('diagnosisStatus', mapCode('diagnosisStatus', deriveDiagnosisStatus(ans.q4)))
-    maybeSet('condition',       mapCode('condition',       ans.q4))
+    maybeSet('condition',       resolveConditionLabels(ans.q4, ans.q4OtherText))
     maybeSet('topics',          ans.q5)
     maybeSet('identity',        ans.q6.trim())
     profile.onboardingSources = Array.from(onboardingSources)
@@ -243,7 +260,7 @@ export default function Onboarding({ name, onClose }) {
       role:            mapCode('role',            ans.q1),
       focus:           mapCode('focus',           ans.q3),
       diagnosisStatus: mapCode('diagnosisStatus', deriveDiagnosisStatus(ans.q4)),
-      condition:       mapCode('condition',       ans.q4),
+      condition:       resolveConditionLabels(ans.q4, ans.q4OtherText),
       topics:          ans.q5,    // topics are already stored as labels
       identity:        ans.q6.trim(),
     }
@@ -277,10 +294,7 @@ export default function Onboarding({ name, onClose }) {
     const roleLabel  = roleLabels[ans.q1] || ''
     const focusLabel = Q3.options.find(o => o.id === ans.q3)?.label || ''
     const diagnosisStatus = deriveDiagnosisStatus(ans.q4)
-    const conditionLabel = (ans.q4 || [])
-      .map(id => Q4.options.find(o => o.id === id)?.label)
-      .filter(Boolean)
-      .join(', ')
+    const conditionLabel = resolveConditionLabels(ans.q4, ans.q4OtherText).join(', ')
     const conditionKey   = diagnosisStatus === 'yes'
       ? (ans.q4.length > 1 ? 'Diagnoses' : 'Diagnosis')
       : (ans.q4.length > 1 ? 'Main concerns' : 'Main concern')
@@ -424,6 +438,17 @@ export default function Onboarding({ name, onClose }) {
                   multiSelect
                   onSelect={id => toggleQ4(id)}
                 />
+                {ans.q4.includes('other_dx') && (
+                  <input
+                    className="ob-input"
+                    type="text"
+                    placeholder="Tell us what's going on…"
+                    value={ans.q4OtherText}
+                    onChange={e => setAns(a => ({ ...a, q4OtherText: e.target.value }))}
+                    style={{ marginTop: 'var(--space-3)' }}
+                    autoFocus
+                  />
+                )}
               </>
             )}
 

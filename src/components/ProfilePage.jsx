@@ -20,8 +20,8 @@ const MIGRATION_MAP = {
     cholesterol: 'High cholesterol', hypertension: 'High blood pressure', diabetes: 'Type 2 diabetes',
     obesity: 'Weight / metabolic health', heart: 'Heart disease',
     menopause: 'Menopause / hormonal changes', glp1: 'Weight loss medication (GLP-1)',
-    other_dx: 'Something else (diagnosed)',
-    family_hx: 'Family history', borderline: 'Borderline numbers', weight: 'Weight concerns',
+    other_dx: 'Something else',
+    family_hx: 'Family history', borderline: 'Borderline numbers',
     longevity: 'Longevity & healthy aging', prevention: 'Prevention focused', post_event: 'Recovery',
   },
 }
@@ -57,7 +57,7 @@ const SECTIONS = [
     fields: [
       { id: 'role',            label: 'Managing for',          type: 'select',      options: ['Myself', 'My child', 'Someone else'] },
       { id: 'diagnosisStatus', label: 'Diagnosis status',      type: 'select',      options: ['Yes, I have a diagnosis', 'Not yet / not sure'] },
-      { id: 'condition',       label: 'Conditions / concerns', type: 'multiselect', options: ['High cholesterol', 'High blood pressure', 'Type 2 diabetes', 'Weight / metabolic health', 'Heart disease', 'Menopause / hormonal changes', 'Weight loss medication (GLP-1)', 'Something else (diagnosed)', 'Family history', 'Borderline numbers', 'Weight concerns', 'Longevity & healthy aging', 'Prevention focused', 'Recovery'] },
+      { id: 'condition',       label: 'Conditions / concerns', type: 'multiselect', options: ['High cholesterol', 'High blood pressure', 'Type 2 diabetes', 'Weight / metabolic health', 'Heart disease', 'Menopause / hormonal changes', 'Weight loss medication (GLP-1)', 'Family history', 'Borderline numbers', 'Longevity & healthy aging', 'Prevention focused', 'Recovery', 'Something else'] },
       { id: 'triggers',        label: 'Known contributors',    type: 'multiselect', options: ['Stress', 'Poor sleep', 'Unhealthy diet', 'Physical inactivity', 'Smoking', 'Excess alcohol', 'Hormonal changes', 'Medications', 'Family history', 'Other'] },
       { id: 'comorbidities',   label: 'Other conditions',      type: 'multiselect', options: ['Hypertension', 'Type 2 diabetes', 'Obesity / metabolic syndrome', 'Heart disease', 'Anxiety or depression', 'Kidney disease', 'None of these'] },
     ],

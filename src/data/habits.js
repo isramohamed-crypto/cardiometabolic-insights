@@ -135,7 +135,6 @@ const CONDITION_MAP = {
   // Non-diagnosis conditions fall back to default
   'Family history':                null,
   'Borderline numbers':            null,
-  'Weight concerns':               'Weight / metabolic health',
   'Longevity & healthy aging':     null,
   'Prevention focused':            null,
 }

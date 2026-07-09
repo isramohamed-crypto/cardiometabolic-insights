@@ -9,7 +9,7 @@ import SavedItemsPage from './components/SavedItemsPage'
 import SkinCheckinSheet from './components/SkinCheckinSheet'
 import Hero from './components/Hero'
 import StatusStrip from './components/StatusStrip'
-import DailyCheckin from './components/DailyCheckin'
+import TodayInsightCheckin from './components/TodayInsightCheckin'
 import HealthPulseCard from './components/HealthPulseCard'
 import HealthPulseSheet from './components/HealthPulseSheet'
 import SponsorBanner from './components/SponsorBanner'
@@ -28,7 +28,6 @@ import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
-import InsightSection from './components/InsightSection'
 import MyRituals from './components/MyRituals'
 import CommunityPoll from './components/CommunityPoll'
 import AutumnTravelCard from './components/AutumnTravelCard'
@@ -248,13 +247,16 @@ export default function App() {
               5 tips for you · 6 peer stories · 7 watch now ·
               8 interests · 9 swipe learn */}
 
-          {/* AI Insights */}
-          <InsightSection />
+          {/* 3 — Dashboard tiles: customizable health readings */}
+          <DashboardTiles tick={checkinTick} />
 
           <MyRituals key={ritualsKey} />
 
-          {/* 4 — Daily check-in: strike while engaged after AI interaction */}
-          <DailyCheckin onOpen={() => setShowCheckin(true)} tick={checkinTick} />
+          {/* AI insight + daily check-in — combined into one card. New users
+              get a single compact check-in card with the insight folded in
+              as a pill; established users get the full insight and the
+              check-in entry point as two sections of the same card. */}
+          <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 
           {/* Nutrition Building Blocks — EatingWell featured content */}

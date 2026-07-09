@@ -376,7 +376,7 @@ function CycleLogModal({ current, onClose, onSave }) {
                 flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
                 gap: 5, padding: '9px 4px', borderRadius: 12,
                 border: `1.5px solid ${flow === f.id ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                background: flow === f.id ? 'rgba(27,58,92,0.07)' : 'var(--color-card)',
+                background: flow === f.id ? 'rgba(14,140,127,0.07)' : 'var(--color-card)',
                 cursor: 'pointer',
               }}
             >
@@ -397,7 +397,7 @@ function CycleLogModal({ current, onClose, onSave }) {
                 style={{
                   padding: '5px 10px', borderRadius: 20, fontSize: 12,
                   border: '1.5px solid var(--color-teal)',
-                  background: 'rgba(27,58,92,0.08)',
+                  background: 'rgba(14,140,127,0.08)',
                   color: 'var(--color-teal)', fontWeight: 600, cursor: 'pointer',
                   display: 'flex', alignItems: 'center', gap: 5,
                 }}
@@ -513,7 +513,7 @@ function GlucoseLogModal({ current, onClose, onSave }) {
               style={{
                 flex: 1, padding: '10px 8px', borderRadius: 12, cursor: 'pointer', textAlign: 'left',
                 border: `1.5px solid ${meal === o.id ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                background: meal === o.id ? 'rgba(27,58,92,0.07)' : 'var(--color-card)',
+                background: meal === o.id ? 'rgba(14,140,127,0.07)' : 'var(--color-card)',
               }}
             >
               <div style={{ fontSize: 13, fontWeight: 600, color: meal === o.id ? 'var(--color-teal)' : 'var(--color-text)' }}>{o.label}</div>
@@ -670,7 +670,7 @@ function ManageSheet({ activeIds, onClose, onSave }) {
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '12px 14px', borderRadius: 12,
                 border: `1.5px solid ${selected.has(def.id) ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                background: selected.has(def.id) ? 'rgba(27,58,92,0.06)' : 'var(--color-card)',
+                background: selected.has(def.id) ? 'rgba(14,140,127,0.06)' : 'var(--color-card)',
                 cursor: 'pointer', textAlign: 'left', width: '100%',
               }}
             >
@@ -707,7 +707,7 @@ function ManageSheet({ activeIds, onClose, onSave }) {
                     display: 'flex', alignItems: 'center', gap: 12,
                     padding: '12px 14px', borderRadius: 12,
                     border: `1.5px solid ${selected.has(def.id) ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                    background: selected.has(def.id) ? 'rgba(27,58,92,0.06)' : 'var(--color-card)',
+                    background: selected.has(def.id) ? 'rgba(14,140,127,0.06)' : 'var(--color-card)',
                     cursor: 'pointer', textAlign: 'left', width: '100%',
                   }}
                 >
