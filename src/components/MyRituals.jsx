@@ -444,7 +444,7 @@ export default function MyRituals() {
                 </div>
                 <div className="mr-card__body">
                   {isPersonal && (
-                    <span className="mr-recommended-pill">✦ Recommended</span>
+                    <span className="mr-recommended-pill">✨ Recommended</span>
                   )}
                   <span className="mr-card__label">{habit.label}</span>
                   <p className="mr-card__subdesc">{habit.desc}</p>
@@ -531,7 +531,7 @@ export default function MyRituals() {
                     <span className="mr-picker__label">
                       {habit.label}
                       {isPersonal && (
-                        <span className="mr-picker__foryou">✦ For you</span>
+                        <span className="mr-picker__foryou">✨ Recommended</span>
                       )}
                     </span>
                     <span className="mr-picker__desc">{habit.desc}</span>

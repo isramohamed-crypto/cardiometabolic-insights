@@ -146,19 +146,19 @@
   transition: border-color 0.2s;
 }
 
-/* Recommended pill for personalized habits */
+/* Recommended pill for personalized habits — matches AI insights tic-pill */
 .mr-recommended-pill {
   display: inline-flex;
   align-items: center;
+  gap: 3px;
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: var(--color-teal, #2D9B83);
-  background: rgba(45, 155, 131, 0.10);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-teal-dark, #1a6b58);
+  background: var(--color-teal-light, #e6f7f4);
   border-radius: 99px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   margin-bottom: 3px;
-  text-transform: uppercase;
 }
 
 /* Teal left-border stripe for personalized habits */
