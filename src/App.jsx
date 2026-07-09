@@ -246,6 +246,8 @@ export default function App() {
             <SponsorBanner variant="card" />
           </div>
 
+          <PeerStories />
+
           {/* 7 — Watch Now: video for deeper learning */}
           <WatchNow />
 
@@ -273,7 +275,6 @@ export default function App() {
             <QuickAnswers />
             <ConditionStrip />
             <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
-            <PeerStories />
           </section>
         </main>
       )}
