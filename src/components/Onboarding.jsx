@@ -231,6 +231,8 @@ export default function Onboarding({ name, onClose }) {
     try {
       localStorage.removeItem('cardiometabolicLastCheckin')
       localStorage.removeItem('cardiometabolicCheckins')
+      localStorage.removeItem('vitalistMyRituals2')
+      localStorage.removeItem('vitalistMyRitualsCompletions')
     } catch (_) {}
     setStep(5)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -281,6 +283,8 @@ export default function Onboarding({ name, onClose }) {
     try {
       localStorage.removeItem('cardiometabolicLastCheckin')
       localStorage.removeItem('cardiometabolicCheckins')
+      localStorage.removeItem('vitalistMyRituals2')
+      localStorage.removeItem('vitalistMyRitualsCompletions')
     } catch (_) {}
     next()
   }

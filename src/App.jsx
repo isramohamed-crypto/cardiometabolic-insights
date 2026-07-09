@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import Nav from './components/Nav'
 import Registration from './components/Registration'
 import Onboarding from './components/Onboarding'
@@ -28,12 +28,14 @@ import Breathe from './components/Breathe'
 import QuickAnswers from './components/QuickAnswers'
 import DupixentAd from './components/DupixentAd'
 import WatchNow from './components/WatchNow'
+import MyRituals from './components/MyRituals'
 import CommunityPoll from './components/CommunityPoll'
 import AutumnTravelCard from './components/AutumnTravelCard'
 import MyRecipesCard from './components/MyRecipesCard'
 import BHGCard from './components/BHGCard'
 import OnesToWatch from './components/OnesToWatch'
 import PeerStories from './components/PeerStories'
+import StoriesSection from './components/StoriesSection'
 import LearnPage from './components/LearnPage'
 import EatingWellSection from './components/EatingWellSection'
 import NutritionBuildingBlocksSection from './components/NutritionBuildingBlocksSection'
@@ -55,6 +57,23 @@ function writeProfile(p) {
   try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(p)) } catch (_) {}
 }
 
+function ArchivedSection({ children }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <section className="archived-section">
+      <button
+        className="archived-section__title"
+        onClick={() => setOpen(o => !o)}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8 }}
+      >
+        Archived
+        <span style={{ fontSize: 10, opacity: 0.5 }}>{open ? '▲' : '▼'}</span>
+      </button>
+      {open && children}
+    </section>
+  )
+}
+
 export default function App() {
   const [activePage, setActivePage] = useState('Today')
   const [showBreathe, setShowBreathe] = useState(false)
@@ -67,6 +86,7 @@ export default function App() {
   const [showAccount, setShowAccount] = useState(false)
   const [showCheckin, setShowCheckin] = useState(false)
   const [checkinTick, setCheckinTick] = useState(0)   // bumps after a check-in is logged
+  const [ritualsKey, setRitualsKey]   = useState(0)   // bumps after onboarding to force MyRituals remount
   const [showPulse, setShowPulse] = useState(false)
   const [pulseTick, setPulseTick]   = useState(0)   // bumps after a Health Pulse is logged
   const [profile, setProfile] = useState(() => readProfile())
@@ -126,9 +146,8 @@ export default function App() {
       {onboarding && <Onboarding name={onboarding.name} onClose={() => {
         setOnboarding(null)
         refreshProfile()
-        // Onboarding clears check-in storage — bump the tick so the home-feed
-        // card and Track banner re-read and reflect the empty state.
         setCheckinTick(t => t + 1)
+        setRitualsKey(k => k + 1)   // always forces MyRituals to remount with fresh profile
       }} />}
 
       {showDrawer && (
@@ -231,6 +250,8 @@ export default function App() {
           {/* 3 — Dashboard tiles: customizable health readings */}
           <DashboardTiles tick={checkinTick} />
 
+          <MyRituals key={ritualsKey} />
+
           {/* AI insight + daily check-in — combined into one card. New users
               get a single compact check-in card with the insight folded in
               as a pill; established users get the full insight and the
@@ -245,6 +266,10 @@ export default function App() {
             <SponsorBanner variant="card" />
           </div>
 
+          <StoriesSection />
+
+          <PeerStories />
+
           {/* 7 — Watch Now: video for deeper learning */}
           <WatchNow />
 
@@ -257,23 +282,17 @@ export default function App() {
           {/* 10 — InStyle featured content */}
           <InStyleSection />
 
-          {/* 11 — Parents: Caregiver Support */}
-          <ParentsCaregiverSupportSection />
-
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
           <SponsorBanner />
-          {/* <DupixentAd /> — removed from Today order. Restore here if needed. */}
 
-          {/* Archived — retired sections kept for reference */}
-          <section className="archived-section">
-            <h2 className="archived-section__title">Archived</h2>
-
+          {/* Archived — collapsed by default */}
+          <ArchivedSection>
+            <ParentsCaregiverSupportSection />
             <QuickAnswers />
             <ConditionStrip />
             <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
-            <PeerStories />
-          </section>
+          </ArchivedSection>
         </main>
       )}
 
