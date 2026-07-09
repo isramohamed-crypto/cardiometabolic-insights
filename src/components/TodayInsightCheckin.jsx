@@ -129,118 +129,105 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
     </>
   )
 
-  if (isNew) {
-    // Progress toward the first AI insight populates as real check-ins come
-    // in — it starts at "log 3 to unlock" and fills in one dot per check-in
-    // logged, until there are enough data points for an insight.
-    const checkinCount = checkins.length
-    const isInsightReady = checkinCount >= INSIGHT_THRESHOLD
-    const remaining = Math.max(0, INSIGHT_THRESHOLD - checkinCount)
-    const unlockTitle = isInsightReady
-      ? "Your first insight is ready — check back after today's check-in"
-      : checkinCount === 0
-        ? `Log ${INSIGHT_THRESHOLD} check-ins to unlock your first insight`
-        : `${checkinCount} of ${INSIGHT_THRESHOLD} check-ins logged — ${remaining} more to go`
+  // New users: track progress toward first insight unlock
+  const checkinCount = realCheckins.length
+  const isInsightReady = !isNew || isMature || checkinCount >= INSIGHT_THRESHOLD
+  const remaining = Math.max(0, INSIGHT_THRESHOLD - checkinCount)
+  const unlockTitle = checkinCount === 0
+    ? `Log ${INSIGHT_THRESHOLD} check-ins to unlock your first AI insight`
+    : `${checkinCount} of ${INSIGHT_THRESHOLD} check-ins logged — ${remaining} more to go`
 
-    return (
-      <section className="checkin-section checkin-section--split">
-        <div className={`tic-unlock${isInsightReady ? ' tic-unlock--ready' : ''}`}>
-          <p className="ai-eyebrow">
-            <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
-            AI Insights
-          </p>
-          <p className="tic-unlock__title">{unlockTitle}</p>
-          {!isInsightReady && (
-            <div className="tic-unlock__dots" aria-hidden="true">
-              {Array.from({ length: INSIGHT_THRESHOLD }).map((_, i) => (
-                <span key={i} className={`tic-unlock__dot${i < checkinCount ? ' tic-unlock__dot--on' : ''}`} />
-              ))}
-            </div>
-          )}
-        </div>
-        <div
-          className="dc-feat"
-          onClick={onOpenCheckin}
-          role="button"
-          tabIndex={0}
-          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpenCheckin?.() }}
-        >
-          {checkinBody}
-        </div>
-      </section>
-    )
-  }
-
-  return (
-    <section className="checkin-section checkin-section--split">
-      {/* AI insight — its own card, the payoff of the user's tracking history */}
-      <div className="tic-card tic-card--standalone">
-        <div className="tic-insight">
-          <p className="ai-eyebrow">
-            <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
-            AI Insights · From your tracking
-          </p>
-          <h4 className="insight-title">Stress is showing up in your numbers 48 hrs later</h4>
-          <p className="insight-body">
-            On days you log high stress, your blood pressure and blood sugar trend
-            higher two days later — confirmed across 3 of your last 4 weeks of data.
-            Managing stress today is one of the highest-impact moves you can make.
-          </p>
-          <div className="insight-data">
-            <div className="insight-stat">
-              <div className="is-val">3/4</div>
-              <div className="is-lbl">Weeks confirmed</div>
-            </div>
-            <div className="insight-stat">
-              <div className="is-val">+8pts</div>
-              <div className="is-lbl">Avg BP after stress</div>
-            </div>
-            <div className="insight-stat">
-              <div className="is-val">48h</div>
-              <div className="is-lbl">Lag time</div>
-            </div>
+  // Shared AI insight + video card — shown once insights are ready (established
+  // users always; new users after hitting INSIGHT_THRESHOLD real check-ins)
+  const insightCard = (
+    <div className="tic-card tic-card--standalone">
+      <div className="tic-insight">
+        <p className="ai-eyebrow">
+          <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
+          AI Insights · From your tracking
+        </p>
+        <h4 className="insight-title">Stress is showing up in your numbers 48 hrs later</h4>
+        <p className="insight-body">
+          On days you log high stress, your blood pressure and blood sugar trend
+          higher two days later — confirmed across 3 of your last 4 weeks of data.
+          Managing stress today is one of the highest-impact moves you can make.
+        </p>
+        <div className="insight-data">
+          <div className="insight-stat">
+            <div className="is-val">3/4</div>
+            <div className="is-lbl">Weeks confirmed</div>
           </div>
-          <p className="insight-source">Vitalist AI · Based on your check-in history</p>
+          <div className="insight-stat">
+            <div className="is-val">+8pts</div>
+            <div className="is-lbl">Avg BP after stress</div>
+          </div>
+          <div className="insight-stat">
+            <div className="is-val">48h</div>
+            <div className="is-lbl">Lag time</div>
+          </div>
+        </div>
+        <p className="insight-source">Vitalist AI · Based on your check-in history</p>
 
-          {/* Actionable recommendation tied to the insight */}
-          <div style={{
-            marginTop: 14,
-            background: '#f8fafc',
-            border: '1px solid #e2e8f0',
-            borderRadius: 12,
-            overflow: 'hidden',
-            cursor: 'pointer',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'stretch', gap: 0 }}>
-              {/* Thumbnail */}
+        {/* Actionable video recommendation tied to the insight */}
+        <div style={{
+          marginTop: 14, background: '#f8fafc',
+          border: '1px solid #e2e8f0', borderRadius: 12,
+          overflow: 'hidden', cursor: 'pointer',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: 0 }}>
+            <div style={{ width: 90, flexShrink: 0, position: 'relative' }}>
+              <img
+                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=180&q=80"
+                alt="Stress management"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
               <div style={{
-                width: 80, flexShrink: 0,
-                background: 'linear-gradient(135deg, #1e3a5f, #2d6a8f)',
+                position: 'absolute', inset: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(0,0,0,0.25)',
               }}>
                 <div style={{
-                  width: 28, height: 28, borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.9)',
+                  width: 26, height: 26, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.92)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 12, paddingLeft: 2,
+                  fontSize: 11, paddingLeft: 2,
                 }}>▶</div>
               </div>
-              {/* Text */}
-              <div style={{ padding: '10px 12px', flex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2D9B83', marginBottom: 3 }}>
-                  5-min video · Stress & BP
-                </div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.3, marginBottom: 2 }}>
-                  4 ways to lower stress before it hits your numbers
-                </div>
-                <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · 5 min</div>
+            </div>
+            <div style={{ padding: '10px 12px', flex: 1 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2D9B83', marginBottom: 3 }}>
+                5-min video · Stress & BP
               </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.3, marginBottom: 2 }}>
+                4 ways to lower stress before it hits your numbers
+              </div>
+              <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · 5 min</div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  )
 
-      {/* How are you feeling? — its own separate check-in card */}
+  // Lock card shown to new users who haven't hit the threshold yet
+  const lockCard = (
+    <div className={`tic-unlock${checkinCount >= INSIGHT_THRESHOLD ? ' tic-unlock--ready' : ''}`}>
+      <p className="ai-eyebrow">
+        <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
+        AI Insights
+      </p>
+      <p className="tic-unlock__title">{unlockTitle}</p>
+      <div className="tic-unlock__dots" aria-hidden="true">
+        {Array.from({ length: INSIGHT_THRESHOLD }).map((_, i) => (
+          <span key={i} className={`tic-unlock__dot${i < checkinCount ? ' tic-unlock__dot--on' : ''}`} />
+        ))}
+      </div>
+    </div>
+  )
+
+  return (
+    <section className="checkin-section checkin-section--split">
+      {isInsightReady ? insightCard : lockCard}
       <div
         className="dc-feat"
         onClick={onOpenCheckin}
