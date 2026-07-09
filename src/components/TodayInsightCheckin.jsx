@@ -176,6 +176,42 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
             </div>
           </div>
           <p className="insight-source">Vitalist AI · Based on your check-in history</p>
+
+          {/* Actionable recommendation — only when user has real check-in data */}
+          {!!last?.date && <div style={{
+            marginTop: 14,
+            background: '#f8fafc',
+            border: '1px solid #e2e8f0',
+            borderRadius: 12,
+            overflow: 'hidden',
+            cursor: 'pointer',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'stretch', gap: 0 }}>
+              {/* Thumbnail */}
+              <div style={{
+                width: 80, flexShrink: 0,
+                background: 'linear-gradient(135deg, #1e3a5f, #2d6a8f)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.9)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, paddingLeft: 2,
+                }}>▶</div>
+              </div>
+              {/* Text */}
+              <div style={{ padding: '10px 12px', flex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2D9B83', marginBottom: 3 }}>
+                  5-min video · Stress & BP
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.3, marginBottom: 2 }}>
+                  4 ways to lower stress before it hits your numbers
+                </div>
+                <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · 5 min</div>
+              </div>
+            </div>
+          </div>}
         </div>
 
         <div className="tic-divider" />
