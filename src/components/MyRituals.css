@@ -3,7 +3,7 @@
   margin: 0 16px 8px;
   background: #fff;
   border-radius: 20px;
-  padding: 20px 16px 16px;
+  padding: var(--space-8) 16px 16px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
 }
 
@@ -25,11 +25,13 @@
 }
 
 .mr-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: #0f172a;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .mr-header__right {

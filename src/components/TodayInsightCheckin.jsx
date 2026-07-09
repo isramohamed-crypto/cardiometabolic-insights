@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { useProfileStage } from '../context/ProfileStageContext'
+import { generateHistoricCheckins } from '../data/mockCheckins'
 
 const CHECKIN_KEY  = 'cardiometabolicLastCheckin'
 const CHECKINS_KEY = 'cardiometabolicCheckins'
@@ -63,15 +64,27 @@ function checkinPromptTitle(isoDate, isCheckedInToday) {
  *   separate cards with their own headers/borders/shadows.
  */
 export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
-  const { isNew } = useProfileStage()
+  const { isNew, isMature } = useProfileStage()
   const last     = useMemo(() => readLastCheckin(), [tick])
-  const checkins = useMemo(() => readCheckins(),    [tick])
+  const realCheckins = useMemo(() => readCheckins(), [tick])
+  // Established users get the same synthetic history Track uses, merged
+  // ahead of any real check-ins, so the streak dots here match the story
+  // Track tells instead of showing a blank week for a "mature" user.
+  const checkins = useMemo(
+    () => (isMature ? [...generateHistoricCheckins(), ...realCheckins] : realCheckins),
+    [isMature, realCheckins]
+  )
   const isCheckedInToday = daysAgo(last?.date) === 0
   const streak = useMemo(() => lastSevenDaysStreak(checkins), [checkins])
   const loggedCount = streak.filter(Boolean).length
 
+  // Established users with no real check-in yet fall back to the synthetic
+  // history's most recent date, so the prompt reads like an ongoing routine
+  // rather than "start your first check-in".
+  const effectiveLastDate = last?.date || (isMature && checkins.length > 0 ? checkins[checkins.length - 1].date : null)
+
   // Copy mirrors the Track-page check-in banner so it tells the same story
-  const titleLabel = checkinPromptTitle(last?.date, isCheckedInToday)
+  const titleLabel = checkinPromptTitle(effectiveLastDate, isCheckedInToday)
   const subLabel = isCheckedInToday
     ? 'Logged today. Tap to see your summary or update.'
     : 'Your symptoms and habits connect to your numbers — log both to see the full picture.'

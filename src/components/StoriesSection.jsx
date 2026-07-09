@@ -47,8 +47,10 @@ export default function StoriesSection() {
   return (
     <section className="pp-stories-sec">
       <div className="watch-head" style={{ padding: '0 16px 12px' }}>
-        <span className="watch-badge">Paid content for Amgen</span>
-        <h2 className="watch-title">Stories from others</h2>
+        <div>
+          <span className="watch-badge">Paid content for Amgen</span>
+          <h2 className="watch-title">Stories from others</h2>
+        </div>
       </div>
 
       {/* Native-scroll snap carousel — same pattern as EatingWell/VeryWell */}
