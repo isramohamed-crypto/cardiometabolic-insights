@@ -265,6 +265,25 @@
   background: var(--color-teal-light);
 }
 
+.habit-item--focus {
+  border-left: 3px solid var(--color-teal);
+  padding-left: calc(var(--space-4) - 3px);
+}
+
+.habit-item__focus-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+  background: var(--color-teal-light);
+  border-radius: 9999px;
+  vertical-align: middle;
+}
+
 .habit-item__check {
   width: 22px;
   height: 22px;

@@ -33,37 +33,40 @@ const Q3 = {
 // Topics use their full label as the stored value so they line up with
 // the profile page's `topics` field (no migration needed).
 // Primary list (always visible) covers broad lifestyle categories.
+// `change` is the action-phrased copy shown on the chip; `label` stays the
+// stored value so it lines up with the profile page's `topics` field and the
+// interest → habit mapping in data/habits.js (no migration needed).
 const Q5_TOPICS_PRIMARY = [
-  { label: 'Heart-healthy eating',    icon: '🥗' },
-  { label: 'Exercise & movement',     icon: '🚶' },
-  { label: 'Sleep & rest',            icon: '😴' },
-  { label: 'Stress & mental health',  icon: '🧘' },
-  { label: 'Medications & treatment', icon: '💊' },
-  { label: 'Blood pressure',          icon: '🩺' },
-  { label: 'Blood sugar',             icon: '🔬' },
-  { label: 'Weight management',       icon: '⚖️' },
-  { label: 'Family & caregiving',     icon: '👨‍👩‍👧' },
-  { label: 'Work & daily life',       icon: '💼' },
+  { label: 'Heart-healthy eating',    icon: '🥗', change: 'Eat more heart-healthy meals' },
+  { label: 'Exercise & movement',     icon: '🚶', change: 'Move more during the day' },
+  { label: 'Sleep & rest',            icon: '😴', change: 'Get better sleep' },
+  { label: 'Stress & mental health',  icon: '🧘', change: 'Manage my stress' },
+  { label: 'Medications & treatment', icon: '💊', change: 'Stay on top of my medications' },
+  { label: 'Blood pressure',          icon: '🩺', change: 'Track my blood pressure' },
+  { label: 'Blood sugar',             icon: '🔬', change: 'Track my blood sugar' },
+  { label: 'Weight management',       icon: '⚖️', change: 'Manage my weight' },
+  { label: 'Family & caregiving',     icon: '👨‍👩‍👧', change: 'Balance caregiving with my own health' },
+  { label: 'Work & daily life',       icon: '💼', change: 'Fit healthy habits into my workday' },
 ]
 // Secondary list (revealed by "Show more") — deeper topics.
 const Q5_TOPICS_MORE = [
-  { label: 'Menopause & hormonal health',        icon: '🌸' },
-  { label: 'GLP-1 & weight loss medications',    icon: '💉' },
-  { label: 'Healthy aging & longevity',          icon: '⏳' },
-  { label: 'Understanding my numbers',           icon: '📊' },
-  { label: 'Preparing for appointments',         icon: '📋' },
-  { label: 'New treatments & research',          icon: '🧪' },
-  { label: 'Alcohol & lifestyle',                icon: '🍷' },
-  { label: 'Cooking at home',                    icon: '🍳' },
-  { label: 'Travel & staying on track',          icon: '✈️' },
-  { label: 'Confidence & self-image',            icon: '✨' },
-  { label: 'Community & peer support',           icon: '🤝' },
+  { label: 'Menopause & hormonal health',        icon: '🌸', change: 'Manage menopause symptoms' },
+  { label: 'GLP-1 & weight loss medications',    icon: '💉', change: 'Stay consistent with my GLP-1 routine' },
+  { label: 'Healthy aging & longevity',          icon: '⏳', change: 'Build habits for long-term health' },
+  { label: 'Understanding my numbers',           icon: '📊', change: 'Understand what my numbers mean' },
+  { label: 'Preparing for appointments',         icon: '📋', change: 'Prepare better for appointments' },
+  { label: 'New treatments & research',          icon: '🧪', change: 'Stay informed on new treatments' },
+  { label: 'Alcohol & lifestyle',                icon: '🍷', change: 'Cut back on alcohol' },
+  { label: 'Cooking at home',                    icon: '🍳', change: 'Cook more meals at home' },
+  { label: 'Travel & staying on track',          icon: '✈️', change: 'Stay on track while traveling' },
+  { label: 'Confidence & self-image',            icon: '✨', change: 'Build confidence in my body' },
+  { label: 'Community & peer support',           icon: '🤝', change: 'Connect with others who get it' },
 ]
 const Q5_TOPICS = [...Q5_TOPICS_PRIMARY, ...Q5_TOPICS_MORE]
 
 const Q5 = {
-  text: 'What matters most to you right now?',
-  sub: 'Pick a few topics — at least three is a good start. We\'ll use these to tailor your feed.',
+  text: 'Which of these changes feels most manageable right now?',
+  sub: 'Start with just one — small changes stick better than trying to do everything at once. We\'ll turn it into a daily habit, and you can always add more later.',
 }
 
 const Q6 = {
@@ -80,27 +83,39 @@ const IDENTITY_CHIPS = [
   "I'm someone who is learning to listen to my body.",
 ]
 
+// Single flat list — no more diagnosed-vs-proactive tab split. Switching
+// tabs used to wipe whatever was already selected, and the binary framing
+// didn't match reality (plenty of people are both diagnosed with one thing
+// and proactively watching another). `group` is kept per-option only to
+// derive `diagnosisStatus` automatically after the fact — it's not shown.
 const Q4 = {
   text: 'What does your health picture look like right now?',
   sub: 'Select all that apply — the more we know, the better we can tailor your experience.',
-  yesOptions: [
-    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',              desc: 'LDL, HDL, or triglyceride concerns' },
-    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',           desc: 'Hypertension or pre-hypertension' },
-    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',               desc: 'Managing blood sugar levels' },
-    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health',     desc: 'BMI, metabolic syndrome, or weight-related goals' },
-    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event' },
-    { id: 'menopause',   icon: '🌸', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms' },
-    { id: 'glp1',        icon: '💉', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar' },
-    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Another diagnosis or concern' },
+  options: [
+    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',              desc: 'LDL, HDL, or triglyceride concerns', group: 'diagnosed' },
+    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',           desc: 'Hypertension or pre-hypertension', group: 'diagnosed' },
+    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',               desc: 'Managing blood sugar levels', group: 'diagnosed' },
+    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health',     desc: 'BMI, metabolic syndrome, or weight-related goals', group: 'diagnosed' },
+    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event', group: 'diagnosed' },
+    { id: 'menopause',   icon: '🌸', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms', group: 'diagnosed' },
+    { id: 'glp1',        icon: '💉', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar', group: 'diagnosed' },
+    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Another diagnosis or concern', group: 'diagnosed' },
+    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family', group: 'proactive' },
+    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed', group: 'proactive' },
+    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',                desc: 'Trying to manage weight for long-term health', group: 'proactive' },
+    { id: 'longevity',   icon: '⏳', label: 'Longevity & healthy aging',      desc: 'Planning ahead for quality of life as I get older', group: 'proactive' },
+    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive', group: 'proactive' },
+    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis', group: 'proactive' },
   ],
-  noOptions: [
-    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family' },
-    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed' },
-    { id: 'weight',      icon: '⚖️', label: 'Weight concerns',                desc: 'Trying to manage weight for long-term health' },
-    { id: 'longevity',   icon: '⏳', label: 'Longevity & healthy aging',      desc: 'Planning ahead for quality of life as I get older' },
-    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive' },
-    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis' },
-  ],
+}
+
+// diagnosisStatus is inferred from the selection instead of asked as its own
+// step — 'yes' if any diagnosed-group option is picked, 'no' if only
+// proactive-group options are picked, null if nothing's selected yet.
+function deriveDiagnosisStatus(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return null
+  const hasDiagnosed = ids.some(id => Q4.options.find(o => o.id === id)?.group === 'diagnosed')
+  return hasDiagnosed ? 'yes' : 'no'
 }
 
 const roleLabels = {
@@ -144,8 +159,7 @@ export default function Onboarding({ name, onClose }) {
     q1: null,                 // role: myself | child | other
     q2: name || '',           // first name (free text), pre-filled from Registration if provided
     q3: null,                 // primary impact
-    q4Branch: 'yes',          // 'yes' | 'no' — defaults to 'yes' so the list shows on entry
-    q4: [],                   // multi-select: array of diagnosis or struggle ids
+    q4: [],                   // multi-select: array of diagnosis/risk-factor ids (unified list)
     q5: [],                   // multi-select: array of interest topic labels
     q6: '',                   // identity statement (free text)
   })
@@ -162,16 +176,11 @@ export default function Onboarding({ name, onClose }) {
     })
   }
 
+  // Single-select: picking a new change replaces the current one. Tapping the
+  // already-selected chip deselects it. Framing this as "start with one" is
+  // deliberate — it maps directly to the one habit we seed as their focus.
   function toggleQ5(label) {
-    setAns(a => {
-      const set = new Set(a.q5)
-      if (set.has(label)) set.delete(label); else set.add(label)
-      return { ...a, q5: Array.from(set) }
-    })
-  }
-
-  function setQ4Branch(branch) {
-    setAns(a => ({ ...a, q4Branch: branch, q4: [] }))
+    setAns(a => ({ ...a, q5: a.q5.includes(label) ? [] : [label] }))
   }
 
   function next() { setStep(s => s + 1); window.scrollTo({ top: 0, behavior: 'smooth' }) }
@@ -191,7 +200,7 @@ export default function Onboarding({ name, onClose }) {
     maybeSet('name',            trimmedName)
     maybeSet('role',            mapCode('role',            ans.q1))
     maybeSet('focus',           mapCode('focus',           ans.q3))
-    maybeSet('diagnosisStatus', mapCode('diagnosisStatus', ans.q4Branch))
+    maybeSet('diagnosisStatus', mapCode('diagnosisStatus', deriveDiagnosisStatus(ans.q4)))
     maybeSet('condition',       mapCode('condition',       ans.q4))
     maybeSet('topics',          ans.q5)
     maybeSet('identity',        ans.q6.trim())
@@ -216,7 +225,7 @@ export default function Onboarding({ name, onClose }) {
   const canContinue = (() => {
     if (step === 0) return !!ans.q1
     if (step === 1) return ans.q2.trim().length >= 1
-    if (step === 2) return !!ans.q4Branch && Array.isArray(ans.q4) && ans.q4.length > 0
+    if (step === 2) return Array.isArray(ans.q4) && ans.q4.length > 0
     if (step === 3) return !!ans.q3
     if (step === 4) return Array.isArray(ans.q5) && ans.q5.length > 0
     if (step === 5) return true   // identity is optional
@@ -233,7 +242,7 @@ export default function Onboarding({ name, onClose }) {
       name:            trimmedName,
       role:            mapCode('role',            ans.q1),
       focus:           mapCode('focus',           ans.q3),
-      diagnosisStatus: mapCode('diagnosisStatus', ans.q4Branch),
+      diagnosisStatus: mapCode('diagnosisStatus', deriveDiagnosisStatus(ans.q4)),
       condition:       mapCode('condition',       ans.q4),
       topics:          ans.q5,    // topics are already stored as labels
       identity:        ans.q6.trim(),
@@ -267,12 +276,12 @@ export default function Onboarding({ name, onClose }) {
   if (step === 5) {
     const roleLabel  = roleLabels[ans.q1] || ''
     const focusLabel = Q3.options.find(o => o.id === ans.q3)?.label || ''
-    const q4List = ans.q4Branch === 'yes' ? Q4.yesOptions : Q4.noOptions
+    const diagnosisStatus = deriveDiagnosisStatus(ans.q4)
     const conditionLabel = (ans.q4 || [])
-      .map(id => q4List.find(o => o.id === id)?.label)
+      .map(id => Q4.options.find(o => o.id === id)?.label)
       .filter(Boolean)
       .join(', ')
-    const conditionKey   = ans.q4Branch === 'yes'
+    const conditionKey   = diagnosisStatus === 'yes'
       ? (ans.q4.length > 1 ? 'Diagnoses' : 'Diagnosis')
       : (ans.q4.length > 1 ? 'Main concerns' : 'Main concern')
 
@@ -409,36 +418,12 @@ export default function Onboarding({ name, onClose }) {
               <>
                 <div className="ob-q-text">{Q4.text}</div>
                 <div className="ob-q-sub">{Q4.sub}</div>
-
-                {/* Branch toggle */}
-                <div className="ob-toggle" role="tablist">
-                  <button
-                    className={`ob-toggle__btn${ans.q4Branch === 'yes' ? ' ob-toggle__btn--active' : ''}`}
-                    onClick={() => setQ4Branch('yes')}
-                    type="button"
-                  >I have a diagnosis</button>
-                  <button
-                    className={`ob-toggle__btn${ans.q4Branch === 'no' ? ' ob-toggle__btn--active' : ''}`}
-                    onClick={() => setQ4Branch('no')}
-                    type="button"
-                  >Not yet / being proactive</button>
-                </div>
-
-                {ans.q4Branch && (
-                  <>
-                    <p className="ob-q-hint">
-                      {ans.q4Branch === 'yes'
-                        ? 'Please select your diagnosis. You can choose more than one if it applies.'
-                        : 'Please select what you\'re experiencing. You can choose more than one if it applies.'}
-                    </p>
-                    <OptionList
-                      options={ans.q4Branch === 'yes' ? Q4.yesOptions : Q4.noOptions}
-                      selectedIds={ans.q4}
-                      multiSelect
-                      onSelect={id => toggleQ4(id)}
-                    />
-                  </>
-                )}
+                <OptionList
+                  options={Q4.options}
+                  selectedIds={ans.q4}
+                  multiSelect
+                  onSelect={id => toggleQ4(id)}
+                />
               </>
             )}
 
@@ -511,7 +496,7 @@ export default function Onboarding({ name, onClose }) {
                           onClick={() => toggleQ5(o.label)}
                         >
                           <span className="ob-chip__icon">{o.icon}</span>
-                          <span>{o.label}</span>
+                          <span>{o.change || o.label}</span>
                         </button>
                       )
                     })
@@ -525,7 +510,7 @@ export default function Onboarding({ name, onClose }) {
                   </button>
                 </div>
                 {ans.q5.length > 0 && (
-                  <p className="ob-q-count">{ans.q5.length} selected</p>
+                  <p className="ob-q-count">✓ We'll add this as your first daily habit to track.</p>
                 )}
               </>
             )}
