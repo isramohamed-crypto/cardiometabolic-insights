@@ -2209,6 +2209,7 @@ h2 {
   line-height: 1.3;
 }
 .ci-done {
+  position: relative;
   text-align: center;
   padding: var(--space-3) 0;
 }
