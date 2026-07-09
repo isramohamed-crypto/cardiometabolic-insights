@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useProfileStage } from '../context/ProfileStageContext'
 import './MyRituals.css'
 
 // ── Category colours ───────────────────────────────────────────────────────────
@@ -245,6 +246,16 @@ function markDone(id) {
   return log[key]
 }
 
+function unmarkDone(id) {
+  const log = readCompletionLog()
+  const key = todayKey()
+  const cur = new Set(log[key] || [])
+  cur.delete(id)
+  log[key] = [...cur]
+  try { localStorage.setItem(COMPLETIONS_KEY, JSON.stringify(log)) } catch {}
+  return log[key]
+}
+
 function readTodayCompletions() { return readCompletionLog()[todayKey()] || [] }
 
 function getTotalCount(id) {
@@ -276,8 +287,24 @@ function todayQuote() {
   return QUOTES[day % QUOTES.length]
 }
 
+// ── Established-user mock dot history ─────────────────────────────────────────
+// For each habit, generate a plausible 7-day history as if user logged
+// inconsistently over 2 months (some days yes, some no).
+const MATURE_DOT_PATTERNS = {
+  hl_walk:     [true, true, false, true, true, false, true],
+  hl_sleep:    [true, false, true, true, false, true, true],
+  hl_water:    [true, true, true, false, true, true, false],
+  hl_bp_med:   [true, true, true, true, false, true, true],
+  hl_chol_med: [true, true, false, true, true, true, false],
+  hl_dm_med:   [true, true, true, true, true, false, true],
+  default:     [true, false, true, true, false, false, true],
+}
+
 // ── Component ──────────────────────────────────────────────────────────────────
 export default function MyRituals() {
+  const { stage } = useProfileStage()
+  const isMature  = stage === 'mature'
+
   const profile    = readProfile()
   const conditions = Array.isArray(profile.condition) ? profile.condition : []
 
@@ -290,7 +317,6 @@ export default function MyRituals() {
   const [pickerCat, setPickerCat]     = useState('All')
   const [expandedWhy, setExpandedWhy] = useState(new Set())
   const [justDone, setJustDone]       = useState(new Set())
-  const [previewId, setPreviewId]     = useState(null)
 
   const personalizedIds = new Set(
     HABIT_LIBRARY
@@ -308,15 +334,16 @@ export default function MyRituals() {
     : availableToAdd.filter(h => h.category === pickerCat)
 
   function handleCheck(id) {
-    if (completions.includes(id)) return
+    if (completions.includes(id)) {
+      // Allow unchecking today's completion
+      const newCompletions = unmarkDone(id)
+      setCompletions(newCompletions)
+      return
+    }
     const newCompletions = markDone(id)
     setCompletions(newCompletions)
     setJustDone(prev => new Set([...prev, id]))
     setTimeout(() => setJustDone(prev => { const n = new Set(prev); n.delete(id); return n }), 700)
-
-    const idx  = selectedIds.indexOf(id)
-    const next = selectedIds.slice(idx + 1).find(sid => !newCompletions.includes(sid))
-    setPreviewId(next || null)
   }
 
   function handleAdd(id) {
@@ -386,11 +413,15 @@ export default function MyRituals() {
           const count      = getTotalCount(habit.id)
           const isExpanded = expandedWhy.has(habit.id)
           const isPopping  = justDone.has(habit.id)
-          const isPreview  = habit.id === previewId
           const catStyle   = CAT[habit.category] || {}
 
-          const dots         = isPreview ? Array(7).fill(true) : getLastN(habit.id, 7)
-          const displayCount = isPreview ? 14 : count
+          // Dots: for established user show canned history pattern; for new user show real log
+          const matureDots = MATURE_DOT_PATTERNS[habit.id] || MATURE_DOT_PATTERNS.default
+          const realDots   = getLastN(habit.id, 7)
+          // If logged today, set last dot to true
+          const todayDots  = [...realDots.slice(0, 6), isDone]
+          const dots         = isMature ? (isDone ? [...matureDots.slice(0, 6), true] : matureDots) : todayDots
+          const displayCount = isMature ? (isDone ? 19 : 18) : count
 
           return (
             <div
@@ -417,10 +448,12 @@ export default function MyRituals() {
                 </div>
                 {!isDone ? (
                   <button className="mr-log-btn" onClick={() => handleCheck(habit.id)}>
-                    Log it ✓
+                    Log it
                   </button>
                 ) : (
-                  <span className="mr-logged-badge">✓ Done</span>
+                  <button className="mr-logged-badge" onClick={() => handleCheck(habit.id)}>
+                    Logged
+                  </button>
                 )}
               </div>
 
@@ -446,7 +479,7 @@ export default function MyRituals() {
               </div>
 
               {/* Progress footer */}
-              <div className={`mr-card__footer${isPreview ? ' mr-card__footer--preview' : ''}`}>
+              <div className="mr-card__footer">
                 <div className="mr-dots">
                   {dots.map((d, i) => (
                     <div key={i} className={`mr-dot${d ? ' mr-dot--done' : ''}`} />
@@ -454,7 +487,7 @@ export default function MyRituals() {
                 </div>
                 <div className="mr-card__footer-right">
                   <span className="mr-card__count">
-                    {isPreview ? '14 days logged' : displayCount > 0 ? `${displayCount} times` : 'Start today'}
+                    {displayCount > 0 ? `${displayCount} times` : 'Start today'}
                   </span>
                 </div>
                 <button className="mr-card__remove" onClick={e => handleRemove(e, habit.id)}>Remove</button>

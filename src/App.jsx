@@ -230,9 +230,6 @@ export default function App() {
               5 tips for you · 6 peer stories · 7 watch now ·
               8 interests · 9 swipe learn */}
 
-          {/* 3 — Dashboard tiles: customizable health readings */}
-          <DashboardTiles tick={checkinTick} />
-
           {/* AI Insights */}
           <InsightSection />
 

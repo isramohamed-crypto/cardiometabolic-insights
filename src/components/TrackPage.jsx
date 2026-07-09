@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react'
 import SponsorBanner from './SponsorBanner'
 import HabitSection from './HabitSection'
 import HabitCheckinSheet from './HabitCheckinSheet'
+import DashboardTiles from './DashboardTiles'
 import { useProfileStage } from '../context/ProfileStageContext'
 
 const COMMON_TREATMENTS = [
@@ -377,6 +378,118 @@ function readTreatments() {
   } catch (_) { return [] }
 }
 
+// ── 2-month history data (established user demo) ─────────────────────────────
+const HISTORY_METRICS = [
+  {
+    id: 'ldl', icon: '🫀', label: 'LDL Cholesterol', unit: 'mg/dL',
+    color: '#2D9B83', target: 100, targetLabel: 'Optimal <100',
+    lowerIsBetter: true,
+    points: [
+      { date: 'May 5', value: 142 }, { date: 'May 19', value: 138 },
+      { date: 'Jun 2', value: 133 }, { date: 'Jun 16', value: 129 },
+      { date: 'Jun 30', value: 124 }, { date: 'Jul 7', value: 118 },
+    ],
+  },
+  {
+    id: 'bp', icon: '🩺', label: 'Blood Pressure', unit: 'mmHg (systolic)',
+    color: '#8B5CF6', target: 120, targetLabel: 'Normal <120',
+    lowerIsBetter: true,
+    points: [
+      { date: 'May 5', value: 138 }, { date: 'May 12', value: 136 },
+      { date: 'May 19', value: 133 }, { date: 'May 26', value: 130 },
+      { date: 'Jun 2', value: 128 }, { date: 'Jun 9', value: 126 },
+      { date: 'Jun 23', value: 124 }, { date: 'Jun 30', value: 123 },
+      { date: 'Jul 7', value: 122 },
+    ],
+  },
+  {
+    id: 'glucose', icon: '🔬', label: 'Fasting Blood Sugar', unit: 'mg/dL',
+    color: '#F59E0B', target: 100, targetLabel: 'Normal <100',
+    lowerIsBetter: true,
+    points: [
+      { date: 'May 5', value: 112 }, { date: 'May 12', value: 110 },
+      { date: 'May 19', value: 108 }, { date: 'May 26', value: 106 },
+      { date: 'Jun 2', value: 105 }, { date: 'Jun 9', value: 103 },
+      { date: 'Jun 16', value: 101 }, { date: 'Jun 23', value: 100 },
+      { date: 'Jun 30', value: 99 }, { date: 'Jul 7', value: 98 },
+    ],
+  },
+  {
+    id: 'weight', icon: '⚖️', label: 'Weight', unit: 'lbs',
+    color: '#3B82F6',
+    lowerIsBetter: true,
+    points: [
+      { date: 'May 5', value: 178 }, { date: 'May 12', value: 176 },
+      { date: 'May 19', value: 175 }, { date: 'May 26', value: 174 },
+      { date: 'Jun 2', value: 173 }, { date: 'Jun 9', value: 171 },
+      { date: 'Jun 16', value: 170 }, { date: 'Jun 23', value: 169 },
+      { date: 'Jun 30', value: 169 }, { date: 'Jul 7', value: 168 },
+    ],
+  },
+]
+
+function NumberLineChart({ metric }) {
+  const { points, unit, color, target, targetLabel, lowerIsBetter } = metric
+  if (!points || points.length < 2) return null
+
+  const W = 280, H = 72
+  const values = points.map(p => p.value)
+  const allVals = target ? [...values, target] : values
+  const min = Math.min(...allVals) - (Math.max(...allVals) - Math.min(...allVals)) * 0.15
+  const max = Math.max(...allVals) + (Math.max(...allVals) - Math.min(...allVals)) * 0.1
+  const range = max - min || 1
+
+  const toY = v => H - ((v - min) / range) * H
+  const toX = i => (i / (points.length - 1)) * W
+
+  const polylinePts = points.map((p, i) => `${toX(i)},${toY(p.value)}`).join(' ')
+
+  const first = points[0]
+  const last  = points[points.length - 1]
+  const delta = last.value - first.value
+  const deltaStr = delta > 0 ? `+${delta}` : String(delta)
+  const deltaGood = lowerIsBetter ? delta < 0 : delta > 0
+  const deltaColor = deltaGood ? '#2D9B83' : '#EF4444'
+
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+        <span style={{ fontSize: 16 }}>{metric.icon}</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)', flex: 1 }}>{metric.label}</span>
+        <span style={{ fontSize: 18, fontWeight: 800, color, letterSpacing: '-0.02em' }}>{last.value}</span>
+        <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{unit}</span>
+      </div>
+      <div style={{ position: 'relative', background: 'var(--color-surface)', borderRadius: 10, padding: '10px 12px 6px' }}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', display: 'block', overflow: 'visible' }}>
+          {target && (
+            <>
+              <line x1={0} y1={toY(target)} x2={W} y2={toY(target)}
+                stroke="var(--color-border)" strokeWidth="1.5" strokeDasharray="5 4" />
+              <text x={W} y={toY(target) - 4} textAnchor="end"
+                fontSize="8" fill="var(--color-text-muted)">{targetLabel}</text>
+            </>
+          )}
+          <polyline points={polylinePts} fill="none" stroke={color}
+            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          {points.map((p, i) => (
+            <circle key={i} cx={toX(i)} cy={toY(p.value)}
+              r={i === points.length - 1 ? 4.5 : 2.5}
+              fill={i === points.length - 1 ? color : 'var(--color-card)'}
+              stroke={color} strokeWidth="1.5" />
+          ))}
+        </svg>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+          <span style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{first.date}</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: deltaColor }}>
+            {deltaStr} {unit.split(' ')[0]} since {first.date.split(' ')[0]}
+          </span>
+          <span style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{last.date}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function daysSinceUtil(isoDate) {
   if (!isoDate) return null
   const then = new Date(isoDate); const now = new Date()
@@ -400,9 +513,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
   const [conditions, setConditions] = useState(() => readConditions())
   const [activeCondition, setActiveCondition] = useState(() => readConditions()[0] || null)
   const [treatments, setTreatments] = useState(() => readTreatments())
-  const [myNumbers, setMyNumbers] = useState(() => readMyNumbers())
-  const [tileConfig, setTileConfig] = useState(() => readTileConfig() || ['ldl', 'bp'])
-  const [addingTile, setAddingTile] = useState(false)
   const [addingTx, setAddingTx] = useState(false)
   const [showHabitSheet, setShowHabitSheet] = useState(false)
   const [txInput, setTxInput] = useState('')
@@ -429,14 +539,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
     saveTreatmentList(current.filter(t => t.name !== name))
   }
 
-  function toggleTile(id) {
-    const current = tileConfig
-    const next = current.includes(id) ? current.filter(x => x !== id) : [...current, id]
-    saveTileConfig(next)
-    setTileConfig(next)
-    setMyNumbers(readMyNumbers())
-  }
-
   const txSuggestions = txInput.length >= 1
     ? COMMON_TREATMENTS.filter(t => t.toLowerCase().includes(txInput.toLowerCase())).slice(0, 5)
     : []
@@ -447,7 +549,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       setCheckins(readCheckins())
       setLastCheckin(readLastCheckin())
       setTreatments(readTreatments())
-      setMyNumbers(readMyNumbers())
       const conds = readConditions()
       setConditions(conds)
       // Keep activeCondition in sync if it's no longer in the list
@@ -571,85 +672,25 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         )
       })()}
 
-      {/* Habit tracker */}
-      <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
-      <HabitCheckinSheet
-        open={showHabitSheet}
-        onClose={() => setShowHabitSheet(false)}
-        onComplete={() => setShowHabitSheet(false)}
-      />
+      {/* ── My Numbers (full interactive tiles) ── */}
+      <DashboardTiles tick={checkinTick} />
 
-      {/* ── My Numbers ── */}
-      <div className="tp-section">
-        <div className="tp-sec-head" style={{ marginBottom: 10 }}>
-          <h2 className="tp-sec-title">My Numbers</h2>
-          <button
-            style={{ background: 'var(--color-teal)', color: '#fff', border: 'none', borderRadius: 8, padding: '4px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
-            onClick={() => setAddingTile(o => !o)}
-          >{addingTile ? 'Done' : '+ Add'}</button>
-        </div>
-
-        {/* Tile picker */}
-        {addingTile && (
-          <div className="tp-card" style={{ padding: '12px 14px', marginBottom: 10 }}>
-            <p style={{ fontSize: 12, color: 'var(--color-text-muted)', marginBottom: 10, marginTop: 0 }}>Choose which numbers to track — checked tiles appear on your home screen and here.</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {ALL_TILE_DEFS.map(td => {
-                const on = tileConfig.includes(td.id)
-                return (
-                  <button key={td.id} onClick={() => toggleTile(td.id)} style={{
-                    display: 'flex', alignItems: 'center', gap: 10, background: on ? 'rgba(27,188,60,.08)' : 'var(--color-surface)',
-                    border: `1.5px solid ${on ? 'var(--color-teal)' : 'var(--color-border)'}`,
-                    borderRadius: 10, padding: '8px 12px', cursor: 'pointer', textAlign: 'left',
-                  }}>
-                    <span style={{ fontSize: 18, width: 24 }}>{td.icon}</span>
-                    <span style={{ flex: 1, fontSize: 14, fontWeight: 500, color: 'var(--color-text)' }}>{td.label}</span>
-                    <span style={{ fontSize: 16, color: on ? 'var(--color-teal)' : 'var(--color-border)' }}>{on ? '✓' : '+'}</span>
-                  </button>
-                )
-              })}
-            </div>
+      {/* ── Numbers over time — established user only ── */}
+      {!isNew && (
+        <div className="tp-section">
+          <div className="tp-sec-head">
+            <h2 className="tp-sec-title">Numbers over time</h2>
+            <span className="tp-sec-badge" style={{ background: 'rgba(27,188,60,.1)', color: 'var(--color-teal)' }}>
+              2 months
+            </span>
           </div>
-        )}
-
-        {myNumbers.length === 0 && !addingTile ? (
-          <div className="tp-card" style={{ color: 'var(--color-text-muted)', fontSize: 13, textAlign: 'center', padding: '24px 16px' }}>
-            Tap <strong>+ Add</strong> to choose which numbers to track.
-          </div>
-        ) : myNumbers.length > 0 ? (
-          <div style={{ display: 'flex', overflowX: 'auto', gap: 10, paddingBottom: 4, marginLeft: -4, paddingLeft: 4 }}>
-            {myNumbers.map((n) => (
-              <div key={n.id} style={{
-                minWidth: 150, maxWidth: 165, flexShrink: 0,
-                background: 'var(--color-surface)', borderRadius: 16, padding: '14px 14px 10px',
-                border: '1px solid var(--color-border)',
-                display: 'flex', flexDirection: 'column',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                  <span style={{ fontSize: 16 }}>{n.icon}</span>
-                  <span style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500, lineHeight: 1.2 }}>{n.label}</span>
-                </div>
-                <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, marginBottom: 2 }}>
-                  {n.value.split('·')[0].trim()}
-                </div>
-                {n.value.includes('·') && (
-                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginBottom: 4 }}>
-                    {n.value.split('·').slice(1).join('·').trim()}
-                  </div>
-                )}
-                <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginBottom: 8 }}>
-                  {n.periodic ? 'Periodic reading' : formatCheckinDate(n.date)}
-                </div>
-                {n.sparkData && n.sparkData.length >= 3 && (
-                  <div style={{ marginTop: 'auto' }}>
-                    <Sparkline data={n.sparkData} color="var(--color-teal)" />
-                  </div>
-                )}
-              </div>
+          <div className="tp-card" style={{ padding: '16px' }}>
+            {HISTORY_METRICS.map(m => (
+              <NumberLineChart key={m.id} metric={m} />
             ))}
           </div>
-        ) : null}
-      </div>
+        </div>
+      )}
 
       {/* Recent check-ins */}
       {checkins.length > 0 && (
@@ -943,6 +984,17 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         </div>
         )}
       </div>
+
+      {/* ── Archived ── */}
+      <section className="archived-section" style={{ marginTop: 8 }}>
+        <h2 className="archived-section__title">Archived</h2>
+        <HabitSection onOpenSheet={() => setShowHabitSheet(true)} />
+        <HabitCheckinSheet
+          open={showHabitSheet}
+          onClose={() => setShowHabitSheet(false)}
+          onComplete={() => setShowHabitSheet(false)}
+        />
+      </section>
 
     </main>
   )
