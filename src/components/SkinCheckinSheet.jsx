@@ -784,146 +784,76 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <p className="ci-done__where">
               📊 Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
             </p>
-            {onViewTrack && (
-              <div style={{ textAlign: 'center', marginTop: 8 }}>
-                <button
-                  type="button"
-                  onClick={onViewTrack}
-                  style={{
-                    background: 'none', border: '1.5px solid #2D9B83',
-                    color: '#2D9B83', borderRadius: 99, padding: '8px 18px',
-                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                  }}
-                >
-                  View more on Track →
-                </button>
-              </div>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+              <button type="button" onClick={() => setStep(0)} style={{
+                background: 'none', border: 'none',
+                color: '#94a3b8', fontSize: 12, fontWeight: 600,
+                cursor: 'pointer', fontFamily: 'inherit', padding: '8px 0',
+              }}>Re-do today's</button>
+              {onViewTrack && (
+                <button type="button" onClick={onViewTrack} style={{
+                  background: 'none', border: '1.5px solid #2D9B83',
+                  color: '#2D9B83', borderRadius: 99, padding: '8px 18px',
+                  fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                }}>View more on Track →</button>
+              )}
+            </div>
           </div>
         )}
 
         {step === 6 && viewing && (() => {
-          const entries = viewing.contextEntries
-            || (viewing.contextLabels || []).map(l => ({ label: l, detail: null }))
-          const ts = new Date(viewing.date)
-          const timeStr = ts.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
-
-          // New-format: per-condition answers
-          const perCond = Array.isArray(viewing.conditionAnswers) && viewing.conditionAnswers.length > 0
-            ? viewing.conditionAnswers
-            : null
-          // Resolve label/symptom strings per condition for display
-          const renderCondRows = perCond
-            ? perCond.map(ca => {
-                const condName = ca.condition || 'Skin'
-                const cpb = ca.condition && CONDITION_PLAYBOOKS[ca.condition] ? CONDITION_PLAYBOOKS[ca.condition] : GENERIC_PLAYBOOK
-                const sev  = ca.severity != null ? cpb.severityOpts[ca.severity]?.l : null
-                const sympLabels = resolveSymptomLabels(ca.symptoms)
-                const symp = sympLabels.length > 0 ? sympLabels.join(', ') : null
-                return { condName, sev, symp }
-              })
-            : null
+          // Re-derive insight from saved check-in data
+          const vStress = (viewing.contextLabels || []).some(l => l?.toLowerCase().includes('stress'))
+          const vNormal = (viewing.contextLabels || []).some(l => l?.toLowerCase().includes('normal'))
+          const vSev = viewing.severity
+          let vIcon = '📊', vHead = '', vBody = ''
+          if (vStress && vSev != null && vSev >= 2) {
+            vIcon = '⚠️'
+            vHead = 'Stress + a harder day — worth keeping an eye on'
+            vBody = 'Stress can raise blood pressure and blood sugar, and make it harder to stick to your routine. A short wind-down tonight can help your body recover.'
+          } else if (vStress) {
+            vHead = "Stressful day logged — we'll keep watching"
+            vBody = 'Chronic stress is a real cardiovascular risk factor. Even a 10-minute walk or breathing exercise can take the edge off.'
+          } else if (vNormal || vSev === 0) {
+            vIcon = '✅'
+            vHead = 'Steady day logged — consistency is the work'
+            vBody = 'Consistent check-ins reveal the patterns that matter most for long-term cardiometabolic health.'
+          } else {
+            vHead = 'Check-in logged — patterns take shape over time'
+            vBody = "Every check-in adds to your health story. We'll flag patterns as they emerge."
+          }
 
           return (
             <div className="ci-done">
-              <div className="ci-done__emoji" style={{ background: 'linear-gradient(135deg, var(--color-sage), #44E2DC)' }}>✓</div>
-              <h3 className="ci-done__title">Today's check-in</h3>
-              <p className="ci-done__sub">Logged at {timeStr}.</p>
-              <div className="ci-summary-card">
-                {renderCondRows
-                  ? renderCondRows.map((r, idx) => (
-                      <React.Fragment key={idx}>
-                        {r.sev && (
-                          <div className="ci-summary-row">
-                            <div className="ci-summary-row__key">{r.condName}</div>
-                            <div className="ci-summary-row__val">{r.sev}</div>
-                          </div>
-                        )}
-                        {r.symp && (
-                          <div className="ci-summary-row">
-                            <div className="ci-summary-row__key">{r.condName} symptoms</div>
-                            <div className="ci-summary-row__val">{r.symp}</div>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ))
-                  : (() => {
-                      // Legacy single-condition format
-                      const sevLabel = viewing.severity != null && pb.severityOpts[viewing.severity]
-                        ? pb.severityOpts[viewing.severity].l : null
-                      const legacySympLabels = resolveSymptomLabels(viewing.symptoms)
-                      const sympLabel = legacySympLabels.length > 0 ? legacySympLabels.join(', ') : null
-                      return (
-                        <>
-                          {sevLabel && (
-                            <div className="ci-summary-row">
-                              <div className="ci-summary-row__key">{viewing.conditionLabel ? `Your ${viewing.conditionLabel}` : 'Your health'}</div>
-                              <div className="ci-summary-row__val">{sevLabel}</div>
-                            </div>
-                          )}
-                          {sympLabel && (
-                            <div className="ci-summary-row">
-                              <div className="ci-summary-row__key">Symptoms</div>
-                              <div className="ci-summary-row__val">{sympLabel}</div>
-                            </div>
-                          )}
-                        </>
-                      )
-                    })()
-                }
-                {entries.length > 0 && (
-                  <div className="ci-summary-row">
-                    <div className="ci-summary-row__key">What's going on</div>
-                    <div className="ci-summary-row__val">
-                      {entries.map((e, i) => (
-                        <div key={i} className="ci-summary-entry">
-                          <strong>{e.label}</strong>{e.detail ? <span className="ci-summary-entry__detail"> — {e.detail}</span> : null}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {viewing.treatments?.length > 0 && (() => {
-                  const grouped = groupByCategory(viewing.treatments)
-                  return Object.entries(grouped).map(([cat, names]) => (
-                    <div key={cat} className="ci-summary-row">
-                      <div className="ci-summary-row__key">{cat}</div>
-                      <div className="ci-summary-row__val">{names.join(', ')}</div>
-                    </div>
-                  ))
-                })()}
-                {viewing.photoAttached && (
-                  <div className="ci-summary-row">
-                    <div className="ci-summary-row__key">Photo</div>
-                    <div className="ci-summary-row__val">Attached for AI reference</div>
-                  </div>
-                )}
-                {viewing.wearableSynced && (
-                  <div className="ci-summary-row">
-                    <div className="ci-summary-row__key">Wearable</div>
-                    <div className="ci-summary-row__val">Synced</div>
-                  </div>
-                )}
+              <button className="ci-close" onClick={onClose} style={{ position: 'absolute', top: 16, right: 16 }}>✕</button>
+              <div className="ci-done__emoji">🎉</div>
+              <h3 className="ci-done__title">Check-in logged.</h3>
+              <p className="ci-done__sub">
+                We saved how you're feeling and what's going on today.
+                {viewing.wearableSynced && <> Wearable data synced.</>}
+              </p>
+              <div className="ci-insight">
+                <div className="ci-insight__tag"><span className="ci-insight__dot" />Insight · Based on your check-in</div>
+                <h4 className="ci-insight__heading">{vIcon} {vHead}</h4>
+                <p className="ci-insight__body">{vBody}</p>
               </div>
               <p className="ci-done__where">
-                📊 Your trends, triggers, and patterns live on <strong>Track</strong>.
+                📊 Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
               </p>
-              <button className="ci-close" onClick={onClose} style={{ position: 'absolute', top: 16, right: 16 }}>✕</button>
-              {onViewTrack && (
-                <div style={{ textAlign: 'center', marginTop: 8 }}>
-                  <button
-                    type="button"
-                    onClick={onViewTrack}
-                    style={{
-                      background: 'none', border: '1.5px solid #2D9B83',
-                      color: '#2D9B83', borderRadius: 99, padding: '8px 18px',
-                      fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >
-                    View more on Track →
-                  </button>
-                </div>
-              )}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+                <button type="button" onClick={() => { setViewing(null); setStep(0) }} style={{
+                  background: 'none', border: 'none',
+                  color: '#94a3b8', fontSize: 12, fontWeight: 600,
+                  cursor: 'pointer', fontFamily: 'inherit', padding: '8px 0',
+                }}>Re-do today's</button>
+                {onViewTrack && (
+                  <button type="button" onClick={onViewTrack} style={{
+                    background: 'none', border: '1.5px solid #2D9B83',
+                    color: '#2D9B83', borderRadius: 99, padding: '8px 18px',
+                    fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit',
+                  }}>View more on Track →</button>
+                )}
+              </div>
             </div>
           )
         })()}
