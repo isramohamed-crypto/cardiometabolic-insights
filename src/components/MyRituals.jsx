@@ -205,11 +205,30 @@ function readProfile() {
   try { return JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}') } catch { return {} }
 }
 
-const DEFAULT_IDS = ['hl_walk', 'hl_sleep', 'hl_water']
+const DEFAULT_IDS = ['hl_walk', 'hl_water', 'hl_breathe']
+
+// Medication-type ritual IDs — hidden from display in this demo
+const MEDICATION_IDS = new Set(['hl_bp_med','hl_chol_med','hl_dm_med','hl_meno_hrt','hl_glp1','hl_meds_gen','hl_bg_check','hl_symptoms'])
+
+// Unique count labels per habit — makes the count feel specific and real
+const COUNT_LABELS = {
+  hl_walk:        n => `${n} walks logged`,
+  hl_dinner_walk: n => `${n} evening walks`,
+  hl_strength:    n => `${n} strength sessions`,
+  hl_stretch:     n => `${n} stretch sessions`,
+  hl_water:       n => `${n} hydration days`,
+  hl_breathe:     n => `${n} breathing sessions`,
+  hl_grateful:    n => `${n} gratitude notes`,
+  hl_sleep:       n => `${n} nights tracked`,
+  hl_fiber:       n => `${n} fiber days`,
+  hl_sodium:      n => `${n} low-sodium days`,
+  hl_protein:     n => `${n} protein breakfasts`,
+  hl_log:         n => `${n} numbers logged`,
+}
 
 function getDefaultIds(conditions) {
   const matches = HABIT_LIBRARY.filter(
-    h => h.conditions.length > 0 && h.conditions.some(c => conditions.includes(c))
+    h => !MEDICATION_IDS.has(h.id) && h.conditions.length > 0 && h.conditions.some(c => conditions.includes(c))
   )
   if (matches.length === 0) return DEFAULT_IDS
   const seen = new Set(['hl_walk']); const result = ['hl_walk']
@@ -217,7 +236,7 @@ function getDefaultIds(conditions) {
     if (!seen.has(h.id)) { seen.add(h.id); result.push(h.id) }
     if (result.length === 3) break
   }
-  for (const id of ['hl_sleep', 'hl_water']) {
+  for (const id of ['hl_water', 'hl_breathe']) {
     if (result.length >= 3) break
     if (!seen.has(id)) result.push(id)
   }
@@ -339,7 +358,7 @@ export default function MyRituals() {
       .map(h => h.id)
   )
 
-  const selectedHabits = selectedIds.map(id => HABIT_LIBRARY.find(h => h.id === id)).filter(Boolean)
+  const selectedHabits = selectedIds.map(id => HABIT_LIBRARY.find(h => h.id === id)).filter(h => h && !MEDICATION_IDS.has(h.id))
   const availableToAdd = HABIT_LIBRARY.filter(h => !selectedIds.includes(h.id))
   const doneToday      = completions.filter(id => selectedIds.includes(id)).length
   const allDone        = selectedHabits.length > 0 && doneToday === selectedHabits.length
@@ -409,6 +428,45 @@ export default function MyRituals() {
           </button>
         </div>
       </div>
+
+      {/* Habit picker — right below + button so it's immediately visible */}
+      {showPicker && (
+        <div className="mr-picker">
+          <div className="mr-picker__tabs">
+            {['All', ...Object.keys(CAT)].map(cat => (
+              <button
+                key={cat}
+                className={`mr-picker__tab${pickerCat === cat ? ' mr-picker__tab--active' : ''}`}
+                onClick={() => setPickerCat(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <p className="mr-picker__heading">
+            {pickerFiltered.length === 0 ? 'All rituals in this category are added' : 'Add a ritual'}
+          </p>
+          <div className="mr-picker__list">
+            {pickerFiltered.map(habit => {
+              const isPersonal = personalizedIds.has(habit.id) || habit.conditions.length > 0
+              const catStyle   = CAT[habit.category] || {}
+              return (
+                <button key={habit.id} className="mr-picker__item" onClick={() => handleAdd(habit.id)}>
+                  <span className="mr-picker__icon">{habit.icon}</span>
+                  <span className="mr-picker__body">
+                    <span className="mr-picker__label">
+                      {habit.label}
+                      {isPersonal && <span className="mr-picker__foryou">✨ Recommended</span>}
+                    </span>
+                    <span className="mr-picker__desc">{habit.desc}</span>
+                  </span>
+                  <span className="mr-picker__plus">+</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* All-done celebration */}
       {allDone && (
@@ -506,7 +564,7 @@ export default function MyRituals() {
                 </div>
                 <div className="mr-card__footer-right">
                   <span className="mr-card__count">
-                    {displayCount > 0 ? `${displayCount} completions` : 'Start today'}
+                    {displayCount > 0 ? (COUNT_LABELS[habit.id] ? COUNT_LABELS[habit.id](displayCount) : `${displayCount} completions`) : 'Start today'}
                   </span>
                 </div>
                 <button className="mr-card__remove" onClick={e => handleRemove(e, habit.id)}>Remove</button>
@@ -516,52 +574,6 @@ export default function MyRituals() {
         })}
       </div>
 
-      {/* Habit picker */}
-      {showPicker && (
-        <div className="mr-picker">
-          {/* Category filter tabs */}
-          <div className="mr-picker__tabs">
-            {['All', ...Object.keys(CAT)].map(cat => (
-              <button
-                key={cat}
-                className={`mr-picker__tab${pickerCat === cat ? ' mr-picker__tab--active' : ''}`}
-                onClick={() => setPickerCat(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <p className="mr-picker__heading">
-            {pickerFiltered.length === 0 ? 'All rituals in this category are added' : 'Add a ritual'}
-          </p>
-
-          <div className="mr-picker__list">
-            {pickerFiltered.map(habit => {
-              const isPersonal = personalizedIds.has(habit.id) || habit.conditions.length > 0
-              const catStyle   = CAT[habit.category] || {}
-              return (
-                <button key={habit.id} className="mr-picker__item" onClick={() => handleAdd(habit.id)}>
-                  <span className="mr-picker__icon">{habit.icon}</span>
-                  <span className="mr-picker__body">
-                    <span className="mr-picker__label">
-                      {habit.label}
-                      {isPersonal && (
-                        <span className="mr-picker__foryou">✨ Recommended</span>
-                      )}
-                    </span>
-                    <span className="mr-picker__desc">{habit.desc}</span>
-                  </span>
-                  <span className="mr-cat-chip" style={{ background: catStyle.bg, color: catStyle.text, marginRight: 6 }}>
-                    {habit.category}
-                  </span>
-                  <span className="mr-picker__plus">+</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      )}
     </section>
   )
 }

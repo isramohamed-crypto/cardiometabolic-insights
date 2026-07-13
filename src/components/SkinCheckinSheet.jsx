@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const CHECKIN_KEY  = 'cardiometabolicLastCheckin'
 const CHECKINS_KEY = 'cardiometabolicCheckins'
@@ -338,249 +338,99 @@ function lastCheckinLabel(isoDate) {
 /* ── Sheet component ──────────────────────────────────────────────── */
 
 export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrack }) {
-  const [step, setStep]         = useState(0)
-  // Per-condition answers. Single-condition users still see this as a single-state UI;
-  // multi-condition users get a toggle to switch which condition they're answering for.
-  const [severityByCond, setSeverityByCond] = useState({})
-  const [severityAiByCond, setSeverityAiByCond] = useState({})
-  const [symptomsByCond, setSymptomsByCond] = useState({})
-  const [activeCondition, setActiveCondition] = useState(null)
-  const [context, setContext]   = useState([])
-  const [contextDetails, setContextDetails] = useState({})    // { [optIndex]: free text }
-  const [photoUrl, setPhotoUrl] = useState('')
+  const [step, setStep]       = useState(0)
+  const [sleep, setSleep]     = useState(null)   // 'well' | 'okay' | 'poorly'
+  const [stress, setStress]   = useState(null)   // 1–5
+  const [movement, setMovement] = useState(null) // 'yes' | 'little' | 'not-yet'
+  const [symptoms, setSymptoms] = useState([])
   const [wearableSynced, setWearableSynced] = useState(false)
-  const [analyzing, setAnalyzing] = useState(false)
-  const [viewing, setViewing]   = useState(null)              // saved record shown in summary-view mode
-  const [treatments, setTreatments] = useState([])
-  const [treatmentInput, setTreatmentInput] = useState('')
-  const fileRef = useRef(null)
+  const [viewing, setViewing] = useState(null)
+  const [showSymptoms, setShowSymptoms] = useState(false)
 
-  const DEMO_PHOTO = null
-
-  // Reset whenever the sheet opens. If today's check-in already exists,
-  // open in summary-view mode so the user can see what they logged.
   useEffect(() => {
-    if (!open) {
-      // Always release the body scroll lock when the sheet is closed,
-      // regardless of where the close came from. (Earlier cleanup only
-      // ran in stale closures, leaving Track unscrollable after a log.)
-      document.body.style.overflow = ''
-      return
-    }
-
-    // Sheet is opening
-    setSeverityByCond({}); setSeverityAiByCond({}); setSymptomsByCond({})
-    setContext([]); setContextDetails({})
-    setPhotoUrl(''); setWearableSynced(false); setAnalyzing(false)
-    setTreatmentInput('')
+    if (!open) { document.body.style.overflow = ''; return }
+    setSleep(null); setStress(null); setMovement(null)
+    setSymptoms([]); setWearableSynced(false); setShowSymptoms(false)
     document.body.style.overflow = 'hidden'
-
-    const profile = readProfile()
-    const conds = trackedConditionsFor(profile)
-    setActiveCondition(conds[0])
-    // Pre-load saved treatments as a flat list
-    const saved = profile.treatmentList || []
-    const flat = saved.map(t => (typeof t === 'string' ? t : t?.name)).filter(Boolean)
-    setTreatments([...new Set(flat)])
 
     let last = null
     try { last = JSON.parse(localStorage.getItem(CHECKIN_KEY) || 'null') } catch (_) {}
     const todayLogged = last && new Date(last.date).toDateString() === new Date().toDateString()
+    if (todayLogged) { setViewing(last); setStep(6) }
+    else { setViewing(null); setStep(0) }
 
-    if (todayLogged) {
-      setViewing(last)
-      setStep(6)
-    } else {
-      setViewing(null)
-      setStep(0)
-    }
-
-    // Cleanup always restores scroll, in case the component unmounts mid-flow
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  const profile = useMemo(() => open ? readProfile() : {}, [open])
-  const conditions = useMemo(() => trackedConditionsFor(profile), [profile])
-  // Resolve current playbook based on the active condition
-  const { pb, label: conditionLabel } = useMemo(() => {
-    if (!activeCondition || activeCondition === '__generic') return { pb: GENERIC_PLAYBOOK, label: 'health' }
-    return playbookFor(activeCondition)
-  }, [activeCondition])
+  const progressPct = ((step / 3) * 100)
 
-  // Convenience for the currently active condition's answers
-  const severity   = activeCondition ? severityByCond[activeCondition] ?? null : null
-  const severityAi = activeCondition ? !!severityAiByCond[activeCondition]     : false
-  const symptoms   = activeCondition && Array.isArray(symptomsByCond[activeCondition]) ? symptomsByCond[activeCondition] : []
-
-  const totalSteps = 5
-  const progressPct = ((step + 1) / totalSteps) * 100
-
-  // Prototype upload: skips the file picker and loads a bundled demo image.
-  // Same mock-AI behavior as a real upload (spinner → pre-fill severity).
-  function useDemoPhoto() {
-    setPhotoUrl(DEMO_PHOTO)
-    setAnalyzing(true)
-    setTimeout(() => {
-      setAnalyzing(false)
-      // Pre-fill the active condition with a plausible AI guess
-      const c = activeCondition || trackedConditionsFor(readProfile())[0]
-      setSeverityByCond(s => ({ ...s, [c]: 2 }))
-      setSeverityAiByCond(s => ({ ...s, [c]: true }))
-      setStep(1)
-    }, 1800)
-  }
-
-  function onPickFile(e) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    if (!file.type.startsWith('image/')) { alert('Please choose an image.'); return }
-    if (file.size > 5 * 1024 * 1024) { alert('Please keep it under 5 MB.'); return }
-    const reader = new FileReader()
-    reader.onload = ev => {
-      const url = String(ev.target?.result || '')
-      setPhotoUrl(url)
-      setAnalyzing(true)
-      setTimeout(() => {
-        setAnalyzing(false)
-        const c = activeCondition || trackedConditionsFor(readProfile())[0]
-        setSeverityByCond(s => ({ ...s, [c]: 2 }))
-        setSeverityAiByCond(s => ({ ...s, [c]: true }))
-        setStep(1)
-      }, 1800)
-    }
-    reader.readAsDataURL(file)
-    e.target.value = ''
-  }
-  function syncWearable() { setWearableSynced(true); setStep(1) }
-  function skipExtras()   { setStep(1) }
-  function pickSeverity(i) {
-    const key = activeCondition || '__generic'
-    setSeverityByCond(s => ({ ...s, [key]: i }))
-    setSeverityAiByCond(s => ({ ...s, [key]: false }))
-  }
-  // Multi-select: toggles a symptom in/out of the active condition's list.
-  // "Feeling fine" (index 0) is exclusive — picking it clears everything
-  // else, and picking any real symptom clears "feeling fine".
   function toggleSymptom(i) {
-    const key = activeCondition || '__generic'
-    setSymptomsByCond(s => {
-      const current = Array.isArray(s[key]) ? s[key] : []
-      let next
-      if (i === 0) {
-        next = current.includes(0) ? [] : [0]
-      } else {
-        const withoutFine = current.filter(x => x !== 0)
-        next = withoutFine.includes(i) ? withoutFine.filter(x => x !== i) : [...withoutFine, i]
-      }
-      return { ...s, [key]: next }
+    setSymptoms(prev => {
+      if (i === 0) return prev.includes(0) ? [] : [0]
+      const withoutFine = prev.filter(x => x !== 0)
+      return withoutFine.includes(i) ? withoutFine.filter(x => x !== i) : [...withoutFine, i]
     })
   }
 
-  // At least one condition has an answer
-  const anySeverityAnswered = Object.values(severityByCond).some(v => v != null)
-  const anySymptomsAnswered = Object.values(symptomsByCond).some(v => Array.isArray(v) && v.length > 0)
-  function toggleContext(i) {
-    setContext(prev => {
-      const has = prev.includes(i)
-      // If deselecting, also drop its captured detail
-      if (has) {
-        setContextDetails(d => { const n = { ...d }; delete n[i]; return n })
-        return prev.filter(x => x !== i)
-      }
-      return [...prev, i]
-    })
+  // Suggest a ritual based on what was just logged, if user doesn't already have it
+  function getRitualNudge() {
+    try {
+      const selected = JSON.parse(localStorage.getItem('vitalistMyRituals2') || '[]')
+      const hasMovement = selected.some(id => ['hl_walk','hl_strength','hl_dinner_walk','hl_stretch'].includes(id))
+      const hasMind = selected.some(id => ['hl_breathe','hl_grateful'].includes(id))
+      const hasSleep = selected.includes('hl_sleep')
+      if ((movement === 'not-yet' || movement === 'little') && !hasMovement)
+        return { emoji: '🚶', text: "You haven't moved much today — want to make it a daily habit?", cta: 'Add a movement ritual' }
+      if (stress >= 4 && !hasMind)
+        return { emoji: '💨', text: "High stress logged — a short breathing ritual can help buffer it.", cta: 'Add a breathing ritual' }
+      if (sleep === 'poorly' && !hasSleep)
+        return { emoji: '😴', text: "Poor sleep logged — tracking it as a ritual helps surface patterns.", cta: 'Add a sleep ritual' }
+    } catch (_) {}
+    return null
   }
-  function setContextDetail(i, val) {
-    setContextDetails(d => ({ ...d, [i]: val }))
-  }
-
-  function addTreatment(name) {
-    const v = (name ?? treatmentInput).trim()
-    if (!v) return
-    setTreatments(prev => prev.includes(v) ? prev : [...prev, v])
-    setTreatmentInput('')
-  }
-  function removeTreatment(name) {
-    setTreatments(prev => prev.filter(x => x !== name))
-  }
-  const treatmentSuggestions = treatmentInput.trim().length >= 1
-    ? COMMON_TREATMENTS.filter(t =>
-        t.toLowerCase().includes(treatmentInput.trim().toLowerCase()) && !treatments.includes(t)
-      ).slice(0, 6)
-    : []
 
   function finish() {
-    const contextLabels = (context || []).map(i => DAY_CONTEXT[i]?.l).filter(Boolean)
-    const contextEntries = (context || []).map(i => ({
-      label: DAY_CONTEXT[i]?.l,
-      detail: (contextDetails[i] || '').trim() || null,
-    })).filter(x => x.label)
-
-    // Build per-condition answer list (only conditions that got at least one answer)
-    const conditionAnswers = conditions
-      .filter(c => severityByCond[c] != null || (Array.isArray(symptomsByCond[c]) && symptomsByCond[c].length > 0))
-      .map(c => ({
-        condition: c === '__generic' ? null : c,
-        severity:    severityByCond[c] ?? null,
-        severityAi:  !!severityAiByCond[c],
-        symptoms:    Array.isArray(symptomsByCond[c]) ? symptomsByCond[c] : [],
-      }))
-
-    // Pick the first answered condition for top-level fields (backwards compat
-    // with the Track page's skinScore reading + the summary view)
-    const primaryC = conditions.find(c => severityByCond[c] != null) || conditions[0]
-    const topSeverity = severityByCond[primaryC] ?? null
-    const topSymptoms = Array.isArray(symptomsByCond[primaryC]) ? symptomsByCond[primaryC] : []
-    const topSeverityAi = !!severityAiByCond[primaryC]
-    const skinScore = topSeverity == null ? null : (5 - topSeverity)
-    const primaryLabel = (primaryC && primaryC !== '__generic') ? primaryC.toLowerCase() : 'health'
-
     const checkin = {
       date: new Date().toISOString(),
-      severity: topSeverity, severityAi: topSeverityAi, skinScore,
-      symptoms: topSymptoms,
-      conditionLabel: primaryLabel,
-      conditionAnswers,
-      contextLabels,
-      contextEntries,
-      treatments,
-      photoAttached: false,
+      sleep, stress, movement, symptoms,
       wearableSynced,
+      // backwards-compat fields for TrackPage
+      severity: stress != null ? stress - 1 : null,
+      skinScore: stress != null ? 6 - stress : null,
+      conditionLabel: 'health',
+      contextLabels: stress >= 4 ? ['Stressful day'] : movement === 'yes' ? ['Exercised today'] : [],
     }
     writeCheckin(checkin)
-
-    try {
-      const profile = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
-      profile.treatmentList = treatments.map(name => ({ name, category: categoryFor(name), addedAt: new Date().toISOString() }))
-      localStorage.setItem('cardiometabolicProfile', JSON.stringify(profile))
-    } catch (_) {}
-
     onComplete?.(checkin)
     setStep(5)
   }
 
   if (!open) return null
 
-  const stressDay = context.includes(0)
-  const normalDay = context.includes(6)
+  // Insight copy driven by the new signals
   let insightIcon = '📊', insightHead = '', insightBody = ''
-  if (stressDay && severity != null && severity >= 2) {
+  if (stress >= 4) {
     insightIcon = '⚠️'
     insightHead = 'Stress + a harder day — worth keeping an eye on'
-    insightBody = `Stress can raise blood pressure and blood sugar, and make it harder to stick to your routine. A short wind-down tonight can help your body recover.`
-  } else if (stressDay) {
-    insightHead = 'Stressful day logged — we\'ll keep watching'
+    insightBody = 'Stress can raise blood pressure and blood sugar and make it harder to stick to your routine. A short wind-down tonight can help your body recover.'
+  } else if (stress === 3) {
+    insightHead = 'Moderate stress logged — we\'ll keep watching'
     insightBody = 'Chronic stress is a real cardiovascular risk factor. Even a 10-minute walk or breathing exercise can take the edge off.'
-  } else if (normalDay || severity === 0) {
+  } else if (sleep === 'poorly') {
+    insightIcon = '😴'
+    insightHead = 'Poor sleep logged — it shows up in your numbers'
+    insightBody = 'Sleep under 6 hours is linked to elevated blood pressure and blood sugar the following day. Your trends on Track capture this pattern.'
+  } else if (movement === 'yes' && (sleep === 'well' || stress <= 2)) {
     insightIcon = '✅'
-    insightHead = 'Steady day logged — consistency is the work'
-    insightBody = 'Consistent check-ins reveal the patterns that matter most for long-term cardiometabolic health.'
+    insightHead = 'Strong day logged — this is what progress looks like'
+    insightBody = 'Movement + good sleep are the two highest-impact habits for long-term cardiometabolic health. Consistency is the work.'
   } else {
     insightHead = 'Check-in logged — patterns take shape over time'
     insightBody = 'Every check-in adds to your health story. We\'ll flag patterns as they emerge.'
   }
 
   const lastDateStr = lastCheckinLabel(readCheckins().slice(-1)[0]?.date)
+  const nudge = step === 5 ? getRitualNudge() : null
 
   return (
     <div className="ci-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -592,12 +442,12 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <span className="ci-label">{lastDateStr}</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
-            <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
+            <div className="ci-progress"><div className="ci-fill" style={{ width: '0%' }} /></div>
             <h2 className="ci-title">How are you feeling today?</h2>
-            <p className="ci-sub">Takes about a minute. Your symptoms and habits help us connect the dots between how you feel and what your numbers show.</p>
+            <p className="ci-sub">Three quick questions. Your answers connect how you feel to what your numbers show.</p>
 
             <div className="ci-start-list">
-              <button className={`ci-start-card${wearableSynced ? ' ci-start-card--done' : ''}`} type="button" onClick={syncWearable}>
+              <button className={`ci-start-card${wearableSynced ? ' ci-start-card--done' : ''}`} type="button" onClick={() => { setWearableSynced(true); setStep(1) }}>
                 <span className="ci-start-card__icon">⌚</span>
                 <span className="ci-start-card__body">
                   <span className="ci-start-card__title">Sync wearable</span>
@@ -605,8 +455,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                 </span>
                 <span className="ci-start-card__arrow">{wearableSynced ? '✓' : '›'}</span>
               </button>
-
-              <button className="ci-start-card ci-start-card--ghost" type="button" onClick={skipExtras}>
+              <button className="ci-start-card ci-start-card--ghost" type="button" onClick={() => setStep(1)}>
                 <span className="ci-start-card__icon">✏️</span>
                 <span className="ci-start-card__body">
                   <span className="ci-start-card__title">Just answer a few questions</span>
@@ -618,151 +467,111 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
           </>
         )}
 
-        {step === 2 && (
-          <>
-            <div className="ci-header">
-              <span className="ci-label">Question 2 of 3</span>
-              <button className="ci-close" onClick={onClose}>✕</button>
-            </div>
-            <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
-
-            <h2 className="ci-title">How has your mood been today?</h2>
-            <p className="ci-sub">Your emotional state is part of your health picture — stress and anxiety can directly affect your numbers.</p>
-
-            <div className="ci-opts ci-opts--list">
-              {[
-                { e: '😄', l: 'Great — feeling positive and energized' },
-                { e: '🙂', l: 'Good — mostly fine, nothing major' },
-                { e: '😐', l: 'Neutral — getting through the day' },
-                { e: '😔', l: 'Low — stressed, anxious, or drained' },
-                { e: '😫', l: 'Rough — really struggling today' },
-              ].map((opt, i) => (
-                <button
-                  key={i}
-                  className={`ci-opt ci-opt--row${severity === i ? ' ci-opt--sel' : ''}`}
-                  onClick={() => pickSeverity(i)}
-                >
-                  <span className="ci-opt__emoji">{opt.e}</span>
-                  <span className="ci-opt__label">{opt.l}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(1)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" onClick={() => setStep(3)}>
-                {anySeverityAnswered ? 'Continue →' : 'Skip →'}
-              </button>
-            </div>
-          </>
-        )}
-
-        {step === 3 && (
-          <>
-            <div className="ci-header">
-              <span className="ci-label">Question 3 of 3</span>
-              <button className="ci-close" onClick={onClose}>✕</button>
-            </div>
-            <div className="ci-progress"><div className="ci-fill" style={{ width: `${progressPct}%` }} /></div>
-
-            <h2 className="ci-title">Any physical symptoms today?</h2>
-            <p className="ci-sub">Pick as many as apply — focus on the ones that are most persistent, or nothing if you're feeling fine.</p>
-
-            <div className="ci-opts ci-opts--list">
-              {PHYSICAL_SYMPTOMS.map((opt, i) => (
-                <button
-                  key={i}
-                  className={`ci-opt ci-opt--row${symptoms.includes(i) ? ' ci-opt--sel' : ''}`}
-                  onClick={() => toggleSymptom(i)}
-                >
-                  <span className="ci-opt__emoji">{opt.e}</span>
-                  <span className="ci-opt__label">{opt.l}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="ci-nav-row">
-              <button className="ci-back" onClick={() => setStep(2)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" onClick={finish}>
-                {anySymptomsAnswered ? 'Log check-in →' : 'Skip & log →'}
-              </button>
-            </div>
-          </>
-        )}
-
-
+        {/* Step 1 — Sleep */}
         {step === 1 && (
           <>
             <div className="ci-header">
-              <span className="ci-label">Question 1 of 3 · My medications & products</span>
+              <span className="ci-label">1 of 3</span>
               <button className="ci-close" onClick={onClose}>✕</button>
             </div>
-            <div className="ci-progress"><div className="ci-fill" style={{ width: '25%' }} /></div>
-
-            <h2 className="ci-title">
-              {treatments.length === 0 ? 'What are you currently taking or using?' : 'Still using these?'}
-            </h2>
-            <p className="ci-sub">
-              {treatments.length === 0
-                ? <>Search by name or type your own. We'll organize them for you.</>
-                : <>Confirm what's still active, remove anything you've stopped, or add something new.</>}
-            </p>
-
-            {/* Grouped display */}
-            {treatments.length > 0 && (() => {
-              const grouped = groupByCategory(treatments)
-              return (
-                <div style={{ marginBottom: 16 }}>
-                  {Object.entries(grouped).map(([cat, names]) => (
-                    <div key={cat} style={{ marginBottom: 12 }}>
-                      <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted)', margin: '0 0 6px' }}>{cat}</p>
-                      <div className="ci-tx-chips">
-                        {names.map(name => (
-                          <span key={name} className="ci-tx-chip">
-                            <span className="ci-tx-chip__name">{name}</span>
-                            <button type="button" className="ci-tx-chip__x" aria-label={`Remove ${name}`} onClick={() => removeTreatment(name)}>✕</button>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )
-            })()}
-
-            <div className="ci-tx-input-wrap">
-              <input
-                className="ci-tx-input"
-                type="text"
-                placeholder="Search medications, supplements, programs…"
-                value={treatmentInput}
-                onChange={e => setTreatmentInput(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTreatment() } }}
-              />
-              {treatmentInput.trim() && (
-                <button type="button" className="ci-tx-add" onClick={() => addTreatment()}>
-                  + Add "{treatmentInput.trim()}"
+            <div className="ci-progress"><div className="ci-fill" style={{ width: '33%' }} /></div>
+            <h2 className="ci-title">How did you sleep last night?</h2>
+            <p className="ci-sub">Sleep quality is one of the strongest predictors of how your numbers behave the next day.</p>
+            <div className="ci-opts ci-opts--list">
+              {[
+                { v: 'well',   e: '😴', l: 'Well — felt rested and recovered' },
+                { v: 'okay',   e: '🙂', l: 'Okay — decent but not great' },
+                { v: 'poorly', e: '😩', l: 'Poorly — tired, restless, or too little' },
+              ].map(opt => (
+                <button key={opt.v} className={`ci-opt ci-opt--row${sleep === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setSleep(opt.v)}>
+                  <span className="ci-opt__emoji">{opt.e}</span>
+                  <span className="ci-opt__label">{opt.l}</span>
                 </button>
-              )}
-              {treatmentSuggestions.length > 0 && (
-                <ul className="ci-tx-suggest">
-                  {treatmentSuggestions.map(s => (
-                    <li key={s}>
-                      <button type="button" className="ci-tx-suggest__btn" onClick={() => addTreatment(s)}>
-                        <span className="ci-tx-suggest__plus">+</span>{s}
-                        <span style={{ fontSize: 10, color: 'var(--color-text-muted)', marginLeft: 6 }}>{categoryFor(s)}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              ))}
             </div>
-
             <div className="ci-nav-row">
               <button className="ci-back" onClick={() => setStep(0)}>← Back</button>
-              <button className="ci-btn ci-btn--inline" onClick={() => setStep(2)}>
-                {treatments.length === 0 ? 'Skip →' : 'Continue →'}
-              </button>
+              <button className="ci-btn ci-btn--inline" onClick={() => setStep(2)}>{sleep ? 'Continue →' : 'Skip →'}</button>
+            </div>
+          </>
+        )}
+
+        {/* Step 2 — Stress */}
+        {step === 2 && (
+          <>
+            <div className="ci-header">
+              <span className="ci-label">2 of 3</span>
+              <button className="ci-close" onClick={onClose}>✕</button>
+            </div>
+            <div className="ci-progress"><div className="ci-fill" style={{ width: '66%' }} /></div>
+            <h2 className="ci-title">How's your stress today?</h2>
+            <p className="ci-sub">High stress is one of the biggest drivers of blood pressure and blood sugar spikes — it usually shows up in your numbers 24–48 hours later.</p>
+            <div className="ci-opts ci-opts--list">
+              {[
+                { v: 1, e: '😌', l: 'Very low — calm and in control' },
+                { v: 2, e: '🙂', l: 'Low — mostly relaxed' },
+                { v: 3, e: '😐', l: 'Moderate — some tension' },
+                { v: 4, e: '😤', l: 'High — noticeably stressed' },
+                { v: 5, e: '😫', l: 'Very high — overwhelmed or anxious' },
+              ].map(opt => (
+                <button key={opt.v} className={`ci-opt ci-opt--row${stress === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setStress(opt.v)}>
+                  <span className="ci-opt__emoji">{opt.e}</span>
+                  <span className="ci-opt__label">{opt.l}</span>
+                </button>
+              ))}
+            </div>
+            <div className="ci-nav-row">
+              <button className="ci-back" onClick={() => setStep(1)}>← Back</button>
+              <button className="ci-btn ci-btn--inline" onClick={() => setStep(3)}>{stress ? 'Continue →' : 'Skip →'}</button>
+            </div>
+          </>
+        )}
+
+        {/* Step 3 — Movement */}
+        {step === 3 && (
+          <>
+            <div className="ci-header">
+              <span className="ci-label">3 of 3</span>
+              <button className="ci-close" onClick={onClose}>✕</button>
+            </div>
+            <div className="ci-progress"><div className="ci-fill" style={{ width: '100%' }} /></div>
+            <h2 className="ci-title">Have you moved today?</h2>
+            <p className="ci-sub">Even a short walk counts — movement is one of the most direct levers for your cardiometabolic health.</p>
+            <div className="ci-opts ci-opts--list">
+              {[
+                { v: 'yes',     e: '🏃', l: 'Yes — got a good workout or walk in' },
+                { v: 'little',  e: '🚶', l: 'A little — some light movement' },
+                { v: 'not-yet', e: '🛋️', l: 'Not yet today' },
+              ].map(opt => (
+                <button key={opt.v} className={`ci-opt ci-opt--row${movement === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setMovement(opt.v)}>
+                  <span className="ci-opt__emoji">{opt.e}</span>
+                  <span className="ci-opt__label">{opt.l}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Optional symptoms — collapsed by default */}
+            <button
+              type="button"
+              onClick={() => setShowSymptoms(s => !s)}
+              style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: '8px 0 0', textAlign: 'left' }}
+            >
+              {showSymptoms ? '▾' : '▸'} Any physical symptoms? (optional)
+            </button>
+            {showSymptoms && (
+              <div className="ci-opts ci-opts--list" style={{ marginTop: 8 }}>
+                {PHYSICAL_SYMPTOMS.map((opt, i) => (
+                  <button key={i} className={`ci-opt ci-opt--row${symptoms.includes(i) ? ' ci-opt--sel' : ''}`} onClick={() => toggleSymptom(i)}>
+                    <span className="ci-opt__emoji">{opt.e}</span>
+                    <span className="ci-opt__label">{opt.l}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="ci-nav-row">
+              <button className="ci-back" onClick={() => setStep(2)}>← Back</button>
+              <button className="ci-btn ci-btn--inline" onClick={finish}>{movement ? 'Log check-in →' : 'Skip & log →'}</button>
             </div>
           </>
         )}
@@ -784,6 +593,17 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <p className="ci-done__where">
               📊 Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
             </p>
+            {nudge && (
+              <div style={{ background: '#f0faf8', border: '1px solid #c0e8df', borderRadius: 12, padding: '12px 14px', marginTop: 8, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <span style={{ fontSize: 18, flexShrink: 0 }}>{nudge.emoji}</span>
+                <div>
+                  <div style={{ fontSize: 12, color: '#1a4a3a', lineHeight: 1.45, marginBottom: 4 }}>{nudge.text}</div>
+                  <button type="button" onClick={onClose} style={{ fontSize: 12, fontWeight: 700, color: '#2D9B83', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
+                    {nudge.cta} →
+                  </button>
+                </div>
+              </div>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
               <button type="button" onClick={() => setStep(0)} style={{
                 background: 'none', border: 'none',

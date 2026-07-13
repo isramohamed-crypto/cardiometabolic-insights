@@ -456,9 +456,11 @@
 /* ── Picker panel ── */
 .mr-picker {
   margin-top: 14px;
-  border: 1.5px solid #e2e8f0;
+  margin-bottom: 20px;
+  border: 1.5px solid #c0e8df;
   border-radius: 16px;
   overflow: hidden;
+  background: #f7fdfb;
 }
 
 /* Category filter tabs */
