@@ -93,8 +93,22 @@ export function generateHistoricCheckins() {
     d.setDate(today0.getDate() - day.offset)
     d.setHours(19 + Math.floor(rand() * 3), Math.floor(rand() * 60), 0, 0)
 
+    // New format fields (matches SkinCheckinSheet.finish())
+    const stress = Math.min(5, severity + 1) // severity 0-4 → stress 1-5
+    const sleep = day.contextLabel === CONTEXT_ROUGH_NIGHT
+      ? 'poorly'
+      : (rand() < 0.55 ? 'well' : 'okay')
+    const movement = day.contextLabel === 'Exercised today'
+      ? 'yes'
+      : (rand() < 0.4 ? 'yes' : (rand() < 0.55 ? 'a little' : 'not-yet'))
+
     checkins.push({
       date: d.toISOString(),
+      // New format
+      stress,
+      sleep,
+      movement,
+      // Old format (backwards compat — TrackPage reads these too)
       severity,
       severityAi: false,
       skinScore: 5 - severity,

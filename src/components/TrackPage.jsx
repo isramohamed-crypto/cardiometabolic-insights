@@ -585,8 +585,8 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
     return () => window.removeEventListener('focus', refresh)
   }, [checkinTick])
 
-  // AI Insights expand/collapse state (always visible, just toggleable)
-  const [aiOpen, setAiOpen] = useState(true)
+  // AI Insights: collapsed by default for new users (no patterns yet), expanded for established
+  const [aiOpen, setAiOpen] = useState(!isNew)
 
   const { rows: triggerRows, isReal: triggersReal } = useMemo(() => computeTriggers(displayCheckins), [displayCheckins])
   // Days tracked = baseline mock (21) + actual check-ins logged
@@ -608,7 +608,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         </p>
       </div>
 
-      {/* AI Insights — compact, expandable */}
+      {/* AI Insights — always visible; collapsed for new users until patterns emerge */}
       <div className={`tp-ai-summary${aiOpen ? ' tp-ai-summary--open' : ''}`}>
         <button
           type="button"
@@ -618,94 +618,61 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         >
           <span className="tp-ai-summary__badge">✨ AI Insights</span>
           <span className="tp-ai-summary__teaser">
-            {isNew ? 'Not enough data yet' : (aiOpen ? 'Tap to collapse' : '3 patterns to know')}
+            {isNew ? 'Patterns appear as you log' : (aiOpen ? 'Tap to collapse' : '3 patterns to know')}
           </span>
           <span className="tp-ai-summary__chev" aria-hidden="true">{aiOpen ? '▴' : '▾'}</span>
         </button>
-          {aiOpen && (isNew ? (
-            <ul className="tp-ai-summary__list">
-              <li className="tp-ai-summary__item">
-                <span className="tp-ai-summary__dot" style={{ background: 'var(--color-text-muted)' }} />
-                <span>Log a few check-ins and readings, and Vitalist AI will start surfacing patterns like this here.</span>
-              </li>
-            </ul>
-          ) : (
-            <ul className="tp-ai-summary__list">
-              {conditions.length >= 2 ? (
-                <>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
-                    <span><strong>Stress is your strongest trigger across both.</strong> Both worsen 24–48 hrs after stressful days.</span>
-                  </li>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
-                    <span><strong>Sleep under 65 hits both equally.</strong> Worst days follow shortest nights.</span>
-                  </li>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
-                    <span><strong>They don't peak together.</strong> When your {conditions[0]?.toLowerCase()} is worst, your {conditions[1]?.toLowerCase()} is often calmer.</span>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
-                    <span><strong>Stress predicts health changes.</strong> Your {(conditions[0] || 'condition').toLowerCase()} worsens 24–48 hrs after high-stress days.</span>
-                  </li>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
-                    <span><strong>Sleep quality matters.</strong> Nights under 65 are followed by visibly worse days.</span>
-                  </li>
-                  <li className="tp-ai-summary__item">
-                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
-                    <span><strong>Medication timing matters.</strong> Days you log consistent medication use trend better.</span>
-                  </li>
-                </>
-              )}
-            </ul>
-          ))}
-        </div>
-
-      {/* Check-in prompt banner */}
-      {(() => {
-        // Established users with no real check-in yet still fall back to the
-        // synthetic history's most recent date, so the banner reads like an
-        // ongoing routine ("it's been 1 day") rather than "start your first
-        // check-in" — the real check-in flow itself is untouched either way.
-        const effectiveLastDate = lastCheckin?.date
-          || (isMature && displayCheckins.length > 0 ? displayCheckins[displayCheckins.length - 1].date : null)
-        const d = daysAgoUtil(effectiveLastDate)
-        const todayDone = d === 0
-        return (
-          <button
-            className={`tp-checkin-banner${todayDone ? ' tp-checkin-banner--done' : ''}`}
-            type="button"
-            onClick={() => onOpenCheckin?.()}
-          >
-            <span className="tp-checkin-banner__icon">{todayDone ? '✓' : '📋'}</span>
-            <span className="tp-checkin-banner__body">
-              <span className="tp-checkin-banner__title">
-                {todayDone
-                  ? 'Logged today — tap to view or update'
-                  : (d == null
-                      ? 'Start your first health check-in'
-                      : d === 1
-                        ? 'Log today\'s check-in'
-                        : `Log today\'s check-in — it\'s been ${d} days`)}
-              </span>
-              <span className="tp-checkin-banner__sub">
-                {todayDone
-                  ? 'Your trend is up to date. Tap to see today\'s summary.'
-                  : 'Adds to your trend, triggers, and pattern detection.'}
-              </span>
-            </span>
-            <span className="tp-checkin-banner__arrow">→</span>
-          </button>
-        )
-      })()}
+        {aiOpen && (isNew ? (
+          <ul className="tp-ai-summary__list">
+            <li className="tp-ai-summary__item">
+              <span className="tp-ai-summary__dot" style={{ background: 'var(--color-text-muted)' }} />
+              <span>Log a few check-ins and readings — Vitalist AI will start surfacing patterns here.</span>
+            </li>
+          </ul>
+        ) : (
+          <ul className="tp-ai-summary__list">
+            {conditions.length >= 2 ? (
+              <>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
+                  <span><strong>Stress is your strongest trigger across both.</strong> Both worsen 24–48 hrs after stressful days.</span>
+                </li>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
+                  <span><strong>Sleep under 65 hits both equally.</strong> Worst days follow shortest nights.</span>
+                </li>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                  <span><strong>They don't peak together.</strong> When your {conditions[0]?.toLowerCase()} is worst, your {conditions[1]?.toLowerCase()} is often calmer.</span>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
+                  <span><strong>Stress predicts health changes.</strong> Your {(conditions[0] || 'condition').toLowerCase()} worsens 24–48 hrs after high-stress days.</span>
+                </li>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
+                  <span><strong>Sleep quality matters.</strong> Nights under 65 are followed by visibly worse days.</span>
+                </li>
+                <li className="tp-ai-summary__item">
+                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                  <span><strong>Movement makes a difference.</strong> Days with logged activity trend 30% better across all metrics.</span>
+                </li>
+              </>
+            )}
+          </ul>
+        ))}
+      </div>
 
       {/* ── My Numbers (full interactive tiles) ── */}
       <DashboardTiles tick={checkinTick} />
+      {isNew && (
+        <p style={{ fontSize: 12, color: 'var(--color-text-muted)', textAlign: 'center', margin: '-4px 20px 8px', lineHeight: 1.5 }}>
+          Log your numbers to see trends over time
+        </p>
+      )}
 
       {/* ── Numbers over time — established user only ── */}
       {!isNew && (
@@ -724,112 +691,161 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         </div>
       )}
 
-      {/* Recent check-ins */}
-      {displayCheckins.length > 0 && (
-        <div className="tp-section">
-          <div className="tp-sec-head">
-            <h2 className="tp-sec-title">Recent check-ins</h2>
-            <span className="tp-sec-badge" style={{ background: 'rgba(27,188,60,.1)', color: 'var(--color-teal)' }}>
-              {displayCheckins.length} logged
-            </span>
-          </div>
-          <div className="tp-card" style={{ padding: 0, overflow: 'hidden' }}>
-            {[...displayCheckins].reverse().slice(0, 5).map((c, i) => {
-              const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
-              const sevIdx = primary?.severity ?? c.severity ?? null
-              const sympRaw = primary?.symptoms ?? c.symptoms ?? null
-              const sympIdxs = Array.isArray(sympRaw) ? sympRaw : (sympRaw != null ? [sympRaw] : [])
-              const mood = sevIdx != null ? MOOD_LABELS[sevIdx] : null
-              const symptomLabels = sympIdxs
-                .map(i => SYMPTOM_LABELS[i])
-                .filter(s => s && s.l !== 'No symptoms')
-              const txCount = c.treatments?.length || 0
-              return (
-                <div key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px',
-                  borderBottom: i < 4 ? '1px solid var(--color-border)' : 'none',
-                }}>
-                  <div style={{ fontSize: 22, width: 32, textAlign: 'center', flexShrink: 0 }}>
-                    {mood?.e || '📋'}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>
-                        {mood?.l || 'Logged'}
-                      </span>
-                      {symptomLabels.map((s, si) => (
-                        <span key={si} style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface)', padding: '1px 7px', borderRadius: 10 }}>
-                          {s.e} {s.l}
-                        </span>
-                      ))}
+      {/* Check-in strip */}
+      <div className="tp-section">
+        {(() => {
+          const STRESS_STYLE = [null,
+            { e: '😄', bg: '#d1fae5' },
+            { e: '🙂', bg: '#d1fae5' },
+            { e: '😐', bg: '#fef3c7' },
+            { e: '😔', bg: '#fee2e2' },
+            { e: '😫', bg: '#fee2e2' },
+          ]
+          const STRESS_LABEL = ['', 'Great day', 'Good day', 'Moderate stress', 'High stress', 'Rough day']
+          const sleepMap = { well: '😴 Slept well', okay: '💤 OK sleep', poorly: '😩 Poor sleep' }
+          const movMap = { yes: '🏃 Active', 'a little': '🚶 Some movement', 'not-yet': '🛋️ Rest day' }
+
+          const now = new Date()
+
+          // Last 7 days (always a full window, oldest → today)
+          const last7 = Array.from({ length: 7 }, (_, i) => {
+            const d = new Date(now)
+            d.setDate(now.getDate() - (6 - i))
+            d.setHours(0, 0, 0, 0)
+            return d
+          })
+
+          const DOW_FOR_DATE = d => ['S','M','T','W','T','F','S'][d.getDay()]
+
+          const weekEntries = last7.map(day => ({
+            day,
+            isToday: day.toDateString() === now.toDateString(),
+            checkin: displayCheckins.find(c => new Date(c.date).toDateString() === day.toDateString()) || null,
+          }))
+
+          const loggedCount = weekEntries.filter(e => e.checkin).length
+          const todayEntry = weekEntries.find(e => e.isToday)
+          const todayDone = !!todayEntry?.checkin
+          const mostRecent = [...displayCheckins].sort((a, b) => new Date(b.date) - new Date(a.date))[0] || null
+
+          const recentStress = mostRecent?.stress ?? null
+          const recentStyle = recentStress != null ? STRESS_STYLE[recentStress] : null
+          const recentEmoji = recentStyle?.e || null
+          const recentLabel = recentStress != null ? STRESS_LABEL[recentStress] : null
+          const recentChips = [
+            mostRecent?.sleep ? sleepMap[mostRecent.sleep] : null,
+            mostRecent?.movement ? movMap[mostRecent.movement] : null,
+          ].filter(Boolean)
+
+          return (
+            <div className="tp-card" style={{ padding: 0, overflow: 'hidden' }}>
+
+              {/* Header — title left, check-in CTA right */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px 8px' }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text)' }}>Last 7 days</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenCheckin?.()}
+                  style={{
+                    background: todayDone ? 'rgba(45,155,131,0.1)' : '#2D9B83',
+                    color: todayDone ? '#2D9B83' : '#fff',
+                    border: 'none', borderRadius: 99,
+                    padding: '5px 12px', fontSize: 11, fontWeight: 700,
+                    cursor: 'pointer', fontFamily: 'inherit',
+                  }}
+                >
+                  {todayDone ? '✓ Logged today' : 'Log today →'}
+                </button>
+              </div>
+
+              {/* Bubbles row */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 16px 14px' }}>
+                {weekEntries.map(({ day, isToday, checkin }, i) => {
+                  const s = checkin?.stress != null ? STRESS_STYLE[checkin.stress] : null
+                  return (
+                    <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+                      <div style={{ fontSize: 10, color: isToday ? 'var(--color-teal)' : 'var(--color-text-muted)', fontWeight: isToday ? 700 : 400 }}>
+                        {DOW_FOR_DATE(day)}
+                      </div>
+                      <div style={{
+                        width: 36, height: 36, borderRadius: '50%',
+                        background: s ? s.bg : 'var(--color-surface)',
+                        border: isToday ? '2px solid #2D9B83' : '1.5px solid var(--color-border)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: s ? 18 : 11,
+                        color: 'var(--color-text-muted)',
+                        opacity: !s && !isToday ? 0.35 : 1,
+                      }}>
+                        {s ? s.e : '·'}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                      {txCount > 0 ? `${txCount} medication${txCount > 1 ? 's' : ''} active` : 'No medications logged'}
-                      {c.wearableSynced ? ' · Wearable synced' : ''}
+                  )
+                })}
+              </div>
+
+              {/* Most recent entry detail */}
+              {mostRecent && recentEmoji && (
+                <div style={{ borderTop: '1px solid var(--color-border)', padding: '12px 16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ fontSize: 28, flexShrink: 0 }}>{recentEmoji}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: recentChips.length ? 5 : 0 }}>
+                        {recentLabel && <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)' }}>{recentLabel}</span>}
+                        <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{formatCheckinDate(mostRecent.date)}</span>
+                      </div>
+                      {recentChips.length > 0 && (
+                        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                          {recentChips.map((chip, ci) => (
+                            <span key={ci} style={{ fontSize: 11, color: 'var(--color-text-muted)', background: 'var(--color-surface)', padding: '2px 8px', borderRadius: 99 }}>
+                              {chip}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', flexShrink: 0 }}>
-                    {formatCheckinDate(c.date)}
                   </div>
                 </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
+              )}
 
-      {/* Mood trend chart */}
+              {/* Pattern detected — established users only */}
+              {!isNew && (
+                <div className="tp-insight" style={{ margin: 0, borderTop: '1px solid var(--color-border)', borderRadius: 0 }}>
+                  <div className="tp-insight-tag" style={{ color: 'var(--color-teal)' }}>
+                    <span className="tp-insight-dot" style={{ background: 'var(--color-teal)' }} />
+                    Pattern detected
+                  </div>
+                  <div className="tp-insight-title">Stressful days show up in your health metrics ~48 hours later</div>
+                  <div className="tp-insight-body">When you report a stressful day, your readings worsen 2 days afterward — confirmed 3 of 4 weeks. Your check-in history backs this up.</div>
+                </div>
+              )}
+            </div>
+          )
+        })()}
+      </div>
+
+      {/* Wellbeing trend chart */}
       {displayCheckins.length >= 3 && (
         <div className="tp-section">
           <div className="tp-sec-head">
-            <h2 className="tp-sec-title">Mood trend</h2>
+            <h2 className="tp-sec-title">Wellbeing trend</h2>
             <span className="tp-sec-badge" style={{ background: 'rgba(0, 185, 226,.12)', color: 'var(--color-teal)' }}>From check-ins</span>
           </div>
           <div className="tp-card">
             {(() => {
               const recent = [...displayCheckins].reverse().slice(0, 14)
-              const moodVals = recent.map(c => {
+              const wellbeingVals = recent.map(c => {
+                if (c.stress != null) return 6 - c.stress
                 const primary = Array.isArray(c.conditionAnswers) && c.conditionAnswers[0]
                 const sevIdx = primary?.severity ?? c.severity ?? null
-                return sevIdx != null ? (4 - sevIdx) : null // invert so higher = better mood
+                return sevIdx != null ? (4 - sevIdx) : null
               }).filter(v => v !== null)
-              if (moodVals.length < 3) return <div style={{ fontSize: 13, color: 'var(--color-text-muted)', padding: '8px 0' }}>Log more check-ins to see your mood trend.</div>
-              return <Sparkline data={moodVals} color="var(--color-sage)" />
+              if (wellbeingVals.length < 3) return <div style={{ fontSize: 13, color: 'var(--color-text-muted)', padding: '8px 0' }}>Log more check-ins to see your wellbeing trend.</div>
+              return <Sparkline data={wellbeingVals} color="var(--color-sage)" />
             })()}
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 6 }}>Higher = better mood · last {Math.min(displayCheckins.length, 14)} check-ins</div>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 6 }}>Higher = better wellbeing · last {Math.min(displayCheckins.length, 14)} check-ins</div>
           </div>
         </div>
       )}
-
-      {/* What's been going on */}
-      <div className="tp-section">
-        <div className="tp-sec-head">
-          <h2 className="tp-sec-title">What's been going on</h2>
-          {triggersReal && (
-            <span className="tp-sec-badge" style={{ background: 'rgba(46,209,203,.12)', color: 'var(--color-teal)' }}>
-              From your check-ins
-            </span>
-          )}
-        </div>
-        <div className="tp-card">
-          {triggerRows.map((t, i) => (
-            <div key={i} className="tp-trig-row">
-              <span className="tp-trig-emoji">{t.e}</span>
-              <span className="tp-trig-label">{t.l}</span>
-              <div className="tp-trig-bar-wrap"><div className="tp-trig-bar" style={{ width: `${t.p}%`, background: t.c }} /></div>
-              <span className="tp-trig-pct" style={{ color: t.c }}>{t.p}%</span>
-            </div>
-          ))}
-          <div className="tp-insight">
-            <div className="tp-insight-tag" style={{ color: 'var(--color-teal)' }}>
-              <span className="tp-insight-dot" style={{ background: 'var(--color-teal)' }} />
-              Pattern detected
-            </div>
-            <div className="tp-insight-title">Stressful days show up in your health metrics ~48 hours later</div>
-            <div className="tp-insight-body">When you report a stressful day, your health score worsens 2 days afterward — confirmed 3 of 4 weeks. Your Oura HRV data backs this up.</div>
-          </div>
-        </div>
-      </div>
 
       {/* My medications & products */}
       <div className="tp-section">
