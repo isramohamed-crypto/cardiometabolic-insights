@@ -20,6 +20,27 @@ function readCheckins() {
   } catch (_) { return [] }
 }
 
+function readConditions() {
+  try {
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+    const raw = Array.isArray(p.condition) ? p.condition : (p.condition ? [p.condition] : [])
+    return raw.filter(Boolean)
+  } catch (_) { return [] }
+}
+
+function readTopics() {
+  try {
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+    return Array.isArray(p.topics) ? p.topics : []
+  } catch (_) { return [] }
+}
+
+function readTileConfig() {
+  try { return JSON.parse(localStorage.getItem('aheadTileConfig') || 'null') } catch (_) { return null }
+}
+
+const CHOLESTEROL_CONDITIONS = ['High cholesterol', 'Borderline numbers']
+
 function daysAgo(isoDate) {
   if (!isoDate) return null
   const then = new Date(isoDate); const now = new Date()
@@ -71,6 +92,17 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
   const { isNew, isMature } = useProfileStage()
   const last     = useMemo(() => readLastCheckin(), [tick])
   const realCheckins = useMemo(() => readCheckins(), [tick])
+
+  const showPerimenopause = useMemo(() => {
+    if (isNew) return false
+    const conditions = readConditions()
+    const topics     = readTopics()
+    const tileConf   = readTileConfig()
+    const hasHormone = topics.includes('Menopause & hormonal health') ||
+                       (Array.isArray(tileConf) && tileConf.includes('cycle'))
+    const hasChol    = conditions.some(c => CHOLESTEROL_CONDITIONS.includes(c))
+    return hasHormone && hasChol
+  }, [isNew, tick])
   // Established users get the same synthetic history Track uses, merged
   // ahead of any real check-ins, so the streak dots here match the story
   // Track tells instead of showing a blank week for a "mature" user.
@@ -139,7 +171,78 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
 
   // Shared AI insight + video card — shown once insights are ready (established
   // users always; new users after hitting INSIGHT_THRESHOLD real check-ins)
-  const insightCard = (
+  const insightCard = showPerimenopause ? (
+    <div className="tic-card tic-card--standalone">
+      <div className="tic-insight">
+        <p className="ai-eyebrow">
+          <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
+          AI Insights · Based on your profile
+        </p>
+        <h4 className="insight-title">Perimenopause may be driving your LDL — here's the biology</h4>
+        <p className="insight-body">
+          Estrogen plays a direct role in how your liver processes cholesterol.
+          As it declines during perimenopause, LDL typically rises 10–25 mg/dL —
+          even when diet and exercise haven't changed. If your numbers have climbed
+          and you can't explain why, this is likely part of the picture. It's not
+          a failure to manage your health. It's a hormonal shift that most care
+          teams don't connect without prompting.
+        </p>
+        <div className="insight-data">
+          <div className="insight-stat">
+            <div className="is-val">10–25</div>
+            <div className="is-lbl">mg/dL typical LDL rise</div>
+          </div>
+          <div className="insight-stat">
+            <div className="is-val">↓ HDL</div>
+            <div className="is-lbl">Often falls at same time</div>
+          </div>
+          <div className="insight-stat">
+            <div className="is-val" style={{ fontSize: 13 }}>Hormone-driven</div>
+            <div className="is-lbl">Not just diet or exercise</div>
+          </div>
+        </div>
+        <p className="insight-source">Vitalist AI · Menopause Society guidelines, SWAN study · Based on your profile</p>
+
+        {/* Related learn card */}
+        <div style={{
+          marginTop: 14, background: '#f8fafc',
+          border: '1px solid #e2e8f0', borderRadius: 12,
+          overflow: 'hidden', cursor: 'pointer',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: 0 }}>
+            <div style={{ width: 90, flexShrink: 0, position: 'relative' }}>
+              <img
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=180&q=80"
+                alt="Hormones and cholesterol"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              <div style={{
+                position: 'absolute', inset: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'rgba(0,0,0,0.25)',
+              }}>
+                <div style={{
+                  width: 26, height: 26, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.92)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 11, paddingLeft: 2,
+                }}>▶</div>
+              </div>
+            </div>
+            <div style={{ padding: '10px 12px', flex: 1 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9B59B6', marginBottom: 3 }}>
+                6-min read · Hormones & Heart Health
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.3, marginBottom: 2 }}>
+                Why your LDL may be rising — and what you can actually do about it
+              </div>
+              <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · Medically reviewed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className="tic-card tic-card--standalone">
       <div className="tic-insight">
         <p className="ai-eyebrow">

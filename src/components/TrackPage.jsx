@@ -312,6 +312,19 @@ function readConditions() {
   } catch (_) { return [] }
 }
 
+function readTopics() {
+  try {
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+    return Array.isArray(p.topics) ? p.topics : []
+  } catch (_) { return [] }
+}
+
+function readTileConfigTP() {
+  try { return JSON.parse(localStorage.getItem('aheadTileConfig') || 'null') } catch (_) { return null }
+}
+
+const CHOLESTEROL_CONDITIONS_TP = ['High cholesterol', 'Borderline numbers']
+
 // Mock sparkline fallback trends per tile (shows a plausible recent trend)
 const TILE_MOCK_TRENDS = {
   ldl:     [145,142,140,138,141,137,135,132,130,128,132,129,126,124],
@@ -596,6 +609,18 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
     return top?.p > 0 ? top.l.replace('Stressful day', 'Stress').replace(' day', '') : 'Stress'
   }, [triggerRows])
 
+  // Perimenopause-cholesterol insight: show when user has a hormonal signal
+  // (cycle tile on OR menopause topic selected) AND a cholesterol condition.
+  const showPerimenopause = useMemo(() => {
+    if (isNew) return false
+    const topics     = readTopics()
+    const tileConf   = readTileConfigTP()
+    const hasHormone = topics.includes('Menopause & hormonal health') ||
+                       (Array.isArray(tileConf) && tileConf.includes('cycle'))
+    const hasChol    = conditions.some(c => CHOLESTEROL_CONDITIONS_TP.includes(c))
+    return hasHormone && hasChol
+  }, [isNew, conditions])
+
   return (
     <main className="main learn-page track-page">
       <div className="pp-hero tp-hero">
@@ -635,16 +660,23 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
               <>
                 <li className="tp-ai-summary__item">
                   <span className="tp-ai-summary__dot" style={{ background: 'var(--color-teal)' }} />
-                  <span><strong>Stress is your strongest trigger across both.</strong> Both worsen 24–48 hrs after stressful days.</span>
+                  <span><strong>Stress is your strongest trigger across all conditions.</strong> All worsen 24–48 hrs after stressful days.</span>
                 </li>
                 <li className="tp-ai-summary__item">
                   <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
-                  <span><strong>Sleep under 65 hits both equally.</strong> Worst days follow shortest nights.</span>
+                  <span><strong>Sleep under 65 hits every metric.</strong> Your worst days consistently follow your shortest nights.</span>
                 </li>
-                <li className="tp-ai-summary__item">
-                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
-                  <span><strong>They don't peak together.</strong> When your {conditions[0]?.toLowerCase()} is worst, your {conditions[1]?.toLowerCase()} is often calmer.</span>
-                </li>
+                {showPerimenopause ? (
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: '#9B59B6' }} />
+                    <span><strong>Perimenopause may be part of your LDL story.</strong> Estrogen decline directly affects lipid metabolism — this isn't just a diet problem.</span>
+                  </li>
+                ) : (
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                    <span><strong>Conditions react differently to the same triggers.</strong> When {conditions[0]?.toLowerCase()} flares, {conditions[1]?.toLowerCase()} often holds — and vice versa.</span>
+                  </li>
+                )}
               </>
             ) : (
               <>
@@ -656,10 +688,17 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
                   <span className="tp-ai-summary__dot" style={{ background: 'var(--color-warm)' }} />
                   <span><strong>Sleep quality matters.</strong> Nights under 65 are followed by visibly worse days.</span>
                 </li>
-                <li className="tp-ai-summary__item">
-                  <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
-                  <span><strong>Movement makes a difference.</strong> Days with logged activity trend 30% better across all metrics.</span>
-                </li>
+                {showPerimenopause ? (
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: '#9B59B6' }} />
+                    <span><strong>Perimenopause may be part of your LDL story.</strong> Estrogen decline directly affects lipid metabolism — this isn't just a diet problem.</span>
+                  </li>
+                ) : (
+                  <li className="tp-ai-summary__item">
+                    <span className="tp-ai-summary__dot" style={{ background: 'var(--color-sage)' }} />
+                    <span><strong>Movement makes a difference.</strong> Days with logged activity trend 30% better across all metrics.</span>
+                  </li>
+                )}
               </>
             )}
           </ul>
