@@ -517,9 +517,7 @@ export default function MyRituals() {
                   <span className="mr-card__icon">{habit.icon}</span>
                 </div>
                 <div className="mr-card__body">
-                  {isPersonal && (
-                    <span className="mr-recommended-pill">✨ Recommended</span>
-                  )}
+                  <span className={`mr-recommended-pill${isPersonal ? '' : ' mr-recommended-pill--hidden'}`}>✨ Recommended</span>
                   <span className="mr-card__label">{habit.label}</span>
                   <p className="mr-card__subdesc">{habit.desc}</p>
                 </div>

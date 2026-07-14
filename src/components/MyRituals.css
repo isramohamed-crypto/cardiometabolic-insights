@@ -151,8 +151,11 @@
   background: #fff;
   transition: border-color 0.2s;
   min-width: 272px;
+  max-width: 272px;
   flex-shrink: 0;
   scroll-snap-align: start;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Recommended pill for personalized habits — matches AI insights tic-pill */
@@ -168,6 +171,9 @@
   border-radius: 99px;
   padding: 3px 8px;
   margin-bottom: 3px;
+}
+.mr-recommended-pill--hidden {
+  visibility: hidden;
 }
 
 /* Teal left-border stripe for personalized habits */
@@ -235,6 +241,9 @@
   color: #94a3b8;
   margin: 0;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Log it button — prominent, right side of main row */
@@ -343,6 +352,10 @@
   color: #374151;
   line-height: 1.4;
   min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .mr-why__chevron {
