@@ -4,177 +4,334 @@ import ParentsCaregiverSupportSection from './ParentsCaregiverSupportSection'
 import { useProfileStage } from '../context/ProfileStageContext'
 
 const SUGGESTED = [
-  'Eating changes feel hard when I’m stressed.',
+  "Eating changes feel hard when I'm stressed.",
   'What do my cholesterol numbers actually mean?',
   "I'm overwhelmed trying to change my diet and lifestyle at the same time.",
   "What can I eat on the go that's good for my cholesterol?",
   'What are the best tips you have for someone managing high cholesterol?',
 ]
 
-// Single-turn responses for the first three questions
 const CANNED_RESPONSES = {
-  'What do my cholesterol numbers actually mean?':
-    "Cholesterol results can feel like alphabet soup, but here's what matters most:\n\n• LDL (\"bad\" cholesterol) — ideally below 100 mg/dL. This is the number most linked to heart disease risk.\n• HDL (\"good\" cholesterol) — ideally above 60 mg/dL. Higher is better; it helps clear LDL from your arteries.\n• Triglycerides — ideally below 150 mg/dL. Elevated levels are often tied to diet, alcohol, and activity.\n• Total cholesterol — less useful on its own. The ratio of LDL to HDL matters more.\n\nOne number alone rarely tells the full story. Your doctor will look at your full lipid panel alongside other risk factors — age, blood pressure, family history, diabetes — to assess your overall cardiovascular risk.\n\nWant me to explain what moves these numbers up or down?",
-  "I'm overwhelmed trying to change my diet and lifestyle at the same time.":
-    "That overwhelm is real — and it's one of the most common things people with high cholesterol describe.\n\nThe research actually supports a simpler approach:\n\n• Pick one change at a time. Stacking too many at once leads to burnout, not results.\n• Diet changes tend to move the needle faster than exercise alone for LDL.\n• Small, consistent shifts — like swapping one meal per day — compound over months.\n• Stress and sleep both affect cholesterol too, so managing overwhelm is genuinely part of the plan.\n\nYour daily check-in is tracking these patterns in the background. After a few weeks, you'll start to see what's actually making a difference.\n\nWould it help to focus on just one area first?",
-  "What can I eat on the go that's good for my cholesterol?":
-    "Good news — heart-healthy eating on the go is more doable than it sounds. A few solid options:\n\nGood bets:\n\n• A small handful of unsalted walnuts or almonds (omega-3s help raise HDL)\n• Fresh fruit — apples, berries, oranges (soluble fiber lowers LDL)\n• Single-serve hummus with carrots or cucumber\n• A salmon or tuna pouch (omega-3s, high protein)\n• Oat-based snack bars with minimal added sugar\n\nWorth limiting:\n\n• Anything with partially hydrogenated oils (trans fats raise LDL and lower HDL)\n• High-sodium processed snacks (linked to blood pressure, a compounding risk)\n• Sweetened drinks — excess sugar raises triglycerides\n\nThe pattern that matters most: replacing saturated fat with unsaturated fat consistently over weeks, not perfecting every meal.\n\nWant me to suggest some simple meal swaps for the week?",
+  'What do my cholesterol numbers actually mean?': [
+    "Cholesterol results can feel like alphabet soup — here's what actually matters.",
+    "• LDL (\"bad\" cholesterol) — ideally below 100 mg/dL. Most linked to heart disease risk.\n• HDL (\"good\" cholesterol) — ideally above 60 mg/dL. Higher is better.\n• Triglycerides — ideally below 150 mg/dL. Often tied to diet and activity.\n• Total cholesterol — less useful alone. The LDL-to-HDL ratio matters more.",
+    "One number rarely tells the full story. Your doctor looks at the full lipid panel alongside age, blood pressure, family history, and diabetes risk to assess your overall cardiovascular picture.\n\nWant me to explain what moves these numbers up or down?",
+  ],
+  "I'm overwhelmed trying to change my diet and lifestyle at the same time.": [
+    "That overwhelm is real — and it's one of the most common things people with high cholesterol describe.",
+    "The research actually supports a simpler approach:\n\n• Pick one change at a time. Stacking too many at once leads to burnout, not results.\n• Diet tends to move the LDL needle faster than exercise alone.\n• Small, consistent shifts compound over months.\n• Stress and sleep both affect cholesterol too — so managing overwhelm is genuinely part of the plan.",
+    {
+      text: "Your daily check-in is tracking these patterns. After a few weeks you'll see what's actually moving the needle.\n\nWhat area do you want to focus on first?",
+      chips: ['Diet & eating', 'Movement', 'Sleep', 'Stress management'],
+    },
+  ],
+  "What can I eat on the go that's good for my cholesterol?": [
+    "Good news — heart-healthy eating on the go is more doable than it sounds.",
+    "Good bets:\n• A small handful of unsalted walnuts or almonds\n• Fresh fruit — apples, berries, oranges\n• Single-serve hummus with carrots or cucumber\n• A salmon or tuna pouch\n• Oat-based snack bars with minimal added sugar",
+    "Worth limiting:\n• Anything with partially hydrogenated oils (trans fats)\n• High-sodium processed snacks\n• Sweetened drinks — excess sugar raises triglycerides",
+    "The pattern that matters most: replacing saturated fat with unsaturated fat consistently over weeks, not perfecting every meal.\n\nWant me to suggest some simple meal swaps for the week?",
+  ],
+  // Focus area follow-ups (triggered by chips above)
+  'Diet & eating': [
+    "Good choice — diet has the most direct impact on LDL.",
+    "A few changes that consistently move the needle:\n• Swap saturated fats (butter, red meat) for unsaturated fats (olive oil, avocado, nuts)\n• Add soluble fiber daily — oats, beans, flaxseed\n• Reduce ultra-processed and fried foods\n• Limit alcohol, which raises triglycerides",
+    "Your My Rituals section has heart-healthy eating habits already lined up for you — short, realistic, and they build over time. Scroll down to check them out.",
+  ],
+  'Movement': [
+    "Exercise has a direct effect on HDL — the \"good\" cholesterol.",
+    "Even 20–30 minutes of moderate activity most days can meaningfully shift your lipid profile over 3–6 months. Walking counts.\n\nThe most sustainable routine is one that fits your actual life, not an ideal version of it.",
+    "Your My Rituals section has movement habits sized for busy schedules — even on the hardest days there's something doable.",
+  ],
+  'Sleep': [
+    "Sleep is more connected to cardiometabolic health than most people realize.",
+    "Poor sleep raises cortisol, which increases blood sugar and can raise LDL. Even going from 6 to 7 hours consistently shifts things over time.\n\n• Consistent wake time matters more than bedtime\n• Avoid screens 30–60 min before bed\n• Keep your room cool and dark",
+    "Your My Rituals section includes simple wind-down habits — small things that compound over weeks.",
+  ],
+  'Stress management': [
+    "Chronic stress has a real, measurable effect on cholesterol — it's not just a mental health issue.",
+    "When stress is sustained, cortisol increases LDL and triglycerides and decreases HDL. Managing stress is genuinely part of managing your numbers.\n\n• Short breathing exercises (even 2 minutes) lower cortisol noticeably\n• Light movement is one of the fastest stress relievers\n• Social connection is protective — not a luxury",
+    "Your My Rituals section includes a few stress-relief habits that take under 10 minutes. Worth trying one this week.",
+  ],
 }
 
 const DEFAULT_RESPONSE =
   "That's a thoughtful question. Managing cardiometabolic health involves a lot of moving parts — diet, activity, stress, medications, and regular monitoring all play a role.\n\nI'd recommend discussing this specifically with your care team. In the meantime, your daily check-in data can help you track patterns and bring clearer information to your next appointment.\n\nIs there something more specific I can help you with?"
 
-// Multi-turn scripted flow for managing high cholesterol
+// ── Multi-turn flows ──────────────────────────────────────────────────────────
+// Each turn has `bubbles: [...]` — an array of message objects shown as
+// separate chat bubbles with staggered typing delays.
+// Each bubble: { text?, chips?, article?, feed?, recommendations? }
+
 const HELPS_FLOW = [
   // Turn 0 — initial AI response
   {
-    text:
-      "You're not alone in asking that.\n\nFor most people, managing high cholesterol isn't one big change — it's a series of smaller adjustments that add up over time.\n\nWhat feels hardest for you right now?",
-    chips: [
-      'Changing my diet',
-      'Staying consistent with exercise',
-      'Understanding my medications',
-      'Knowing what to track',
-      'Talking to my doctor',
+    bubbles: [
+      { text: "You're not alone in asking that." },
+      { text: "For most people, managing high cholesterol isn't one big change — it's a series of smaller adjustments that add up over time." },
+      {
+        text: "What feels hardest for you right now?",
+        chips: [
+          'Changing my diet',
+          'Staying consistent with exercise',
+          'Understanding my medications',
+          'Knowing what to track',
+          'Talking to my doctor',
+        ],
+      },
     ],
   },
   // Turn 1 — after user picks what's hardest
   {
-    text:
-      "That's one of the most common friction points.\n\nA few things that quietly get in the way:\n• Not knowing which foods matter most\n• All-or-nothing thinking about \"healthy eating\"\n• Conflicting information online\n• Busy schedules making meal planning hard\n\nWhat does a typical day of eating look like for you?",
+    bubbles: [
+      { text: "That's one of the most common friction points." },
+      { text: "A few things that quietly get in the way:\n• Not knowing which foods matter most\n• All-or-nothing thinking about \"healthy eating\"\n• Conflicting information online\n• Busy schedules making meal planning hard" },
+      { text: "What does a typical day of eating look like for you?" },
+    ],
   },
   // Turn 2 — after user describes eating
   {
-    text:
-      "That's helpful context.\n\nPeople managing cholesterol often find the biggest wins come from a few targeted swaps — not a total diet overhaul.\n\nDo you usually cook at home or eat out most days?",
-    chips: ['Mostly cook at home', 'Mix of both', 'Mostly eat out'],
+    bubbles: [
+      { text: "That's helpful context." },
+      { text: "People managing cholesterol often find the biggest wins from a few targeted swaps — not a total diet overhaul." },
+      {
+        text: "Do you usually cook at home or eat out most days?",
+        chips: ['Mostly cook at home', 'Mix of both', 'Mostly eat out'],
+      },
+    ],
   },
-  // Turn 3 — after cooking question, includes Health.com recommended reading
+  // Turn 3 — cooking question, includes mini article card
   {
-    text:
-      "That context really shapes what's practical for you.",
-    reading: {
-      source: 'HEALTH.COM',
-      url: 'https://www.health.com/',
-      title: 'The Best Foods to Lower Cholesterol, According to Dietitians',
-      quote: 'Soluble fiber from oats, beans, and fruit can lower LDL by binding cholesterol in the digestive tract before it enters your bloodstream.',
-      attribution: 'Sarah Koszyk, RDN, HEALTH.COM',
-    },
-    followText:
-      'A few changes that consistently move the needle:\n• Replace saturated fats (butter, red meat) with unsaturated fats (olive oil, avocado)\n• Add soluble fiber daily — oats, beans, flaxseed\n• Reduce processed and fried foods\n\nHow would you describe your current activity level?',
-    chips: ['Mostly sedentary', 'Some light activity', 'Moderately active', 'Very active'],
-  },
-  // Turn 4 — after activity answer, includes Health.com recommended reading
-  {
-    text:
-      "Exercise has a direct effect on HDL — the \"good\" cholesterol.\n\nEven moderate activity 5 days a week can meaningfully improve your lipid profile over 3–6 months.",
-    reading: {
-      source: 'HEALTH.COM',
-      url: 'https://www.health.com/',
-      title: 'How Exercise Affects Your Cholesterol Levels',
-      tipsLabel: 'Most effective activities:',
-      tips: [
-        '30-minute brisk walks, 5x per week',
-        'Swimming or cycling (low joint impact)',
-        'Resistance training 2x per week',
-        'Breaking up long periods of sitting',
-      ],
-    },
-    followText: 'What feels like the biggest barrier to being more active?',
-    chips: ['No time', 'Low energy', 'Joint pain or health limits', 'Not sure where to start'],
-  },
-  // Turn 5 — final summary with curated recommendations
-  {
-    text:
-      "That's really common, and it's worth acknowledging.\n\nBased on what you've shared, your biggest opportunities may be:\n• Small, consistent dietary swaps (not a full overhaul)\n• Adding 20–30 minutes of movement most days\n• Tracking patterns to see what's actually working\n• Preparing clear questions before your next cardiology or GP visit",
-    recommendations: {
-      label: 'Recommended For You',
-      sources: [
-        {
-          source: 'HEALTH.COM',
+    bubbles: [
+      { text: "That context really shapes what's practical for you." },
+      {
+        article: {
+          source: 'Health.com',
           url: 'https://www.health.com/',
-          articles: [
-            'The 10 Best Foods to Lower Cholesterol Naturally',
-            'How to Talk to Your Doctor About High Cholesterol',
-            'A 7-Day Heart-Healthy Meal Plan',
+          title: 'The Best Foods to Lower Cholesterol, According to Dietitians',
+        },
+      },
+      { text: "A few changes that consistently move the needle:\n• Replace saturated fats (butter, red meat) with unsaturated fats (olive oil, avocado)\n• Add soluble fiber daily — oats, beans, flaxseed\n• Reduce processed and fried foods" },
+      {
+        text: "How would you describe your current activity level?",
+        chips: ['Mostly sedentary', 'Some light activity', 'Moderately active', 'Very active'],
+      },
+    ],
+  },
+  // Turn 4 — after activity answer, includes mini article card
+  {
+    bubbles: [
+      { text: "Exercise has a direct effect on HDL — the \"good\" cholesterol." },
+      { text: "Even moderate activity 5 days a week can meaningfully improve your lipid profile over 3–6 months." },
+      {
+        article: {
+          source: 'Health.com',
+          url: 'https://www.health.com/',
+          title: 'How Exercise Affects Your Cholesterol Levels',
+        },
+      },
+      {
+        text: "What feels like the biggest barrier to being more active?",
+        chips: ['No time', 'Low energy', 'Joint pain or health limits', 'Not sure where to start'],
+      },
+    ],
+  },
+  // Turn 5 — final summary
+  {
+    autoNext: true,
+    bubbles: [
+      { text: "That's really common, and it's worth acknowledging." },
+      { text: "Based on what you've shared, your biggest opportunities may be:\n• Small, consistent dietary swaps (not a full overhaul)\n• Adding 20–30 minutes of movement most days\n• Tracking patterns to see what's actually working\n• Preparing clear questions before your next cardiology or GP visit" },
+      {
+        recommendations: {
+          label: 'Recommended For You',
+          sources: [
+            {
+              source: 'Health.com',
+              url: 'https://www.health.com/',
+              articles: [
+                'The 10 Best Foods to Lower Cholesterol Naturally',
+                'How to Talk to Your Doctor About High Cholesterol',
+                'A 7-Day Heart-Healthy Meal Plan',
+              ],
+            },
+            {
+              source: 'Health Monitor',
+              url: 'https://www.healthmonitor.com/',
+              articles: ['Understanding Your Lipid Panel Results'],
+            },
           ],
         },
-        {
-          source: 'Health Monitor',
-          url: 'https://www.healthmonitor.com/',
-          articles: ['Understanding Your Lipid Panel Results'],
-        },
-      ],
-    },
-    autoNext: true,
+      },
+    ],
   },
-  // Turn 6 — auto-follow with next-step chips
+  // Turn 6 — auto-follow
   {
-    text:
-      'I can also help you:\n• Prepare questions for your next appointment\n• Understand your medications\n• Build a simple heart-healthy meal plan\n• Track your numbers and patterns over time\n\nWhat would help most right now?',
-    chips: [
-      'Prepare for my appointment',
-      'Understand my medications',
-      'Meal plan ideas',
-      'Track my numbers',
+    bubbles: [
+      { text: "I can also help you prepare for your next appointment, understand your medications, or build a simple heart-healthy meal plan." },
+      {
+        text: "What would help most right now?",
+        chips: [
+          'Prepare for my appointment',
+          'Understand my medications',
+          'Meal plan ideas',
+          'Track my numbers',
+        ],
+      },
+    ],
+  },
+]
+
+// Opening EatingWell recipes feed
+const OPENING_RECIPES = [
+  {
+    id: 'casserole',
+    title: 'Philly Chicken Cheesesteak Casserole',
+    image: '/images/ew/casserole.png',
+    tag: 'High Protein',
+    time: '35 min',
+    servings: '4 servings',
+    description: 'All the comfort of a cheesesteak in a lighter casserole format. Lean chicken, peppers, and onions make this a heart-healthy crowd-pleaser.',
+    nutrients: ['32g protein', '8g fiber', '420 cal'],
+  },
+  {
+    id: 'fajita',
+    title: 'Chicken Fajita Soup',
+    image: '/images/ew/fajita.png',
+    tag: 'Low Saturated Fat',
+    time: '25 min',
+    servings: '6 servings',
+    description: "Bold fajita flavors in a warm, satisfying soup. Packed with lean protein and vegetables, it's an easy weeknight win.",
+    nutrients: ['28g protein', '6g fiber', '310 cal'],
+  },
+  {
+    id: 'shrimp',
+    title: 'Spicy Jerk Shrimp',
+    image: '/images/ew/shrimp.png',
+    tag: 'Quick & Light',
+    time: '15 min',
+    servings: '2 servings',
+    description: 'Shrimp is one of the leanest proteins around. Jerk seasoning adds big flavor without added fat — ready in 15 minutes.',
+    nutrients: ['26g protein', '2g fiber', '240 cal'],
+  },
+]
+
+const BETH_FLOW = [
+  // Turn 0 — ask what happens when stressed
+  {
+    bubbles: [
+      { text: "Thanks for sharing that, Beth." },
+      {
+        text: "To make my recommendations more realistic — what usually happens when you're stressed?",
+        chips: [
+          'I reach for comfort food',
+          "I don't have time to cook",
+          'I lose motivation',
+          'I snack throughout the day',
+        ],
+      },
+    ],
+  },
+  // Turn 1 — after "I reach for comfort food"
+  {
+    bubbles: [
+      { text: "That makes sense — you're definitely not alone." },
+      { text: "Instead of trying to change everything at once, let's find meals that feel comforting while still supporting your health." },
+      { feed: 'openingPreview' },
+      {
+        text: "Do any of these feel like something you'd actually try this week?",
+        chips: ["Yes, I'd try one", 'Maybe with some swaps', 'Not really my thing'],
+      },
+    ],
+  },
+  // Turn 2 — ask what feels hardest
+  {
+    bubbles: [
+      { text: "That gives me a much better picture of your situation." },
+      { text: "When you're taking care of everyone else, it's easy for your own needs to end up at the bottom of the list." },
+      {
+        text: "What feels hardest right now?",
+        chips: ['Finding time to cook', 'Taking care of myself', 'Managing stress', 'Staying consistent'],
+      },
+    ],
+  },
+  // Turn 3 — reflect back
+  {
+    bubbles: [
+      { text: "That resonates with a lot of caregivers." },
+      { text: "When self-care starts feeling like another responsibility instead of something that recharges you, healthy habits become much harder to sustain." },
+      {
+        text: "Does that feel true for you?",
+        chips: ['Yes, exactly', 'Sometimes', 'Not really'],
+      },
+    ],
+  },
+  // Turn 4 — parents preview card, auto-follows
+  {
+    autoNext: true,
+    bubbles: [
+      { text: "I thought this might be especially helpful right now." },
+      { feed: 'parentsPreview' },
+    ],
+  },
+  // Turn 5 — memory close
+  {
+    bubbles: [
+      { text: "I'll remember that caregiving is part of your daily life." },
+      { text: "Future recommendations will fit the time and energy you actually have." },
+      { text: "Is there anything else I can help with today?" },
     ],
   },
 ]
 
 const FLOW_TRIGGER = 'What are the best tips you have for someone managing high cholesterol?'
+const BETH_TRIGGER = "Eating changes feel hard when I'm stressed."
 
-// Opening feed — three EatingWell recipes shown after Beth's first answer
-const OPENING_RECIPES = [
-  { id: 'casserole', title: 'Philly Chicken Cheesesteak Casserole', image: '/images/ew/casserole.png' },
-  { id: 'fajita', title: 'Chicken Fajita Soup', image: '/images/ew/fajita.png' },
-  { id: 'shrimp', title: 'Spicy Jerk Shrimp', image: '/images/ew/shrimp.png' },
-]
+// ── Sub-components ────────────────────────────────────────────────────────────
 
-// Multi-turn scripted flow for the Beth / Headspace-"Ebb"-style demo
-const BETH_FLOW = [
-  // Turn 0 — ask what happens when stressed
-  {
-    text: "Thanks for sharing that, Beth. To make my recommendations more realistic, what usually happens when you're stressed?",
-    chips: [
-      'I reach for comfort food',
-      "I don't have time to cook",
-      'I lose motivation',
-      'I snack throughout the day',
-    ],
-  },
-  // Turn 1 — collapsed preview card; expands in place when tapped. No chips —
-  // Beth answers this one by typing her own message.
-  {
-    text: "That makes sense - and you're definitely not alone.\nInstead of trying to change everything at once, let's start with meals that feel comforting while supporting your long-term health.\nDo any of these feel like something you'd actually try this week?",
-    feed: 'openingPreview',
-  },
-  // Turn 2 — ask what feels hardest
-  {
-    text: "That gives me a much better picture of your situation.\nWhen you're taking care of everyone else, it's easy for your own needs to end up at the bottom of the list.\nWhat feels hardest right now?",
-    chips: ['Finding time to cook', 'Taking care of myself', 'Managing stress', 'Staying consistent'],
-  },
-  // Turn 3 — reflect back and check in
-  {
-    text: 'That resonates with a lot of caregivers.\nWhen self-care starts feeling like another responsibility instead of something that helps you recharge, healthy habits become much harder to sustain.\nDoes that feel true for you?',
-    chips: ['Yes, exactly', 'Sometimes', 'Not really'],
-  },
-  // Turn 4 — expanded Parents caregiver content, auto-follows with the closing note
-  {
-    text: 'That helps me understand what’s getting in your way.\nThis might be especially helpful right now. It includes some helpful tips on self-care.',
-    feed: 'parents',
-    autoNext: true,
-  },
-  // Turn 5 — memory note + open-ended close
-  {
-    text: "I'll remember that caregiving is part of your daily life, so future recommendations fit the time and energy you actually have.\nIs there anything else I can help you with today?",
-  },
-]
+function RecipeOverlay({ recipe, onClose }) {
+  return (
+    <div className="recipe-overlay">
+      <div className="recipe-overlay__header">
+        <button className="chat-overlay__back" onClick={onClose} aria-label="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+        </button>
+        <span className="recipe-overlay__brand">EatingWell</span>
+        <div style={{ width: 36 }} />
+      </div>
+      <div className="recipe-overlay__scroll">
+        <img src={recipe.image} alt="" className="recipe-overlay__hero" />
+        <div className="recipe-overlay__body">
+          <span className="recipe-overlay__tag">{recipe.tag}</span>
+          <h2 className="recipe-overlay__title">{recipe.title}</h2>
+          <div className="recipe-overlay__meta">
+            <span className="recipe-overlay__meta-item">⏱ {recipe.time}</span>
+            <span className="recipe-overlay__meta-sep">·</span>
+            <span className="recipe-overlay__meta-item">🍽 {recipe.servings}</span>
+          </div>
+          <p className="recipe-overlay__desc">{recipe.description}</p>
+          <div className="recipe-overlay__nutrients">
+            {recipe.nutrients.map((n, i) => (
+              <span key={i} className="recipe-overlay__nutrient">{n}</span>
+            ))}
+          </div>
+          <a
+            href="https://www.eatingwell.com"
+            target="_blank"
+            rel="noreferrer"
+            className="recipe-overlay__cta"
+          >
+            View Full Recipe on EatingWell →
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-const BETH_TRIGGER = 'Eating changes feel hard when I’m stressed.'
-
-function OpeningFeed() {
+function OpeningFeed({ onRecipeClick }) {
   const [expanded, setExpanded] = useState(false)
-
   return (
     <div className="chat-feed">
       <div className="chat-feed__header">
@@ -182,29 +339,29 @@ function OpeningFeed() {
         <span className="chat-feed__divider" />
         <span className="chat-feed__title">Simple &amp; Satisfying Swaps</span>
       </div>
-
       {!expanded ? (
-        <button
-          type="button"
-          className="chat-preview-card"
-          onClick={() => setExpanded(true)}
-        >
+        <button type="button" className="chat-preview-card" onClick={() => setExpanded(true)}>
           <div className="chat-preview-card__media">
             <img src="/images/ew/casserole.png" alt="" className="chat-preview-card__img" />
             <span className="chat-preview-card__play" aria-hidden="true">▶</span>
           </div>
           <div className="chat-preview-card__panel">
             <p className="chat-preview-card__title">Dietitian-Approved<br />Comfort Food</p>
-            <span className="chat-preview-card__hint">Tap to see recipes</span>
+            <span className="chat-preview-card__hint">Tap to see recipes →</span>
           </div>
         </button>
       ) : (
         <div className="chat-feed__scroll">
           {OPENING_RECIPES.map(r => (
-            <div key={r.id} className="chat-recipe-card">
+            <button
+              key={r.id}
+              type="button"
+              className="chat-recipe-card"
+              onClick={() => onRecipeClick && onRecipeClick(r)}
+            >
               <img src={r.image} alt="" className="chat-recipe-card__img" />
               <p className="chat-recipe-card__title">{r.title}</p>
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -212,11 +369,49 @@ function OpeningFeed() {
   )
 }
 
-function ParentsFeed() {
+function ParentsPreview({ onOpen }) {
   return (
-    <div className="chat-feed chat-feed--stack">
-      <ParentsCaregiverSupportSection />
+    <button type="button" className="chat-preview-card chat-preview-card--parents" onClick={onOpen}>
+      <div className="chat-preview-card__panel">
+        <p className="chat-preview-card__eyebrow">Resources for You</p>
+        <p className="chat-preview-card__title">Balancing caregiving &amp; your own health</p>
+        <span className="chat-preview-card__hint">Tap to read →</span>
+      </div>
+    </button>
+  )
+}
+
+function ParentsOverlay({ onClose }) {
+  return (
+    <div className="recipe-overlay">
+      <div className="recipe-overlay__header">
+        <button className="chat-overlay__back" onClick={onClose} aria-label="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+        </button>
+        <span className="recipe-overlay__brand">Resources for You</span>
+        <div style={{ width: 36 }} />
+      </div>
+      <div className="recipe-overlay__scroll">
+        <ParentsCaregiverSupportSection />
+      </div>
     </div>
+  )
+}
+
+function MiniArticleCard({ article }) {
+  return (
+    <a
+      href={article.url}
+      target="_blank"
+      rel="noreferrer"
+      className="chat-mini-article"
+    >
+      <span className="chat-mini-article__source">{article.source}</span>
+      <p className="chat-mini-article__title">{article.title}</p>
+      <span className="chat-mini-article__cta">Read article →</span>
+    </a>
   )
 }
 
@@ -245,53 +440,6 @@ function renderText(text) {
 
 function slug(s) {
   return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)
-}
-
-function stripBrand(s, brand) {
-  if (!s || !brand) return s
-  // Drop a trailing ", BRAND" so the brand isn't shown twice
-  // (it's already rendered in the pill above).
-  return s.replace(new RegExp(`,?\\s*${brand}\\s*$`, 'i'), '').replace(/,\s*$/, '')
-}
-
-function ReadingCard({ reading }) {
-  return (
-    <div className="chat-reading">
-      <p className="chat-reading__label">Recommended Reading</p>
-      <a
-        href={reading.url}
-        target="_blank"
-        rel="noreferrer"
-        className="chat-reading__brand-link"
-      >
-        <span className="brand-pill">{reading.source}</span>
-      </a>
-      <p className="chat-reading__title">&ldquo;{reading.title}&rdquo;</p>
-      {reading.quote && (
-        <blockquote className="chat-reading__quote">
-          &ldquo;{reading.quote}&rdquo;
-          <span>— {stripBrand(reading.attribution, reading.source)}</span>
-        </blockquote>
-      )}
-      {reading.tips && (
-        <>
-          {reading.tipsLabel && (
-            <p className="chat-reading__tips-label">{reading.tipsLabel}</p>
-          )}
-          <ul className="chat-reading__tips">
-            {reading.tips.map((t, i) => <li key={i}>{t}</li>)}
-          </ul>
-        </>
-      )}
-      <div className="chat-reading__try-row">
-        <MarkAsTried
-          id={`ai-reading:${slug(reading.title)}`}
-          title={reading.title}
-          source={`AI Chat · ${reading.source}`}
-        />
-      </div>
-    </div>
-  )
 }
 
 function Recommendations({ data }) {
@@ -324,7 +472,7 @@ function Recommendations({ data }) {
   )
 }
 
-function ChatBubble({ msg, onChip }) {
+function ChatBubble({ msg, onChip, onRecipeClick, onParentsOpen }) {
   if (msg.role === 'user') {
     return (
       <div className="chat-bubble chat-bubble--user">
@@ -332,14 +480,25 @@ function ChatBubble({ msg, onChip }) {
       </div>
     )
   }
+
+  // Feed-only bubbles (no white background bubble wrapper)
+  if (!msg.text && (msg.feed || msg.article)) {
+    return (
+      <div className="chat-bubble-feed-wrap">
+        {msg.feed === 'openingPreview' && <OpeningFeed onRecipeClick={onRecipeClick} />}
+        {msg.feed === 'parentsPreview' && <ParentsPreview onOpen={onParentsOpen} />}
+        {msg.article && <MiniArticleCard article={msg.article} />}
+      </div>
+    )
+  }
+
   return (
-    <div className={`chat-bubble chat-bubble--ai${msg.feed ? ' chat-bubble--feed' : ''}`}>
+    <div className={`chat-bubble chat-bubble--ai${msg.feed || msg.article ? ' chat-bubble--feed' : ''}`}>
       {msg.text && renderText(msg.text)}
-      {msg.reading && <ReadingCard reading={msg.reading} />}
-      {msg.followText && renderText(msg.followText)}
+      {msg.article && <MiniArticleCard article={msg.article} />}
       {msg.recommendations && <Recommendations data={msg.recommendations} />}
-      {msg.feed === 'openingPreview' && <OpeningFeed />}
-      {msg.feed === 'parents' && <ParentsFeed />}
+      {msg.feed === 'openingPreview' && <OpeningFeed onRecipeClick={onRecipeClick} />}
+      {msg.feed === 'parentsPreview' && <ParentsPreview onOpen={onParentsOpen} />}
       {msg.memory && <MemoryNote text={msg.memory} />}
       {msg.chips && (
         <>
@@ -355,12 +514,14 @@ function ChatBubble({ msg, onChip }) {
               </button>
             ))}
           </div>
-          <p className="chat-chips__hint">Tap one, or type your own answer below</p>
+          <p className="chat-chips__hint">Tap one, or type your own below</p>
         </>
       )}
     </div>
   )
 }
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 export default function AskAI() {
   const { isNew } = useProfileStage()
@@ -369,25 +530,40 @@ export default function AskAI() {
   const [messages, setMessages] = useState([])
   const [typing, setTyping] = useState(false)
   const [followUp, setFollowUp] = useState('')
-  const [activeFlow, setActiveFlow] = useState(null) // null | 'helps' | 'beth'
-  const [flowTurn, setFlowTurn] = useState(0) // index of NEXT flow turn to show
+  const [activeFlow, setActiveFlow] = useState(null)
+  const [flowTurn, setFlowTurn] = useState(0)
   const [showSuggestions, setShowSuggestions] = useState(true)
+  const [selectedRecipe, setSelectedRecipe] = useState(null)
+  const [showParentsOverlay, setShowParentsOverlay] = useState(false)
   const bottomRef = useRef(null)
 
   const FLOWS = { helps: HELPS_FLOW, beth: BETH_FLOW }
 
-  function showAITurn(flowName, idx) {
+  // Shows each bubble in a turn sequentially with typing indicators between them
+  function showAITurn(flowName, turnIdx) {
     const flow = FLOWS[flowName]
-    setTyping(true)
-    setTimeout(() => {
-      const turn = flow[idx]
-      setTyping(false)
-      setMessages(m => [...m, { role: 'ai', ...turn }])
-      setFlowTurn(idx + 1)
-      if (turn?.autoNext && flow[idx + 1]) {
-        setTimeout(() => showAITurn(flowName, idx + 1), 1400)
-      }
-    }, 1600)
+    const turn = flow[turnIdx]
+    const parts = turn.bubbles
+
+    function showPart(partIdx) {
+      const delay = partIdx === 0 ? 1200 : 750
+      setTyping(true)
+      setTimeout(() => {
+        setTyping(false)
+        setMessages(m => [...m, { role: 'ai', ...parts[partIdx] }])
+        const next = partIdx + 1
+        if (next < parts.length) {
+          setTimeout(() => showPart(next), 350)
+        } else {
+          setFlowTurn(turnIdx + 1)
+          if (turn.autoNext && flow[turnIdx + 1]) {
+            setTimeout(() => showAITurn(flowName, turnIdx + 1), 1400)
+          }
+        }
+      }, delay)
+    }
+
+    showPart(0)
   }
 
   function submit(q) {
@@ -397,7 +573,6 @@ export default function AskAI() {
     setQuery('')
 
     if (text === FLOW_TRIGGER) {
-      // Start the multi-turn helps flow
       setMessages([{ role: 'user', text }])
       setActiveFlow('helps')
       setFlowTurn(0)
@@ -406,7 +581,6 @@ export default function AskAI() {
     }
 
     if (text === BETH_TRIGGER) {
-      // Start the Beth / caregiving demo flow
       setMessages([{ role: 'user', text }])
       setActiveFlow('beth')
       setFlowTurn(0)
@@ -414,15 +588,34 @@ export default function AskAI() {
       return
     }
 
-    // Single-turn for other suggested questions
+    // Single-turn canned response — split into multiple bubbles
     setMessages([{ role: 'user', text }])
     setActiveFlow(null)
-    setTyping(true)
-    const response = CANNED_RESPONSES[text] || DEFAULT_RESPONSE
-    setTimeout(() => {
-      setTyping(false)
-      setMessages(prev => [...prev, { role: 'ai', text: response }])
-    }, 1600)
+    const parts = CANNED_RESPONSES[text]
+
+    if (parts) {
+      function showCanned(idx) {
+        setTyping(true)
+        setTimeout(() => {
+          setTyping(false)
+          const part = parts[idx]
+          const msg = typeof part === 'string'
+            ? { role: 'ai', text: part }
+            : { role: 'ai', ...part }
+          setMessages(prev => [...prev, msg])
+          if (idx + 1 < parts.length) {
+            setTimeout(() => showCanned(idx + 1), 350)
+          }
+        }, idx === 0 ? 1200 : 750)
+      }
+      showCanned(0)
+    } else {
+      setTyping(true)
+      setTimeout(() => {
+        setTyping(false)
+        setMessages(prev => [...prev, { role: 'ai', text: DEFAULT_RESPONSE }])
+      }, 1600)
+    }
   }
 
   function handleUserSubmit(text) {
@@ -432,13 +625,35 @@ export default function AskAI() {
 
     if (activeFlow && flowTurn < FLOWS[activeFlow].length) {
       showAITurn(activeFlow, flowTurn)
-    } else {
-      setTyping(true)
-      setTimeout(() => {
-        setTyping(false)
-        setMessages(prev => [...prev, { role: 'ai', text: DEFAULT_RESPONSE }])
-      }, 1600)
+      return
     }
+
+    // Check canned responses (e.g. focus-area chips)
+    const parts = CANNED_RESPONSES[t]
+    if (parts) {
+      function showCanned(idx) {
+        setTyping(true)
+        setTimeout(() => {
+          setTyping(false)
+          const part = parts[idx]
+          const msg = typeof part === 'string'
+            ? { role: 'ai', text: part }
+            : { role: 'ai', ...part }
+          setMessages(prev => [...prev, msg])
+          if (idx + 1 < parts.length) {
+            setTimeout(() => showCanned(idx + 1), 350)
+          }
+        }, idx === 0 ? 1200 : 750)
+      }
+      showCanned(0)
+      return
+    }
+
+    setTyping(true)
+    setTimeout(() => {
+      setTyping(false)
+      setMessages(prev => [...prev, { role: 'ai', text: DEFAULT_RESPONSE }])
+    }, 1600)
   }
 
   function sendFollowUp() {
@@ -493,6 +708,14 @@ export default function AskAI() {
         </div>
       </div>
 
+      {open && selectedRecipe && (
+        <RecipeOverlay recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
+      )}
+
+      {open && showParentsOverlay && (
+        <ParentsOverlay onClose={() => setShowParentsOverlay(false)} />
+      )}
+
       {open && (
         <div className="chat-overlay">
           <div className="chat-overlay__header">
@@ -510,7 +733,7 @@ export default function AskAI() {
 
           <div className="chat-overlay__messages">
             {messages.map((msg, i) => (
-              <ChatBubble key={i} msg={msg} onChip={handleUserSubmit} />
+              <ChatBubble key={i} msg={msg} onChip={handleUserSubmit} onRecipeClick={setSelectedRecipe} onParentsOpen={() => setShowParentsOverlay(true)} />
             ))}
             {typing && <TypingIndicator />}
             <div ref={bottomRef} />

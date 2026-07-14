@@ -271,40 +271,39 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
         </div>
         <p className="insight-source">Vitalist AI · Based on your check-in history</p>
 
-        {/* Actionable video recommendation tied to the insight */}
-        <div style={{
-          marginTop: 14, background: '#f8fafc',
-          border: '1px solid #e2e8f0', borderRadius: 12,
-          overflow: 'hidden', cursor: 'pointer',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: 0 }}>
-            <div style={{ width: 90, flexShrink: 0, position: 'relative' }}>
-              <img
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=180&q=80"
-                alt="Stress management"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              />
-              <div style={{
-                position: 'absolute', inset: 0,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(0,0,0,0.25)',
-              }}>
-                <div style={{
-                  width: 26, height: 26, borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.92)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, paddingLeft: 2,
-                }}>▶</div>
-              </div>
+        {/* 3 recommended content pieces */}
+        <div className="insight-content-row">
+          <div className="ic-card">
+            <div className="ic-card__thumb">
+              <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=160&q=80" alt="" className="ic-card__img" />
+              <div className="ic-card__play">▶</div>
             </div>
-            <div style={{ padding: '10px 12px', flex: 1 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2D9B83', marginBottom: 3 }}>
-                5-min video · Stress & BP
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.3, marginBottom: 2 }}>
-                4 ways to lower stress before it hits your numbers
-              </div>
-              <div style={{ fontSize: 11, color: '#64748b' }}>Verywell Health · 5 min</div>
+            <div className="ic-card__body">
+              <span className="ic-card__badge ic-card__badge--video">5-min video</span>
+              <p className="ic-card__title">4 ways to lower stress before it hits your numbers</p>
+              <span className="ic-card__source">Verywell Health</span>
+            </div>
+          </div>
+
+          <div className="ic-card">
+            <div className="ic-card__thumb">
+              <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=160&q=80" alt="" className="ic-card__img" />
+            </div>
+            <div className="ic-card__body">
+              <span className="ic-card__badge ic-card__badge--article">4-min read</span>
+              <p className="ic-card__title">The cortisol–cholesterol connection, explained</p>
+              <span className="ic-card__source">Health.com</span>
+            </div>
+          </div>
+
+          <div className="ic-card">
+            <div className="ic-card__thumb">
+              <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=160&q=80" alt="" className="ic-card__img" />
+            </div>
+            <div className="ic-card__body">
+              <span className="ic-card__badge ic-card__badge--ritual">Ritual · 5 min</span>
+              <p className="ic-card__title">Box breathing reset — lowers cortisol in minutes</p>
+              <span className="ic-card__source">Vitalist AI</span>
             </div>
           </div>
         </div>
