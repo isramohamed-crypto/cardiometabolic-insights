@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 export default function SwipeLearn({ onLearnClick }) {
   // phase: 'cards' | 'completing' | 'next' | 'completing2' | 'next2'
-  const [phase, setPhase] = useState('cards')
+  const [phase, setPhase] = useState('next')
   const [showVideo, setShowVideo] = useState(false)
   const [videoWatched, setVideoWatched] = useState(false)
   const [showVideo2, setShowVideo2] = useState(false)
@@ -13,6 +13,7 @@ export default function SwipeLearn({ onLearnClick }) {
       <section className="swipe-learn">
         <div className="swipe-learn__head">
           <h2 className="swipe-learn__title">The stress-heart connection, explained</h2>
+          <p className="swipe-learn__sub">3 short lessons · Complete each to unlock the next</p>
           <a
             href="#"
             className="swipe-learn__link"
@@ -29,7 +30,7 @@ export default function SwipeLearn({ onLearnClick }) {
                 An expert explains how stress, diet, sleep, and activity interact to accelerate or reduce cardiovascular and metabolic risk — and what the evidence says about each.
               </p>
               <button className="swipe-learn__next-cta" onClick={() => setShowVideo2(true)}>
-                {video2Watched ? 'Keep learning →' : 'Start now →'}
+                {video2Watched ? 'Complete & next lesson →' : 'Start now →'}
               </button>
               <p className="swipe-learn__next-src">
                 <span className="brand-pill">Health.com</span>
@@ -62,7 +63,7 @@ export default function SwipeLearn({ onLearnClick }) {
                   setShowVideo(true)
                 }
               }}>
-                {videoWatched ? 'Keep learning →' : 'Start now →'}
+                {videoWatched ? 'Complete & next lesson →' : 'Start now →'}
               </button>
               <p className="swipe-learn__next-src">
                 <span className="brand-pill">Verywell Health</span>

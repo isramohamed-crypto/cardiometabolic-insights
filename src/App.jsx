@@ -248,35 +248,32 @@ export default function App() {
 
           {/* My Numbers now lives on the Track tab only — see TrackPage.jsx */}
 
-          {/* AI insight + daily check-in — combined into one card. New users
-              get a single compact check-in card with the insight folded in
-              as a pill; established users get the full insight and the
-              check-in entry point as two sections of the same card. */}
+          {/* Tips for you — EatingWell Simple & Satisfying Swaps */}
+          <EatingWellSection />
+
+          {/* AI insight + daily check-in */}
           <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 
           <MyRituals key={ritualsKey} />
 
-          {/* Nutrition Building Blocks — EatingWell featured content */}
-          <NutritionBuildingBlocksSection />
+          {/* Embracing mindfulness — above Amgen ad + wardrobe upgrades */}
+          <VeryWellSection />
 
           <div className="sponsor-card-wrap">
             <SponsorBanner variant="card" />
           </div>
 
+          {/* Wardrobe upgrades + Nutrition Building Blocks */}
+          <InStyleSection />
+
+          {/* Nutrition Building Blocks — EatingWell featured content */}
+          <NutritionBuildingBlocksSection />
+
           <StoriesSection onNavigate={target => { setActivePage(target); window.scrollTo(0, 0) }} />
 
-          {/* 8 — EatingWell featured content */}
-          <EatingWellSection />
-
-          {/* 7 — Watch Now: video for deeper learning */}
+          {/* Watch Now: video for deeper learning */}
           <WatchNow />
-
-          {/* 9 — VeryWell Health + Mind */}
-          <VeryWellSection />
-
-          {/* 10 — InStyle featured content */}
-          <InStyleSection />
 
           {/* 9 — Swipe Learn */}
           <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />

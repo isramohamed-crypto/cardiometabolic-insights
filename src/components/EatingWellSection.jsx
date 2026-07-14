@@ -78,7 +78,7 @@ export default function EatingWellSection() {
     <section className="ew-section">
       {/* Header */}
       <div className="ew-title-row">
-        <img src="/ew-logo.png" alt="EatingWell" className="ew-title-row__logo" />
+        <span className="ew-title-row__tips">Tips for you</span>
         <span className="ew-title-row__divider" />
         <span className="ew-title-row__title">Simple &amp; Satisfying Swaps</span>
       </div>

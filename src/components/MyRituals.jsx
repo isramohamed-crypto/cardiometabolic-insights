@@ -574,6 +574,19 @@ export default function MyRituals() {
         })}
       </div>
 
+      {/* Swipe hint — only when there are multiple cards */}
+      {selectedHabits.length > 1 && (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: 6, marginTop: 8, opacity: 0.45,
+        }}>
+          <span style={{ fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500 }}>Swipe to see all</span>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+            <path d="M9 1l4 4-4 4M1 5h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+      )}
+
     </section>
   )
 }

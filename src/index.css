@@ -1829,7 +1829,7 @@ h2 {
    Sits directly under the "Tips for you" carousel as one section, so
    top padding is removed to let the Skin Diary card visually attach. */
 .checkin-section {
-  padding: var(--space-6) var(--space-5) var(--space-6);
+  padding: var(--space-3) var(--space-5) var(--space-6);
 }
 
 .dc-feat {
@@ -2548,6 +2548,13 @@ h2 {
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--color-text-primary);
+}
+.swipe-learn__sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: var(--space-1);
 }
 .swipe-learn__link {
   font-family: var(--font-sans);
@@ -4389,7 +4396,7 @@ h2 {
 .checkin-section--split {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 .tic-card {
   background: var(--color-surface);

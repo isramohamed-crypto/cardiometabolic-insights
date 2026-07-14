@@ -1003,77 +1003,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
         </div>
       </div>
 
-      {/* Health assessments */}
-      <div className="tp-section">
-        <div className="tp-sec-head">
-          <h2 className="tp-sec-title">Health assessments</h2>
-          <span className="tp-sec-badge" style={{ background: 'rgba(27, 188, 60,.1)', color: 'var(--color-teal)' }}>ePRO</span>
-        </div>
-        {EPROS.map((ep, i) => (
-          <div key={i} className="tp-epro-card">
-            <div className="tp-epro-icon" style={{ background: ep.iconBg }}>{ep.icon}</div>
-            <div className="tp-epro-body">
-              <div className="tp-epro-title">{ep.title}</div>
-              <div className="tp-epro-sub">{ep.sub}</div>
-              <div className="tp-epro-meta">
-                <span className="tp-epro-pill" style={{ background: ep.pillBg, color: ep.pillC }}>{ep.pill}</span>
-                <span className="tp-epro-last">Last completed: {ep.last}</span>
-              </div>
-            </div>
-            <div className="tp-epro-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-          </div>
-        ))}
-      </div>
-
       <SponsorBanner />
-
-      {/* DLQI Results */}
-      <div className="tp-section" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="tp-sec-head">
-          <h2 className="tp-sec-title">Your assessment results</h2>
-          <span className="tp-sec-badge" style={{ background: isNew ? 'var(--color-border)' : 'rgba(0, 185, 226,.12)', color: isNew ? 'var(--color-text-muted)' : 'var(--color-teal)' }}>
-            {isNew ? 'Not started' : 'Trend'}
-          </span>
-        </div>
-        {isNew ? (
-          <div className="tp-card" style={{ textAlign: 'center', padding: '28px 16px', color: 'var(--color-text-muted)', fontSize: 13 }}>
-            Complete a health assessment above to see your results and trend here.
-          </div>
-        ) : (
-        <div className="tp-card">
-          <div className="tp-er-header"><span className="tp-er-title">DLQI — Quality of Life</span></div>
-          <div className="tp-er-score-row">
-            <div className="tp-er-ring">
-              <svg width="64" height="64" viewBox="0 0 64 64" style={{ position: 'absolute', inset: 0 }}>
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-border)" strokeWidth="4" />
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-teal)" strokeWidth="4" strokeDasharray="176" strokeDashoffset={176 - (176 * 9 / 30)} strokeLinecap="round" transform="rotate(-90 32 32)" />
-              </svg>
-              <span className="tp-er-val">9</span>
-              <span className="tp-er-max">/30</span>
-            </div>
-            <div className="tp-er-score-body">
-              <div className="tp-er-score-label">Moderate impact</div>
-              <div className="tp-er-score-interp">Your {activeCondition || 'health condition'} has a moderate effect on daily life. Sleep, energy, and daily activity are most affected.</div>
-            </div>
-          </div>
-          <div className="tp-er-trend">
-            <span className="tp-er-trend-arrow">📉</span>
-            <span className="tp-er-trend-text"><strong>Improving:</strong> Score dropped from 16 (Jan) → 12 (Feb) → 9 (Apr). Your routine is working.</span>
-          </div>
-          <div className="tp-er-history">
-            {[{d:'Apr 3',s:9,pct:30},{d:'Feb 22',s:12,pct:40},{d:'Jan 10',s:16,pct:53}].map((r,i) => (
-              <div key={i} className="tp-er-hist-row">
-                <span className="tp-er-hist-date">{r.d}</span>
-                <div className="tp-er-hist-bar"><div className="tp-er-hist-fill" style={{ width: `${r.pct}%`, background: 'var(--color-teal)' }} /></div>
-                <span className="tp-er-hist-score" style={{ color: 'var(--color-teal)' }}>{r.s}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        )}
-      </div>
 
       {/* ── Archived (collapsed by default) ── */}
       <ArchivedSection>
@@ -1083,6 +1013,76 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           onClose={() => setShowHabitSheet(false)}
           onComplete={() => setShowHabitSheet(false)}
         />
+
+        {/* Health assessments */}
+        <div className="tp-section">
+          <div className="tp-sec-head">
+            <h2 className="tp-sec-title">Health assessments</h2>
+            <span className="tp-sec-badge" style={{ background: 'rgba(27, 188, 60,.1)', color: 'var(--color-teal)' }}>ePRO</span>
+          </div>
+          {EPROS.map((ep, i) => (
+            <div key={i} className="tp-epro-card">
+              <div className="tp-epro-icon" style={{ background: ep.iconBg }}>{ep.icon}</div>
+              <div className="tp-epro-body">
+                <div className="tp-epro-title">{ep.title}</div>
+                <div className="tp-epro-sub">{ep.sub}</div>
+                <div className="tp-epro-meta">
+                  <span className="tp-epro-pill" style={{ background: ep.pillBg, color: ep.pillC }}>{ep.pill}</span>
+                  <span className="tp-epro-last">Last completed: {ep.last}</span>
+                </div>
+              </div>
+              <div className="tp-epro-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Assessment results */}
+        <div className="tp-section" style={{ marginBottom: 'var(--space-6)' }}>
+          <div className="tp-sec-head">
+            <h2 className="tp-sec-title">Your assessment results</h2>
+            <span className="tp-sec-badge" style={{ background: isNew ? 'var(--color-border)' : 'rgba(0, 185, 226,.12)', color: isNew ? 'var(--color-text-muted)' : 'var(--color-teal)' }}>
+              {isNew ? 'Not started' : 'Trend'}
+            </span>
+          </div>
+          {isNew ? (
+            <div className="tp-card" style={{ textAlign: 'center', padding: '28px 16px', color: 'var(--color-text-muted)', fontSize: 13 }}>
+              Complete a health assessment above to see your results and trend here.
+            </div>
+          ) : (
+          <div className="tp-card">
+            <div className="tp-er-header"><span className="tp-er-title">DLQI — Quality of Life</span></div>
+            <div className="tp-er-score-row">
+              <div className="tp-er-ring">
+                <svg width="64" height="64" viewBox="0 0 64 64" style={{ position: 'absolute', inset: 0 }}>
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-border)" strokeWidth="4" />
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="var(--color-teal)" strokeWidth="4" strokeDasharray="176" strokeDashoffset={176 - (176 * 9 / 30)} strokeLinecap="round" transform="rotate(-90 32 32)" />
+                </svg>
+                <span className="tp-er-val">9</span>
+                <span className="tp-er-max">/30</span>
+              </div>
+              <div className="tp-er-score-body">
+                <div className="tp-er-score-label">Moderate impact</div>
+                <div className="tp-er-score-interp">Your {activeCondition || 'health condition'} has a moderate effect on daily life. Sleep, energy, and daily activity are most affected.</div>
+              </div>
+            </div>
+            <div className="tp-er-trend">
+              <span className="tp-er-trend-arrow">📉</span>
+              <span className="tp-er-trend-text"><strong>Improving:</strong> Score dropped from 16 (Jan) → 12 (Feb) → 9 (Apr). Your routine is working.</span>
+            </div>
+            <div className="tp-er-history">
+              {[{d:'Apr 3',s:9,pct:30},{d:'Feb 22',s:12,pct:40},{d:'Jan 10',s:16,pct:53}].map((r,i) => (
+                <div key={i} className="tp-er-hist-row">
+                  <span className="tp-er-hist-date">{r.d}</span>
+                  <div className="tp-er-hist-bar"><div className="tp-er-hist-fill" style={{ width: `${r.pct}%`, background: 'var(--color-teal)' }} /></div>
+                  <span className="tp-er-hist-score" style={{ color: 'var(--color-teal)' }}>{r.s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          )}
+        </div>
       </ArchivedSection>
 
     </main>

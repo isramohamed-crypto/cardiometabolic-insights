@@ -125,9 +125,15 @@
 /* ── Card list ── */
 .mr-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  scrollbar-width: none;
 }
+.mr-list::-webkit-scrollbar { display: none; }
 
 .mr-empty {
   font-size: 13px;
@@ -144,6 +150,9 @@
   overflow: hidden;
   background: #fff;
   transition: border-color 0.2s;
+  min-width: 272px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
 }
 
 /* Recommended pill for personalized habits — matches AI insights tic-pill */
