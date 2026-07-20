@@ -648,8 +648,8 @@ export default function MyRituals({ onAskAI }) {
           )
         })}
 
-        {/* Empty slot cards — only shown to established users */}
-        {isMature && Array.from({ length: MAX_SLOTS - selectedHabits.length }).map((_, i) => (
+        {/* Empty slot cards */}
+        {Array.from({ length: MAX_SLOTS - selectedHabits.length }).map((_, i) => (
           <button key={`slot-${i}`} className="mr-empty-slot" onClick={() => setShowPicker(true)} aria-label="Add a habit">
             <div className="mr-empty-slot__plus">+</div>
             <div className="mr-empty-slot__label">Add a ritual</div>
