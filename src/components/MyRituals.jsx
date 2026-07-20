@@ -198,6 +198,8 @@ const HABIT_LIBRARY = [
 
 const SELECTED_KEY    = 'vitalistMyRituals2'
 const COMPLETIONS_KEY = 'vitalistMyRitualsCompletions'
+const TRIALS_KEY      = 'vitalistMyRitualsTrials'
+const MAX_SLOTS       = 3
 
 function todayKey() { return new Date().toISOString().slice(0, 10) }
 
@@ -249,6 +251,24 @@ function readSelectedIds() {
 
 function saveSelectedIds(ids) {
   try { localStorage.setItem(SELECTED_KEY, JSON.stringify(ids)) } catch {}
+}
+
+function readTrials() {
+  try { return JSON.parse(localStorage.getItem(TRIALS_KEY) || '{}') } catch { return {} }
+}
+
+function saveTrials(t) {
+  try { localStorage.setItem(TRIALS_KEY, JSON.stringify(t)) } catch {}
+}
+
+// Returns 1-based day number since the habit was added (1 = added today)
+function trialDay(addedAt) {
+  if (!addedAt) return 1
+  const start = new Date(addedAt)
+  const today = new Date()
+  const a = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  const b = new Date(start.getFullYear(), start.getMonth(), start.getDate())
+  return Math.max(1, Math.round((a - b) / (1000 * 60 * 60 * 24)) + 1)
 }
 
 function readCompletionLog() {
@@ -346,6 +366,21 @@ export default function MyRituals() {
     const saved = readSelectedIds()
     return saved || getDefaultIds(conditions)
   })
+  const [trials, setTrials] = useState(() => {
+    const saved = readTrials()
+    const currentIds = readSelectedIds() || getDefaultIds(conditions)
+    const updated = { ...saved }
+    let changed = false
+    for (const id of currentIds) {
+      if (!updated[id]) {
+        // Habits already in the list on first run: established for mature users, trial for new
+        updated[id] = { addedAt: todayKey(), status: isMature ? 'kept' : 'trial' }
+        changed = true
+      }
+    }
+    if (changed) saveTrials(updated)
+    return updated
+  })
   const [completions, setCompletions] = useState(readTodayCompletions)
   const [showPicker, setShowPicker]   = useState(false)
   const [pickerCat, setPickerCat]     = useState('Move')
@@ -381,15 +416,35 @@ export default function MyRituals() {
   }
 
   function handleAdd(id) {
+    if (selectedIds.length >= MAX_SLOTS) return
     const updated = [...selectedIds, id]
     setSelectedIds(updated); saveSelectedIds(updated)
+    const updatedTrials = { ...trials, [id]: { addedAt: todayKey(), status: 'trial' } }
+    setTrials(updatedTrials); saveTrials(updatedTrials)
     setShowPicker(false)
+  }
+
+  function handleKeep(id) {
+    const updatedTrials = { ...trials, [id]: { ...trials[id], status: 'kept' } }
+    setTrials(updatedTrials); saveTrials(updatedTrials)
+  }
+
+  function handleSwap(id) {
+    const updatedIds = selectedIds.filter(s => s !== id)
+    setSelectedIds(updatedIds); saveSelectedIds(updatedIds)
+    const updatedTrials = { ...trials }
+    delete updatedTrials[id]
+    setTrials(updatedTrials); saveTrials(updatedTrials)
+    setShowPicker(true)
   }
 
   function handleRemove(e, id) {
     e.stopPropagation()
     const updated = selectedIds.filter(s => s !== id)
     setSelectedIds(updated); saveSelectedIds(updated)
+    const updatedTrials = { ...trials }
+    delete updatedTrials[id]
+    setTrials(updatedTrials); saveTrials(updatedTrials)
   }
 
   function toggleWhy(e, id) {
@@ -407,7 +462,7 @@ export default function MyRituals() {
       {/* Header */}
       <div className="mr-header">
         <div>
-          <p className="mr-eyebrow">Daily rituals</p>
+          <p className="mr-eyebrow">My Rituals</p>
           <h2 className="mr-title">Complete your rituals</h2>
         </div>
         <div className="mr-header__right">
@@ -420,13 +475,31 @@ export default function MyRituals() {
             </div>
           )}
           <button
-            className={`mr-plus-btn${showPicker ? ' mr-plus-btn--open' : ''}`}
-            onClick={() => setShowPicker(s => !s)}
-            aria-label={showPicker ? 'Close' : 'Add ritual'}
+            className={`mr-plus-btn${showPicker ? ' mr-plus-btn--open' : ''}${selectedHabits.length >= MAX_SLOTS ? ' mr-plus-btn--full' : ''}`}
+            onClick={() => selectedHabits.length < MAX_SLOTS && setShowPicker(s => !s)}
+            aria-label={showPicker ? 'Close' : selectedHabits.length >= MAX_SLOTS ? 'All slots filled' : 'Add ritual'}
+            disabled={selectedHabits.length >= MAX_SLOTS && !showPicker}
           >
             {showPicker ? '✕' : '+'}
           </button>
         </div>
+      </div>
+
+      {/* Slot row */}
+      <div className="mr-slots-row">
+        <div className="mr-slots">
+          {Array.from({ length: MAX_SLOTS }).map((_, i) => (
+            <div key={i} className={`mr-slot${i < selectedHabits.length ? ' mr-slot--filled' : ''}`} />
+          ))}
+        </div>
+        <span className="mr-slots__label">
+          {selectedHabits.length >= MAX_SLOTS
+            ? 'All 3 slots active'
+            : selectedHabits.length === 0
+              ? 'Add your first habit'
+              : `${MAX_SLOTS - selectedHabits.length} slot${MAX_SLOTS - selectedHabits.length !== 1 ? 's' : ''} open`}
+        </span>
+        <span className="mr-slots__tag">Try each for 7 days</span>
       </div>
 
       {/* Habit picker — right below + button so it's immediately visible */}
@@ -553,6 +626,36 @@ export default function MyRituals() {
                 )}
               </div>
 
+              {/* Trial section — new/non-mature habits in active trial */}
+              {!isMature && trials[habit.id]?.status === 'trial' && (() => {
+                const day = trialDay(trials[habit.id]?.addedAt)
+                const isComplete = day >= 8
+                return (
+                  <div className={`mr-trial${isComplete ? ' mr-trial--complete' : ''}`}>
+                    {isComplete ? (
+                      <>
+                        <div className="mr-trial__complete-text">Week complete — keep it or try something new?</div>
+                        <div className="mr-trial__actions">
+                          <button className="mr-keep-btn" onClick={() => handleKeep(habit.id)}>Keep it ✓</button>
+                          <button className="mr-swap-btn" onClick={() => handleSwap(habit.id)}>Swap it ↺</button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="mr-trial__header">
+                          <span className="mr-trial__label">Trial week · Day {day} of 7</span>
+                        </div>
+                        <div className="mr-trial__bar">
+                          {Array.from({ length: 7 }).map((_, i) => (
+                            <div key={i} className={`mr-trial__seg${i < day ? ' mr-trial__seg--filled' : ''}`} />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )
+              })()}
+
               {/* Progress footer */}
               <div className="mr-card__footer">
                 <div className="mr-dots">
@@ -570,6 +673,20 @@ export default function MyRituals() {
             </div>
           )
         })}
+
+        {/* Empty slot cards */}
+        {Array.from({ length: MAX_SLOTS - selectedHabits.length }).map((_, i) => (
+          <button
+            key={`slot-${i}`}
+            className="mr-empty-slot"
+            onClick={() => setShowPicker(true)}
+            aria-label="Add a habit"
+          >
+            <div className="mr-empty-slot__plus">+</div>
+            <div className="mr-empty-slot__label">Add a ritual</div>
+            <div className="mr-empty-slot__sub">Try it for one week</div>
+          </button>
+        ))}
       </div>
 
       {/* Swipe hint — only when there are multiple cards */}

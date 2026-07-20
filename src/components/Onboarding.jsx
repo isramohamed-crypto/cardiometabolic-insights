@@ -96,8 +96,41 @@ const Q5_TOPICS_MORE = [
 ]
 
 const Q5 = {
-  text: 'Which of these changes feels most manageable right now?',
-  sub: 'Start with just one — small changes stick better than trying to do everything at once. We\'ll turn it into a daily habit, and you can always add more later.',
+  text: 'Here\'s your first habit',
+  sub: 'Chosen for you based on what you shared. Try it for one week — you can always swap it.',
+}
+
+// ── First-habit recommendation system ─────────────────────────────────────────
+// Mirrors data from MyRituals HABIT_LIBRARY for the onboarding card display.
+const HABIT_REC_DATA = {
+  hl_walk:    { icon: '🚶', label: '10-min walk after meals',     category: 'Movement',  catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Drops blood sugar 22% — no medication needed',                    anchor: 'After your largest meal' },
+  hl_fiber:   { icon: '🥣', label: 'Fiber-rich breakfast',        category: 'Nutrition', catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Oat fiber binds LDL before it ever reaches your bloodstream',       anchor: 'Every morning' },
+  hl_sodium:  { icon: '🧂', label: 'Limit sodium today',          category: 'Nutrition', catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cutting sodium is as powerful as adding a blood pressure medication', anchor: 'At each meal' },
+  hl_stretch: { icon: '🧘', label: 'Morning stretch',             category: 'Movement',  catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Morning movement drops cortisol 15% before your day even starts',    anchor: 'When you wake up' },
+  hl_protein: { icon: '🥚', label: 'Protein-rich breakfast',      category: 'Nutrition', catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cuts hunger hormones 25% — critical on GLP-1 medications',           anchor: 'Every morning' },
+  hl_sleep:   { icon: '😴', label: 'Protect your sleep window',   category: 'Rest',      catColor: '#8B5CF6', catBg: '#f5f3ff', hook: 'One bad week raises insulin resistance 37% without any diet change',  anchor: 'Same time every night' },
+  hl_breathe: { icon: '💨', label: '5-min deep breathing',        category: 'Mind',      catColor: '#EC4899', catBg: '#fdf2f8', hook: "Today's stress shows up in your numbers 48 hours from now",           anchor: 'Once a day — same time' },
+  hl_water:   { icon: '💧', label: 'Start your day hydrated',     category: 'Hydration', catColor: '#3B82F6', catBg: '#eff6ff', hook: 'Mild dehydration silently raises blood pressure',                      anchor: 'Before anything else' },
+}
+
+// Returns an ordered list of habit IDs, most relevant first, for cycling.
+function getHabitRecs(ans) {
+  const conds = resolveConditionLabels(ans.q4, ans.q4OtherText)
+  const motiv = ans.q3
+  const ordered = []
+  const add = id => { if (!ordered.includes(id)) ordered.push(id) }
+
+  if (conds.some(c => /diabetes/i.test(c)))      add('hl_walk')
+  if (conds.some(c => /cholesterol/i.test(c)))   add('hl_fiber')
+  if (conds.some(c => /blood pressure/i.test(c) || /hypertension/i.test(c))) add('hl_sodium')
+  if (conds.some(c => /menopause/i.test(c)))     add('hl_stretch')
+  if (conds.some(c => /glp-1/i.test(c) || /weight loss med/i.test(c)))       add('hl_protein')
+
+  if (motiv === 'sleep')      add('hl_sleep')
+  if (['triggers', 'frustrated', 'treatment'].includes(motiv)) add('hl_breathe')
+
+  for (const id of ['hl_breathe', 'hl_sleep', 'hl_fiber', 'hl_walk', 'hl_water']) add(id)
+  return ordered
 }
 
 function deriveDiagnosisStatus(ids) {
@@ -157,7 +190,8 @@ function mapCode(field, v) {
 export default function Onboarding({ name, onClose }) {
   const [step, setStep] = useState(0)
   const [q4ShowMore, setQ4ShowMore] = useState(false)
-  const [q5ShowMore, setQ5ShowMore] = useState(false)
+  const [habitIdx, setHabitIdx] = useState(0)
+  const [completedHabitId, setCompletedHabitId] = useState(null)
   const [ans, setAns] = useState({
     q1: null,           // role
     q2: name || '',     // name
@@ -165,7 +199,6 @@ export default function Onboarding({ name, onClose }) {
     q4: [],             // conditions (multi-select)
     q4OtherText: '',
     q_life: [],         // life values (multi-select)
-    q5: [],             // habits (single-select)
   })
 
   function selectOpt(key, id) {
@@ -183,12 +216,18 @@ export default function Onboarding({ name, onClose }) {
     })
   }
 
-  function toggleQ5(label) {
-    setAns(a => ({ ...a, q5: a.q5.includes(label) ? [] : [label] }))
-  }
-
   function next() { setStep(s => s + 1); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   function back() { setStep(s => s - 1); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+
+  function completeWithHabit() {
+    const recs = getHabitRecs(ans)
+    const habitId = recs[habitIdx % recs.length]
+    saveProfile({ completedAt: new Date().toISOString() })
+    // Write after saveProfile (which clears vitalistMyRituals2)
+    try { localStorage.setItem('vitalistMyRituals2', JSON.stringify([habitId])) } catch (_) {}
+    setCompletedHabitId(habitId)
+    next()
+  }
 
   function saveProfile(extra = {}) {
     let existing = {}
@@ -206,7 +245,6 @@ export default function Onboarding({ name, onClose }) {
     maybeSet('diagnosisStatus', mapCode('diagnosisStatus', deriveDiagnosisStatus(ans.q4)))
     maybeSet('condition',       resolveConditionLabels(ans.q4, ans.q4OtherText))
     maybeSet('lifeValue',       ans.q_life.map(id => CODE_TO_LABEL.lifeValue?.[id] || id))
-    maybeSet('topics',          ans.q5)
     profile.onboardingSources = Array.from(onboardingSources)
     Object.assign(profile, extra)
     delete profile.treatmentList
@@ -239,76 +277,59 @@ export default function Onboarding({ name, onClose }) {
     if (step === 2) return !!ans.q3
     if (step === 3) return Array.isArray(ans.q4) && ans.q4.length > 0
     if (step === 4) return Array.isArray(ans.q_life) && ans.q_life.length > 0
-    if (step === 5) return Array.isArray(ans.q5) && ans.q5.length > 0
+    if (step === 5) return true  // habit card is always pre-selected
     return false
   })()
 
-  // ── SUMMARY ───────────────────────────────────────────────────────────────
+  // ── SUMMARY — habit win moment ────────────────────────────────────────────
   if (step === SUMMARY_STEP) {
-    const focusLabel     = Q3.options.find(o => o.id === ans.q3)?.label || ''
-    const lifeLabel      = (Array.isArray(ans.q_life) ? ans.q_life : []).map(id => Q_LIFE.options.find(o => o.id === id)?.label).filter(Boolean).join(', ')
-    const diagnosisStatus = deriveDiagnosisStatus(ans.q4)
-    const conditionLabel = resolveConditionLabels(ans.q4, ans.q4OtherText).join(', ')
-    const conditionKey   = diagnosisStatus === 'yes'
-      ? (ans.q4.length > 1 ? 'Diagnoses' : 'Diagnosis')
-      : (ans.q4.length > 1 ? 'Main concerns' : 'Main concern')
-
-    const rows = []
-    if (focusLabel)      rows.push({ icon: '🎯', key: 'What\'s driving you',  val: focusLabel })
-    if (conditionLabel)  rows.push({ icon: '📍', key: conditionKey,            val: conditionLabel })
-    if (lifeLabel)       rows.push({ icon: '💛', key: 'Most important to you', val: lifeLabel })
-    if (ans.q5?.length)  rows.push({ icon: '💡', key: 'First habit',           val: ans.q5.join(', ') })
-
-    const missing = []
-    if (!ans.q1)              missing.push({ icon: '👤', label: 'Who you\'re managing this for' })
-    if (!ans.q2?.trim())      missing.push({ icon: '✏️', label: 'Your name' })
-    if (!ans.q3)              missing.push({ icon: '🎯', label: 'What\'s driving you' })
-    if (!ans.q4?.length)      missing.push({ icon: '📍', label: 'Your health picture' })
-    if (!ans.q_life?.length)  missing.push({ icon: '💛', label: 'What matters most to you' })
-    if (!ans.q5?.length)      missing.push({ icon: '💡', label: 'Your first habit' })
-
-    const skipped = missing.length > 0
-    const summaryName = (ans.q2 || '').trim().split(' ')[0]
-    const title = skipped
-      ? (summaryName ? `You can come back to this anytime, ${summaryName}.` : 'You can come back to this anytime.')
-      : (summaryName ? `You're all set, ${summaryName}.` : "You're all set.")
-    const sub = skipped
-      ? <>No problem — finish your profile anytime in <strong>Profile settings</strong>. The more you share, the better we can tailor your experience.</>
-      : <>We'll personalize your daily feed around what matters to you. Update your answers anytime in <strong>Profile settings</strong>.</>
+    const habitId   = completedHabitId || getHabitRecs(ans)[0]
+    const habit     = HABIT_REC_DATA[habitId] || Object.values(HABIT_REC_DATA)[0]
+    const winName   = (ans.q2 || '').trim().split(' ')[0]
+    const winTitle  = winName ? `Your first step is set, ${winName}.` : 'Your first step is set.'
 
     return (
       <div className="ob-overlay">
         <div className="ob-screen">
-          <div className="ob-complete">
-            <div className="ob-complete__icon">✓</div>
-            <h2 className="ob-complete__title">{title}</h2>
-            <p className="ob-complete__sub">{sub}</p>
-            {rows.length > 0 && (
-              <div className="ob-profile-card">
-                <div className="ob-profile-card__label">Your profile</div>
-                {rows.map(r => (
-                  <div className="ob-profile-row" key={r.key}>
-                    <span className="ob-profile-row__icon">{r.icon}</span>
-                    <div>
-                      <div className="ob-profile-row__key">{r.key}</div>
-                      <div className="ob-profile-row__val">{r.val}</div>
-                    </div>
-                  </div>
-                ))}
+          <div className="ob-win">
+            <div className="ob-win__badge">✓</div>
+            <h2 className="ob-win__title">{winTitle}</h2>
+            <p className="ob-win__sub">
+              We've added this to your daily rituals. Try it for one week — that's all it takes to see a difference.
+            </p>
+
+            {/* Habit card — confirmed state */}
+            <div className="ob-habit-card ob-habit-card--confirmed" style={{ '--cat-color': habit.catColor, '--cat-bg': habit.catBg }}>
+              <div className="ob-habit-card__header">
+                <span className="ob-habit-card__cat" style={{ color: habit.catColor, background: habit.catBg }}>{habit.category}</span>
               </div>
-            )}
-            {missing.length > 0 && (
-              <div className="ob-missing-card">
-                <div className="ob-missing-card__label">⏳ Skipped — finish later in Profile settings</div>
-                {missing.map(m => (
-                  <div className="ob-missing-row" key={m.label}>
-                    <span className="ob-missing-row__icon">{m.icon}</span>
-                    <span className="ob-missing-row__label">{m.label}</span>
-                  </div>
-                ))}
+              <div className="ob-habit-card__body">
+                <span className="ob-habit-card__icon">{habit.icon}</span>
+                <div>
+                  <div className="ob-habit-card__label">{habit.label}</div>
+                  <div className="ob-habit-card__anchor">{habit.anchor}</div>
+                </div>
               </div>
-            )}
-            <button className="ob-cta" onClick={() => { onClose() }}>Let's get started →</button>
+              <div className="ob-habit-card__hook">{habit.hook}</div>
+            </div>
+
+            <div className="ob-win__what-next">
+              <div className="ob-win__wn-title">What happens next</div>
+              <div className="ob-win__wn-row">
+                <span className="ob-win__wn-dot ob-win__wn-dot--1" />
+                <span>Your ritual shows up on your home feed every day</span>
+              </div>
+              <div className="ob-win__wn-row">
+                <span className="ob-win__wn-dot ob-win__wn-dot--2" />
+                <span>After 7 days you decide — keep it, swap it, or add more</span>
+              </div>
+              <div className="ob-win__wn-row">
+                <span className="ob-win__wn-dot ob-win__wn-dot--3" />
+                <span>We'll track the impact on your numbers over time</span>
+              </div>
+            </div>
+
+            <button className="ob-cta" onClick={onClose}>Let's get started →</button>
           </div>
         </div>
       </div>
@@ -444,46 +465,39 @@ export default function Onboarding({ name, onClose }) {
               </>
             )}
 
-            {/* Step 5: Habits */}
-            {step === 5 && (
-              <>
-                <div className="ob-q-text">{Q5.text}</div>
-                <div className="ob-q-sub">{Q5.sub}</div>
-                <div className="ob-chips">
-                  {(() => {
-                    const selectedMore = Q5_TOPICS_MORE.filter(t => ans.q5.includes(t.label))
-                    const visible = [
-                      ...Q5_TOPICS_PRIMARY,
-                      ...(q5ShowMore ? Q5_TOPICS_MORE : selectedMore),
-                    ]
-                    return visible.map(o => {
-                      const sel = ans.q5.includes(o.label)
-                      return (
-                        <button
-                          key={o.label}
-                          type="button"
-                          className={`ob-chip${sel ? ' ob-chip--sel' : ''}`}
-                          onClick={() => toggleQ5(o.label)}
-                        >
-                          <span className="ob-chip__icon">{o.icon}</span>
-                          <span>{o.change || o.label}</span>
-                        </button>
-                      )
-                    })
-                  })()}
+            {/* Step 5: First habit recommendation */}
+            {step === 5 && (() => {
+              const recs = getHabitRecs(ans)
+              const habitId = recs[habitIdx % recs.length]
+              const habit = HABIT_REC_DATA[habitId]
+              return (
+                <>
+                  <div className="ob-q-text">{Q5.text}</div>
+                  <div className="ob-q-sub">{Q5.sub}</div>
+                  <div className="ob-habit-card" style={{ '--cat-color': habit.catColor, '--cat-bg': habit.catBg }}>
+                    <div className="ob-habit-card__header">
+                      <span className="ob-habit-card__cat" style={{ color: habit.catColor, background: habit.catBg }}>{habit.category}</span>
+                      <span className="ob-habit-card__ai-tag">AI pick</span>
+                    </div>
+                    <div className="ob-habit-card__body">
+                      <span className="ob-habit-card__icon">{habit.icon}</span>
+                      <div>
+                        <div className="ob-habit-card__label">{habit.label}</div>
+                        <div className="ob-habit-card__anchor">{habit.anchor}</div>
+                      </div>
+                    </div>
+                    <div className="ob-habit-card__hook">{habit.hook}</div>
+                  </div>
                   <button
                     type="button"
-                    className="ob-chip ob-chip--more"
-                    onClick={() => setQ5ShowMore(v => !v)}
+                    className="ob-swap-btn"
+                    onClick={() => setHabitIdx(i => i + 1)}
                   >
-                    {q5ShowMore ? '− Show less' : `+ Show ${Q5_TOPICS_MORE.length} more`}
+                    See another suggestion →
                   </button>
-                </div>
-                {ans.q5.length > 0 && (
-                  <p className="ob-q-count">✓ We'll add this as your first daily habit to track.</p>
-                )}
-              </>
-            )}
+                </>
+              )
+            })()}
           </div>
         </div>
 
@@ -497,11 +511,11 @@ export default function Onboarding({ name, onClose }) {
             className="ob-next"
             disabled={!canContinue}
             onClick={() => {
-              if (step === TOTAL_QS - 1) complete()
+              if (step === TOTAL_QS - 1) completeWithHabit()
               else next()
             }}
           >
-            {step === TOTAL_QS - 1 ? 'Finish →' : 'Continue →'}
+            {step === TOTAL_QS - 1 ? 'Add this habit →' : 'Continue →'}
           </button>
         </div>
 
