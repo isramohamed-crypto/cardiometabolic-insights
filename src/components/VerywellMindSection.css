@@ -1,0 +1,210 @@
+/* ── Verywell Mind Section ───────────────────────────────────────────────── */
+
+.vm-section {
+  padding: var(--space-6) 0 var(--space-6);
+}
+
+/* Title row */
+.vm-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.vm-title-row__brand {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2bbccc;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.vm-title-row__divider {
+  width: 1px;
+  height: 22px;
+  background: #000;
+  opacity: 0.15;
+}
+
+.vm-title-row__title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: -0.01em;
+}
+
+/* Scroll row */
+.vm-scroll {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding: 0 var(--space-5) var(--space-2);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.vm-scroll::-webkit-scrollbar { display: none; }
+
+.vm-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+/* Intro card */
+.vm-intro-card {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #89e4ed;
+}
+
+.vm-intro-card__top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 16px 12px;
+}
+
+.vm-intro-card__eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.45);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.vm-intro-card__title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.vm-intro-card__bottom {
+  background: rgba(0,0,0,0.08);
+  padding: 12px 16px 16px;
+}
+
+.vm-intro-card__sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.65);
+  line-height: 1.5;
+}
+
+/* Flip card */
+.vm-card {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  perspective: 1000px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.vm-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(.4, 0, .2, 1);
+  border-radius: 20px;
+}
+
+.vm-card--flipped .vm-card__inner {
+  transform: rotateY(180deg);
+}
+
+.vm-card__front,
+.vm-card__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* Front */
+.vm-card__front {
+  background: #89e4ed;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px 16px 18px;
+  gap: 10px;
+}
+
+.vm-card__icon {
+  font-size: 48px;
+  line-height: 1;
+  position: absolute;
+  top: 24px;
+  left: 16px;
+}
+
+.vm-card__front-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.vm-card__flip-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.4);
+}
+
+/* Back */
+.vm-card__back {
+  background: #2bbccc;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px;
+  justify-content: center;
+}
+
+.vm-card__quote-mark {
+  font-size: 72px;
+  line-height: .7;
+  color: rgba(255,255,255,.25);
+  font-family: Georgia, serif;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.vm-card__back-text {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.6;
+  text-align: left;
+}

@@ -1,0 +1,345 @@
+/* ── Habit Section ──────────────────────────────────────────────────────── */
+
+.habit-section {
+  padding: var(--space-6) 0 var(--space-4);
+}
+
+.habit-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.habit-section__eyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.habit-section__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.habit-section__badges {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.habit-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-full);
+  padding: 4px 10px 4px 8px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.habit-badge--streak {
+  background: var(--color-warm-light);
+  color: var(--color-warm);
+}
+
+.habit-badge--perfect {
+  background: #FFF8E1;
+  color: #B8860B;
+}
+
+.habit-badge--comeback {
+  background: var(--color-teal-light);
+  color: var(--color-teal);
+}
+
+.habit-section__edit {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  margin-top: 4px;
+  transition: background .15s;
+}
+.habit-section__edit:hover { background: var(--color-surface-2); }
+
+/* ── Progress summary bar ──────────────────────────────────────────────── */
+
+.habit-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: 0 var(--space-5) 0;
+  padding: var(--space-4) var(--space-4);
+  background: var(--color-teal);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.habit-summary:hover { opacity: .92; }
+.habit-summary:active { transform: scale(.98); }
+
+.habit-summary--earned {
+  animation: summary-earned-pulse 1.8s ease-in-out 3;
+}
+
+@keyframes summary-earned-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,.45); }
+  50%  { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* ── Full-screen shimmer ───────────────────────────────────────────────── */
+
+.habit-shimmer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.habit-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -60%;
+  width: 50%;
+  height: 120%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255,255,255,0.06) 40%,
+    rgba(255,255,255,0.18) 50%,
+    rgba(255,255,255,0.06) 60%,
+    transparent 100%
+  );
+  transform: skewX(-12deg);
+  animation: habit-shimmer-sweep 0.55s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes habit-shimmer-sweep {
+  0%   { left: -60%; }
+  100% { left: 130%; }
+}
+
+/* ── Badge pop on earning the day ─────────────────────────────────────── */
+
+.habit-section__badges--pop .habit-badge {
+  animation: badge-pop 0.55s cubic-bezier(.2,.8,.4,1.4) both;
+}
+
+.habit-section__badges--pop .habit-badge:nth-child(2) {
+  animation-delay: 0.07s;
+}
+
+@keyframes badge-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  65%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ── Badge inside the ring ────────────────────────────────────────────── */
+
+.habit-ring-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  animation: ring-badge-pop 0.5s cubic-bezier(.2,.8,.4,1.5) both;
+}
+
+.habit-ring-badge__emoji {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.habit-ring-badge__streak {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.04em;
+}
+
+@keyframes ring-badge-pop {
+  0%   { transform: scale(0.3); opacity: 0; }
+  65%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.habit-summary__body { flex: 1; min-width: 0; }
+
+.habit-summary__count {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-inverse);
+  margin-bottom: 2px;
+}
+.habit-summary__done {
+  font-size: var(--font-size-xl);
+  font-family: var(--font-serif);
+}
+.habit-summary__total { opacity: .75; }
+
+.habit-summary__sub {
+  font-size: var(--font-size-xs);
+  color: rgba(245,239,230,.65);
+  font-weight: 500;
+}
+
+.habit-summary__arrow {
+  color: rgba(245,239,230,.5);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+}
+
+/* Streak badge */
+.habit-streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-warm-light);
+  border-radius: var(--radius-full);
+  padding: 4px 10px 4px 8px;
+  flex-shrink: 0;
+}
+.habit-streak__flame { font-size: 14px; line-height: 1; }
+.habit-streak__count {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-warm);
+}
+
+/* ── Habit list ────────────────────────────────────────────────────────── */
+
+.habit-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.habit-list--card {
+  margin: 0 var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+}
+
+.habit-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-radius: 0;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  transition: background .12s;
+}
+.habit-item:last-child { border-bottom: none; }
+.habit-item:active { background: var(--color-surface-2); }
+
+.habit-item--done {
+  background: var(--color-teal-light);
+}
+
+.habit-item--focus {
+  border-left: 3px solid var(--color-teal);
+  padding-left: calc(var(--space-4) - 3px);
+}
+
+.habit-item__focus-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+  background: var(--color-teal-light);
+  border-radius: 9999px;
+  vertical-align: middle;
+}
+
+.habit-item__check {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  background: transparent;
+}
+
+.habit-item__check--done {
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+}
+
+.habit-item__icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 26px;
+  text-align: center;
+}
+
+.habit-item__body { flex: 1; min-width: 0; }
+
+.habit-item__label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 1px;
+}
+
+.habit-item--done .habit-item__label {
+  color: var(--color-teal);
+}
+
+.habit-item__desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.habit-item__done-tag {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-teal);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.habit-item__streak {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-warm);
+  flex-shrink: 0;
+}

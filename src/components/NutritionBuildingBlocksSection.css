@@ -1,0 +1,153 @@
+/* ── Nutrition Building Blocks Section ───────────────────────────────────── */
+
+.nbb-section {
+  padding: var(--space-8) 0 var(--space-6);
+}
+
+/* Title row */
+.nbb-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5) var(--space-4);
+}
+
+.nbb-title-row__logo {
+  height: 20px;
+  width: auto;
+}
+
+.nbb-title-row__divider {
+  width: 1px;
+  height: 22px;
+  background: #000;
+  opacity: 0.7;
+}
+
+.nbb-title-row__title {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Scroll row */
+.nbb-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 var(--space-5);
+  gap: var(--space-4);
+  align-items: stretch;
+}
+.nbb-scroll::-webkit-scrollbar { display: none; }
+
+/* Intro card */
+.nbb-intro {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #F4EFE6;
+}
+
+.nbb-intro__photo-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.nbb-intro__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nbb-intro__panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-4) var(--space-3);
+  gap: var(--space-2);
+}
+
+.nbb-intro__logo {
+  height: 22px;
+  width: auto;
+  margin-bottom: var(--space-1);
+}
+
+.nbb-intro__headline {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #1E6B52;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.nbb-intro__sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0D1B1E;
+  line-height: 1.4;
+}
+
+/* Building block cards */
+.nbb-card {
+  flex-shrink: 0;
+  width: 220px;
+  height: 340px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.nbb-card__photo-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.nbb-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nbb-card__panel {
+  flex: 1;
+  background: #FBF0CE;
+  padding: var(--space-4);
+}
+
+.nbb-card__heading {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #1E6B52;
+  letter-spacing: 0.01em;
+  margin-bottom: var(--space-2);
+}
+
+.nbb-card__body {
+  font-size: 12.5px;
+  color: #0D1B1E;
+  line-height: 1.55;
+}

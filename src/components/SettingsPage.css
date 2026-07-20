@@ -1,0 +1,104 @@
+/* Toggle switch */
+.sp-field-toggle {}
+.sp-field-toggle__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.sp-toggle {
+  width: 44px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #EDE6D6;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background .2s;
+}
+
+.sp-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(30,50,42,.18);
+  transition: left .2s;
+}
+
+.sp-toggle--on { background: #1BBC3C }
+.sp-toggle--on .sp-toggle__thumb { left: 21px }
+
+/* Section hint text */
+.sp-section-hint {
+  padding: 10px 16px 0;
+  margin: 0;
+  font-size: 12px;
+  color: #5C5C5C;
+  line-height: 1.5;
+}
+
+/* Field hint */
+.sp-field-hint {
+  font-size: 12px;
+  color: #8A8A8A;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* Disabled toggle field (e.g. email/SMS without contact info) */
+.sp-field-toggle--disabled { opacity: 0.55 }
+.sp-field-toggle--disabled .sp-toggle { cursor: not-allowed }
+
+.sp-toggle:disabled { cursor: not-allowed }
+
+/* Inline banner inside a section (warning / info) */
+.sp-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 16px 4px;
+  padding: 10px 12px;
+  background: #FFF6E6;
+  border: 1px solid #FFE3A3;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #6E4500;
+  line-height: 1.45;
+}
+
+.sp-banner__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.sp-banner__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.sp-banner__body strong {
+  font-weight: 700;
+  color: #5A3500;
+}
+
+.sp-banner__cta {
+  flex-shrink: 0;
+  background: #1BBC3C;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sp-banner__cta:active { transform: scale(.96) }

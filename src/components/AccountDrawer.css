@@ -1,0 +1,283 @@
+/* ── ACCOUNT DRAWER ── */
+.ad-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(20, 14, 30, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: flex-end;
+  animation: adFadeIn .2s ease-out;
+}
+@keyframes adFadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.ad-drawer {
+  width: 88%;
+  max-width: 380px;
+  background: #fff;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  animation: adSlide .25s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+@keyframes adSlide { from { transform: translateX(100%) } to { transform: translateX(0) } }
+
+/* Header */
+.ad-header {
+  background: linear-gradient(135deg, var(--color-bg), var(--color-teal-light));
+  color: var(--color-text-primary);
+  padding: 20px 20px 24px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.ad-header__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.ad-avatar-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  border: 2px solid var(--color-border);
+  background: var(--color-teal-light);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  transition: transform .15s;
+}
+.ad-avatar-wrap:hover { transform: scale(1.04) }
+.ad-avatar-wrap:active { transform: scale(.96) }
+
+.ad-avatar {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-teal);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.ad-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9999px;
+  display: block;
+}
+
+.ad-avatar__plus {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  background: #E8EF65;
+  color: #1BBC3C;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1BBC3C;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+
+.ad-close {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.ad-close:hover { background: var(--color-border-light) }
+
+.ad-name {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  color: var(--color-text-primary);
+}
+
+/* Profile strength */
+.ad-strength {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.ad-strength__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.ad-strength__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.ad-strength__pct {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-teal);
+}
+.ad-strength__bar {
+  height: 5px;
+  background: var(--color-border-light);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.ad-strength__fill {
+  height: 100%;
+  background: var(--color-teal);
+  border-radius: 3px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+.ad-strength__tier {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ad-tier {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+.ad-tier--allstar  { background: var(--color-lime); color: var(--color-teal-dark) }
+.ad-tier--intermediate { background: var(--color-sage-light); color: var(--color-text-primary) }
+.ad-tier--beginner { background: var(--color-border-light); color: var(--color-text-secondary) }
+.ad-strength__cta {
+  background: none;
+  border: none;
+  color: var(--color-teal);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-family: inherit;
+}
+.ad-strength__cta:hover { color: var(--color-teal-dark) }
+
+/* Demo stage toggle */
+.ad-stage-toggle {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  padding: 3px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: 9999px;
+}
+.ad-stage-toggle__opt {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, color .15s;
+}
+.ad-stage-toggle__opt--active {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+/* Menu */
+.ad-menu { padding: 12px 12px 0; flex: 1; }
+
+.ad-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .12s;
+  font-family: inherit;
+}
+.ad-item:hover { background: #FFFCF5 }
+.ad-item:active { background: #E3F8E8 }
+
+.ad-item__icon {
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFCF5;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.ad-item__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.ad-item__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 1px;
+}
+
+.ad-item__desc {
+  font-size: 12px;
+  color: #8A8A8A;
+  line-height: 1.35;
+}
+
+.ad-item__chev {
+  font-size: 20px;
+  color: #C9BFE0;
+  flex-shrink: 0;
+}
+
+.ad-footer {
+  padding: 16px 20px 20px;
+  text-align: center;
+}
+.ad-footer p {
+  font-size: 11px;
+  color: #C9BFE0;
+  letter-spacing: 0.04em;
+  margin: 0;
+}

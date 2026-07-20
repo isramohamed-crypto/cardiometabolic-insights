@@ -1,0 +1,148 @@
+/* ── Daily Pillbox ── */
+.dp-card {
+  margin: 0 16px 8px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+  transition: background 0.4s;
+}
+
+.dp-card--done {
+  background: linear-gradient(135deg, #f0fdf9 0%, #fef9f0 100%);
+}
+
+.dp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dp-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-teal, #2D9B83);
+  margin: 0 0 3px;
+}
+
+.dp-score {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Checkmark badge when all done */
+.dp-all-done-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-teal, #2D9B83);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(45,155,131,.3);
+  animation: dpBadgeIn .3s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+@keyframes dpBadgeIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* SVG ring with count when partially done */
+.dp-progress-ring {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.dp-progress-ring__num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-teal, #2D9B83);
+}
+
+/* Pills row */
+.dp-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Individual pill */
+.dp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px 8px 10px;
+  border-radius: 99px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.dp-pill:hover {
+  border-color: var(--color-teal, #2D9B83);
+  color: var(--color-teal, #2D9B83);
+  background: #f0fdf9;
+}
+
+.dp-pill:active {
+  transform: scale(0.94);
+}
+
+.dp-pill--done {
+  background: var(--color-teal, #2D9B83);
+  border-color: var(--color-teal, #2D9B83);
+  color: #fff;
+}
+
+.dp-pill--done:hover {
+  background: #25876f;
+  border-color: #25876f;
+  color: #fff;
+}
+
+@keyframes dpPillPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.14); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.dp-pill--pop {
+  animation: dpPillPop 0.45s cubic-bezier(.36,.07,.19,.97) forwards;
+}
+
+.dp-pill__icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.dp-pill__label {
+  line-height: 1;
+}

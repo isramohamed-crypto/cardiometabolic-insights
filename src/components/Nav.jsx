@@ -1,0 +1,43 @@
+import React, { useState, useEffect } from 'react'
+
+const links = ['Today', 'Track', 'Learn', 'Prepare']
+
+export default function Nav({ activePage, setActivePage, onLogoClick, onAvatarClick, avatarInitial = 'C', avatarUrl = '' }) {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  return (
+    <header className={`nav${activePage !== 'Today' && activePage !== 'Prepare' && activePage !== 'Learn' && activePage !== 'Track' ? ' nav--secondary' : scrolled ? ' nav--scrolled' : ''}`}>
+      <div className="nav__brand">
+        <button className="nav__wordmark" onClick={onLogoClick} style={{background:'none',border:'none',cursor:'pointer',padding:0}}>
+          <span style={{display:'block',fontWeight:700,letterSpacing:'0.05em'}}>Vitalist</span>
+          <span style={{display:'block',fontSize:'10px',fontWeight:400,opacity:0.6,letterSpacing:'0.04em',textTransform:'uppercase',marginTop:'-2px'}}>by People Inc.</span>
+        </button>
+      </div>
+      <nav className="nav__links">
+        {links.map(link => (
+          <a
+            key={link}
+            href="#"
+            className={`nav__link${activePage === link ? ' nav__link--active' : ''}`}
+            onClick={e => { e.preventDefault(); setActivePage(link) }}
+          >
+            {link}
+          </a>
+        ))}
+      </nav>
+      <button className="nav__avatar" aria-label="Open account menu" onClick={onAvatarClick}>
+        {avatarUrl
+          ? <img src={avatarUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '9999px', display: 'block' }} />
+          : avatarInitial}
+      </button>
+    </header>
+  )
+}
