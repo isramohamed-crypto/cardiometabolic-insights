@@ -20,7 +20,7 @@ const Q2 = {
 }
 
 const Q3 = {
-  text: "What's driving you to focus on your health right now?",
+  text: "Let's explore why you're here.",
   sub: 'Pick the one that resonates most.',
   options: [
     { id: 'risk',       icon: '🔭', label: 'I want to get ahead of my risk',        desc: 'Proactive about future health before problems develop' },
