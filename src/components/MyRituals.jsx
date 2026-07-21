@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useProfileStage } from '../context/ProfileStageContext'
 import './MyRituals.css'
 
@@ -517,6 +517,29 @@ export default function MyRituals({ onAskAI }) {
   const [showPicker, setShowPicker]   = useState(false)
   const [pickerCat, setPickerCat]     = useState('Move')
   const [justDone, setJustDone]       = useState(new Set())
+
+  // Re-seed state whenever the profile stage toggles
+  useEffect(() => {
+    if (isMature) {
+      const matureTrials = {
+        hl_walk:  { addedAt: dateNDaysAgo(40), status: 'kept',  tier: 3 },
+        hl_fiber: { addedAt: dateNDaysAgo(14), status: 'trial', tier: 2 },
+      }
+      saveSelectedIds(MATURE_DEFAULT_IDS)
+      saveTrials(matureTrials)
+      setSelectedIds(MATURE_DEFAULT_IDS)
+      setTrials(matureTrials)
+    } else {
+      const cleanIds = getDefaultIds(conditions).slice(0, 1)
+      const newTrials = { [cleanIds[0]]: { addedAt: todayKey(), status: 'trial', tier: 1 } }
+      saveSelectedIds(cleanIds)
+      saveTrials(newTrials)
+      setSelectedIds(cleanIds)
+      setTrials(newTrials)
+    }
+    setShowPicker(false)
+    setCompletions(readTodayCompletions())
+  }, [isMature])
 
   const personalizedIds = new Set(
     HABIT_LIBRARY
