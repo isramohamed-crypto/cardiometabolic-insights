@@ -534,6 +534,13 @@
   border-color: var(--color-teal, #2D9B83);
 }
 
+.mr-slot--locked {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  border-style: dashed;
+  opacity: 0.6;
+}
+
 .mr-slots__label {
   font-size: 11px;
   font-weight: 600;
@@ -819,4 +826,84 @@
 .mr-empty-slot__sub {
   font-size: 11px;
   color: #cbd5e1;
+}
+
+/* ── Locked slot variant ── */
+.mr-empty-slot--locked {
+  cursor: default;
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  opacity: 0.75;
+}
+
+.mr-empty-slot--locked:hover {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+}
+
+.mr-empty-slot--locked .mr-empty-slot__label {
+  color: #94a3b8;
+}
+
+.mr-empty-slot--locked:hover .mr-empty-slot__label {
+  color: #94a3b8;
+}
+
+.mr-empty-slot--locked .mr-empty-slot__sub {
+  color: #94a3b8;
+}
+
+.mr-empty-slot__lock {
+  font-size: 22px;
+  margin-bottom: 6px;
+  opacity: 0.5;
+}
+
+/* ── Tier badge ── */
+.mr-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 18px;
+}
+
+.mr-tier-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #2D9B83, #1a7a65);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mr-picker__tier-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: #e6f7f4;
+  color: #2D9B83;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/* ── Level-up button ── */
+.mr-levelup-btn {
+  background: linear-gradient(135deg, #2D9B83, #1a7a65);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mr-levelup-btn:active {
+  opacity: 0.85;
 }
