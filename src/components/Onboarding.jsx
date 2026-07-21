@@ -100,6 +100,16 @@ const Q5 = {
   sub: 'Chosen for you based on what you shared. Try it for one week — you can always swap it.',
 }
 
+// ── Personalized response after Q3 ───────────────────────────────────────────
+const Q3_RESPONSES = {
+  risk:       { headline: "Great — let's get ahead of it.", body: "Vitalist will help you build small, science-backed habits that quietly lower your risk over time. No overhaul needed — just the right things, done consistently." },
+  confidence: { headline: "You're in the right place.", body: "Vitalist gives you a clear view of what you're doing, why it matters, and how it's moving the needle. Clarity creates control." },
+  sleep:      { headline: "Let's work on that together.", body: "Sleep and energy are deeply connected to cardiometabolic health. Vitalist will help you build the habits that restore both — one small step at a time." },
+  triggers:   { headline: "Let's figure it out together.", body: "Vitalist connects your daily habits to what's showing up in your body — so the patterns start making sense and you stop guessing." },
+  treatment:  { headline: "You've got a lot on your plate.", body: "Vitalist is built for people managing real complexity. It simplifies the daily piece so less falls through the cracks — and you can feel good about what you're doing." },
+  frustrated: { headline: "This time will be different.", body: "Vitalist works with your real day, not an ideal version of it. Small habits, chosen by you, that compound over weeks without the pressure to be perfect." },
+}
+
 // ── First-habit recommendation system ─────────────────────────────────────────
 // Mirrors data from MyRituals HABIT_LIBRARY for the onboarding card display.
 const HABIT_REC_DATA = {
@@ -189,6 +199,7 @@ function mapCode(field, v) {
 
 export default function Onboarding({ name, onClose }) {
   const [step, setStep] = useState(0)
+  const [showQ3Response, setShowQ3Response] = useState(false)
   const [q4ShowMore, setQ4ShowMore] = useState(false)
   const [habitIdx, setHabitIdx] = useState(0)
   const [completedHabitId, setCompletedHabitId] = useState(null)
@@ -407,8 +418,8 @@ export default function Onboarding({ name, onClose }) {
               </>
             )}
 
-            {/* Step 2: What's driving you */}
-            {step === 2 && (
+            {/* Step 2: Let's explore why you're here */}
+            {step === 2 && !showQ3Response && (
               <>
                 <div className="ob-q-text">{Q3.text}</div>
                 <div className="ob-q-sub">{Q3.sub}</div>
@@ -419,6 +430,22 @@ export default function Onboarding({ name, onClose }) {
                 />
               </>
             )}
+
+            {/* Step 2 response — personalized reply after motivation selection */}
+            {step === 2 && showQ3Response && (() => {
+              const resp = Q3_RESPONSES[ans.q3] || { headline: 'Great choice.', body: 'Vitalist will help you build habits that actually fit your life.' }
+              const firstName = (ans.q2 || '').trim().split(' ')[0]
+              return (
+                <div className="ob-q3-response">
+                  <div className="ob-q3-response__spark">✨</div>
+                  <h2 className="ob-q3-response__headline">
+                    {firstName ? `${firstName}, ` : ''}{resp.headline}
+                  </h2>
+                  <p className="ob-q3-response__body">{resp.body}</p>
+                  <p className="ob-q3-response__cue">Next, let's look at your health picture so we can tailor your habits.</p>
+                </div>
+              )
+            })()}
 
             {/* Step 3: Health picture (show 6, then show more) */}
             {step === 3 && (
@@ -521,13 +548,18 @@ export default function Onboarding({ name, onClose }) {
         <div className="ob-nav-row">
           {step === 0
             ? <span className="ob-nav-spacer" />
-            : <button className="ob-back" onClick={back}>← Back</button>
+            : <button className="ob-back" onClick={() => {
+                if (showQ3Response) { setShowQ3Response(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+                else back()
+              }}>← Back</button>
           }
           <button
             className="ob-next"
             disabled={!canContinue}
             onClick={() => {
-              if (step === TOTAL_QS - 1) completeWithHabit()
+              if (step === 2 && !showQ3Response) { setShowQ3Response(true); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+              else if (step === 2 && showQ3Response) { setShowQ3Response(false); next() }
+              else if (step === TOTAL_QS - 1) completeWithHabit()
               else next()
             }}
           >
