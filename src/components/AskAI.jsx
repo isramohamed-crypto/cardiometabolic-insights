@@ -540,6 +540,46 @@ function ChatBubble({ msg, onChip, onRecipeClick, onParentsOpen }) {
   )
 }
 
+// ── Greeting builder ─────────────────────────────────────────────────────────
+function buildGreeting() {
+  try {
+    const p = JSON.parse(localStorage.getItem('cardiometabolicProfile') || '{}')
+    const firstName = (p.name || '').trim().split(' ')[0]
+    const conditions = Array.isArray(p.condition) ? p.condition : []
+    const isReturning = !!p.completedAt
+
+    const hi = firstName ? `Hi ${firstName}!` : 'Hi there!'
+    const body = isReturning
+      ? `${hi} Good to see you. I can help you understand your habits, dig into the science behind them, or talk through anything on your mind.`
+      : `${hi} I'm your Vitalist health companion. Ask me anything about your habits, your health numbers, or where to start.`
+
+    // Condition-matched chips first, fill with defaults
+    const chips = []
+    if (conditions.some(c => /cholesterol/i.test(c)))   chips.push('What actually moves my cholesterol?')
+    if (conditions.some(c => /blood pressure/i.test(c))) chips.push('Best habits for blood pressure?')
+    if (conditions.some(c => /diabetes/i.test(c)))       chips.push('How does exercise affect blood sugar?')
+    if (conditions.some(c => /menopause/i.test(c)))      chips.push('What helps most during menopause?')
+    if (conditions.some(c => /weight|glp/i.test(c)))     chips.push('Tips for staying consistent with GLP-1')
+    const defaults = [
+      "I'm overwhelmed — where do I start?",
+      'How do small habits compound over time?',
+      'What does the research say about my habits?',
+      'What are the best habits for heart health?',
+    ]
+    for (const d of defaults) {
+      if (chips.length >= 4) break
+      chips.push(d)
+    }
+
+    return { text: body, chips: chips.slice(0, 4) }
+  } catch {
+    return {
+      text: "Hi! I'm your Vitalist health companion. What can I help you with today?",
+      chips: ["I'm overwhelmed — where do I start?", 'What are the best habits for heart health?', 'How do small habits compound over time?', 'What does the research say?'],
+    }
+  }
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function AskAI({ habitContext = null, onClearHabitContext = null }) {
@@ -722,7 +762,17 @@ export default function AskAI({ habitContext = null, onClearHabitContext = null 
         <button
           className="ask-ai__fab"
           aria-label="Ask Vitalist AI"
-          onClick={() => { setOpen(true); setShowSuggestions(true) }}
+          onClick={() => {
+            setOpen(true)
+            setShowSuggestions(true)
+            if (messages.length === 0) {
+              setTyping(true)
+              setTimeout(() => {
+                setTyping(false)
+                setMessages([{ role: 'ai', ...buildGreeting() }])
+              }, 700)
+            }
+          }}
         >
           ✨
         </button>
