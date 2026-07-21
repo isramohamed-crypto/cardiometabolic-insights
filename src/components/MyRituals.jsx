@@ -458,8 +458,8 @@ export default function MyRituals({ onAskAI }) {
       {/* Header */}
       <div className="mr-header">
         <div>
-          <p className="mr-eyebrow">My Rituals</p>
-          <h2 className="mr-title">Complete your rituals</h2>
+          <p className="mr-eyebrow">My Habits</p>
+          <h2 className="mr-title">Complete your habits</h2>
         </div>
         <div className="mr-header__right">
           {selectedHabits.length > 0 && (
@@ -473,7 +473,7 @@ export default function MyRituals({ onAskAI }) {
           <button
             className={`mr-plus-btn${showPicker ? ' mr-plus-btn--open' : ''}${selectedHabits.length >= MAX_SLOTS ? ' mr-plus-btn--full' : ''}`}
             onClick={() => selectedHabits.length < MAX_SLOTS && setShowPicker(s => !s)}
-            aria-label={showPicker ? 'Close' : selectedHabits.length >= MAX_SLOTS ? 'All slots filled' : 'Add ritual'}
+            aria-label={showPicker ? 'Close' : selectedHabits.length >= MAX_SLOTS ? 'All slots filled' : 'Add habit'}
             disabled={selectedHabits.length >= MAX_SLOTS && !showPicker}
           >
             {showPicker ? '✕' : '+'}
@@ -513,7 +513,7 @@ export default function MyRituals({ onAskAI }) {
             ))}
           </div>
           <p className="mr-picker__heading">
-            {pickerFiltered.length === 0 ? 'All rituals in this category are added' : 'Add a ritual'}
+            {pickerFiltered.length === 0 ? 'All habits in this category are added' : 'Add a habit'}
           </p>
           <div className="mr-picker__list">
             {pickerFiltered.map(habit => {
@@ -547,7 +547,7 @@ export default function MyRituals({ onAskAI }) {
       {/* Habit cards */}
       <div className="mr-list">
         {selectedHabits.length === 0 && (
-          <p className="mr-empty">Tap + to add your first ritual.</p>
+          <p className="mr-empty">Tap + to add your first habit.</p>
         )}
         {selectedHabits.map(habit => {
           const isDone     = completions.includes(habit.id)
@@ -652,7 +652,7 @@ export default function MyRituals({ onAskAI }) {
         {Array.from({ length: MAX_SLOTS - selectedHabits.length }).map((_, i) => (
           <button key={`slot-${i}`} className="mr-empty-slot" onClick={() => setShowPicker(true)} aria-label="Add a habit">
             <div className="mr-empty-slot__plus">+</div>
-            <div className="mr-empty-slot__label">Add a ritual</div>
+            <div className="mr-empty-slot__label">Add a habit</div>
             <div className="mr-empty-slot__sub">Try it for one week</div>
           </button>
         ))}

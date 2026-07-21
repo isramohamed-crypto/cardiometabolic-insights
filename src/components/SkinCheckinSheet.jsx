@@ -380,11 +380,11 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
       const hasMind = selected.some(id => ['hl_breathe','hl_grateful'].includes(id))
       const hasSleep = selected.includes('hl_sleep')
       if ((movement === 'not-yet' || movement === 'little') && !hasMovement)
-        return { emoji: '🚶', text: "You haven't moved much today — want to make it a daily habit?", cta: 'Add a movement ritual' }
+        return { emoji: '🚶', text: "You haven't moved much today — want to make it a daily habit?", cta: 'Add a movement habit' }
       if (stress >= 4 && !hasMind)
-        return { emoji: '💨', text: "High stress logged — a short breathing ritual can help buffer it.", cta: 'Add a breathing ritual' }
+        return { emoji: '💨', text: "High stress logged — a short breathing habit can help buffer it.", cta: 'Add a breathing habit' }
       if (sleep === 'poorly' && !hasSleep)
-        return { emoji: '😴', text: "Poor sleep logged — tracking it as a ritual helps surface patterns.", cta: 'Add a sleep ritual' }
+        return { emoji: '😴', text: "Poor sleep logged — tracking it as a habit helps surface patterns.", cta: 'Add a sleep habit' }
     } catch (_) {}
     return null
   }

@@ -36,22 +36,22 @@ const CANNED_RESPONSES = {
   'Diet & eating': [
     "Good choice — diet has the most direct impact on LDL.",
     "A few changes that consistently move the needle:\n• Swap saturated fats (butter, red meat) for unsaturated fats (olive oil, avocado, nuts)\n• Add soluble fiber daily — oats, beans, flaxseed\n• Reduce ultra-processed and fried foods\n• Limit alcohol, which raises triglycerides",
-    "Your My Rituals section has heart-healthy eating habits already lined up for you — short, realistic, and they build over time. Scroll down to check them out.",
+    "Your My Habits section has heart-healthy eating habits already lined up for you — short, realistic, and they build over time. Scroll down to check them out.",
   ],
   'Movement': [
     "Exercise has a direct effect on HDL — the \"good\" cholesterol.",
     "Even 20–30 minutes of moderate activity most days can meaningfully shift your lipid profile over 3–6 months. Walking counts.\n\nThe most sustainable routine is one that fits your actual life, not an ideal version of it.",
-    "Your My Rituals section has movement habits sized for busy schedules — even on the hardest days there's something doable.",
+    "Your My Habits section has movement habits sized for busy schedules — even on the hardest days there's something doable.",
   ],
   'Sleep': [
     "Sleep is more connected to cardiometabolic health than most people realize.",
     "Poor sleep raises cortisol, which increases blood sugar and can raise LDL. Even going from 6 to 7 hours consistently shifts things over time.\n\n• Consistent wake time matters more than bedtime\n• Avoid screens 30–60 min before bed\n• Keep your room cool and dark",
-    "Your My Rituals section includes simple wind-down habits — small things that compound over weeks.",
+    "Your My Habits section includes simple wind-down habits — small things that compound over weeks.",
   ],
   'Stress management': [
     "Chronic stress has a real, measurable effect on cholesterol — it's not just a mental health issue.",
     "When stress is sustained, cortisol increases LDL and triglycerides and decreases HDL. Managing stress is genuinely part of managing your numbers.\n\n• Short breathing exercises (even 2 minutes) lower cortisol noticeably\n• Light movement is one of the fastest stress relievers\n• Social connection is protective — not a luxury",
-    "Your My Rituals section includes a few stress-relief habits that take under 10 minutes. Worth trying one this week.",
+    "Your My Habits section includes a few stress-relief habits that take under 10 minutes. Worth trying one this week.",
   ],
 }
 

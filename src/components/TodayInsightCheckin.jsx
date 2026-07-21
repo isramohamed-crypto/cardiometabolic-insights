@@ -290,7 +290,7 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
               <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=160&q=80" alt="" className="ic-card__img" />
             </div>
             <div className="ic-card__body">
-              <span className="ic-card__badge ic-card__badge--ritual">Ritual · 5 min</span>
+              <span className="ic-card__badge ic-card__badge--ritual">Habit · 5 min</span>
               <p className="ic-card__title">Box breathing reset — lowers cortisol in minutes</p>
               <span className="ic-card__source">Vitalist AI</span>
             </div>

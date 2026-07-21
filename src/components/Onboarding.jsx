@@ -306,7 +306,7 @@ export default function Onboarding({ name, onClose }) {
             <div className="ob-win__badge">✓</div>
             <h2 className="ob-win__title">{winTitle}</h2>
             <p className="ob-win__sub">
-              We've added this to your daily rituals. Try it for one week — that's all it takes to see a difference.
+              We've added this to your daily habits. Try it for one week — that's all it takes to see a difference.
             </p>
 
             {/* Habit card — confirmed state */}
@@ -336,7 +336,7 @@ export default function Onboarding({ name, onClose }) {
               <div className="ob-win__wn-title">What happens next</div>
               <div className="ob-win__wn-row">
                 <span className="ob-win__wn-dot ob-win__wn-dot--1" />
-                <span>Your ritual shows up on your home feed every day</span>
+                <span>Your habit shows up on your home feed every day</span>
               </div>
               <div className="ob-win__wn-row">
                 <span className="ob-win__wn-dot ob-win__wn-dot--2" />

@@ -75,7 +75,7 @@ export default function DailyPillbox({ tick = 0 }) {
     <div className={`dp-card${allDone ? ' dp-card--done' : ''}`}>
       <div className="dp-header">
         <div>
-          <p className="dp-eyebrow">Today's rituals</p>
+          <p className="dp-eyebrow">Today's habits</p>
           <p className="dp-score">
             {allDone
               ? "All done today 🔥"
