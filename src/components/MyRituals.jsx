@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useProfileStage } from '../context/ProfileStageContext'
 import './MyRituals.css'
 
@@ -517,6 +517,12 @@ export default function MyRituals({ onAskAI }) {
   const [showPicker, setShowPicker]   = useState(false)
   const [pickerCat, setPickerCat]     = useState('Move')
   const [justDone, setJustDone]       = useState(new Set())
+  const [justUnlocked, setJustUnlocked] = useState(false)
+  const prevUnlockedRef = useRef(null)
+
+  // Derive slot counts early so useEffect below can reference unlockedSlots
+  const succeededCount = getSucceededCount(trials)
+  const unlockedSlots  = Math.min(MAX_SLOTS, 1 + succeededCount)
 
   // Re-seed state whenever the profile stage toggles
   useEffect(() => {
@@ -541,6 +547,15 @@ export default function MyRituals({ onAskAI }) {
     setCompletions(readTodayCompletions())
   }, [isMature])
 
+  // Detect slot unlock and trigger animation
+  useEffect(() => {
+    if (prevUnlockedRef.current !== null && unlockedSlots > prevUnlockedRef.current) {
+      setJustUnlocked(true)
+      setTimeout(() => setJustUnlocked(false), 1200)
+    }
+    prevUnlockedRef.current = unlockedSlots
+  }, [unlockedSlots])
+
   const personalizedIds = new Set(
     HABIT_LIBRARY
       .filter(h => h.conditions.length > 0 && h.conditions.some(c => conditions.includes(c)))
@@ -553,8 +568,6 @@ export default function MyRituals({ onAskAI }) {
   const allDone        = selectedHabits.length > 0 && doneToday === selectedHabits.length
 
   // Slot locking: start with 1 unlocked; each kept T2+ habit unlocks the next
-  const succeededCount       = getSucceededCount(trials)
-  const unlockedSlots        = Math.min(MAX_SLOTS, 1 + succeededCount)
   const lockedSlots          = MAX_SLOTS - unlockedSlots
   const openSlots            = Math.max(0, unlockedSlots - selectedHabits.length)
   const hasUnresolvedComplete = Object.entries(trials).some(
@@ -779,6 +792,9 @@ export default function MyRituals({ onAskAI }) {
                 )}
               </div>
 
+              {/* Collapsible sections — hidden when logged */}
+              <div className={`mr-card__collapsible${isDone ? ' mr-card__collapsible--hidden' : ''}`}>
+
               {/* Trial section */}
               {trials[habit.id]?.status === 'trial' && (() => {
                 const day        = trialDay(trials[habit.id]?.addedAt)
@@ -842,13 +858,20 @@ export default function MyRituals({ onAskAI }) {
                   ✨ Ask Vitalist AI about this habit
                 </button>
               )}
+
+              </div>{/* end collapsible */}
             </div>
           )
         })}
 
         {/* Open empty slot cards — unlocked and available */}
         {Array.from({ length: openSlots }).map((_, i) => (
-          <button key={`slot-open-${i}`} className="mr-empty-slot" onClick={() => setShowPicker(true)} aria-label="Add a habit">
+          <button
+            key={`slot-open-${i}`}
+            className={`mr-empty-slot${justUnlocked && i === openSlots - 1 ? ' mr-empty-slot--just-unlocked' : ''}`}
+            onClick={() => setShowPicker(true)}
+            aria-label="Add a habit"
+          >
             <div className="mr-empty-slot__plus">+</div>
             <div className="mr-empty-slot__label">Add a habit</div>
             <div className="mr-empty-slot__sub">Try it for 2 weeks</div>

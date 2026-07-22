@@ -242,45 +242,31 @@ export default function App() {
             </div> */}
           </div>
           {/* Today screen section order:
-              1 hero · 2 AI · 3 daily check-in · 4 quick answers ·
-              5 tips for you · 6 peer stories · 7 watch now ·
-              8 interests · 9 swipe learn */}
+              1 hero · 2 daily habits · 3 for you content · 4 AI + check-in */}
 
           {/* My Numbers now lives on the Track tab only — see TrackPage.jsx */}
 
+          <MyRituals key={ritualsKey} onAskAI={setHabitAIContext} />
+
           {/* For you — habit-matched content (articles, recipes, videos) */}
           <ContentSection />
-
-          <MyRituals key={ritualsKey} onAskAI={setHabitAIContext} />
 
           {/* AI insight + daily check-in */}
           <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
           {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
 
-          {/* Embracing mindfulness — above Amgen ad + wardrobe upgrades */}
-          <VeryWellSection />
-
-          <div className="sponsor-card-wrap">
-            <SponsorBanner variant="card" />
-          </div>
-
-          {/* Wardrobe upgrades + Nutrition Building Blocks */}
-          <InStyleSection />
-
-          {/* Nutrition Building Blocks — EatingWell featured content */}
-          <NutritionBuildingBlocksSection />
-
-          <StoriesSection onNavigate={target => { setActivePage(target); window.scrollTo(0, 0) }} />
-
-          {/* Watch Now: video for deeper learning */}
-          <WatchNow />
-
-          {/* 9 — Swipe Learn */}
-          <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
-          <SponsorBanner />
-
           {/* Archived — collapsed by default */}
           <ArchivedSection>
+            <VeryWellSection />
+            <div className="sponsor-card-wrap">
+              <SponsorBanner variant="card" />
+            </div>
+            <InStyleSection />
+            <NutritionBuildingBlocksSection />
+            <SponsorBanner />
+            <StoriesSection onNavigate={target => { setActivePage(target); window.scrollTo(0, 0) }} />
+            <WatchNow />
+            <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
             <ParentsCaregiverSupportSection />
             <PeerStories />
             <QuickAnswers />

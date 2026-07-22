@@ -55,8 +55,8 @@ export default function Hero({ firstName }) {
       </p>
       <p className="hero__greeting-sub">
         {isNew
-          ? 'Let’s start building your health picture.'
-          : 'You’re on a roll — here’s what’s new today.'}
+          ? ‘Let’s start building your health picture.’
+          : ‘Your habits first, then picks for you.’}
       </p>
     </section>
   )
