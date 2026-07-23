@@ -21,6 +21,24 @@ function readYoursCount() {
 function readYoursSeen() {
   try { return parseInt(localStorage.getItem('vitalistExp_yoursSeen') || '0', 10) || 0 } catch { return 0 }
 }
+// A 30-day ownership check-in is due on an established habit
+function readCheckinDue() {
+  try {
+    const habits   = JSON.parse(localStorage.getItem('vitalistExp_habits') || '[]') || []
+    const coll     = JSON.parse(localStorage.getItem('vitalistExp_collection') || '[]') || []
+    const checkins = JSON.parse(localStorage.getItem('vitalistExp_checkins') || '{}') || {}
+    const established = [
+      ...coll.filter(h => h.status === 'established' || h.status === 'graduated'),
+      ...habits.filter(h => h.status === 'kept'),
+    ]
+    return established.some(h => {
+      const last = checkins[h.id]?.date || h.addedAt
+      if (!last) return false
+      const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000)
+      return days >= 30
+    })
+  } catch { return false }
+}
 
 function handleURLParams() {
   if (typeof window === 'undefined') return
@@ -106,13 +124,18 @@ function MePage({ onNavigate }) {
   )
 }
 
-function MenuOverlay({ onClose }) {
-  function reset(profile) {
-    if (!seedProfile(profile)) {
-      try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
-    }
-    window.location.reload()
-  }
+function AppHeader({ onMenu }) {
+  return (
+    <div className="app-header">
+      <span className="app-header__logo">Vitalist<span className="app-header__by">by People Inc.</span></span>
+      <button className="app-header__menu" onClick={onMenu} aria-label="Menu">
+        <span/><span/><span/>
+      </button>
+    </div>
+  )
+}
+
+function MenuOverlay({ current, onClose, onSwitch, onReset }) {
   const profiles = [
     { id: 'new',         label: 'New user',        sub: 'Day 1 — one habit, just starting' },
     { id: 'established', label: 'Established user', sub: '2 kept habits, 1 trial, 1 graduated' },
@@ -125,23 +148,21 @@ function MenuOverlay({ onClose }) {
 
         <p className="menu-panel__section">Switch profile</p>
         {profiles.map(p => (
-          <button key={p.id} className="menu-panel__row" onClick={() => reset(p.id)}>
+          <button
+            key={p.id}
+            className={`menu-panel__row${current === p.id ? ' on' : ''}`}
+            onClick={() => onSwitch(p.id)}
+          >
             <div>
               <div className="menu-panel__row-label">{p.label}</div>
               <div className="menu-panel__row-sub">{p.sub}</div>
             </div>
-            <span className="menu-panel__arrow">→</span>
+            <span className="menu-panel__arrow">{current === p.id ? '✓' : '→'}</span>
           </button>
         ))}
 
         <p className="menu-panel__section">Reset</p>
-        <button
-          className="menu-panel__row"
-          onClick={() => {
-            try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
-            window.location.reload()
-          }}
-        >
+        <button className="menu-panel__row" onClick={onReset}>
           <div>
             <div className="menu-panel__row-label">Start onboarding fresh</div>
             <div className="menu-panel__row-sub">Clears all data</div>
@@ -161,9 +182,24 @@ export default function App() {
   const [activePage, setActivePage] = useState('Building')
   const [menuOpen, setMenuOpen]     = useState(false)
   const [yoursSeen, setYoursSeen]   = useState(() => readYoursSeen())
+  const [profile, setProfile]       = useState(() => { try { return localStorage.getItem('vitalistExp_profile') || '' } catch { return '' } })
+  const [dataVersion, setDataVersion] = useState(0) // bump to remount pages after a profile swap
+
+  // Switch demo profile in place — no reload, no onboarding, stay on current page
+  function switchProfile(id) {
+    seedProfile(id)
+    try { localStorage.setItem('vitalistExp_profile', id) } catch {}
+    setProfile(id)
+    setMenuOpen(false)
+    setDataVersion(v => v + 1)
+  }
+  function resetAll() {
+    setMenuOpen(false)
+    resetOnboarding()
+  }
 
   const yoursCount = readYoursCount()
-  const yoursBadge = activePage !== 'Yours' && yoursCount > yoursSeen
+  const yoursBadge = activePage !== 'Yours' && (yoursCount > yoursSeen || readCheckinDue())
 
   // While viewing Yours, keep "seen" synced so self-adds don't nudge
   useEffect(() => {
@@ -193,16 +229,25 @@ export default function App() {
     return <ExpOnboarding onComplete={() => setComplete(true)} />
   }
 
+  const openMenu = () => setMenuOpen(true)
+
   return (
     <div className={`exp-app${activePage === 'Building' ? ' dark-nav' : ''}`}>
-      <div className="exp-page">
-        {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={() => setMenuOpen(true)} />}
-        {activePage === 'Read'     && <ReadPage />}
-        {activePage === 'Yours'    && <CollectionPage />}
-        {activePage === 'Me'       && <MePage onNavigate={navigate} />}
+      <div className="exp-page" key={dataVersion}>
+        {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={openMenu} />}
+        {activePage === 'Read'     && <><AppHeader onMenu={openMenu} /><ReadPage /></>}
+        {activePage === 'Yours'    && <><AppHeader onMenu={openMenu} /><CollectionPage /></>}
+        {activePage === 'Me'       && <><AppHeader onMenu={openMenu} /><MePage onNavigate={navigate} /></>}
       </div>
       <BottomNav activePage={activePage} onNavigate={navigate} badges={{ Yours: yoursBadge }} />
-      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
+      {menuOpen && (
+        <MenuOverlay
+          current={profile}
+          onClose={() => setMenuOpen(false)}
+          onSwitch={switchProfile}
+          onReset={resetAll}
+        />
+      )}
     </div>
   )
 }

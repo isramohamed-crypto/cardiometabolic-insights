@@ -8,7 +8,7 @@
 
 /* ── Header ──────────────────────────────────────────────────────────────── */
 .cp-header {
-  padding: 52px 20px 18px;
+  padding: 20px 20px 18px;
   border-bottom: 1px solid #ece5da;
   margin-bottom: 24px;
 }
@@ -108,6 +108,83 @@
   margin-right: 14px;
 }
 
+/* ── 30-day check-in nudge ───────────────────────────────────────────────── */
+.cp-checkin-nudge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: calc(100% - 40px);
+  margin: 0 20px 24px;
+  background: #eef2f8;
+  border: 1px solid #cdd9ec;
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  font-family: 'Mulish', sans-serif;
+  text-align: left;
+  transition: background .15s;
+}
+.cp-checkin-nudge:hover { background: #e4ebf5; }
+.cp-checkin-nudge__dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #b7442c;
+  flex-shrink: 0;
+}
+.cp-checkin-nudge__txt { flex: 1; }
+.cp-checkin-nudge__hed {
+  font: 800 14px 'Mulish', sans-serif;
+  color: #1b2a4a;
+  margin: 0;
+}
+.cp-checkin-nudge__sub {
+  font-size: 12.5px;
+  color: #5b6b82;
+  margin: 2px 0 0;
+}
+.cp-checkin-nudge__go {
+  font-size: 18px;
+  color: #4a6a9a;
+  flex-shrink: 0;
+}
+
+/* ── Check-in sheet items ────────────────────────────────────────────────── */
+.cp-ci__note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #7b7168;
+  margin: 0 0 14px;
+}
+.cp-ci {
+  border: 1px solid #e7ded2;
+  border-radius: 14px;
+  padding: 13px 14px;
+}
+.cp-ci__label {
+  font: 700 15px 'Mulish', sans-serif;
+  color: #1b2a4a;
+  margin: 0 0 10px;
+}
+.cp-ci__opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.cp-ci__btn {
+  background: #f3ece3;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 700 13px 'Mulish', sans-serif;
+  color: #1b2a4a;
+  cursor: pointer;
+  transition: all .15s;
+}
+.cp-ci__btn:hover { background: #ece4db; }
+.cp-ci__btn--keep { background: #eaf3ee; color: #2f7d5e; }
+.cp-ci__btn--keep:hover { background: #dcecE4; }
+.cp-ci__done {
+  font: 800 13px 'Mulish', sans-serif;
+  color: #2f7d5e;
+  margin: 0;
+}
+
 /* ── Section note (subtext under a section label) ────────────────────────── */
 .cp-section__note {
   padding: 0 20px;
@@ -115,7 +192,6 @@
   font-size: 13px;
   line-height: 1.45;
   color: #7b7168;
-  max-width: 34ch;
 }
 
 /* ── Filter pills ────────────────────────────────────────────────────────── */

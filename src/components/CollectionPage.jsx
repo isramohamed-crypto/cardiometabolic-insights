@@ -43,6 +43,21 @@ function readSources() {
 function writeSources(s) {
   try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
 }
+
+// ── 30-day ownership check-in ───────────────────────────────────────────────
+const CHECKIN_DAYS = 30
+const ANSWER_LABEL = { automatic: 'Still automatic', slipping: 'Working on it', stopped: 'Set aside' }
+function readCheckins() {
+  try { return JSON.parse(localStorage.getItem('vitalistExp_checkins') || '{}') } catch { return {} }
+}
+function writeCheckins(c) {
+  try { localStorage.setItem('vitalistExp_checkins', JSON.stringify(c)) } catch {}
+}
+function daysSince(dateStr) {
+  if (!dateStr) return Infinity
+  const t = new Date(dateStr).getTime()
+  return isNaN(t) ? Infinity : Math.floor((Date.now() - t) / 86400000)
+}
 const WatchIcon = (
   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5.5"/><path d="M8.5 3.5 9 8M15.5 3.5 15 8M8.5 20.5 9 16M15.5 20.5 15 16M12 9.5V12l1.8 1"/></svg>
 )
@@ -92,12 +107,19 @@ function writeCollection(c) {
 function readActiveHabits() {
   try { return JSON.parse(localStorage.getItem('vitalistExp_habits') || '[]') } catch { return [] }
 }
+function writeActiveHabits(a) {
+  try { localStorage.setItem('vitalistExp_habits', JSON.stringify(a)) } catch {}
+}
 
 export default function CollectionPage() {
   const [collection, setCollection] = useState(() => readCollection())
   const [filter, setFilter]         = useState('all')
   const [showAdd, setShowAdd]       = useState(false)
   const [sources, setSources]       = useState(() => readSources())
+  const [checkins, setCheckins]     = useState(() => readCheckins())
+  const [activeHabits, setActiveHabits] = useState(() => readActiveHabits())
+  const [checkInOpen, setCheckInOpen] = useState(false)
+  const [checkInList, setCheckInList] = useState([])
 
   function connectSource(source) {
     if (sources.includes(source)) return
@@ -105,13 +127,37 @@ export default function CollectionPage() {
     setSources(next)
     writeSources(next)
   }
+  function recordCheckin(habit, answer) {
+    const today = new Date().toISOString().slice(0, 10)
+    const nextChecks = { ...checkins, [habit.id]: { date: today, answer } }
+    setCheckins(nextChecks)
+    writeCheckins(nextChecks)
 
-  const activeHabits = readActiveHabits()
+    if (answer === 'automatic') return // stays in My Habits
+
+    // Remove from wherever it currently lives (kept in habits, or graduated in collection)
+    const coll = collection.filter(h => h.id !== habit.id)
+    let acts   = activeHabits.filter(h => h.id !== habit.id)
+
+    if (answer === 'slipping') {
+      // Back to "Working on it" as a fresh trial
+      acts = [...acts, { ...habit, status: 'trial', tier: 1, addedAt: today }]
+    }
+    // 'stopped' → set aside: simply removed from both
+
+    setCollection(coll);   writeCollection(coll)
+    setActiveHabits(acts); writeActiveHabits(acts)
+  }
+  function isDue(h) {
+    return daysSince(checkins[h.id]?.date || h.addedAt) >= CHECKIN_DAYS
+  }
+
   const trialHabits  = activeHabits.filter(h => h.status === 'trial')
   const keptHabits   = activeHabits.filter(h => h.status === 'kept')
   const graduated    = collection.filter(h => h.status === 'graduated' || h.status === 'established')
 
   const myHabits     = [...graduated, ...keptHabits]
+  const dueHabits    = myHabits.filter(isDue)
   const hasAnything  = trialHabits.length > 0 || myHabits.length > 0
 
   // Show every category as a filter so users can pick one, then add into it
@@ -164,6 +210,20 @@ export default function CollectionPage() {
         <p className="cp-header__eye">Your collection</p>
         <h1 className="cp-header__title">The person you're <em>becoming.</em></h1>
       </div>
+
+      {/* 30-day ownership check-in nudge */}
+      {dueHabits.length > 0 && (
+        <button className="cp-checkin-nudge" onClick={() => { setCheckInList(dueHabits); setCheckInOpen(true) }}>
+          <span className="cp-checkin-nudge__dot" />
+          <div className="cp-checkin-nudge__txt">
+            <p className="cp-checkin-nudge__hed">Still yours?</p>
+            <p className="cp-checkin-nudge__sub">
+              {dueHabits.length} habit{dueHabits.length > 1 ? 's' : ''} due for a quick 30-day check-in.
+            </p>
+          </div>
+          <span className="cp-checkin-nudge__go">→</span>
+        </button>
+      )}
 
       {/* Working on it — trial habits */}
       {trialHabits.length > 0 && (
@@ -241,6 +301,50 @@ export default function CollectionPage() {
       {showAdd && (
         <AddSheet filter={filter} ownedLabels={ownedLabels} onAdd={addHabit} onClose={() => setShowAdd(false)} />
       )}
+
+      {checkInOpen && (
+        <CheckInSheet habits={checkInList} onAnswer={recordCheckin} onClose={() => setCheckInOpen(false)} />
+      )}
+    </div>
+  )
+}
+
+// ── 30-day check-in sheet ───────────────────────────────────────────────────
+function CheckInSheet({ habits, onAnswer, onClose }) {
+  const [answered, setAnswered] = useState({})
+  function pick(h, ans) {
+    setAnswered(prev => ({ ...prev, [h.id]: ans }))
+    onAnswer(h, ans)
+  }
+  const allDone = habits.length > 0 && habits.every(h => answered[h.id])
+  return (
+    <div className="cp-sheet" onClick={onClose}>
+      <div className="cp-sheet__panel" onClick={e => e.stopPropagation()}>
+        <div className="cp-sheet__handle" />
+        <p className="cp-sheet__eye">30-day check-in</p>
+        <h3 className="cp-sheet__title">Still part of your days?</h3>
+        <p className="cp-ci__note">Honest answers keep your collection real — slipping habits go back to your daily routine.</p>
+        <div className="cp-sheet__scroll">
+          {habits.map(h => {
+            const a = answered[h.id]
+            return (
+              <div key={h.id} className="cp-ci">
+                <p className="cp-ci__label">{h.label}</p>
+                {a ? (
+                  <p className="cp-ci__done">✓ {ANSWER_LABEL[a]}</p>
+                ) : (
+                  <div className="cp-ci__opts">
+                    <button className="cp-ci__btn cp-ci__btn--keep" onClick={() => pick(h, 'automatic')}>Still automatic</button>
+                    <button className="cp-ci__btn" onClick={() => pick(h, 'slipping')}>Slipping · back to daily</button>
+                    <button className="cp-ci__btn" onClick={() => pick(h, 'stopped')}>Not anymore</button>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+        <button className="cp-sheet__done" onClick={onClose}>{allDone ? 'Done' : 'Close'}</button>
+      </div>
     </div>
   )
 }

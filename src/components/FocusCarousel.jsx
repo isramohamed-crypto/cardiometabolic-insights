@@ -66,6 +66,106 @@ function CardWearable({ habit, sources, onConnect }) {
   )
 }
 
+// ── Editorial content teed up per habit (from the Read library) ─────────────
+const CONTENT = {
+  move: {
+    source: 'EatingWell', read: '4 min', eye: 'Movement & metabolism',
+    hed: 'The nighttime walk that may balance blood sugar',
+    body: [
+      'A short walk after dinner is one of the most studied — and most underrated — things you can do for your metabolism. When you move right after eating, your muscles pull glucose out of your bloodstream for fuel, blunting the post-meal spike that would otherwise strain your body over time.',
+      'The research puts it at up to a 22% smaller rise in blood sugar, and you don\'t need a workout to get it. Ten minutes counts. Even three counts. The point isn\'t intensity — it\'s timing.',
+      'That\'s why Vitalist ties this one to dinner: the habit rides on something you already do every night, so it asks almost nothing of you and compounds quietly on its own.',
+    ],
+  },
+  strong: {
+    source: 'Verywell Health', read: '5 min', eye: 'Strength & longevity',
+    hed: 'How weekly strength training helps you live longer',
+    body: [
+      'Strength isn\'t about aesthetics — it\'s one of the clearest predictors of how well you age. Muscle is metabolically active tissue that helps regulate blood sugar, supports your joints, and keeps you independent decades from now.',
+      'The encouraging part: you don\'t need a gym or heavy weights. Bodyweight movements done consistently — a set of squats before your shower — deliver most of the benefit. Consistency beats intensity every time.',
+    ],
+  },
+  sleep: {
+    source: 'Verywell Health', read: '4 min', eye: 'Sleep science',
+    hed: 'Wake at the same time every day',
+    body: [
+      'Sleep scientists largely agree on the single most effective lever for better sleep, and it\'s probably not what you\'d guess. It isn\'t total hours — it\'s the consistency of your wake time.',
+      'A steady wake time anchors your circadian rhythm, so your body starts to feel sleepy and alert at predictable times. Over a couple of weeks, falling asleep gets easier without any extra effort at night.',
+      'That\'s why this habit focuses on the morning, not bedtime — the lever that actually moves the system.',
+    ],
+  },
+  stress: {
+    source: 'Verywell Mind', read: '4 min', eye: 'Stress & the nervous system',
+    hed: 'The benefits of deep breathing',
+    body: [
+      'Five slow breaths can shift your body out of fight-or-flight faster than almost anything else. Long, slow exhales activate the parasympathetic nervous system — your body\'s built-in calm-down switch.',
+      'The trick is to make the exhale longer than the inhale. That\'s the signal your nervous system reads as "safe." Done before you reach for your phone, it interrupts the stress-scroll loop before it starts.',
+    ],
+  },
+  connect: {
+    source: 'Verywell Mind', read: '5 min', eye: 'Connection & health',
+    hed: 'How social isolation affects your health',
+    body: [
+      'Loneliness isn\'t only hard emotionally — researchers now treat chronic isolation as a physical health risk on par with smoking. Connection buffers stress, supports the heart, and even influences how long we live.',
+      'The good news is that small, regular contact does most of the work: a standing weekly call, a short walk with a friend. It\'s frequency, not grand gestures, that builds belonging.',
+    ],
+  },
+  eat: {
+    source: 'EatingWell', read: '4 min', eye: 'Nutrition & glucose',
+    hed: '5 best breakfast foods for blood sugar',
+    body: [
+      'What you eat first thing sets the tone for your glucose response all day. A breakfast anchored in protein and fiber — rather than fast carbs alone — flattens the morning spike and keeps energy steadier into the afternoon.',
+      'Think eggs, Greek yogurt, oats, berries, and nuts. Small, repeatable choices beat any strict plan, which is exactly how Vitalist frames it.',
+    ],
+  },
+  water: {
+    source: 'Better Homes & Gardens', read: '3 min', eye: 'Mood & environment',
+    hed: 'A simple morning reset',
+    body: [
+      'After seven or eight hours of sleep you wake up mildly dehydrated, and that alone can dull focus, mood, and energy before the day even starts.',
+      'One glass of water before your coffee rehydrates you and sets a calm baseline. It\'s a tiny anchor habit — easy to start, easy to keep.',
+    ],
+  },
+}
+
+function Reader({ content, habit, onClose }) {
+  return (
+    <div className="fc-reader">
+      <div className="fc-reader__hero">
+        <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
+        <div className="fc-reader__hero-scrim" />
+        <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <div className="fc-reader__hero-txt">
+          <span className="fc-reader__eye">{content.eye}</span>
+          <h1 className="fc-reader__hed">{content.hed}</h1>
+          <span className="fc-reader__meta">{content.source} · {content.read} read</span>
+        </div>
+      </div>
+      <div className="fc-reader__body">
+        {content.body.map((p, i) => <p key={i}>{p}</p>)}
+        <p className="fc-reader__foot">Curated for your habit · Vitalist by People Inc.</p>
+        <button className="fc-reader__done" onClick={onClose}>Back to today</button>
+      </div>
+    </div>
+  )
+}
+
+function NextSlotCard({ width }) {
+  return (
+    <div className="fc-card fc-card--next" style={{ width }}>
+      <div className="fc-next__inner">
+        <div className="fc-next__mark">+</div>
+        <h3 className="fc-next__hed">One habit at a time.</h3>
+        <p className="fc-next__body">
+          Your next slot opens once this one feels automatic — earned, not
+          assigned. No rush.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function streakLabel(habit) {
   if (habit.status === 'kept') {
     const weeks = habit.tier || 1
@@ -126,12 +226,13 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, onAsk, sources, onConnect }) {
-  const sub  = habitSubText(habit, done)
-  const chip = doneLabel(habit, done)
+function Card({ habit, done, onDone, sources, onConnect, onRead, width }) {
+  const sub     = habitSubText(habit, done)
+  const chip    = doneLabel(habit, done)
+  const content = CONTENT[habit.goalId]
 
   return (
-    <div className="fc-card">
+    <div className="fc-card" style={{ width }}>
       {/* Full-bleed gradient background (fallback under the photo) */}
       <div className="fc-card__bg" style={{ background: habit.bg }} />
 
@@ -151,61 +252,65 @@ function Card({ habit, done, onDone, onAsk, sources, onConnect }) {
       {/* Bottom scrim */}
       <div className="fc-card__scrim" />
 
-      {/* Text + actions */}
-      <div className="fc-card__body">
-        {habit.source && <p className="fc-card__source">{habit.source}</p>}
-
-        <HeadLine label={habit.label} />
-
-        {sub && <p className="fc-card__sub">{sub}</p>}
-
-        {habit.anchor && (
-          <p className="fc-card__anchor">
-            {habit.anchor}
-          </p>
-        )}
-
-        {/* Tracker: restated when connected, attachable when not */}
-        <CardWearable habit={habit} sources={sources} onConnect={onConnect} />
-
-        {/* Done chip */}
-        <div
-          className={`fc-done-chip${done ? ' done' : ''}`}
-          onClick={() => onDone(habit.id)}
-        >
-          <div className="fc-done-chip__circle">
-            {done ? '✓' : ''}
+      {/* Stacked cards over the image — habit + editorial, one connected unit */}
+      <div className="fc-card__stack">
+        <div className="fc-hcard">
+          {habit.source && <p className="fc-hcard__source">{habit.source}</p>}
+          <HeadLine label={habit.label} />
+          {sub && <p className="fc-card__sub">{sub}</p>}
+          <CardWearable habit={habit} sources={sources} onConnect={onConnect} />
+          <div
+            className={`fc-done-chip${done ? ' done' : ''}`}
+            onClick={() => onDone(habit.id)}
+          >
+            <div className="fc-done-chip__circle">{done ? '✓' : ''}</div>
+            <span className="fc-done-chip__label">{chip}</span>
           </div>
-          <span className="fc-done-chip__label">{chip}</span>
         </div>
 
-        {/* Ask bar — AI-powered */}
-        <div className="fc-ask-bar" onClick={() => onAsk(habit)}>
-          <span className="fc-ask-bar__ai">{SparkIcon} AI</span>
-          <span className="fc-ask-bar__text">Ask about this habit…</span>
-          <div className="fc-ask-bar__btn">→</div>
-        </div>
+        {content && (
+          <button className="fc-ecard" onClick={() => onRead && onRead(content, habit)}>
+            <span className="fc-ecard__tag">Related read</span>
+            <span className="fc-ecard__hed">{content.hed}</span>
+            <span className="fc-ecard__meta">{content.source} · {content.read} read <span className="fc-ecard__go">→</span></span>
+          </button>
+        )}
       </div>
     </div>
   )
 }
 
-function AISheet({ habit, onClose }) {
-  const prompts = habit ? [
-    `Why does "${habit.label}" actually work?`,
-    `What's the science behind this?`,
-    `How do I make this easier to stick to?`,
-    `What if I miss a day?`,
-  ] : []
+function AISheet({ habit, onClose, onAddHabit }) {
   return (
     <div className="fc-ai-sheet" onClick={onClose}>
       <div className="fc-ai-sheet__panel" onClick={e => e.stopPropagation()}>
         <div className="fc-ai-sheet__handle" />
-        <p className="fc-ai-sheet__label">{SparkIcon} Ask AI about this habit</p>
-        {prompts.map(p => (
-          <button key={p} className="fc-ai-chip" onClick={onClose}>{p}</button>
-        ))}
-        <button className="fc-ai-sheet__close" onClick={onClose}>Close</button>
+
+        <div className="fc-ai-sheet__intro">
+          <div className="fc-ai-sheet__avatar">{SparkIcon}</div>
+          <div>
+            <p className="fc-ai-sheet__hi">Hey — I'm your Vitalist guide.</p>
+            <p className="fc-ai-sheet__sub">Ask me anything, or start here.</p>
+          </div>
+        </div>
+
+        {habit && (
+          <>
+            <p className="fc-ai-sheet__group">About “{habit.label}”</p>
+            <button className="fc-ai-chip" onClick={onClose}>Why does this actually work?</button>
+            <button className="fc-ai-chip" onClick={onClose}>How do I make it easier to stick to?</button>
+            <button className="fc-ai-chip" onClick={onClose}>What if I miss a day?</button>
+          </>
+        )}
+
+        <p className="fc-ai-sheet__group">Anything else</p>
+        <button className="fc-ai-chip" onClick={() => (onAddHabit ? onAddHabit() : onClose())}>How do I add a new habit?</button>
+        <button className="fc-ai-chip" onClick={onClose}>What should I focus on next?</button>
+
+        <div className="fc-ai-sheet__composer">
+          <input className="fc-ai-input" placeholder="Ask Vitalist…" readOnly onMouseDown={e => e.preventDefault()} />
+          <span className="fc-ai-send" aria-hidden="true">↑</span>
+        </div>
       </div>
     </div>
   )
@@ -263,6 +368,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [idx, setIdx]   = useState(0)
   const [overview, setOverview] = useState(false)
   const [askHabit, setAskHabit] = useState(null)
+  const [reading, setReading]   = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
@@ -298,7 +404,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     dragging.current = false
     const delta = dragCurrX.current - dragStartX.current
     if (Math.abs(delta) > 50) {
-      if (delta < 0 && idx < habits.length - 1) { setIdx(i => i + 1); setShowHint(false) }
+      // pages = each habit + one "next slot" card at the end (index habits.length)
+      if (delta < 0 && idx < habits.length) { setIdx(i => i + 1); setShowHint(false) }
       else if (delta > 0 && idx > 0) setIdx(i => i - 1)
     }
     setDragX(0)
@@ -325,7 +432,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     )
   }
 
-  const vw = typeof window !== 'undefined' ? window.innerWidth : 390
+  const pageCount   = habits.length + 1 // habits + "next slot" card
+  const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
   const translatePx = -(idx * vw) + dragX
   const isActiveDrag = dragging.current && Math.abs(dragX) > 2
 
@@ -334,19 +442,19 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       {/* Top bar */}
       <div className="fc-topbar">
         <div className="fc-logo-row">
-          <button className="fc-logo-btn" onClick={onLogoClick}>Vitalist</button>
+          <button className="fc-logo-btn" onClick={onLogoClick}>
+            Vitalist<span className="fc-logo-btn__by">by People Inc.</span>
+          </button>
           <button className="fc-hamburger" onClick={() => (onMenu ? onMenu() : onNavigate('Me'))}>
             <span/><span/><span/>
           </button>
         </div>
         <div className="fc-eyebrow-row">
-          <span className="fc-eyebrow">
-            What you're building{habits.length > 1 ? ` · ${idx + 1} of ${habits.length}` : ''}
-          </span>
+          <span className="fc-eyebrow">Your daily routine</span>
         </div>
       </div>
 
-      {/* Cards */}
+      {/* Cards — carousel */}
       <div
         className="fc-stage"
         onTouchStart={e => startDrag(e.touches[0].clientX)}
@@ -366,24 +474,37 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             <Card
               key={h.id}
               habit={h}
+              width={vw}
               done={done.includes(h.id)}
               onDone={toggleDone}
-              onAsk={setAskHabit}
               sources={sources}
               onConnect={connectSource}
+              onRead={(content, habit) => setReading({ content, habit })}
             />
           ))}
+          <NextSlotCard width={vw} />
         </div>
       </div>
 
-      {habits.length > 1 && (
+      {pageCount > 1 && (
         <div className="fc-dots">
-          {habits.map((_, i) => (
+          {Array.from({ length: pageCount }).map((_, i) => (
             <div key={i} className={`fc-dot${i === idx ? ' on' : ''}`} onClick={() => setIdx(i)} />
           ))}
         </div>
       )}
       {showHint && <div className="fc-swipe-hint">swipe to see all</div>}
+
+      {/* AI chat — app-level circular button, not attached to a card */}
+      {habits.length > 0 && (
+        <button
+          className="fc-ai-fab"
+          aria-label="Ask Vitalist AI"
+          onClick={() => setAskHabit(habits[Math.min(idx, habits.length - 1)])}
+        >
+          <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+        </button>
+      )}
 
       {overview && (
         <Overview
@@ -394,7 +515,16 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
           onToggleDone={toggleDone}
         />
       )}
-      {askHabit && <AISheet habit={askHabit} onClose={() => setAskHabit(null)} />}
+      {askHabit && (
+        <AISheet
+          habit={askHabit}
+          onClose={() => setAskHabit(null)}
+          onAddHabit={() => { setAskHabit(null); onNavigate('Yours') }}
+        />
+      )}
+      {reading && (
+        <Reader content={reading.content} habit={reading.habit} onClose={() => setReading(null)} />
+      )}
     </div>
   )
 }
