@@ -21,6 +21,7 @@ export const PROFILES = {
     collection: [],
     goals: ['move'],
     sources: ['steps'], // steps connected → walk auto-tracks
+    name: 'Beth',
     completions: [], // nothing done yet today
   },
 
@@ -79,6 +80,7 @@ export const PROFILES = {
     ],
     goals: ['move', 'sleep', 'strong', 'water'],
     sources: ['steps', 'sleep'], // steps+sleep connected; strength (workouts) still connectable
+    name: 'Beth',
     completions: ['walk_kept'], // walk already done today
   },
 }
@@ -95,6 +97,7 @@ export function seedProfile(name) {
     localStorage.setItem('vitalistExp_collection', JSON.stringify(p.collection))
     localStorage.setItem('vitalistExp_goals',      JSON.stringify(p.goals))
     localStorage.setItem('vitalistExp_sources',    JSON.stringify(p.sources || []))
+    localStorage.setItem('vitalistExp_name',       p.name || '')
     localStorage.setItem('vitalistExp_complete',   '1')
     // Seed today's completions
     const today = new Date().toISOString().slice(0, 10)

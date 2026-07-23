@@ -13,6 +13,9 @@ function writeDone(ids) {
 function readHabits() {
   try { return JSON.parse(localStorage.getItem('vitalistExp_habits') || 'null') } catch { return null }
 }
+function readName() {
+  try { return localStorage.getItem('vitalistExp_name') || '' } catch { return '' }
+}
 
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
@@ -363,6 +366,7 @@ function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
 }
 
 export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
+  const name            = readName()
   const [habits]        = useState(() => readHabits() || [])
   const [done, setDone] = useState(() => readDone())
   const [idx, setIdx]   = useState(0)
@@ -450,7 +454,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
           </button>
         </div>
         <div className="fc-eyebrow-row">
-          <span className="fc-eyebrow">Your daily routine</span>
+          <span className="fc-eyebrow">{name ? `Welcome back, ${name}` : 'Your daily routine'}</span>
         </div>
       </div>
 

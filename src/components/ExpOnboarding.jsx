@@ -180,6 +180,7 @@ function getStartingLines(goalId) {
 // ── Component ───────────────────────────────────────────────────────────────
 export default function ExpOnboarding({ onComplete }) {
   const [step, setStep]               = useState('S_auth')
+  const [name, setName]               = useState('')
   const [selectedGoals, setGoals]     = useState([])
   const [primaryGoal, setPrimary]     = useState(null)
   const [startingLine, setStartLine]  = useState(null)
@@ -242,6 +243,7 @@ export default function ExpOnboarding({ onComplete }) {
       localStorage.setItem('vitalistExp_goals', JSON.stringify(selectedGoals))
       localStorage.setItem('vitalistExp_collection', JSON.stringify(collection))
       localStorage.setItem('vitalistExp_sources', JSON.stringify(sources))
+      localStorage.setItem('vitalistExp_name', name.trim())
       localStorage.setItem('vitalistExp_complete', '1')
     } catch (_) {}
     onComplete(habits)
@@ -258,6 +260,7 @@ export default function ExpOnboarding({ onComplete }) {
     try {
       localStorage.setItem('vitalistExp_habits', JSON.stringify(habits))
       localStorage.setItem('vitalistExp_sources', JSON.stringify(['steps', 'sleep']))
+      localStorage.setItem('vitalistExp_name', 'Beth')
       localStorage.setItem('vitalistExp_complete', '1')
     } catch (_) {}
     onComplete(habits)
@@ -287,19 +290,19 @@ export default function ExpOnboarding({ onComplete }) {
           </p>
           <div className="eo-auth__divider"><span>Join now</span></div>
           <div className="eo-auth__actions">
-            <button className="eo-auth__btn email" onClick={() => setStep('S2')}>
+            <button className="eo-auth__btn email" onClick={() => setStep('S_name')}>
               <span className="eo-auth__btn-icon">{IconEmail}</span>
               Continue with Email
             </button>
-            <button className="eo-auth__btn phone" onClick={() => setStep('S2')}>
+            <button className="eo-auth__btn phone" onClick={() => setStep('S_name')}>
               <span className="eo-auth__btn-icon">{IconPhone}</span>
               Continue with Phone
             </button>
-            <button className="eo-auth__btn google" onClick={() => setStep('S2')}>
+            <button className="eo-auth__btn google" onClick={() => setStep('S_name')}>
               <span className="eo-auth__btn-icon">{IconGoogle}</span>
               Continue with Google
             </button>
-            <button className="eo-auth__btn apple" onClick={() => setStep('S2')}>
+            <button className="eo-auth__btn apple" onClick={() => setStep('S_name')}>
               <span className="eo-auth__btn-icon">{IconApple}</span>
               Continue with Apple
             </button>
@@ -333,12 +336,42 @@ export default function ExpOnboarding({ onComplete }) {
           </p>
           <div className="eo-spacer" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <button className="eo-btn primary" onClick={() => setStep('S2')}>
+            <button className="eo-btn primary" onClick={() => setStep('S_name')}>
               Let's go →
             </button>
             <button className="eo-link" onClick={handleLookAround}>
               Just looking around
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  if (step === 'S_name') return (
+    <div className="eo-root">
+      <div className="eo-screen">
+        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
+        <p className="eo-brand">Vitalist</p>
+        <div className="eo-body" style={{ justifyContent: 'center', gap: 18 }}>
+          <div>
+            <h2 className="eo-q">First — what should we <em>call you?</em></h2>
+            <p className="eo-lede" style={{ marginTop: 8 }}>A first name is perfect. We'll keep it friendly.</p>
+          </div>
+          <input
+            className="eo-input"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Your name"
+            autoFocus
+            onKeyDown={e => { if (e.key === 'Enter' && name.trim()) setStep('S2') }}
+          />
+          <div className="eo-spacer" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <button className="eo-btn primary" disabled={!name.trim()} onClick={() => setStep('S2')}>
+              Continue →
+            </button>
+            <button className="eo-link" onClick={() => setStep('S2')}>Skip for now</button>
           </div>
         </div>
       </div>

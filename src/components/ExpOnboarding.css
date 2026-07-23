@@ -80,6 +80,14 @@
 .eo-link { font:700 14px 'Mulish'; color:#5b5b62; text-decoration:underline; text-align:center; cursor:pointer; background:none; border:none; padding:4px 0 }
 .eo-link:hover { color:#3a3a42 }
 .eo-spacer { flex:1 }
+.eo-input {
+  width:100%; box-sizing:border-box;
+  background:#fff; border:1.5px solid #e0d8cc; border-radius:14px;
+  padding:15px 16px; font:700 17px 'Mulish'; color:#15151d;
+  outline:none; transition:border-color .15s;
+}
+.eo-input::placeholder { color:#b7b1a6; font-weight:600 }
+.eo-input:focus { border-color:#1b2a4a }
 /* S4 cover */
 .eo-cover { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; animation:eoSlideIn .3s cubic-bezier(.25,.46,.45,.94) both }
 .eo-cover__bg { position:absolute; inset:0 }
