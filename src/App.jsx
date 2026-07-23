@@ -1,283 +1,208 @@
-import React, { useState, useCallback, useRef } from 'react'
-import Nav from './components/Nav'
-import Registration from './components/Registration'
-import Onboarding from './components/Onboarding'
-import AccountDrawer from './components/AccountDrawer'
-import ProfilePage, { computeCompletion } from './components/ProfilePage'
-import SettingsPage, { ACCOUNT_SECTIONS, NOTIFICATION_SECTIONS } from './components/SettingsPage'
-import SavedItemsPage from './components/SavedItemsPage'
-import SkinCheckinSheet from './components/SkinCheckinSheet'
-import Hero from './components/Hero'
-import StatusStrip from './components/StatusStrip'
-import TodayInsightCheckin from './components/TodayInsightCheckin'
-import HealthPulseCard from './components/HealthPulseCard'
-import HealthPulseSheet from './components/HealthPulseSheet'
-import SponsorBanner from './components/SponsorBanner'
-import TodayCard from './components/TodayCard'
-import InsightCard from './components/InsightCard'
-import CareTeamCard from './components/CareTeamCard'
-import ProgressCard from './components/ProgressCard'
-import ProgramCard from './components/ProgramCard'
-import AskAI from './components/AskAI'
-import ConditionStrip from './components/ConditionStrip'
-import DashboardRow from './components/DashboardRow'
-import ForYouNow from './components/ForYouNow'
-import SwipeLearn from './components/SwipeLearn'
-import Breathe from './components/Breathe'
-import QuickAnswers from './components/QuickAnswers'
-import DupixentAd from './components/DupixentAd'
-import WatchNow from './components/WatchNow'
-import MyRituals from './components/MyRituals'
-import CommunityPoll from './components/CommunityPoll'
-import AutumnTravelCard from './components/AutumnTravelCard'
-import MyRecipesCard from './components/MyRecipesCard'
-import BHGCard from './components/BHGCard'
-import OnesToWatch from './components/OnesToWatch'
-import PeerStories from './components/PeerStories'
-import StoriesSection from './components/StoriesSection'
-import LearnPage from './components/LearnPage'
-import ContentSection from './components/ContentSection'
-import NutritionBuildingBlocksSection from './components/NutritionBuildingBlocksSection'
-import VeryWellSection from './components/VeryWellSection'
-import InStyleSection from './components/InStyleSection'
-import ParentsCaregiverSupportSection from './components/ParentsCaregiverSupportSection'
-import TrackPage from './components/TrackPage'
-import PreparePage from './components/PreparePage'
-import BottomNav from './components/BottomNav'
+import React, { useState, useEffect } from 'react'
+import ExpOnboarding from './components/ExpOnboarding'
+import FocusCarousel from './components/FocusCarousel'
+import ReadPage from './components/ReadPage'
+import CollectionPage from './components/CollectionPage'
+import { seedProfile } from './profiles'
+import './App.css'
 
-function readProfile() {
+function readComplete() {
+  try { return localStorage.getItem('vitalistExp_complete') === '1' } catch { return false }
+}
+
+// Count everything that lives on the Yours page (trial/kept habits + collection)
+function readYoursCount() {
   try {
-    const raw = localStorage.getItem('cardiometabolicProfile')
-    return raw ? JSON.parse(raw) : {}
-  } catch (_) { return {} }
+    const habits = JSON.parse(localStorage.getItem('vitalistExp_habits') || '[]') || []
+    const coll   = JSON.parse(localStorage.getItem('vitalistExp_collection') || '[]') || []
+    return habits.length + coll.length
+  } catch { return 0 }
+}
+function readYoursSeen() {
+  try { return parseInt(localStorage.getItem('vitalistExp_yoursSeen') || '0', 10) || 0 } catch { return 0 }
 }
 
-function writeProfile(p) {
-  try { localStorage.setItem('cardiometabolicProfile', JSON.stringify(p)) } catch (_) {}
+function handleURLParams() {
+  if (typeof window === 'undefined') return
+  const params = new URLSearchParams(window.location.search)
+  if (params.has('reset')) {
+    try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+    window.history.replaceState({}, '', window.location.pathname)
+  } else if (params.has('profile')) {
+    const name = params.get('profile')
+    seedProfile(name)
+    window.history.replaceState({}, '', window.location.pathname)
+  }
 }
 
-function ArchivedSection({ children }) {
-  const [open, setOpen] = useState(false)
+function BottomNav({ activePage, onNavigate, badges = {} }) {
+  const tabs = [
+    { id: 'Building', icon: '◈', label: 'Building' },
+    { id: 'Read',     icon: '▤', label: 'Read' },
+    { id: 'Yours',    icon: '❁', label: 'Yours' },
+    { id: 'Me',       icon: '◉', label: 'Me' },
+  ]
   return (
-    <section className="archived-section">
+    <nav className="exp-bottom-nav">
+      {tabs.map(t => (
+        <button
+          key={t.id}
+          className={`exp-bottom-nav__btn${activePage === t.id ? ' on' : ''}`}
+          onClick={() => onNavigate(t.id)}
+        >
+          <span className="ico">
+            {t.icon}
+            {badges[t.id] && <span className="exp-bottom-nav__dot" />}
+          </span>
+          {t.label}
+        </button>
+      ))}
+    </nav>
+  )
+}
+
+function MePage({ onNavigate }) {
+  function reset(profile) {
+    seedProfile(profile) || (() => {
+      try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+    })()
+    window.location.reload()
+  }
+  const profiles = [
+    { id: 'new',         label: 'New user',         sub: 'Day 1 — one habit, just starting' },
+    { id: 'established', label: 'Established user',  sub: '2 kept habits, 1 trial, 1 graduated' },
+  ]
+  return (
+    <div className="me-page">
+      <p className="me-page__eye">Vitalist</p>
+      <h1 className="me-page__title">Me</h1>
+
+      <p className="me-page__section">Switch profile</p>
+      {profiles.map(p => (
+        <button key={p.id} className="me-page__profile-btn" onClick={() => reset(p.id)}>
+          <div>
+            <div className="me-page__profile-label">{p.label}</div>
+            <div className="me-page__profile-sub">{p.sub}</div>
+          </div>
+          <span className="me-page__arrow">→</span>
+        </button>
+      ))}
+
+      <p className="me-page__section" style={{ marginTop: 24 }}>Reset</p>
       <button
-        className="archived-section__title"
-        onClick={() => setOpen(o => !o)}
-        style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 8 }}
+        className="me-page__profile-btn"
+        onClick={() => {
+          try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+          window.location.reload()
+        }}
       >
-        Archived
-        <span style={{ fontSize: 10, opacity: 0.5 }}>{open ? '▲' : '▼'}</span>
+        <div>
+          <div className="me-page__profile-label">Start onboarding fresh</div>
+          <div className="me-page__profile-sub">Clears all data</div>
+        </div>
+        <span className="me-page__arrow">→</span>
       </button>
-      {open && children}
-    </section>
+    </div>
+  )
+}
+
+function MenuOverlay({ onClose }) {
+  function reset(profile) {
+    if (!seedProfile(profile)) {
+      try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+    }
+    window.location.reload()
+  }
+  const profiles = [
+    { id: 'new',         label: 'New user',        sub: 'Day 1 — one habit, just starting' },
+    { id: 'established', label: 'Established user', sub: '2 kept habits, 1 trial, 1 graduated' },
+  ]
+  return (
+    <div className="menu-overlay" onClick={onClose}>
+      <div className="menu-panel" onClick={e => e.stopPropagation()}>
+        <button className="menu-panel__close" onClick={onClose}>✕</button>
+        <p className="menu-panel__eye">Vitalist</p>
+
+        <p className="menu-panel__section">Switch profile</p>
+        {profiles.map(p => (
+          <button key={p.id} className="menu-panel__row" onClick={() => reset(p.id)}>
+            <div>
+              <div className="menu-panel__row-label">{p.label}</div>
+              <div className="menu-panel__row-sub">{p.sub}</div>
+            </div>
+            <span className="menu-panel__arrow">→</span>
+          </button>
+        ))}
+
+        <p className="menu-panel__section">Reset</p>
+        <button
+          className="menu-panel__row"
+          onClick={() => {
+            try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+            window.location.reload()
+          }}
+        >
+          <div>
+            <div className="menu-panel__row-label">Start onboarding fresh</div>
+            <div className="menu-panel__row-sub">Clears all data</div>
+          </div>
+          <span className="menu-panel__arrow">→</span>
+        </button>
+      </div>
+    </div>
   )
 }
 
 export default function App() {
-  const [activePage, setActivePage] = useState('Today')
-  const [showBreathe, setShowBreathe] = useState(false)
-  const [showRegistration, setShowRegistration] = useState(false)
-  const [onboarding, setOnboarding] = useState(null)
-  const [showDrawer, setShowDrawer] = useState(false)
-  const [showProfile, setShowProfile] = useState(false)
-  const [showSavedItems, setShowSavedItems] = useState(false)
-  const [showNotifications, setShowNotifications] = useState(false)
-  const [showAccount, setShowAccount] = useState(false)
-  const [showCheckin, setShowCheckin] = useState(false)
-  const [checkinTick, setCheckinTick] = useState(0)   // bumps after a check-in is logged
-  const [ritualsKey, setRitualsKey]   = useState(0)   // bumps after onboarding to force MyRituals remount
-  const [habitAIContext, setHabitAIContext] = useState(null)
-  const [showPulse, setShowPulse] = useState(false)
-  const [pulseTick, setPulseTick]   = useState(0)   // bumps after a Health Pulse is logged
-  const [profile, setProfile] = useState(() => readProfile())
+  const [complete, setComplete] = useState(() => {
+    handleURLParams()
+    return readComplete()
+  })
+  const [activePage, setActivePage] = useState('Building')
+  const [menuOpen, setMenuOpen]     = useState(false)
+  const [yoursSeen, setYoursSeen]   = useState(() => readYoursSeen())
 
-  const refreshProfile = useCallback(() => setProfile(readProfile()), [])
+  const yoursCount = readYoursCount()
+  const yoursBadge = activePage !== 'Yours' && yoursCount > yoursSeen
 
-  function startOnboarding(name = '') {
-    setShowRegistration(false)
-    setOnboarding({ name })
-  }
-
-  function handleAvatarClick() {
-    refreshProfile()
-    setShowDrawer(true)
-  }
-
-  function handleAvatarChange(dataUrl) {
-    setProfile(p => {
-      const next = { ...p, avatarUrl: dataUrl, updatedAt: new Date().toISOString() }
-      writeProfile(next)
-      return next
-    })
-  }
-
-  function handleDrawerSelect(itemId) {
-    setShowDrawer(false)
-    if (itemId === 'profile')        { setShowProfile(true); return }
-    if (itemId === 'savedItems')     { setShowSavedItems(true); return }
-    if (itemId === 'notifications')  { setShowNotifications(true); return }
-    if (itemId === 'settings')       { setShowAccount(true); return }
-    if (itemId === 'help' || itemId === 'signout') {
-      // Stub for now.
-      return
+  // While viewing Yours, keep "seen" synced so self-adds don't nudge
+  useEffect(() => {
+    if (activePage === 'Yours') {
+      const c = readYoursCount()
+      setYoursSeen(c)
+      try { localStorage.setItem('vitalistExp_yoursSeen', String(c)) } catch {}
     }
+  })
+
+  function navigate(id) {
+    if (id === 'Yours') {
+      const c = readYoursCount()
+      setYoursSeen(c)
+      try { localStorage.setItem('vitalistExp_yoursSeen', String(c)) } catch {}
+    }
+    setActivePage(id)
   }
 
-  function closeOverlay(closer) {
-    return () => { closer(false); refreshProfile() }
+  function resetOnboarding() {
+    try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
+    setComplete(false)
+    setActivePage('Building')
   }
 
-  const completion = computeCompletion(profile)
-  const firstName = (profile?.name || '').trim().split(' ')[0]
-  const avatarInitial = firstName ? firstName.charAt(0).toUpperCase() : 'C'
-  const avatarUrl = profile?.avatarUrl || ''
+  if (!complete) {
+    return <ExpOnboarding onComplete={() => setComplete(true)} />
+  }
 
   return (
-    <>
-      <Nav
-        activePage={activePage}
-        setActivePage={setActivePage}
-        onLogoClick={() => setShowRegistration(true)}
-        onAvatarClick={handleAvatarClick}
-        avatarInitial={avatarInitial}
-        avatarUrl={avatarUrl}
-      />
-      {showRegistration && <Registration onClose={() => setShowRegistration(false)} onStartOnboarding={startOnboarding} />}
-      {onboarding && <Onboarding name={onboarding.name} onClose={() => {
-        setOnboarding(null)
-        refreshProfile()
-        setCheckinTick(t => t + 1)
-        setRitualsKey(k => k + 1)   // always forces MyRituals to remount with fresh profile
-      }} />}
-
-      {showDrawer && (
-        <AccountDrawer
-          profile={profile}
-          completionPct={completion.pct}
-          strengthLabel={completion.label}
-          onClose={() => setShowDrawer(false)}
-          onSelect={handleDrawerSelect}
-          onAvatarChange={handleAvatarChange}
-        />
-      )}
-
-      {showProfile && (
-        <ProfilePage
-          onClose={closeOverlay(setShowProfile)}
-          onAskAI={() => {
-            // TODO: hand prefilled prompt to AskAI once teammate's AI work lands.
-            setShowProfile(false)
-            setActivePage('Today')
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-          }}
-        />
-      )}
-
-      {showSavedItems && (
-        <SavedItemsPage onClose={() => setShowSavedItems(false)} />
-      )}
-
-      {showNotifications && (
-        <SettingsPage
-          title="Notifications"
-          storageKey="cardiometabolicNotifications"
-          sections={NOTIFICATION_SECTIONS}
-          onClose={closeOverlay(setShowNotifications)}
-          onNavigate={target => {
-            if (target === 'account') {
-              setShowNotifications(false)
-              setShowAccount(true)
-            }
-          }}
-        />
-      )}
-
-      {showAccount && (
-        <SettingsPage
-          title="Account settings"
-          storageKey="cardiometabolicAccount"
-          sections={ACCOUNT_SECTIONS}
-          onClose={closeOverlay(setShowAccount)}
-          onNavigate={target => {
-            if (target === 'notifications') {
-              setShowAccount(false)
-              setShowNotifications(true)
-            }
-          }}
-        />
-      )}
-
-      {/* Skin check-in sheet — mounted at App level so any page can open it */}
-      <SkinCheckinSheet
-        open={showCheckin}
-        onClose={() => setShowCheckin(false)}
-        onComplete={() => setCheckinTick(t => t + 1)}
-        onViewTrack={() => {
-          setShowCheckin(false)
-          setActivePage('Track')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }}
-      />
-
-      {/* Weekly Health Pulse — DLQI + POEM. Mounted at App level. */}
-      {showPulse && (
-        <HealthPulseSheet
-          onClose={() => setShowPulse(false)}
-          onComplete={() => setPulseTick(t => t + 1)}
-        />
-      )}
-
-      {activePage === 'Learn' ? (
-        <LearnPage />
-      ) : activePage === 'Track' ? (
-        <TrackPage onOpenCheckin={() => setShowCheckin(true)} checkinTick={checkinTick} />
-      ) : activePage === 'Prepare' ? (
-        <PreparePage />
-      ) : (
-        <main className="main">
-          <div className="hero-wrap">
-            <Hero firstName={firstName} />
-            {/* <div className="today-wrap">
-              <TodayCard />
-            </div> */}
-          </div>
-          {/* Today screen section order:
-              1 hero · 2 daily habits · 3 for you content · 4 AI + check-in */}
-
-          {/* My Numbers now lives on the Track tab only — see TrackPage.jsx */}
-
-          <MyRituals key={ritualsKey} onAskAI={setHabitAIContext} />
-
-          {/* For you — habit-matched content (articles, recipes, videos) */}
-          <ContentSection />
-
-          {/* AI insight + daily check-in */}
-          <TodayInsightCheckin onOpenCheckin={() => setShowCheckin(true)} tick={checkinTick} />
-          {showBreathe && <Breathe onClose={() => setShowBreathe(false)} />}
-
-          {/* Archived — collapsed by default */}
-          <ArchivedSection>
-            <VeryWellSection />
-            <div className="sponsor-card-wrap">
-              <SponsorBanner variant="card" />
-            </div>
-            <InStyleSection />
-            <NutritionBuildingBlocksSection />
-            <SponsorBanner />
-            <StoriesSection onNavigate={target => { setActivePage(target); window.scrollTo(0, 0) }} />
-            <WatchNow />
-            <SwipeLearn onLearnClick={() => { setActivePage('Learn'); window.scrollTo(0, 0) }} onStartBreathe={() => setShowBreathe(true)} />
-            <ParentsCaregiverSupportSection />
-            <PeerStories />
-            <QuickAnswers />
-            <ConditionStrip />
-            <ForYouNow onStartBreathe={() => setShowBreathe(true)} />
-          </ArchivedSection>
-        </main>
-      )}
-
-      <AskAI habitContext={habitAIContext} onClearHabitContext={() => setHabitAIContext(null)} />
-      <BottomNav activePage={activePage} setActivePage={setActivePage} />
-    </>
+    <div className={`exp-app${activePage === 'Building' ? ' dark-nav' : ''}`}>
+      <div className="exp-page">
+        {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={() => setMenuOpen(true)} />}
+        {activePage === 'Read'     && <ReadPage />}
+        {activePage === 'Yours'    && <CollectionPage />}
+        {activePage === 'Me'       && <MePage onNavigate={navigate} />}
+      </div>
+      <BottomNav activePage={activePage} onNavigate={navigate} badges={{ Yours: yoursBadge }} />
+      {menuOpen && <MenuOverlay onClose={() => setMenuOpen(false)} />}
+    </div>
   )
 }

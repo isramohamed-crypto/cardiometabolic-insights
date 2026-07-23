@@ -1,0 +1,442 @@
+/* ── CollectionPage ───────────────────────────────────────────────────────── */
+.cp-root {
+  background: #faf7f2;
+  font-family: 'Mulish', sans-serif;
+  color: #15151d;
+  padding-bottom: 100px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.cp-header {
+  padding: 52px 20px 18px;
+  border-bottom: 1px solid #ece5da;
+  margin-bottom: 24px;
+}
+.cp-header__eye {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #b7442c;
+  margin: 0 0 4px;
+}
+.cp-header__title {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: -.015em;
+  line-height: 1.1;
+  color: #15151d;
+  margin: 0;
+}
+.cp-header__title em { font-style: italic; color: #1b2a4a; }
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.cp-section { margin: 0 0 32px; }
+
+.cp-section__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #9a8c7e;
+  padding: 0 20px;
+  margin: 0 0 12px;
+}
+
+/* ── Trial cards (horizontal row, image left) ────────────────────────────── */
+.cp-trial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.cp-trial-card {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e7ded2;
+  min-height: 80px;
+}
+
+.cp-trial-card__img {
+  width: 80px;
+  flex-shrink: 0;
+  /* bg applied inline */
+}
+
+.cp-trial-card__body {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.cp-trial-card__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b2a4a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cp-trial-card__sub {
+  font-size: 12px;
+  color: #9a8c7e;
+  margin: 0;
+  font-weight: 600;
+}
+
+.cp-trial-card__badge {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #9db4d6;
+  border: 1.5px solid #9db4d6;
+  border-radius: 20px;
+  padding: 4px 10px;
+  margin-right: 14px;
+}
+
+/* ── Section note (subtext under a section label) ────────────────────────── */
+.cp-section__note {
+  padding: 0 20px;
+  margin: -6px 0 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #7b7168;
+  max-width: 34ch;
+}
+
+/* ── Filter pills ────────────────────────────────────────────────────────── */
+.cp-filter-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cp-filter-row::-webkit-scrollbar { display: none; }
+.cp-pill {
+  flex-shrink: 0;
+  background: #f3ece3;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 700 12.5px 'Mulish', sans-serif;
+  color: #6b6b72;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.cp-pill:hover { background: #ece4db; }
+.cp-pill.on { background: #1b2a4a; border-color: #1b2a4a; color: #faf7f2; }
+
+/* ── Habit badges — achievement/medal style ──────────────────────────────── */
+.cp-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px 8px;
+  padding: 4px 20px 0;
+}
+.cp-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.cp-badge__emblem {
+  position: relative;
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow:
+    inset 0 3px 7px rgba(255,255,255,.35),
+    inset 0 -4px 9px rgba(0,0,0,.28),
+    0 3px 9px rgba(27,42,74,.22);
+  outline: 2px solid rgba(27,42,74,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cp-badge__icon { font-size: 26px; line-height: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+.cp-badge__seal {
+  position: absolute;
+  bottom: -3px; right: -3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #2f7d5e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #faf7f2;
+}
+.cp-badge__label {
+  font: 800 11.5px 'Mulish', sans-serif;
+  color: #1b2a4a;
+  line-height: 1.2;
+}
+.cp-badge__cat {
+  font: 800 8.5px 'Mulish', sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+/* ── Wearable / tracker tag ──────────────────────────────────────────────── */
+.cp-wear {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: 800 9.5px 'Mulish', sans-serif;
+  letter-spacing: .03em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  font-family: 'Mulish', sans-serif;
+  cursor: default;
+  white-space: nowrap;
+}
+.cp-wear svg { flex-shrink: 0; }
+.cp-wear--on {
+  background: #eaf3ee;
+  border-color: #cfe4d8;
+  color: #2f7d5e;
+}
+.cp-wear--off {
+  background: none;
+  border: 1px dashed #9db4d6;
+  color: #4a6a9a;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.cp-wear--off:hover { background: #eef2f8; border-color: #7a9acb; }
+/* In the achievement badge, center + add a little space */
+.cp-badge .cp-wear { margin-top: 4px; }
+/* In the trial card, left-aligned under the sub */
+.cp-trial-card__body .cp-wear { align-self: flex-start; margin-top: 6px; }
+/* Add-a-habit emblem */
+.cp-badge--add { cursor: pointer; }
+.cp-badge__emblem--add {
+  border: 2px dashed #c9bfae;
+  outline: none;
+  box-shadow: none;
+  background: none;
+  transition: border-color .15s, background .15s;
+}
+.cp-badge__emblem--add span {
+  font: 300 30px 'Mulish', sans-serif;
+  color: #9a8c7e;
+  line-height: 1;
+}
+.cp-badge--add:hover .cp-badge__emblem--add { border-color: #9db4d6; background: #f5f0e8; }
+.cp-badge__add-label {
+  font: 800 11.5px 'Mulish', sans-serif;
+  color: #9a8c7e;
+}
+.cp-nofilter {
+  padding: 0 20px;
+  font-size: 13px;
+  color: #9a8c7e;
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Add sheet ───────────────────────────────────────────────────────────── */
+.cp-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15,12,10,.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  animation: cpFade .2s ease both;
+}
+@keyframes cpFade { from { opacity: 0 } to { opacity: 1 } }
+.cp-sheet__panel {
+  background: #faf7f2;
+  border-radius: 22px 22px 0 0;
+  padding: 14px 20px 28px;
+  max-height: 82dvh;
+  display: flex;
+  flex-direction: column;
+  animation: cpUp .28s cubic-bezier(.25,.46,.45,.94) both;
+}
+@keyframes cpUp { from { transform: translateY(100%) } to { transform: translateY(0) } }
+.cp-sheet__handle {
+  width: 36px; height: 4px;
+  border-radius: 999px;
+  background: #e0d8cc;
+  margin: 0 auto 14px;
+}
+.cp-sheet__eye {
+  font: 800 11px 'Mulish', sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #b7442c;
+  margin: 0 0 2px;
+}
+.cp-sheet__title {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -.01em;
+  color: #15151d;
+  margin: 0 0 14px;
+}
+.cp-sheet__scroll {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+.cp-slot-group__label {
+  font: 800 11px 'Mulish', sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cp-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cp-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1.5px dashed #d9cfbe;
+  border-radius: 14px;
+  padding: 11px 14px;
+  cursor: pointer;
+  font-family: 'Mulish', sans-serif;
+  text-align: left;
+  transition: all .15s;
+}
+.cp-slot:hover { border-color: #9db4d6; background: #fbfaf7; }
+.cp-slot__dot {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.cp-slot__label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b2a4a;
+}
+.cp-slot__action {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #eef2f8;
+  color: #1b2a4a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800;
+  flex-shrink: 0;
+}
+.cp-slot.filled {
+  border-style: solid;
+  border-color: #cfe4d8;
+  background: #f2f8f5;
+  cursor: default;
+}
+.cp-slot.filled .cp-slot__action { background: #2f7d5e; color: #fff; }
+.cp-slot.filled .cp-slot__label { color: #4b6b5c; }
+.cp-sheet__done {
+  margin-top: 16px;
+  background: #9db4d6;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px;
+  font: 800 15px 'Mulish', sans-serif;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cp-sheet__done:hover { background: #8aa5c9; }
+.cp-empty__cta {
+  background: #1b2a4a;
+  color: #faf7f2;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 24px;
+  font: 800 14px 'Mulish', sans-serif;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.cp-empty {
+  padding: 36px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.cp-empty__hed {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -.01em;
+  color: #15151d;
+  margin: 0;
+}
+
+.cp-empty__body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #5b5b62;
+  max-width: 28ch;
+  margin: 0;
+}
+
+.cp-empty__pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.cp-empty__pillar {
+  background: #f3ece3;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.cp-empty__pillar-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b5b62;
+}
+
+.cp-empty__footnote {
+  font-size: 13px;
+  color: #8b8b90;
+  font-style: italic;
+  margin: 0;
+}
