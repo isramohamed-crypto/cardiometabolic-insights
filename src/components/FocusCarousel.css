@@ -583,7 +583,7 @@
 /* ── Swipe hint ──────────────────────────────────────────────────────────── */
 .fc-swipe-hint {
   position: fixed;
-  bottom: 92px;
+  bottom: 118px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10px;

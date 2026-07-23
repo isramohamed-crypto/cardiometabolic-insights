@@ -79,47 +79,128 @@ function BottomNav({ activePage, onNavigate, badges = {} }) {
   )
 }
 
-function MePage({ onNavigate }) {
-  function reset(profile) {
-    seedProfile(profile) || (() => {
-      try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
-    })()
-    window.location.reload()
-  }
-  const profiles = [
-    { id: 'new',         label: 'New user',         sub: 'Day 1 — one habit, just starting' },
-    { id: 'established', label: 'Established user',  sub: '2 kept habits, 1 trial, 1 graduated' },
+const CS_ANSWER = { automatic: 'Still automatic', slipping: 'Working on it', stopped: 'Set aside' }
+const CS_EVIDENCE = {
+  move:   { src: 'steps',    line: 'avg 4,900 steps/day, up from 2,100' },
+  strong: { src: 'workouts', line: '2 strength sessions/week' },
+  sleep:  { src: 'sleep',    line: 'wake window tightened to ±25 min' },
+  stress: { src: 'hrv',      line: 'calmer heart-rate variability' },
+}
+
+function MePage() {
+  const j = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(d)) } catch { return d } }
+  let name = ''
+  try { name = localStorage.getItem('vitalistExp_name') || '' } catch (_) {}
+  const habits   = j('vitalistExp_habits', [])
+  const coll     = j('vitalistExp_collection', [])
+  const sources  = j('vitalistExp_sources', [])
+  const checkins = j('vitalistExp_checkins', {})
+
+  const established = [
+    ...coll.filter(h => h.status === 'graduated' || h.status === 'established'),
+    ...habits.filter(h => h.status === 'kept'),
   ]
+  const trial = habits.filter(h => h.status === 'trial')
+
+  const daysAgoOf = s => { const t = new Date(s).getTime(); return isNaN(t) ? 0 : Math.floor((Date.now() - t) / 86400000) }
+  const dur = h => {
+    if (h.status === 'graduated') return 'Graduated · part of the routine'
+    const w = Math.max(1, Math.floor(daysAgoOf(h.addedAt) / 7))
+    return `Kept ${w} week${w !== 1 ? 's' : ''}`
+  }
+
+  const now = new Date()
+  const from = new Date(Date.now() - 90 * 86400000)
+  const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  const range = `${fmt(from)} – ${fmt(now)}, ${now.getFullYear()}`
+
+  const notes = Object.entries(checkins).map(([id, v]) => {
+    const h = [...established, ...trial, ...habits].find(x => x.id === id)
+    return { label: h ? h.label : 'A habit', answer: v.answer }
+  })
+
   return (
-    <div className="me-page">
-      <p className="me-page__eye">Vitalist</p>
-      <h1 className="me-page__title">Me</h1>
-
-      <p className="me-page__section">Switch profile</p>
-      {profiles.map(p => (
-        <button key={p.id} className="me-page__profile-btn" onClick={() => reset(p.id)}>
-          <div>
-            <div className="me-page__profile-label">{p.label}</div>
-            <div className="me-page__profile-sub">{p.sub}</div>
-          </div>
-          <span className="me-page__arrow">→</span>
-        </button>
-      ))}
-
-      <p className="me-page__section" style={{ marginTop: 24 }}>Reset</p>
-      <button
-        className="me-page__profile-btn"
-        onClick={() => {
-          try { Object.keys(localStorage).forEach(k => { if (k.startsWith('vitalistExp_')) localStorage.removeItem(k) }) } catch {}
-          window.location.reload()
-        }}
-      >
-        <div>
-          <div className="me-page__profile-label">Start onboarding fresh</div>
-          <div className="me-page__profile-sub">Clears all data</div>
+    <div className="cs-page">
+      <div className="cs-head">
+        <div className="cs-head__row">
+          <span className="cs-eye">Care summary</span>
+          <span className="cs-range">{range}</span>
         </div>
-        <span className="me-page__arrow">→</span>
-      </button>
+        <h1 className="cs-title">For your next visit</h1>
+        <p className="cs-sub">{name ? `${name} · ` : ''}a snapshot to bring to your doctor</p>
+      </div>
+
+      <div className="cs-section">
+        <p className="cs-label">Managing</p>
+        <div className="cs-chips">
+          <span className="cs-chip">Prediabetes</span>
+          <span className="cs-chip">High blood pressure</span>
+          <span className="cs-chip">Perimenopause</span>
+        </div>
+      </div>
+
+      {established.length > 0 && (
+        <div className="cs-section">
+          <p className="cs-label">Habits that stuck</p>
+          {established.map(h => {
+            const ev = CS_EVIDENCE[h.goalId]
+            const evidence = ev && sources.includes(ev.src) ? ` · ${ev.line}` : ''
+            return (
+              <div key={h.id} className="cs-habit">
+                <span className="cs-habit__dot" style={{ background: h.bg || 'linear-gradient(155deg,#9db4d6,#4a6a8a)' }} />
+                <div className="cs-habit__body">
+                  <p className="cs-habit__label">{h.label}</p>
+                  <p className="cs-habit__meta">{dur(h)}{evidence}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {trial.length > 0 && (
+        <div className="cs-section">
+          <p className="cs-label">Working on now</p>
+          {trial.map(h => (
+            <div key={h.id} className="cs-habit">
+              <span className="cs-habit__dot" style={{ background: h.bg || 'linear-gradient(155deg,#9db4d6,#4a6a8a)' }} />
+              <div className="cs-habit__body">
+                <p className="cs-habit__label">{h.label}</p>
+                <p className="cs-habit__meta">In trial</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {sources.length > 0 && (
+        <div className="cs-section">
+          <p className="cs-label">What your trackers show</p>
+          <div className="cs-metrics">
+            <div className="cs-metric"><p className="cs-metric__k">Resting HR</p><p className="cs-metric__v">64 <span className="cs-good">−6</span></p></div>
+            {sources.includes('sleep') && <div className="cs-metric"><p className="cs-metric__k">Sleep score</p><p className="cs-metric__v">78 <span className="cs-warn">−9</span></p></div>}
+            {sources.includes('steps') && <div className="cs-metric"><p className="cs-metric__k">Steps/day</p><p className="cs-metric__v">4.9k <span className="cs-good">+2.3k</span></p></div>}
+          </div>
+          {sources.includes('sleep') && <p className="cs-note">Sleep score dipped over ~3 weeks — worth raising.</p>}
+        </div>
+      )}
+
+      {notes.length > 0 && (
+        <div className="cs-section">
+          <p className="cs-label">In your words</p>
+          {notes.map((n, i) => (
+            <p key={i} className="cs-quote">{n.label} — <span>{CS_ANSWER[n.answer] || n.answer}</span></p>
+          ))}
+        </div>
+      )}
+
+      <div className="cs-section">
+        <p className="cs-label">Questions for your visit</p>
+        <p className="cs-q">Could the sleep dip relate to perimenopause or my BP meds?</p>
+        <p className="cs-q">Given the step increase, should we recheck my A1c sooner?</p>
+      </div>
+
+      <button className="cs-export" onClick={() => { try { window.print() } catch (_) {} }}>Export as PDF</button>
     </div>
   )
 }
