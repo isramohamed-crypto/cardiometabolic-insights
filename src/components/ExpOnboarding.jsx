@@ -156,6 +156,19 @@ function getHabit(goalId) {
   return HABIT_MAP[goalId] || HABIT_MAP.default
 }
 
+// Editorial imagery per goal — matches the Building feed (FocusCarousel) seeds
+const IMAGERY = {
+  move:   'https://picsum.photos/seed/vitalist-move-walk/900/1200',
+  strong: 'https://picsum.photos/seed/vitalist-strong/900/1200',
+  eat:    'https://picsum.photos/seed/vitalist-eat/900/1200',
+  water:  'https://picsum.photos/seed/vitalist-water/900/1200',
+  sleep:  'https://picsum.photos/seed/vitalist-sleep/900/1200',
+  stress: 'https://picsum.photos/seed/vitalist-stress/900/1200',
+}
+function coverPhoto(goalId) {
+  return IMAGERY[goalId] || `https://picsum.photos/seed/vitalist-${goalId || 'default'}/900/1200`
+}
+
 function getAnchors(goalId) {
   return ANCHORS[goalId] || ANCHORS.default
 }
@@ -487,10 +500,22 @@ export default function ExpOnboarding({ onComplete }) {
 
   if (step === 'S4') {
     const displayHabit = altIndex === 0 ? habit : altHabit
+    const displayGoal  = altIndex === 0 ? goal : altGoal
     return (
       <div className="eo-root">
         <div className="eo-cover">
           <div className="eo-cover__bg" style={{ background: displayHabit.bg }} />
+          <div className="eo-cover__editorial">
+            <img
+              className="eo-cover__photo"
+              src={coverPhoto(displayGoal)}
+              alt=""
+              draggable="false"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+            <div className="eo-cover__duotone" style={{ background: displayHabit.bg }} />
+            <div className="eo-cover__motif" />
+          </div>
           <div className="eo-cover__overlay" />
           <div className="eo-cover__status"><span>9:41</span><span>▚ ▪ ▐</span></div>
           <p className="eo-brand eo-brand--light">Vitalist</p>

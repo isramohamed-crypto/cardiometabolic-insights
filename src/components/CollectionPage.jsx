@@ -114,9 +114,8 @@ export default function CollectionPage() {
   const myHabits     = [...graduated, ...keptHabits]
   const hasAnything  = trialHabits.length > 0 || myHabits.length > 0
 
-  // Categories that actually contain a habit — used for the filter pills
-  const usedCatIds = new Set(myHabits.map(h => catFor(h.goalId).id))
-  const filterCats = CATEGORIES.filter(c => usedCatIds.has(c.id))
+  // Show every category as a filter so users can pick one, then add into it
+  const filterCats = CATEGORIES
   const visibleHabits = filter === 'all'
     ? myHabits
     : myHabits.filter(h => catFor(h.goalId).id === filter)
@@ -208,49 +207,56 @@ export default function CollectionPage() {
           </div>
         )}
 
-        {visibleHabits.length > 0 ? (
-          <div className="cp-badges">
-            {visibleHabits.map(h => {
-              const cat = catFor(h.goalId)
-              return (
-                <div key={h.id} className="cp-badge">
-                  <div className="cp-badge__emblem" style={{ background: gradFor(h) }}>
-                    {h.icon && <span className="cp-badge__icon">{h.icon}</span>}
-                    <span className="cp-badge__seal">✓</span>
-                  </div>
-                  <span className="cp-badge__label">{h.label}</span>
-                  <span className="cp-badge__cat" style={{ color: cat.color }}>{cat.label}</span>
-                  <WearableTag goalId={h.goalId} sources={sources} onConnect={connectSource} />
+        <div className="cp-badges">
+          {visibleHabits.map(h => {
+            const cat = catFor(h.goalId)
+            return (
+              <div key={h.id} className="cp-badge">
+                <div className="cp-badge__emblem" style={{ background: gradFor(h) }}>
+                  {h.icon && <span className="cp-badge__icon">{h.icon}</span>}
+                  <span className="cp-badge__seal">✓</span>
                 </div>
-              )
-            })}
-            <button className="cp-badge cp-badge--add" onClick={() => setShowAdd(true)}>
-              <div className="cp-badge__emblem cp-badge__emblem--add"><span>+</span></div>
-              <span className="cp-badge__add-label">Add a habit</span>
-            </button>
-          </div>
-        ) : (
-          <p className="cp-nofilter">Nothing in {CATEGORIES.find(c => c.id === filter)?.label} yet.</p>
+                <span className="cp-badge__label">{h.label}</span>
+                <span className="cp-badge__cat" style={{ color: cat.color }}>{cat.label}</span>
+                <WearableTag goalId={h.goalId} sources={sources} onConnect={connectSource} />
+              </div>
+            )
+          })}
+          <button className="cp-badge cp-badge--add" onClick={() => setShowAdd(true)}>
+            <div className="cp-badge__emblem cp-badge__emblem--add"><span>+</span></div>
+            <span className="cp-badge__add-label">
+              {filter === 'all' ? 'Add a habit' : `Add ${CATEGORIES.find(c => c.id === filter)?.label}`}
+            </span>
+          </button>
+        </div>
+        {visibleHabits.length === 0 && (
+          <p className="cp-nofilter">
+            {filter === 'all'
+              ? 'No established habits yet — tap Add a habit.'
+              : `No ${CATEGORIES.find(c => c.id === filter)?.label} habits yet — tap Add to start one.`}
+          </p>
         )}
       </div>
 
       {showAdd && (
-        <AddSheet ownedLabels={ownedLabels} onAdd={addHabit} onClose={() => setShowAdd(false)} />
+        <AddSheet filter={filter} ownedLabels={ownedLabels} onAdd={addHabit} onClose={() => setShowAdd(false)} />
       )}
     </div>
   )
 }
 
-// ── Add sheet — slots grouped by category ───────────────────────────────────
-function AddSheet({ ownedLabels, onAdd, onClose }) {
+// ── Add sheet — slots grouped by category (scoped to active filter) ─────────
+function AddSheet({ filter = 'all', ownedLabels, onAdd, onClose }) {
+  const cats = filter === 'all' ? CATEGORIES : CATEGORIES.filter(c => c.id === filter)
+  const scoped = filter !== 'all' ? CATEGORIES.find(c => c.id === filter) : null
   return (
     <div className="cp-sheet" onClick={onClose}>
       <div className="cp-sheet__panel" onClick={e => e.stopPropagation()}>
         <div className="cp-sheet__handle" />
         <p className="cp-sheet__eye">Add to your habits</p>
-        <h3 className="cp-sheet__title">Fill a slot</h3>
+        <h3 className="cp-sheet__title">{scoped ? `Add a ${scoped.label} habit` : 'Fill a slot'}</h3>
         <div className="cp-sheet__scroll">
-          {CATEGORIES.map(cat => {
+          {cats.map(cat => {
             const items = LIBRARY.filter(l => cat.match.includes(l.goalId))
             if (items.length === 0) return null
             return (
