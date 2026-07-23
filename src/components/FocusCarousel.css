@@ -450,6 +450,67 @@
   margin: 0;
 }
 
+/* ── First-run recommendation ────────────────────────────────────────────── */
+.fr-root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 58px 22px 38px;
+}
+.fr-welcome { flex: none; }
+.fr-brand {
+  font-family: 'Archivo', sans-serif; font-weight: 900; font-style: italic;
+  font-size: 20px; letter-spacing: -.02em; color: #fff; margin: 0 0 14px;
+}
+.fr-hed {
+  font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 27px;
+  letter-spacing: -.02em; color: #fff; margin: 0;
+}
+.fr-sub { font: 600 14px/1.45 'Mulish', sans-serif; color: rgba(255,255,255,.6); margin: 8px 0 0; }
+.fr-card {
+  position: relative; flex: 1; min-height: 0;
+  border-radius: 24px; overflow: hidden;
+  margin: 16px 0 18px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  box-shadow: 0 20px 44px rgba(0,0,0,.42);
+}
+.fr-card__bg { position: absolute; inset: 0; }
+.fr-card__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.28) contrast(1.05) brightness(.9); }
+.fr-card__scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,14,12,.94) 0%, rgba(18,14,12,.3) 55%, transparent 80%); }
+.fr-card__flag { position: absolute; top: 16px; left: 16px; background: #fff; color: #15151d; border-radius: 999px; padding: 5px 13px; font: 800 11px 'Mulish', sans-serif; letter-spacing: .04em; }
+.fr-card__txt { position: relative; padding: 22px; }
+.fr-card__hed {
+  font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 30px;
+  line-height: 1.06; letter-spacing: -.02em; color: #fff; margin: 0;
+  text-shadow: 0 2px 20px rgba(0,0,0,.5);
+}
+.fr-card__hed em { font-style: italic; color: #bcd0ea; }
+.fr-card__that { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; color: rgba(255,255,255,.75); margin: 8px 0 0; }
+.fr-actions { flex: none; display: flex; flex-direction: column; gap: 10px; }
+.fr-primary { background: #9db4d6; color: #fff; border: none; border-radius: 999px; padding: 16px; font: 800 15px 'Mulish', sans-serif; cursor: pointer; transition: background .15s; }
+.fr-primary:hover { background: #8aa5c9; }
+.fr-link { background: none; border: none; color: rgba(255,255,255,.8); font: 700 14px 'Mulish', sans-serif; text-decoration: underline; cursor: pointer; padding: 4px; }
+.fr-card--settle { animation: frSettle .64s cubic-bezier(.4,0,.2,1) forwards; transform-origin: center bottom; }
+@keyframes frSettle {
+  0%   { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(26vh) scale(.8); opacity: 0; }
+}
+
+/* ── Post-confirm prompt (tracker + nudge) ───────────────────────────────── */
+.fc-pc__hed { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 20px; color: #fff; margin: 2px 0 2px; }
+.fc-pc__sub { font: 600 13px 'Mulish', sans-serif; color: rgba(255,255,255,.55); margin: 0 0 8px; }
+.fc-pc__opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+  border-radius: 12px; padding: 14px; font: 700 14px 'Mulish', sans-serif;
+  color: #fff; cursor: pointer; text-align: left;
+  transition: background .15s;
+}
+.fc-pc__opt:hover { background: rgba(255,255,255,.12); }
+.fc-pc__opt.on { background: rgba(126,232,178,.14); border-color: rgba(126,232,178,.4); color: #8fe6b6; }
+.fc-pc__check { flex-shrink: 0; font-weight: 900; font-size: 16px; }
+
 /* ── In-app reader (full page) ───────────────────────────────────────────── */
 .fc-reader {
   position: fixed;

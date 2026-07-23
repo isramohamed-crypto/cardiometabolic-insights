@@ -16,6 +16,9 @@ function readHabits() {
 function readName() {
   try { return localStorage.getItem('vitalistExp_name') || '' } catch { return '' }
 }
+function readPrimary() {
+  try { return localStorage.getItem('vitalistExp_primary') || '' } catch { return '' }
+}
 
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
@@ -76,7 +79,7 @@ const CONTENT = {
     hed: 'The nighttime walk that may balance blood sugar',
     body: [
       'A short walk after dinner is one of the most studied — and most underrated — things you can do for your metabolism. When you move right after eating, your muscles pull glucose out of your bloodstream for fuel, blunting the post-meal spike that would otherwise strain your body over time.',
-      'The research puts it at up to a 22% smaller rise in blood sugar, and you don\'t need a workout to get it. Ten minutes counts. Even three counts. The point isn\'t intensity — it\'s timing.',
+      'The research puts it at up to a 22% smaller rise in blood sugar, and you don\'t need a workout to get it. Ten minutes after dinner is plenty. The point isn\'t intensity — it\'s timing.',
       'That\'s why Vitalist ties this one to dinner: the habit rides on something you already do every night, so it asks almost nothing of you and compounds quietly on its own.',
     ],
   },
@@ -131,6 +134,95 @@ const CONTENT = {
   },
 }
 
+// ── First-run habit recommendations ─────────────────────────────────────────
+const GRAD = {
+  move:   'linear-gradient(155deg,#8a7565,#4a3b32)',
+  sleep:  'linear-gradient(155deg,#6d7b6a,#3a4436)',
+  eat:    'linear-gradient(155deg,#8a6a5a,#5a3a2a)',
+  water:  'linear-gradient(155deg,#5a7a8a,#2d4a5a)',
+  stress: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)',
+  strong: 'linear-gradient(155deg,#5a6a5a,#3a4a3a)',
+}
+const RECOMMEND = {
+  move:   { goalId: 'move',   label: '10-minute walk after dinner',   headline: 'Ten minutes outside,', em: 'after dinner.',           tagline: "That's it.",              source: 'EatingWell' },
+  sleep:  { goalId: 'sleep',  label: 'Lights low after 9',            headline: 'Lights low',           em: 'after 9.',                tagline: 'Just try it tonight.',    source: 'Sleep Foundation' },
+  eat:    { goalId: 'eat',    label: 'Fork down between bites',       headline: 'Fork down',            em: 'between bites.',          tagline: 'At dinner tonight.',      source: 'EatingWell' },
+  water:  { goalId: 'water',  label: 'A glass of water before coffee',headline: 'One glass of water,',  em: 'before coffee.',          tagline: "That's the whole thing.", source: 'Healthline' },
+  stress: { goalId: 'stress', label: 'Five breaths before scrolling', headline: 'Five breaths',         em: 'before the first scroll.',tagline: "Five. That's it.",        source: 'Verywell Mind' },
+  strong: { goalId: 'strong', label: 'Ten squats before the shower',  headline: 'Ten squats',           em: 'before the shower.',      tagline: 'Thirty seconds.',         source: 'Verywell Fit' },
+}
+const REC_ORDER = ['move', 'sleep', 'eat', 'water', 'stress', 'strong']
+
+function FirstRun({ name, primary, onSelect }) {
+  const order = [primary, ...REC_ORDER.filter(g => g !== primary)].filter(g => RECOMMEND[g])
+  const list  = order.length ? order : REC_ORDER
+  const [i, setI]           = useState(0)
+  const [leaving, setLeaving] = useState(false)
+  const rec = RECOMMEND[list[i % list.length]] || RECOMMEND.move
+
+  function choose() {
+    setLeaving(true)
+    setTimeout(() => onSelect(rec), 640)
+  }
+  return (
+    <div className="fr-root">
+      <div className="fr-welcome">
+        <p className="fr-brand">Vitalist</p>
+        <h1 className="fr-hed">Welcome{name ? `, ${name}` : ''}.</h1>
+        <p className="fr-sub">Here's one small thing to start with — swap it until one feels right.</p>
+      </div>
+      <div className={`fr-card${leaving ? ' fr-card--settle' : ''}`}>
+        <div className="fr-card__bg" style={{ background: GRAD[rec.goalId] || rec.bg }} />
+        <img
+          className="fr-card__photo"
+          src={IMAGERY[rec.goalId] || `https://picsum.photos/seed/vitalist-${rec.goalId}/900/1200`}
+          alt="" draggable="false"
+          onError={e => { e.currentTarget.style.display = 'none' }}
+        />
+        <div className="fr-card__scrim" />
+        <span className="fr-card__flag">{rec.source}</span>
+        <div className="fr-card__txt">
+          <h2 className="fr-card__hed">{rec.headline} <em>{rec.em}</em></h2>
+          <p className="fr-card__that">{rec.tagline}</p>
+        </div>
+      </div>
+      <div className="fr-actions">
+        <button className="fr-primary" onClick={choose}>I'll try it →</button>
+        <button className="fr-link" onClick={() => setI(i + 1)}>Show me another</button>
+      </div>
+    </div>
+  )
+}
+
+function PostConfirm({ habit, sources, onConnect, onClose }) {
+  const w = WEARABLE[habit.goalId]
+  const connected = w && sources.includes(w.source)
+  const [notif, setNotif] = useState(false)
+  return (
+    <div className="fc-ai-sheet" onClick={onClose}>
+      <div className="fc-ai-sheet__panel" onClick={e => e.stopPropagation()}>
+        <div className="fc-ai-sheet__handle" />
+        <p className="fc-pc__hed">Nice — it's yours.</p>
+        <p className="fc-pc__sub">Make it effortless:</p>
+        {w && (
+          <button className={`fc-pc__opt${connected ? ' on' : ''}`} onClick={() => { if (!connected) onConnect(w.source) }}>
+            <span>{connected ? `Auto-tracking with ${w.label} — nothing to log` : `Connect ${w.label} — logs itself`}</span>
+            <span className="fc-pc__check">{connected ? '✓' : '+'}</span>
+          </button>
+        )}
+        <button
+          className={`fc-pc__opt${notif ? ' on' : ''}`}
+          onClick={() => { setNotif(v => !v); try { localStorage.setItem('vitalistExp_notif', notif ? '0' : '1') } catch (_) {} }}
+        >
+          <span>{notif ? 'Daily nudge on — one a day, max' : 'Turn on a daily nudge'}</span>
+          <span className="fc-pc__check">{notif ? '✓' : '+'}</span>
+        </button>
+        <button className="fc-ai-sheet__close" onClick={onClose}>Done</button>
+      </div>
+    </div>
+  )
+}
+
 function Reader({ content, habit, onClose }) {
   return (
     <div className="fc-reader">
@@ -180,31 +272,34 @@ function streakLabel(habit) {
   return `Day ${days + 1} of your trial`
 }
 
-// Passive sub-text — contextual per habit type
-function habitSubText(habit, done) {
-  if (done) return null // don't show sub when done
+// Demo "detected from tracker" readouts per goal
+const DETECT = { move: '6,300 steps', sleep: '7h 20m', strong: '2 sessions', stress: 'HRV steady' }
+function trackerConnected(habit, sources) {
+  const w = WEARABLE[habit.goalId]
+  return !!(w && sources && sources.includes(w.source))
+}
+
+// Contextual sub-text — tracker-aware
+function habitSubText(habit, done, sources) {
+  if (done) return null
+  if (trackerConnected(habit, sources)) return "Nothing to log — we'll track this automatically."
+  if (WEARABLE[habit.goalId]) return 'Attach a tracker and this logs itself.'
   if (habit.status === 'kept') return `Settling in — ${streakLabel(habit)}.`
-  // Trial habits
-  const passive = ['move', 'sleep', 'water']
-  const goalId = habit.goalId || ''
-  if (passive.includes(goalId)) {
-    return "We'll catch this from your steps — nothing to tap."
-  }
   return 'Tap when you\'ve done it.'
 }
 
-function doneLabel(habit, done) {
+function doneLabel(habit, done, sources) {
+  const connected = trackerConnected(habit, sources)
   if (done) {
+    if (connected) return `Detected from your tracker · ${DETECT[habit.goalId] || 'logged'}`
     const now = new Date()
     const h = now.getHours()
     const m = String(now.getMinutes()).padStart(2, '0')
     const ampm = h >= 12 ? 'pm' : 'am'
     const hh = h % 12 || 12
-    return `Seen tonight · ${hh}:${m}${ampm}`
+    return `Seen today · ${hh}:${m}${ampm}`
   }
-  if (habit.goalId === 'move' || habit.goalId === 'sleep' || habit.goalId === 'water') {
-    return "We'll log this automatically"
-  }
+  if (connected) return "We'll log this automatically"
   return 'Tap when it\'s done'
 }
 
@@ -230,8 +325,8 @@ function HeadLine({ label }) {
 }
 
 function Card({ habit, done, onDone, sources, onConnect, onRead, width }) {
-  const sub     = habitSubText(habit, done)
-  const chip    = doneLabel(habit, done)
+  const sub     = habitSubText(habit, done, sources)
+  const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
 
   return (
@@ -367,7 +462,9 @@ function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
 
 export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const name            = readName()
-  const [habits]        = useState(() => readHabits() || [])
+  const [habits, setHabits] = useState(() => readHabits() || [])
+  const [firstRun, setFirstRun] = useState(() => { try { return localStorage.getItem('vitalistExp_firstrun') === '1' } catch { return false } })
+  const [postConfirm, setPostConfirm] = useState(null)
   const [done, setDone] = useState(() => readDone())
   const [idx, setIdx]   = useState(0)
   const [overview, setOverview] = useState(false)
@@ -384,6 +481,29 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       return next
     })
   }, [])
+
+  function onSelectRecommendation(rec) {
+    const today = new Date().toISOString().slice(0, 10)
+    const habit = {
+      id: rec.goalId + '_' + Date.now(),
+      goalId: rec.goalId,
+      label: rec.label,
+      bg: GRAD[rec.goalId] || rec.bg,
+      source: rec.source,
+      status: 'trial',
+      addedAt: today,
+      tier: 1,
+      anchor: null,
+    }
+    const next = [habit]
+    try {
+      localStorage.setItem('vitalistExp_habits', JSON.stringify(next))
+      localStorage.removeItem('vitalistExp_firstrun')
+    } catch (_) {}
+    setHabits(next)
+    setFirstRun(false)
+    setPostConfirm(habit)
+  }
 
   const dragStartX = useRef(null)
   const dragCurrX  = useRef(null)
@@ -422,6 +542,14 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     window.addEventListener('mouseup', mu)
     return () => { window.removeEventListener('mousemove', mm); window.removeEventListener('mouseup', mu) }
   })
+
+  if (firstRun) {
+    return (
+      <div className="fc-root">
+        <FirstRun name={name} primary={readPrimary()} onSelect={onSelectRecommendation} />
+      </div>
+    )
+  }
 
   if (habits.length === 0) {
     return (
@@ -528,6 +656,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       )}
       {reading && (
         <Reader content={reading.content} habit={reading.habit} onClose={() => setReading(null)} />
+      )}
+      {postConfirm && (
+        <PostConfirm habit={postConfirm} sources={sources} onConnect={connectSource} onClose={() => setPostConfirm(null)} />
       )}
     </div>
   )

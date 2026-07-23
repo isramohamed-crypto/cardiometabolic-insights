@@ -8,7 +8,7 @@ export const PROFILES = {
       {
         id: 'walk_new',
         goalId: 'move',
-        label: 'Walk for 5 minutes after dinner',
+        label: 'Walk for 10 minutes after dinner',
         icon: '🚶',
         bg: 'linear-gradient(155deg,#8a7565 0%,#4a3b32 72%)',
         anchor: 'After dinner',

@@ -68,10 +68,10 @@ const ANCHORS = {
 // ── Habit covers (micro-action per goal) ────────────────────────────────────
 const HABIT_MAP = {
   move: {
-    headline: 'Three minutes outside,',
+    headline: 'Ten minutes outside,',
     headlineEm: 'after dinner.',
     tagline: "That's it.",
-    label: '3-min walk after dinner',
+    label: '10-minute walk after dinner',
     icon: '🚶',
     bg: 'linear-gradient(155deg,#8a7565 0%,#4a3b32 72%)',
     why: 'Even a brief walk after eating blunts blood sugar spikes by up to 22% — without any medication. And it compounds: three minutes becomes ten becomes twenty, on its own timeline.',
@@ -219,51 +219,41 @@ export default function ExpOnboarding({ onComplete }) {
     )
   }
 
-  function finishOnboarding(sources = []) {
-    const habitId   = goal || 'move'
-    const habitData = getHabit(habitId)
-    const today     = new Date().toISOString().slice(0, 10)
-    const habits    = [{
-      id:       habitId + '_' + Date.now(),
-      goalId:   habitId,
-      label:    habitData.label,
-      icon:     habitData.icon,
-      bg:       habitData.bg,
-      anchor:   null,
-      status:   'trial',
-      addedAt:  today,
-      tier:     1,
-    }]
+  // Onboarding ends here. The habit itself is chosen on the Building page
+  // (first-run recommendation), so we only store context + a first-run flag.
+  function finishOnboarding() {
+    const today   = new Date().toISOString().slice(0, 10)
+    const primary = goal || selectedGoals[0] || ''
     const collection = existingHabits.map(id => {
       const h = EXISTING_HABITS.find(e => e.id === id)
       return { id, goalId: h.goalId, label: h.label, bg: h.bg, status: 'established', addedAt: today }
     })
     try {
-      localStorage.setItem('vitalistExp_habits', JSON.stringify(habits))
+      localStorage.setItem('vitalistExp_habits', JSON.stringify([]))
       localStorage.setItem('vitalistExp_goals', JSON.stringify(selectedGoals))
+      localStorage.setItem('vitalistExp_primary', primary)
       localStorage.setItem('vitalistExp_collection', JSON.stringify(collection))
-      localStorage.setItem('vitalistExp_sources', JSON.stringify(sources))
+      localStorage.setItem('vitalistExp_sources', JSON.stringify([]))
       localStorage.setItem('vitalistExp_name', name.trim())
+      localStorage.setItem('vitalistExp_firstrun', '1')
       localStorage.setItem('vitalistExp_complete', '1')
     } catch (_) {}
-    onComplete(habits)
+    onComplete([])
   }
 
   function handleLookAround() {
-    // Demo state: pre-seed two habits
-    const today = new Date().toISOString().slice(0, 10)
-    const ago30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10)
-    const habits = [
-      { id: 'walk_demo', goalId: 'move',  label: '3-min walk after dinner',  icon: '🚶', bg: HABIT_MAP.move.bg,  anchor: 'After dinner',  status: 'kept',  addedAt: ago30, tier: 2 },
-      { id: 'sleep_demo', goalId: 'sleep', label: 'Lights low after 9',       icon: '😴', bg: HABIT_MAP.sleep.bg, anchor: 'Before bed',    status: 'trial', addedAt: today, tier: 1 },
-    ]
+    // Skip onboarding → land in the same first-run, with generic habits to shuffle
     try {
-      localStorage.setItem('vitalistExp_habits', JSON.stringify(habits))
-      localStorage.setItem('vitalistExp_sources', JSON.stringify(['steps', 'sleep']))
-      localStorage.setItem('vitalistExp_name', 'Beth')
+      localStorage.setItem('vitalistExp_habits', JSON.stringify([]))
+      localStorage.setItem('vitalistExp_goals', JSON.stringify([]))
+      localStorage.setItem('vitalistExp_primary', '')
+      localStorage.setItem('vitalistExp_collection', JSON.stringify([]))
+      localStorage.setItem('vitalistExp_sources', JSON.stringify([]))
+      localStorage.setItem('vitalistExp_name', '')
+      localStorage.setItem('vitalistExp_firstrun', '1')
       localStorage.setItem('vitalistExp_complete', '1')
     } catch (_) {}
-    onComplete(habits)
+    onComplete([])
   }
 
   // ── Screens ────────────────────────────────────────────────────────────────
@@ -486,7 +476,7 @@ export default function ExpOnboarding({ onComplete }) {
               ))}
             </div>
             <div className="eo-spacer" />
-            <button className="eo-btn primary" onClick={() => setStep('S4')}>
+            <button className="eo-btn primary" onClick={finishOnboarding}>
               {existingHabits.length > 0 ? 'Nice — keep going →' : 'Starting fresh →'}
             </button>
           </div>
