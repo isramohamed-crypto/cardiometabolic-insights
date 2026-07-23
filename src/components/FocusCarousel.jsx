@@ -28,6 +28,44 @@ function photoFor(habit) {
   return IMAGERY[habit.goalId] || `https://picsum.photos/seed/vitalist-${habit.goalId || 'default'}/900/1200`
 }
 
+// ── Wearable / tracker sources ──────────────────────────────────────────────
+const WEARABLE = {
+  move:   { source: 'steps',    label: 'Steps' },
+  sleep:  { source: 'sleep',    label: 'Sleep' },
+  strong: { source: 'workouts', label: 'Workouts' },
+  stress: { source: 'hrv',      label: 'HRV' },
+}
+function readSources() {
+  try { return JSON.parse(localStorage.getItem('vitalistExp_sources') || '[]') } catch { return [] }
+}
+function writeSources(s) {
+  try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
+}
+const WatchIcon = (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5.5"/><path d="M8.5 3.5 9 8M15.5 3.5 15 8M8.5 20.5 9 16M15.5 20.5 15 16M12 9.5V12l1.8 1"/></svg>
+)
+// AI indicator glyph (sparkles) — no emoji
+const SparkIcon = (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".65"/></svg>
+)
+
+function CardWearable({ habit, sources, onConnect }) {
+  const w = WEARABLE[habit.goalId]
+  if (!w) return null
+  const on = sources.includes(w.source)
+  if (on) {
+    return <span className="fc-wear fc-wear--on">{WatchIcon} Auto · {w.label}</span>
+  }
+  return (
+    <button
+      className="fc-wear fc-wear--off"
+      onClick={e => { e.stopPropagation(); onConnect(w.source) }}
+    >
+      {WatchIcon} Attach {w.label} tracker
+    </button>
+  )
+}
+
 function streakLabel(habit) {
   if (habit.status === 'kept') {
     const weeks = habit.tier || 1
@@ -88,7 +126,7 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, onAsk }) {
+function Card({ habit, done, onDone, onAsk, sources, onConnect }) {
   const sub  = habitSubText(habit, done)
   const chip = doneLabel(habit, done)
 
@@ -127,6 +165,9 @@ function Card({ habit, done, onDone, onAsk }) {
           </p>
         )}
 
+        {/* Tracker: restated when connected, attachable when not */}
+        <CardWearable habit={habit} sources={sources} onConnect={onConnect} />
+
         {/* Done chip */}
         <div
           className={`fc-done-chip${done ? ' done' : ''}`}
@@ -138,8 +179,9 @@ function Card({ habit, done, onDone, onAsk }) {
           <span className="fc-done-chip__label">{chip}</span>
         </div>
 
-        {/* Ask bar */}
+        {/* Ask bar — AI-powered */}
         <div className="fc-ask-bar" onClick={() => onAsk(habit)}>
+          <span className="fc-ask-bar__ai">{SparkIcon} AI</span>
           <span className="fc-ask-bar__text">Ask about this habit…</span>
           <div className="fc-ask-bar__btn">→</div>
         </div>
@@ -159,7 +201,7 @@ function AISheet({ habit, onClose }) {
     <div className="fc-ai-sheet" onClick={onClose}>
       <div className="fc-ai-sheet__panel" onClick={e => e.stopPropagation()}>
         <div className="fc-ai-sheet__handle" />
-        <p className="fc-ai-sheet__label">Ask about this habit</p>
+        <p className="fc-ai-sheet__label">{SparkIcon} Ask AI about this habit</p>
         {prompts.map(p => (
           <button key={p} className="fc-ai-chip" onClick={onClose}>{p}</button>
         ))}
@@ -222,6 +264,16 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [overview, setOverview] = useState(false)
   const [askHabit, setAskHabit] = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
+  const [sources, setSources]   = useState(() => readSources())
+
+  const connectSource = useCallback((source) => {
+    setSources(prev => {
+      if (prev.includes(source)) return prev
+      const next = [...prev, source]
+      writeSources(next)
+      return next
+    })
+  }, [])
 
   const dragStartX = useRef(null)
   const dragCurrX  = useRef(null)
@@ -317,6 +369,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
               done={done.includes(h.id)}
               onDone={toggleDone}
               onAsk={setAskHabit}
+              sources={sources}
+              onConnect={connectSource}
             />
           ))}
         </div>

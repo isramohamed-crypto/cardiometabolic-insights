@@ -222,16 +222,56 @@
   color: rgba(255,255,255,.9);
 }
 
+/* ── Tracker tag on card (dark) ──────────────────────────────────────────── */
+.fc-wear {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 800;
+  font-size: 10.5px;
+  letter-spacing: .03em;
+  border-radius: 999px;
+  padding: 5px 11px;
+  margin-top: 2px;
+}
+.fc-wear svg { flex-shrink: 0; }
+.fc-wear--on {
+  background: rgba(126,232,178,.16);
+  border: 1px solid rgba(126,232,178,.38);
+  color: #8fe6b6;
+}
+.fc-wear--off {
+  background: rgba(255,255,255,.12);
+  border: 1px dashed rgba(255,255,255,.5);
+  color: #fff;
+  cursor: pointer;
+  transition: background .15s;
+}
+.fc-wear--off:hover { background: rgba(255,255,255,.2); }
+
 /* ── Ask bar ─────────────────────────────────────────────────────────────── */
 .fc-ask-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: #fff;
   border-radius: 999px;
-  padding: 5px 5px 5px 16px;
+  padding: 5px 5px 5px 14px;
   cursor: pointer;
   margin-top: 4px;
+}
+.fc-ask-bar__ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  color: #b7442c;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 .fc-ask-bar__text {
   flex: 1;
@@ -447,12 +487,16 @@
   margin: 0 auto 6px;
 }
 .fc-ai-sheet__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.4);
+  color: rgba(255,255,255,.55);
 }
+.fc-ai-sheet__label svg { color: #e0906f; flex-shrink: 0; }
 .fc-ai-chip {
   background: rgba(255,255,255,.07);
   border: 1px solid rgba(255,255,255,.12);
