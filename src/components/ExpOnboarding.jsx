@@ -421,7 +421,6 @@ export default function ExpOnboarding({ onComplete }) {
             const g = GAP.find(x => x.id === id)
             return (
               <div key={id} className={`eo-opt${primary === id ? ' on' : ''}`} onClick={() => setPrimary(id)}>
-                <span className="emo">{g.emoji}</span>
                 <div className="txt"><b>{g.label}</b></div>
                 <span className={`eo-radio${primary === id ? ' on' : ''}`} />
               </div>
