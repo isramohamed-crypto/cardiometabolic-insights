@@ -532,8 +532,15 @@ export default function ExpOnboarding({ onComplete }) {
       <div className="eo-screen">
         {topbar}
         <div className="eo-body">
-          <h2 className="eo-q">When in your day does <em>this live?</em></h2>
-          <p className="eo-lede">Pin it to a moment you already have — pick what fits.</p>
+          <div className="eo-chosen">
+            <span className="eo-chosen__dot" style={{ background: GRAD[card.goalId] }} />
+            <div className="eo-chosen__txt">
+              <p className="eo-chosen__eye">Your new habit</p>
+              <p className="eo-chosen__label">{card.label}</p>
+            </div>
+          </div>
+          <h2 className="eo-q">When does this live in <em>your day?</em></h2>
+          <p className="eo-lede">Pin “{card.label}” to a moment you already have — pick what fits.</p>
           <div className="eo-chips">
             {MOMENTS.map(m => (
               <span key={m} className={`eo-chip${moment === m ? ' on' : ''}`} onClick={() => setMoment(m)}>{m}</span>
@@ -561,13 +568,13 @@ export default function ExpOnboarding({ onComplete }) {
         {topbar}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <div>
-            <h2 className="eo-q">Want your plan <em>saved?</em></h2>
-            <p className="eo-lede" style={{ marginTop: 8 }}>Drop an email and we'll keep your habit and foundation so you can pick up anywhere.</p>
+            <h2 className="eo-q">Create your account to <em>start investing in your healthy habits.</em></h2>
+            <p className="eo-lede" style={{ marginTop: 8 }}>Your foundation and your new habit are ready. Add an email to save them and pick up on any device — nothing to set up tonight.</p>
           </div>
           <input className="eo-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com"
             onKeyDown={e => { if (e.key === 'Enter') finishOnboarding() }} />
           <div className="eo-spacer" />
-          <button className="eo-btn primary" onClick={finishOnboarding}>Start tonight →</button>
+          <button className="eo-btn primary" onClick={finishOnboarding}>Create account &amp; start →</button>
           {nav(() => setStep('S_moment'), finishOnboarding, 'Skip')}
         </div>
       </div>
