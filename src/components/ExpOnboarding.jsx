@@ -107,9 +107,9 @@ const GRAD = {
 }
 const HABIT_OPTIONS = {
   move: [
-    { goalId: 'move', label: 'Walk for 10 minutes after a meal', headline: 'Walk ten minutes,', em: 'after a meal.', tagline: "That's it.", source: 'EatingWell', article: 'The Simple Nighttime Habit That May Balance Blood Sugar', why: 'A short walk after eating blunts your post-meal blood-sugar spike — by up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.' },
-    { goalId: 'move', label: 'Do 5 controlled chair stands after breakfast', headline: 'Five chair stands,', em: 'after breakfast.', tagline: 'Slow and controlled.', source: 'Verywell Health', article: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer', why: "Standing up from a chair without your hands is real lower-body strength work — and research links regular strength training to a longer life. Five slow, controlled reps after breakfast is enough to start." },
-    { goalId: 'move', label: 'Stretch hips, glutes, and spine for five minutes', headline: 'Five minutes of stretch,', em: 'hips, glutes, spine.', tagline: 'Loosen up.', source: 'Health', article: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging', why: "Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age. Five minutes a day keeps those areas supple and eases everyday stiffness." },
+    { goalId: 'move', label: 'Walk for 10 minutes after a meal', headline: 'Walk ten minutes,', em: 'after a meal.', tagline: "That's it.", source: 'EatingWell', article: 'The Simple Nighttime Habit That May Balance Blood Sugar', why: 'A short walk after eating blunts your post-meal blood-sugar spike — by up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.', read: '4 min', body: ['A short walk after a meal is one of the most studied — and least demanding — things you can do for your blood sugar. When you move right after eating, your muscles pull glucose from your bloodstream for fuel, blunting the spike that would otherwise strain your body over time.', "Research puts the effect at up to a 22% smaller rise in blood sugar, and you don't need a workout to get it. Ten minutes after dinner is plenty — the point is timing, not intensity.", 'Because it rides on something you already do every evening, it asks almost nothing of you and compounds quietly on its own.'] },
+    { goalId: 'move', label: 'Do 5 controlled chair stands after breakfast', headline: 'Five chair stands,', em: 'after breakfast.', tagline: 'Slow and controlled.', source: 'Verywell Health', article: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer', why: "Standing up from a chair without your hands is real lower-body strength work — and research links regular strength training to a longer life. Five slow, controlled reps after breakfast is enough to start.", read: '5 min', body: ['Standing up from a chair without using your hands is real lower-body strength work — the kind researchers link to a longer, more independent life.', "You don't need a gym or heavy weights. A few slow, controlled reps after breakfast build the strength that keeps stairs, groceries, and getting off the floor easy for decades.", 'Anchoring it to a meal you already eat makes it automatic — no scheduling required.'] },
+    { goalId: 'move', label: 'Stretch hips, glutes, and spine for five minutes', headline: 'Five minutes of stretch,', em: 'hips, glutes, spine.', tagline: 'Loosen up.', source: 'Health', article: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging', why: "Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age. Five minutes a day keeps those areas supple and eases everyday stiffness.", read: '4 min', body: ["Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age — and it's easy to lose from sitting all day.", 'Five minutes of gentle stretching keeps those areas supple, eases everyday stiffness, and makes almost every other movement feel better.', 'No flexibility required to start; the habit itself is what restores the range.'] },
   ],
   eat: [
     { goalId: 'eat', label: 'Veg with every dinner', headline: 'Vegetables,', em: 'with dinner.', tagline: 'Just dinner, to start.', source: 'EatingWell', why: 'Front-loading fiber and vegetables flattens your glucose response and keeps you full — an easy anchor that crowds out less helpful choices without a strict plan.' },
@@ -137,6 +137,28 @@ function photo(goalId) { return `https://picsum.photos/seed/vitalist-${goalId}/9
 
 const MOMENTS = ['With morning coffee', 'At lunch', 'After dinner', 'When the TV goes off', 'A time I pick']
 
+// ── Full in-app article (habit-card justification) ──────────────────────────
+function ArticleView({ card, onClose }) {
+  return (
+    <div className="eo-article">
+      <div className="eo-article__hero" style={{ background: GRAD[card.goalId] }}>
+        <img className="eo-article__photo" src={photo(card.goalId)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="eo-article__scrim" />
+        <button className="eo-article__back" onClick={onClose} aria-label="Back">←</button>
+        <div className="eo-article__htxt">
+          <span className="eo-article__eye">{card.source} · {card.read || '4 min'} read</span>
+          <h1 className="eo-article__hed">{card.article}</h1>
+        </div>
+      </div>
+      <div className="eo-article__body">
+        {(card.body || [card.why]).map((p, i) => <p key={i}>{p}</p>)}
+        <p className="eo-article__foot">Curated for your habit · Vitalist by People Inc.</p>
+        <button className="eo-article__done" onClick={onClose}>Back to your habit</button>
+      </div>
+    </div>
+  )
+}
+
 // ── Component ───────────────────────────────────────────────────────────────
 export default function ExpOnboarding({ onComplete }) {
   const [step, setStep]         = useState('S_auth')
@@ -150,6 +172,7 @@ export default function ExpOnboarding({ onComplete }) {
   const [otherText, setOtherText] = useState('')
   const [habitIdx, setHabitIdx] = useState(0)
   const [showWhy, setShowWhy]   = useState(false)
+  const [readArticle, setReadArticle] = useState(null)
   const [moment, setMoment]     = useState('')
   const [notif, setNotif]       = useState(true)
   const [permission, setPerm]   = useState(false)
@@ -513,7 +536,9 @@ export default function ExpOnboarding({ onComplete }) {
             <div className="eo-hcard__why">
               <p className="eo-hcard__why-label">Why this works</p>
               <p className="eo-hcard__why-text">{card.why}</p>
-              {card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
+              {card.body
+                ? <button className="eo-hcard__read" onClick={() => setReadArticle(card)}>{card.source}: {card.article}<span>Read →</span></button>
+                : card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
             </div>
           </div>
 
@@ -523,6 +548,7 @@ export default function ExpOnboarding({ onComplete }) {
           {nav(() => setStep('S_perm'), null)}
         </div>
       </div>
+      {readArticle && <ArticleView card={readArticle} onClose={() => setReadArticle(null)} />}
     </div>
   )
 
