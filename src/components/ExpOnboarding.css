@@ -31,6 +31,20 @@
 .eo-track { height: 4px; background: #e6e1d9; border-radius: 999px; margin: 8px 22px 0; overflow: hidden; flex: none }
 .eo-track-fill { height: 100%; background: #12203b; border-radius: 999px; transition: width .4s cubic-bezier(.25,.46,.45,.94) }
 .eo-body { flex:1; display:flex; flex-direction:column; padding:16px 22px 24px; gap:14px; min-height:0; overflow-y:auto }
+/* ── Onboarding header — status bar · logo · synced progress ─────────────── */
+.eo-hdr { flex:none; padding:0 22px }
+.eo-hdr .eo-status { padding:13px 0 6px }
+.eo-hdr__row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px }
+.eo-hdr__logo { background:none; border:none; cursor:pointer; padding:0;
+  font-family:'Archivo',system-ui; font-weight:900; font-style:italic; font-size:19px; letter-spacing:-.02em; color:#1b2a4a }
+.eo-hdr__num { font:800 11px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90 }
+.eo-hdr__track { height:4px; background:#e6e1d9; border-radius:999px; overflow:hidden }
+.eo-hdr__fill { height:100%; background:#12203b; border-radius:999px; transition:width .4s cubic-bezier(.25,.46,.45,.94) }
+
+/* ── Onboarding bottom nav — back (left) · skip (right) ──────────────────── */
+.eo-nav { display:flex; align-items:center; justify-content:space-between; margin-top:12px }
+.eo-nav__back, .eo-nav__skip { background:none; border:none; cursor:pointer; font:700 14px 'Mulish'; color:#8b8b90; padding:8px 4px }
+.eo-nav__back:hover, .eo-nav__skip:hover { color:#1b2a4a }
 .eo-hero { margin:-16px -22px 0; padding:32px 22px 28px; background:linear-gradient(115deg,#f8e5df,#edeae4) }
 .eo-eye { font:800 11px 'Mulish'; letter-spacing:.14em; text-transform:uppercase; color:#b7442c; margin:0 }
 .eo-eye.navy { color:#1b2a4a }
@@ -135,7 +149,23 @@
   color:#faf7f2; padding:0; font-size:17px;
 }
 
-/* ── Auth screen ─────────────────────────────────────────────────────────── */
+/* ── Splash / landing ────────────────────────────────────────────────────── */
+.eo-splash { position:absolute; inset:0; overflow:hidden; background:#15151d; }
+.eo-splash__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(.2) contrast(1.05) brightness(.78); }
+.eo-splash__scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(15,12,10,.96) 0%, rgba(15,12,10,.35) 46%, rgba(15,12,10,.5) 100%); }
+.eo-splash__top { position:absolute; top:28px; left:24px; }
+.eo-splash__brand { font-family:'Archivo',system-ui; font-weight:900; font-style:italic; font-size:26px; letter-spacing:-.02em; color:#fff; margin:0; }
+.eo-splash__by { font:700 11px 'Mulish'; letter-spacing:.06em; color:rgba(255,255,255,.6); margin:2px 0 0; }
+.eo-splash__content { position:absolute; left:24px; right:24px; bottom:46px; display:flex; flex-direction:column; gap:14px; }
+.eo-splash__hed { font-family:'Archivo',system-ui; font-weight:900; font-size:38px; line-height:1.04; letter-spacing:-.025em; color:#fff; margin:0 0 6px; text-shadow:0 2px 24px rgba(0,0,0,.5); }
+.eo-splash__hed em { font-style:italic; color:#bcd0ea; }
+.eo-splash__cta { background:#faf7f2; color:#1b2a4a; border:none; border-radius:999px; padding:17px 22px; font:800 16px 'Mulish'; cursor:pointer; transition:background .15s, transform .1s; }
+.eo-splash__cta:hover { background:#fff; }
+.eo-splash__cta:active { transform:scale(.98); }
+.eo-splash__debug { align-self:center; background:none; border:none; color:rgba(255,255,255,.45); font:700 12px 'Mulish'; letter-spacing:.02em; text-decoration:underline; cursor:pointer; padding:4px; }
+.eo-splash__debug:hover { color:rgba(255,255,255,.7); }
+
+/* ── Auth screen (legacy, unused) ────────────────────────────────────────── */
 .eo-auth { background:#faf7f2; }
 .eo-auth__scroll {
   position:absolute; inset:0; overflow-y:auto;

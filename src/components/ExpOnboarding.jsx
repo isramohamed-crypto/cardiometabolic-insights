@@ -177,6 +177,21 @@ function getStartingLines(goalId) {
   return STARTING_LINES[goalId] || STARTING_LINES.default
 }
 
+// ── Shared onboarding header — logo + synced progress bar ───────────────────
+function OnbHeader({ onLogo, num, total }) {
+  const pct = total ? Math.round((num / total) * 100) : 0
+  return (
+    <div className="eo-hdr">
+      <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
+      <div className="eo-hdr__row">
+        <button className="eo-hdr__logo" onClick={onLogo}>Vitalist</button>
+        <span className="eo-hdr__num">Question {num} of {total}</span>
+      </div>
+      <div className="eo-hdr__track"><div className="eo-hdr__fill" style={{ width: pct + '%' }} /></div>
+    </div>
+  )
+}
+
 // ── Component ───────────────────────────────────────────────────────────────
 export default function ExpOnboarding({ onComplete }) {
   const [step, setStep]               = useState('S_auth')
@@ -219,6 +234,32 @@ export default function ExpOnboarding({ onComplete }) {
     )
   }
 
+  // Linear question flow (S2a only when >1 goal) — powers Back / Skip
+  function flowSteps() {
+    const s = ['S_name', 'S2']
+    if (selectedGoals.length > 1) s.push('S2a')
+    s.push('S2b', 'S_existing')
+    return s
+  }
+  function go(dir) {
+    const steps = flowSteps()
+    const i = steps.indexOf(step)
+    if (i === -1) return
+    const j = i + dir
+    if (j < 0) return setStep('S_auth')          // back from first question → splash
+    if (j >= steps.length) return finishOnboarding() // past the last → done
+    setStep(steps[j])
+  }
+  const _steps  = flowSteps()
+  const stepNum = _steps.indexOf(step) + 1
+  const header  = <OnbHeader onLogo={() => setStep('S_auth')} num={stepNum} total={_steps.length} />
+  const navRow  = (
+    <div className="eo-nav">
+      <button className="eo-nav__back" onClick={() => go(-1)}>← Back</button>
+      <button className="eo-nav__skip" onClick={() => go(1)}>Skip</button>
+    </div>
+  )
+
   // Onboarding ends here. The habit itself is chosen on the Building page
   // (first-run recommendation), so we only store context + a first-run flag.
   function finishOnboarding() {
@@ -242,68 +283,44 @@ export default function ExpOnboarding({ onComplete }) {
   }
 
   function handleLookAround() {
-    // Skip onboarding → land in the same first-run, with generic habits to shuffle
+    // Skip onboarding → land straight on a populated home to explore
+    const today = new Date().toISOString().slice(0, 10)
+    const ago   = n => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10)
+    const habits = [
+      { id: 'walk_demo',  goalId: 'move',  label: '10-minute walk after dinner', bg: HABIT_MAP.move.bg,  source: 'EatingWell',       anchor: 'After dinner', status: 'kept',  addedAt: ago(30), tier: 2 },
+      { id: 'sleep_demo', goalId: 'sleep', label: 'Lights low after 9',          bg: HABIT_MAP.sleep.bg, source: 'Sleep Foundation', anchor: 'Before bed',   status: 'trial', addedAt: today,   tier: 1 },
+    ]
     try {
-      localStorage.setItem('vitalistExp_habits', JSON.stringify([]))
-      localStorage.setItem('vitalistExp_goals', JSON.stringify([]))
-      localStorage.setItem('vitalistExp_primary', '')
+      localStorage.removeItem('vitalistExp_firstrun')
+      localStorage.setItem('vitalistExp_habits', JSON.stringify(habits))
       localStorage.setItem('vitalistExp_collection', JSON.stringify([]))
-      localStorage.setItem('vitalistExp_sources', JSON.stringify([]))
+      localStorage.setItem('vitalistExp_goals', JSON.stringify(['move', 'sleep']))
+      localStorage.setItem('vitalistExp_sources', JSON.stringify(['steps', 'sleep']))
       localStorage.setItem('vitalistExp_name', '')
-      localStorage.setItem('vitalistExp_firstrun', '1')
       localStorage.setItem('vitalistExp_complete', '1')
+      localStorage.setItem(`vitalistExp_completions_${today}`, JSON.stringify(['walk_demo']))
     } catch (_) {}
-    onComplete([])
+    onComplete(habits)
   }
 
   // ── Screens ────────────────────────────────────────────────────────────────
   if (step === 'S_auth') return (
-    <div className="eo-root eo-auth">
-      <div className="eo-auth__scroll">
-        <div className="eo-auth__hero">
-          <div className="eo-auth__hero-bg" />
-          <div className="eo-auth__hero-scrim" />
-          <div className="eo-auth__hero-inner">
-            <p className="eo-auth__eyebrow">Vitalist <span>·</span> People Inc.</p>
-            <h1 className="eo-auth__welcome">Welcome to <em>Vitalist</em></h1>
-          </div>
-        </div>
-        <div className="eo-auth__panel">
-          <p className="eo-auth__intro">
-            A personalized health companion that connects your conditions, your
-            choices, and your future — so you always know what's happening and
-            what to do next.
-          </p>
-          <p className="eo-auth__intro">
-            Track your numbers, identify patterns, and build lasting habits —
-            across cholesterol, blood pressure, weight, menopause, and more.
-          </p>
-          <div className="eo-auth__divider"><span>Join now</span></div>
-          <div className="eo-auth__actions">
-            <button className="eo-auth__btn email" onClick={() => setStep('S_name')}>
-              <span className="eo-auth__btn-icon">{IconEmail}</span>
-              Continue with Email
-            </button>
-            <button className="eo-auth__btn phone" onClick={() => setStep('S_name')}>
-              <span className="eo-auth__btn-icon">{IconPhone}</span>
-              Continue with Phone
-            </button>
-            <button className="eo-auth__btn google" onClick={() => setStep('S_name')}>
-              <span className="eo-auth__btn-icon">{IconGoogle}</span>
-              Continue with Google
-            </button>
-            <button className="eo-auth__btn apple" onClick={() => setStep('S_name')}>
-              <span className="eo-auth__btn-icon">{IconApple}</span>
-              Continue with Apple
-            </button>
-          </div>
-          <p className="eo-auth__legal">
-            By continuing, you agree to our <a href="#" onClick={e => e.preventDefault()}>Terms of Service</a> and <a href="#" onClick={e => e.preventDefault()}>Privacy Policy</a>. Your data is protected under HIPAA. We will never sell your information.
-          </p>
-          <button className="eo-auth__peek" onClick={handleLookAround}>
-            Just looking around →
-          </button>
-        </div>
+    <div className="eo-root eo-splash">
+      <img
+        className="eo-splash__img"
+        src="https://picsum.photos/seed/vitalist-splash/1000/1600"
+        alt="" draggable="false"
+        onError={e => { e.currentTarget.style.display = 'none' }}
+      />
+      <div className="eo-splash__scrim" />
+      <div className="eo-splash__top">
+        <p className="eo-splash__brand">Vitalist</p>
+        <p className="eo-splash__by">by People Inc.</p>
+      </div>
+      <div className="eo-splash__content">
+        <h1 className="eo-splash__hed">Big change starts small — <em>one habit at a time.</em></h1>
+        <button className="eo-splash__cta" onClick={() => setStep('S_name')}>Get started →</button>
+        <button className="eo-splash__debug" onClick={handleLookAround}>Just looking around</button>
       </div>
     </div>
   )
@@ -311,8 +328,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S0') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
+        {header}
         <div className="eo-body">
           <div className="eo-hero">
             <p className="eo-eye">Welcome to Vitalist</p>
@@ -341,8 +357,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S_name') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
+        {header}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 18 }}>
           <div>
             <h2 className="eo-q">First — what should we <em>call you?</em></h2>
@@ -357,12 +372,10 @@ export default function ExpOnboarding({ onComplete }) {
             onKeyDown={e => { if (e.key === 'Enter' && name.trim()) setStep('S2') }}
           />
           <div className="eo-spacer" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <button className="eo-btn primary" disabled={!name.trim()} onClick={() => setStep('S2')}>
-              Continue →
-            </button>
-            <button className="eo-link" onClick={() => setStep('S2')}>Skip for now</button>
-          </div>
+          <button className="eo-btn primary" disabled={!name.trim()} onClick={() => setStep('S2')}>
+            Continue →
+          </button>
+          {navRow}
         </div>
       </div>
     </div>
@@ -371,10 +384,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S2') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
-        <div className="eo-prog"><span>Getting started</span><span className="step">1 of 3</span></div>
-        <div className="eo-track"><div className="eo-track-fill" style={{ width: '33%' }} /></div>
+        {header}
         <div className="eo-body">
           <h2 className="eo-q">Which of these are on your to-do list?</h2>
           <p className="eo-lede">Pick everything that's been on your mind.</p>
@@ -405,6 +415,7 @@ export default function ExpOnboarding({ onComplete }) {
           >
             Continue →
           </button>
+          {navRow}
         </div>
       </div>
     </div>
@@ -413,10 +424,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S2a') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
-        <div className="eo-prog"><span>Getting started</span><span className="step">1 of 3</span></div>
-        <div className="eo-track"><div className="eo-track-fill" style={{ width: '33%' }} /></div>
+        {header}
         <div className="eo-body">
           <h2 className="eo-q">Which one's loudest right now?</h2>
           {selectedGoals.map(id => {
@@ -445,6 +453,7 @@ export default function ExpOnboarding({ onComplete }) {
           >
             That one →
           </button>
+          {navRow}
         </div>
       </div>
     </div>
@@ -457,10 +466,7 @@ export default function ExpOnboarding({ onComplete }) {
     return (
       <div className="eo-root">
         <div className="eo-screen">
-          <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
-          <div className="eo-prog"><span>One more thing</span><span className="step">3 of 3</span></div>
-          <div className="eo-track"><div className="eo-track-fill" style={{ width: '100%' }} /></div>
+          {header}
           <div className="eo-body">
             <h2 className="eo-q">What are you <em>already</em> doing?</h2>
             <p className="eo-lede">We'll add these to your collection — credit where it's due.</p>
@@ -479,6 +485,7 @@ export default function ExpOnboarding({ onComplete }) {
             <button className="eo-btn primary" onClick={finishOnboarding}>
               {existingHabits.length > 0 ? 'Nice — keep going →' : 'Starting fresh →'}
             </button>
+            {navRow}
           </div>
         </div>
       </div>
@@ -488,10 +495,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S2b') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
-        <div className="eo-prog"><span>Your starting line</span><span className="step">2 of 3</span></div>
-        <div className="eo-track"><div className="eo-track-fill" style={{ width: '66%' }} /></div>
+        {header}
         <div className="eo-body">
           <h2 className="eo-q">
             Everyone's starting line is different — <em>where's yours?</em>
@@ -515,6 +519,7 @@ export default function ExpOnboarding({ onComplete }) {
           >
             Continue →
           </button>
+          {navRow}
         </div>
       </div>
     </div>
@@ -596,8 +601,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S5') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
+        {header}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 20 }}>
           <div className="eo-notif-icon">🔔</div>
           <div>
@@ -623,8 +627,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S_wear') return (
     <div className="eo-root">
       <div className="eo-screen">
-        <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-        <p className="eo-brand">Vitalist</p>
+        {header}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 18 }}>
           <div className="eo-wear-icon">⌚</div>
           <div>
