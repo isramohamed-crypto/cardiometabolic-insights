@@ -70,7 +70,7 @@
 .fc-card__stack {
   position: relative;
   margin-top: auto;
-  padding: 0 14px 182px;
+  padding: 0 14px 200px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -598,7 +598,7 @@
 .fc-ai-fab {
   position: fixed;
   left: 14px; right: 14px;
-  bottom: 110px;
+  bottom: 132px;
   z-index: 40;
   display: flex;
   align-items: center;
@@ -657,7 +657,7 @@
 /* ── Swipe hint ──────────────────────────────────────────────────────────── */
 .fc-swipe-hint {
   position: fixed;
-  bottom: 182px;
+  bottom: 108px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10px;
@@ -801,7 +801,7 @@
 .fc-ai-sheet {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 1200;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
