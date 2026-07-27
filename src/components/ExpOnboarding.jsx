@@ -3,15 +3,15 @@ import './ExpOnboarding.css'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
-  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Any of these part of your week already?',
+  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Any of these already sound like you?',
     options: ['Vegetables or fruit with most meals', 'Cook at home most nights', 'Fish or plant protein a couple times a week', 'Swap a sugary drink for water most days', 'Olive oil or nuts as your go-to fat'] },
-  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Do any of these sound like you?',
+  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Any of these already sound like you?',
     options: ['A daily walk, any length', 'Take the stairs when you can', 'Get up and move during long sitting', 'A few minutes of stretching most days'] },
-  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: "How's sleep going? Tap what's already true.",
+  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: 'Any of these already sound like you?',
     options: ['A fairly consistent bedtime', 'Screens off for the last stretch before bed', 'Some daylight early in the day', 'Cool, dark bedroom'] },
-  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Any of these already in your life?',
+  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Any of these already sound like you?',
     options: ['Take real breaks in the day', 'Time outdoors most days', 'Something that clears your head — music, a walk, quiet', 'Time for a hobby you enjoy'] },
-  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Staying connected looks like a lot of things.',
+  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Any of these already sound like you?',
     options: ['See friends or family most weeks', 'Check in with someone close, by call or text', 'Share a meal with others most weeks', 'Part of a group, class, or community'] },
 ]
 const PILLAR_ORDER = PILLARS.map(p => p.id)
@@ -19,10 +19,11 @@ const CAT_LABEL = { eat: 'Eating', move: 'Moving', sleep: 'Sleep', stress: 'Stre
 
 function cheer(n) {
   if (n <= 0) return null
-  if (n >= 6) return `${n} so far — quite a foundation`
-  if (n === 5) return `${n} so far — keep going`
-  if (n >= 3) return `${n} so far — already building`
-  return `${n} so far — nice`
+  const noun = `${n} habit${n !== 1 ? 's' : ''} so far`
+  if (n >= 6) return `${noun} — quite a foundation`
+  if (n === 5) return `${noun} — keep going`
+  if (n >= 3) return `${noun} — already building`
+  return `${noun} — nice`
 }
 
 // ── Gap question — "what you know you should be doing" (no water) ────────────
@@ -98,189 +99,65 @@ const DIMENSIONS = {
 }
 function dimsFor(goal) { return DIMENSIONS[goal] || DIMENSIONS.default }
 
-// ── Habit cards per goal ─────────────────────────────────────────────────────
+// ── Habit cards per goal (3, swipeable within the chosen pillar) ────────────
 const GRAD = {
   move: 'linear-gradient(155deg,#8a7565,#4a3b32)', strong: 'linear-gradient(155deg,#5a6a5a,#3a4a3a)',
   eat: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)', sleep: 'linear-gradient(155deg,#6d7b6a,#3a4436)',
   stress: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)', connect: 'linear-gradient(155deg,#5a7a8a,#2d4a5a)',
 }
-
-// content[n] rotates daily — one piece surfaced per day, multi-source
-// type: 'justification' | 'supporting' | 'reinforcement'
 const HABIT_OPTIONS = {
   move: [
-    { goalId: 'move', tier: 1, grain: 'fine',
-      label: 'Walk for 10 minutes after a meal',
-      headline: 'Walk ten minutes,', em: 'after a meal.',
-      tagline: "That's it.", anchor: 'After dinner',
-      why: 'A short walk after eating blunts your post-meal blood-sugar spike — by up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.',
-      content: [
-        { type: 'justification', source: 'EatingWell',     title: 'The Simple Nighttime Habit That May Balance Blood Sugar' },
-        { type: 'supporting',    source: 'Byrdie',          title: 'Why I Started Taking a Post-Dinner Walk Every Night' },
-        { type: 'reinforcement', source: 'Verywell Health', title: 'Walking After Eating: Benefits and What to Know' },
-      ] },
-    { goalId: 'move', tier: 1, grain: 'fine',
-      label: 'Do 5 controlled chair stands after breakfast',
-      headline: 'Five chair stands,', em: 'after breakfast.',
-      tagline: 'Slow and controlled.', anchor: 'After breakfast',
-      why: "Standing up from a chair without your hands is real lower-body strength work — and research links regular strength training to a longer life. Five slow, controlled reps after breakfast is enough to start.",
-      content: [
-        { type: 'justification', source: 'Verywell Health', title: 'Research Shows Strength Training Every Week Can Help You Live Longer' },
-        { type: 'supporting',    source: 'Prevention',      title: '5 Chair Exercises for Stronger Legs at Any Age' },
-        { type: 'reinforcement', source: 'EatingWell',      title: 'How to Build Strength at Home With No Equipment' },
-      ] },
-    { goalId: 'move', tier: 1, grain: 'fine',
-      label: 'Stretch hips, glutes, and spine for five minutes',
-      headline: 'Five minutes of stretch,', em: 'hips, glutes, spine.',
-      tagline: 'Loosen up.', anchor: 'Morning',
-      why: "Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age. Five minutes a day keeps those areas supple and eases everyday stiffness.",
-      content: [
-        { type: 'justification', source: 'Health',   title: 'I Went to My First Stretch Session and It Changed Everything' },
-        { type: 'supporting',    source: 'Byrdie',   title: 'Your 5-Minute Morning Mobility Routine' },
-        { type: 'reinforcement', source: 'Prevention', title: 'Why Hip Flexibility Matters More Than You Think' },
-      ] },
+    { goalId: 'move', label: 'Walk for 10 minutes after a meal', headline: 'Walk ten minutes,', em: 'after a meal.', tagline: "That's it.", source: 'EatingWell', article: 'The Simple Nighttime Habit That May Balance Blood Sugar', why: 'A short walk after eating blunts your post-meal blood-sugar spike — by up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.', read: '4 min', body: ['A short walk after a meal is one of the most studied — and least demanding — things you can do for your blood sugar. When you move right after eating, your muscles pull glucose from your bloodstream for fuel, blunting the spike that would otherwise strain your body over time.', "Research puts the effect at up to a 22% smaller rise in blood sugar, and you don't need a workout to get it. Ten minutes after dinner is plenty — the point is timing, not intensity.", 'Because it rides on something you already do every evening, it asks almost nothing of you and compounds quietly on its own.'] },
+    { goalId: 'move', label: 'Do 5 controlled chair stands after breakfast', headline: 'Five chair stands,', em: 'after breakfast.', tagline: 'Slow and controlled.', source: 'Verywell Health', article: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer', why: "Standing up from a chair without your hands is real lower-body strength work — and research links regular strength training to a longer life. Five slow, controlled reps after breakfast is enough to start.", read: '5 min', body: ['Standing up from a chair without using your hands is real lower-body strength work — the kind researchers link to a longer, more independent life.', "You don't need a gym or heavy weights. A few slow, controlled reps after breakfast build the strength that keeps stairs, groceries, and getting off the floor easy for decades.", 'Anchoring it to a meal you already eat makes it automatic — no scheduling required.'] },
+    { goalId: 'move', label: 'Stretch hips, glutes, and spine for five minutes', headline: 'Five minutes of stretch,', em: 'hips, glutes, spine.', tagline: 'Loosen up.', source: 'Health', article: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging', why: "Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age. Five minutes a day keeps those areas supple and eases everyday stiffness.", read: '4 min', body: ["Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age — and it's easy to lose from sitting all day.", 'Five minutes of gentle stretching keeps those areas supple, eases everyday stiffness, and makes almost every other movement feel better.', 'No flexibility required to start; the habit itself is what restores the range.'] },
   ],
   eat: [
-    { goalId: 'eat', tier: 1, grain: 'fine',
-      label: 'Veg with every dinner',
-      headline: 'Vegetables,', em: 'with dinner.',
-      tagline: 'Just dinner, to start.', anchor: 'At dinner',
-      why: 'Front-loading fiber and vegetables flattens your glucose response and keeps you full — an easy anchor that crowds out less helpful choices without a strict plan.',
-      content: [
-        { type: 'justification', source: 'EatingWell', title: 'Why Adding Vegetables to Dinner Is the Easiest Diet Change' },
-        { type: 'supporting',    source: 'Byrdie',      title: 'The Simple Habit That Helped Me Eat More Vegetables' },
-        { type: 'reinforcement', source: 'Real Simple', title: 'How to Add Vegetables to Every Meal Without Thinking About It' },
-      ] },
-    { goalId: 'eat', tier: 1, grain: 'fine',
-      label: 'Fork down between bites',
-      headline: 'Fork down,', em: 'between bites.',
-      tagline: 'At dinner tonight.', anchor: 'At dinner',
-      why: 'Eating slower gives your gut about 20 minutes to signal fullness to your brain, so you eat less without trying — and enjoy the meal more.',
-      content: [
-        { type: 'justification', source: 'EatingWell',     title: 'The Science Behind Eating Slowly (and Why It Works)' },
-        { type: 'supporting',    source: 'Prevention',      title: 'Why Putting Down Your Fork Between Bites Actually Works' },
-        { type: 'reinforcement', source: 'Verywell Health', title: 'Mindful Eating: What It Is and How to Start' },
-      ] },
-    { goalId: 'eat', tier: 1, grain: 'fine',
-      label: 'Protein-first breakfast',
-      headline: 'Protein first,', em: 'at breakfast.',
-      tagline: 'Sets the day.', anchor: 'Morning',
-      why: 'A protein- and fiber-anchored breakfast blunts the morning glucose spike and steadies energy into the afternoon.',
-      content: [
-        { type: 'justification', source: 'EatingWell', title: 'The Best High-Protein Breakfasts for All-Day Energy' },
-        { type: 'supporting',    source: 'Byrdie',      title: 'Morning Protein Changed My Energy — Here Is How' },
-        { type: 'reinforcement', source: 'Health',      title: 'Why Starting Your Day With Protein Is a Game Changer' },
-      ] },
+    { goalId: 'eat', label: 'Veg with every dinner', headline: 'Vegetables,', em: 'with dinner.', tagline: 'Just dinner, to start.', source: 'EatingWell', why: 'Front-loading fiber and vegetables flattens your glucose response and keeps you full — an easy anchor that crowds out less helpful choices without a strict plan.' },
+    { goalId: 'eat', label: 'Fork down between bites', headline: 'Fork down,', em: 'between bites.', tagline: 'At dinner tonight.', source: 'EatingWell', why: 'Eating slower gives your gut about 20 minutes to signal fullness to your brain, so you eat less without trying — and enjoy the meal more.' },
+    { goalId: 'eat', label: 'Protein-first breakfast', headline: 'Protein first,', em: 'at breakfast.', tagline: 'Sets the day.', source: 'EatingWell', why: 'A protein- and fiber-anchored breakfast blunts the morning glucose spike and steadies energy into the afternoon.' },
   ],
   sleep: [
-    { goalId: 'sleep', tier: 1, grain: 'fine',
-      label: 'Lights low after 9',
-      headline: 'Lights low', em: 'after 9.',
-      tagline: 'Just try it tonight.', anchor: 'After 9 PM',
-      why: "Bright light suppresses melatonin, the hormone that tells your body it's time to sleep. Dimming an hour before bed can move your sleep onset up by 30 minutes.",
-      content: [
-        { type: 'justification', source: 'Sleep Foundation', title: 'How Light Affects Your Sleep and What to Do About It' },
-        { type: 'supporting',    source: 'Verywell Health',  title: 'Blue Light and Sleep: What Is the Connection?' },
-        { type: 'reinforcement', source: 'Real Simple',      title: 'Night Owl Habits: How to Wind Down an Hour Earlier' },
-      ] },
-    { goalId: 'sleep', tier: 1, grain: 'fine',
-      label: 'Same wake time daily',
-      headline: 'Same wake time,', em: 'every day.',
-      tagline: 'Even weekends.', anchor: 'Each morning',
-      why: 'Consistency of wake time anchors your circadian rhythm — scientists agree it matters more than total hours, and it makes falling asleep easier within a couple of weeks.',
-      content: [
-        { type: 'justification', source: 'Verywell Health',  title: 'Why a Consistent Wake Time Is the Key to Better Sleep' },
-        { type: 'supporting',    source: 'Sleep Foundation', title: 'Your Circadian Rhythm and How to Reset It' },
-        { type: 'reinforcement', source: 'Prevention',       title: 'The One Sleep Habit Experts Agree On' },
-      ] },
-    { goalId: 'sleep', tier: 1, grain: 'fine',
-      label: 'Screens down 30 min before bed',
-      headline: 'Screens down,', em: 'before bed.',
-      tagline: 'Thirty minutes.', anchor: 'Before bed',
-      why: 'Putting screens away reduces the light and stimulation that keep your brain alert, easing the transition into sleep.',
-      content: [
-        { type: 'justification', source: 'Sleep Foundation', title: 'How Electronic Devices Affect Your Sleep Quality' },
-        { type: 'supporting',    source: 'Byrdie',           title: 'I Stopped Looking at My Phone Before Bed — Here Is What Happened' },
-        { type: 'reinforcement', source: 'Verywell Mind',    title: 'Why Screen Time Before Bed Disrupts Your Sleep' },
-      ] },
+    { goalId: 'sleep', label: 'Lights low after 9', headline: 'Lights low', em: 'after 9.', tagline: 'Just try it tonight.', source: 'Sleep Foundation', why: "Bright light suppresses melatonin, the hormone that tells your body it's time to sleep. Dimming an hour before bed can move your sleep onset up by 30 minutes." },
+    { goalId: 'sleep', label: 'Same wake time daily', headline: 'Same wake time,', em: 'every day.', tagline: 'Even weekends.', source: 'Verywell Health', why: 'Consistency of wake time anchors your circadian rhythm — scientists agree it matters more than total hours, and it makes falling asleep easier within a couple of weeks.' },
+    { goalId: 'sleep', label: 'Screens down 30 min before bed', headline: 'Screens down,', em: 'before bed.', tagline: 'Thirty minutes.', source: 'Sleep Foundation', why: 'Putting screens away reduces the light and stimulation that keep your brain alert, easing the transition into sleep.' },
   ],
   stress: [
-    { goalId: 'stress', tier: 1, grain: 'fine',
-      label: 'Five breaths before scrolling',
-      headline: 'Five breaths,', em: 'before the first scroll.',
-      tagline: "Five. That's it.", anchor: 'First thing',
-      why: "Long, slow exhales switch on your parasympathetic nervous system — the body's calm-down mode. Done before you reach for your phone, it interrupts the stress-scroll loop.",
-      content: [
-        { type: 'justification', source: 'Verywell Mind', title: 'The Physiological Benefits of Deep Breathing' },
-        { type: 'supporting',    source: 'Prevention',    title: '5 Breathing Exercises to Calm Anxiety Fast' },
-        { type: 'reinforcement', source: 'Health',        title: 'Why Box Breathing Is the Stress Tool More People Should Know' },
-      ] },
-    { goalId: 'stress', tier: 1, grain: 'fine',
-      label: 'A short outdoor break',
-      headline: 'Step outside,', em: 'once a day.',
-      tagline: 'Even five minutes.', anchor: 'Midday',
-      why: 'Brief time outdoors lowers stress hormones and lifts mood — a small reset that compounds over a week.',
-      content: [
-        { type: 'justification', source: 'Verywell Mind', title: 'Nature and Stress Relief: What the Research Says' },
-        { type: 'supporting',    source: 'Real Simple',   title: 'Why a 5-Minute Walk Outside Changes Your Mood' },
-        { type: 'reinforcement', source: 'Prevention',    title: 'The Science of Stress and the Great Outdoors' },
-      ] },
-    { goalId: 'stress', tier: 1, grain: 'fine',
-      label: 'One good thing at night',
-      headline: 'One good thing,', em: 'each night.',
-      tagline: 'Name it and rest.', anchor: 'Before bed',
-      why: 'Naming one good moment shifts attention toward what went right, which research links to lower stress and better sleep.',
-      content: [
-        { type: 'justification', source: 'Verywell Mind', title: 'How Gratitude Affects Stress and Anxiety' },
-        { type: 'supporting',    source: 'Health',        title: 'A Simple Gratitude Practice That Can Change Your Day' },
-        { type: 'reinforcement', source: 'Prevention',    title: 'Why Ending Your Day With One Good Thought Works' },
-      ] },
+    { goalId: 'stress', label: 'Five breaths before scrolling', headline: 'Five breaths,', em: 'before the first scroll.', tagline: "Five. That's it.", source: 'Verywell Mind', why: "Long, slow exhales switch on your parasympathetic nervous system — the body's calm-down mode. Done before you reach for your phone, it interrupts the stress-scroll loop." },
+    { goalId: 'stress', label: 'A short outdoor break', headline: 'Step outside,', em: 'once a day.', tagline: 'Even five minutes.', source: 'Verywell Mind', why: 'Brief time outdoors lowers stress hormones and lifts mood — a small reset that compounds over a week.' },
+    { goalId: 'stress', label: 'One good thing at night', headline: 'One good thing,', em: 'each night.', tagline: 'Name it and rest.', source: 'Verywell Mind', why: 'Naming one good moment shifts attention toward what went right, which research links to lower stress and better sleep.' },
   ],
   connect: [
-    { goalId: 'connect', tier: 1, grain: 'fine',
-      label: 'Text someone you miss',
-      headline: 'Reach out,', em: 'to one person.',
-      tagline: 'A text counts.', anchor: 'Anytime',
-      why: 'Small, regular contact does most of the work of connection. Loneliness is a real health risk; a quick check-in buffers stress and supports the heart.',
-      content: [
-        { type: 'justification', source: 'Verywell Mind', title: 'Loneliness Is a Health Risk — Here Is What You Can Do' },
-        { type: 'supporting',    source: 'Real Simple',   title: 'The Simple Act of Texting Can Fight Loneliness' },
-        { type: 'reinforcement', source: 'Health',        title: 'How Small Moments of Connection Add Up' },
-      ] },
-    { goalId: 'connect', tier: 1, grain: 'fine',
-      label: 'A weekly call',
-      headline: 'One call,', em: 'every week.',
-      tagline: 'Put it on repeat.', anchor: 'Weekly',
-      why: 'A standing weekly call turns connection into a habit instead of a someday — frequency matters more than grand gestures.',
-      content: [
-        { type: 'justification', source: 'Verywell Mind', title: 'The Health Benefits of Staying Connected' },
-        { type: 'supporting',    source: 'Prevention',    title: 'How a Weekly Phone Call Can Strengthen Any Relationship' },
-        { type: 'reinforcement', source: 'Real Simple',   title: 'Why Scheduling Friend Time Actually Works' },
-      ] },
-    { goalId: 'connect', tier: 1, grain: 'fine',
-      label: 'Share one meal',
-      headline: 'Share a meal,', em: 'this week.',
-      tagline: 'With anyone.', anchor: 'This week',
-      why: 'Shared meals build belonging and routine — simple rituals that anchor relationships over time.',
-      content: [
-        { type: 'justification', source: 'Parents',     title: 'The Science Behind Family Dinners' },
-        { type: 'supporting',    source: 'Real Simple', title: 'Why Eating Together Is Good for Your Health' },
-        { type: 'reinforcement', source: 'EatingWell',  title: 'How Shared Meals Build Stronger Relationships' },
-      ] },
+    { goalId: 'connect', label: 'Text someone you miss', headline: 'Reach out,', em: 'to one person.', tagline: 'A text counts.', source: 'Verywell Mind', why: 'Small, regular contact does most of the work of connection. Loneliness is a real health risk; a quick check-in buffers stress and supports the heart.' },
+    { goalId: 'connect', label: 'A weekly call', headline: 'One call,', em: 'every week.', tagline: 'Put it on repeat.', source: 'Verywell Mind', why: 'A standing weekly call turns connection into a habit instead of a someday — frequency matters more than grand gestures.' },
+    { goalId: 'connect', label: 'Share one meal', headline: 'Share a meal,', em: 'this week.', tagline: 'With anyone.', source: 'Parents', why: 'Shared meals build belonging and routine — simple rituals that anchor relationships over time.' },
   ],
 }
 function habitCardsFor(goal) { return HABIT_OPTIONS[goal] || HABIT_OPTIONS.move }
-function photo(goalId, id) { return `https://picsum.photos/seed/vitalist-${id || goalId}/900/1200` }
-
-// picks today's content piece (rotates daily across sources)
-function getDailyContent(card) {
-  const pool = card.content || []
-  if (!pool.length) return { source: card.source || '', title: '' }
-  const day = Math.floor(Date.now() / 86400000)
-  return pool[day % pool.length]
-}
+function photo(goalId) { return `https://picsum.photos/seed/vitalist-${goalId}/900/1200` }
 
 const MOMENTS = ['With morning coffee', 'At lunch', 'After dinner', 'When the TV goes off', 'A time I pick']
+
+// ── Full in-app article (habit-card justification) ──────────────────────────
+function ArticleView({ card, onClose }) {
+  return (
+    <div className="eo-article">
+      <div className="eo-article__hero" style={{ background: GRAD[card.goalId] }}>
+        <img className="eo-article__photo" src={photo(card.goalId)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="eo-article__scrim" />
+        <button className="eo-article__back" onClick={onClose} aria-label="Back">←</button>
+        <div className="eo-article__htxt">
+          <span className="eo-article__eye">{card.source} · {card.read || '4 min'} read</span>
+          <h1 className="eo-article__hed">{card.article}</h1>
+        </div>
+      </div>
+      <div className="eo-article__body">
+        {(card.body || [card.why]).map((p, i) => <p key={i}>{p}</p>)}
+        <p className="eo-article__foot">Curated for your habit · Vitalist by People Inc.</p>
+        <button className="eo-article__done" onClick={onClose}>Back to your habit</button>
+      </div>
+    </div>
+  )
+}
 
 // ── Component ───────────────────────────────────────────────────────────────
 export default function ExpOnboarding({ onComplete }) {
@@ -295,6 +172,7 @@ export default function ExpOnboarding({ onComplete }) {
   const [otherText, setOtherText] = useState('')
   const [habitIdx, setHabitIdx] = useState(0)
   const [showWhy, setShowWhy]   = useState(false)
+  const [readArticle, setReadArticle] = useState(null)
   const [moment, setMoment]     = useState('')
   const [notif, setNotif]       = useState(true)
   const [permission, setPerm]   = useState(false)
@@ -302,9 +180,10 @@ export default function ExpOnboarding({ onComplete }) {
 
   const claimedCount = Object.values(claimed).reduce((a, arr) => a + arr.length, 0)
   const goal = primary || gapGoals[0] || 'move'
+  const goalLabel = (GAP.find(g => g.id === goal) || {}).label || 'your goal'
+  const goalLower = goalLabel.toLowerCase()
   const cards = habitCardsFor(goal)
   const card  = cards[habitIdx % cards.length]
-  const todayContent = getDailyContent(card)
 
   function toggleClaim(pid, label) {
     setClaimed(prev => {
@@ -352,34 +231,28 @@ export default function ExpOnboarding({ onComplete }) {
     const today = new Date().toISOString().slice(0, 10)
     const ago = n => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10)
     const habits = [
-      // My habits — carried over from onboarding claims
-      { id: 'walk_demo',   goalId: 'move',    label: '10-minute walk after dinner',  bg: GRAD.move,    source: 'EatingWell',       anchor: 'After dinner',  status: 'my_habit', addedAt: ago(60), tier: 3 },
-      { id: 'breath_demo', goalId: 'stress',  label: 'Five breaths before scrolling',bg: GRAD.stress,  source: 'Verywell Mind',    anchor: 'Before phone',  status: 'my_habit', addedAt: ago(45), tier: 2 },
-      { id: 'water_demo',  goalId: 'eat',     label: 'Glass of water before coffee', bg: GRAD.eat,     source: 'Healthline',       anchor: 'Each morning',  status: 'my_habit', addedAt: ago(90), tier: 4 },
-      // Adopted — past trial, working toward my habit
-      { id: 'strong_demo', goalId: 'strong',  label: 'Ten squats before the shower', bg: GRAD.strong,  source: 'Verywell Health',  anchor: 'Before shower', status: 'adopted',  addedAt: ago(14), tier: 1 },
-      // Trial — new habit, working on it
-      { id: 'sleep_demo',  goalId: 'sleep',   label: 'Lights low after 9',           bg: GRAD.sleep,   source: 'Sleep Foundation', anchor: 'Before bed',    status: 'trial',    addedAt: today,   tier: 1 },
+      { id: 'walk_demo',  goalId: 'move',  label: '10-minute walk after dinner', bg: GRAD.move,  source: 'EatingWell',       anchor: 'After dinner', status: 'kept',  addedAt: ago(30), tier: 2 },
+      { id: 'sleep_demo', goalId: 'sleep', label: 'Lights low after 9',          bg: GRAD.sleep, source: 'Sleep Foundation', anchor: 'Before bed',   status: 'trial', addedAt: today,   tier: 1 },
     ]
     try {
       localStorage.removeItem('vitalistExp_firstrun')
       localStorage.setItem('vitalistExp_habits', JSON.stringify(habits))
       localStorage.setItem('vitalistExp_collection', JSON.stringify([]))
-      localStorage.setItem('vitalistExp_goals', JSON.stringify(['move', 'sleep', 'stress', 'eat', 'strong']))
+      localStorage.setItem('vitalistExp_goals', JSON.stringify(['move', 'sleep']))
       localStorage.setItem('vitalistExp_sources', JSON.stringify(['steps', 'sleep']))
       localStorage.setItem('vitalistExp_name', '')
       localStorage.setItem('vitalistExp_complete', '1')
-      localStorage.setItem(`vitalistExp_completions_${today}`, JSON.stringify(['walk_demo', 'breath_demo', 'water_demo']))
+      localStorage.setItem(`vitalistExp_completions_${today}`, JSON.stringify(['walk_demo']))
     } catch (_) {}
     onComplete(habits)
   }
 
   const logo   = <button className="eo-onblogo" onClick={() => setStep('S_auth')}>Vitalist</button>
   const status = <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-  const nav = (onBack, onSkip, skipLabel) => (
+  const nav = (onBack) => (
     <div className="eo-nav">
       {onBack ? <button className="eo-nav__back" onClick={onBack}>← Back</button> : <span />}
-      {onSkip ? <button className="eo-nav__skip" onClick={onSkip}>{skipLabel || 'Skip'}</button> : <span />}
+      <span />
     </div>
   )
 
@@ -393,7 +266,6 @@ export default function ExpOnboarding({ onComplete }) {
       {status}
       <div className="eo-topline">
         {logo}
-        <span className="eo-hdrbar__num">Step {Math.max(1, flowIdx + 1)} of {FLOW.length}</span>
       </div>
       <div className="eo-topbar-track"><div className="eo-topbar-fill" style={{ width: flowPct + '%' }} /></div>
     </div>
@@ -406,6 +278,7 @@ export default function ExpOnboarding({ onComplete }) {
   if (step === 'S_auth') return (
     <div className="eo-root eo-splash">
       <img className="eo-splash__img" src="https://picsum.photos/seed/vitalist-splash/1000/1600" alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+      <div className="eo-splash__scrim" />
       <div className="eo-splash__top">
         <p className="eo-splash__brand">Vitalist</p>
         <p className="eo-splash__by">by People Inc.</p>
@@ -446,7 +319,7 @@ export default function ExpOnboarding({ onComplete }) {
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <p className="eo-eye">Your foundation</p>
           <h1 className="eo-disp" style={{ fontSize: 30 }}>Let's start with <em>what's already working.</em></h1>
-          <p className="eo-lede">Before anything new — a few quick questions about what you already do. Tap anything that sounds like you, even roughly. Nothing here is a test.</p>
+          <p className="eo-lede">Before anything new — a few quick questions about the healthy habits you already have. Tap the habits that sound like you, even roughly. Nothing here is a test.</p>
           <div className="eo-spacer" />
           <button className="eo-btn primary" onClick={() => setStep('S_p_eating')}>Get started →</button>
           {nav(() => setStep('S_name'), () => setStep('S_p_eating'))}
@@ -542,11 +415,11 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-lede">The thing that's been on your mind. Pick whatever fits.</p>
           <div className="eo-chips">
             {GAP.map(g => (
-              <span key={g.id} data-pillar={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
-                {g.label}
+              <span key={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
+                {g.emoji} {g.label}
               </span>
             ))}
-            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>Something else</span>
+            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>✏️ Something else</span>
           </div>
           {otherOpen && (
             <input className="eo-input" style={{ marginTop: 4 }} value={otherText} onChange={e => setOtherText(e.target.value)} placeholder="What's on your mind?" />
@@ -569,7 +442,6 @@ export default function ExpOnboarding({ onComplete }) {
         {topbar}
         <div className="eo-body">
           <h2 className="eo-q">Which one's <em>loudest</em> right now?</h2>
-          <p className="eo-lede">We'll hold the rest — one at a time is the whole point.</p>
           {gapGoals.map(id => {
             const g = GAP.find(x => x.id === id)
             return (
@@ -579,6 +451,7 @@ export default function ExpOnboarding({ onComplete }) {
               </div>
             )
           })}
+          <div className="eo-green"><span className="lab">🤝 We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
           <div className="eo-spacer" />
           <button className="eo-btn primary" disabled={!primary} onClick={() => { setDimStep(0); setStep('S_dim') }}>That one →</button>
           {nav(() => setStep('S_gap'), () => { if (!primary) setPrimary(gapGoals[0]); setDimStep(0); setStep('S_dim') })}
@@ -602,7 +475,7 @@ export default function ExpOnboarding({ onComplete }) {
           {topbar}
           <div className="eo-body">
             <p className="eo-eye">Your starting line</p>
-            <p className="eo-dimmeta">Question {dimStep + 1} of {qs.length}</p>
+            <p className="eo-dimmeta">Since you chose “{goalLabel}”</p>
             <h2 className="eo-q">{q.q}</h2>
             {q.options.map((o, oi) => (
               <div key={oi} className={`eo-opt${chosen === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [dimStep]: oi }))}>
@@ -624,11 +497,12 @@ export default function ExpOnboarding({ onComplete }) {
     <div className="eo-root">
       <div className="eo-screen">
         {topbar}
-        <div className="eo-body" style={{ justifyContent: 'center', gap: 18 }}>
+        <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
+          <p className="eo-eye" style={{ textAlign: 'center' }}>For “{goalLabel}”</p>
           <div className="eo-wear-icon">📲</div>
           <div>
-            <h2 className="eo-q">Let your phone fill in the picture.</h2>
-            <p className="eo-lede" style={{ marginTop: 8 }}>Allow steps and sleep and we'll confirm most habits for you — nothing to log.</p>
+            <h2 className="eo-q">Let your phone track it for you.</h2>
+            <p className="eo-lede" style={{ marginTop: 8 }}>You chose to {goalLower}. Allow steps and sleep and Vitalist confirms it automatically — nothing to log.</p>
           </div>
           <div className="eo-wear-sources"><span className="eo-wear-chip">Steps</span><span className="eo-wear-chip">Sleep</span></div>
           <div className="eo-spacer" />
@@ -648,72 +522,33 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-eye">A place to start · {CAT_LABEL[card.goalId] || 'For you'}</p>
           <h2 className="eo-q" style={{ fontSize: 20 }}>Here's one small thing to try.</h2>
 
-          <div className="eo-hcard-rail">
-
-            {/* ① Front — done status · habit name · today's content */}
-            <div className="eo-hcard eo-hcard--front">
-              <img className="eo-hcard__photo" src={photo(card.goalId, card.id)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-              <div className="eo-hcard__overlay">
-                <div className="eo-hcard__front-top">
-                  <span className="eo-pill eo-pill--outline">To Do</span>
-                </div>
-                <div className="eo-hcard__front-body">
-                  <span className="eo-pill">{CAT_LABEL[card.goalId] || 'For you'}</span>
-                  <h1 className="eo-hcard__hed">{card.headline} <em>{card.em}</em></h1>
-                </div>
-                <div className="eo-hcard__front-foot">
-                  <span className="eo-pill">{todayContent.source}</span>
-                  <p className="eo-hcard__content-sub">{todayContent.title}</p>
-                </div>
+          <div className="eo-hcard">
+            <div className="eo-hcard__img" style={{ background: GRAD[card.goalId] }}>
+              <img className="eo-hcard__photo" src={photo(card.goalId)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+              <div className="eo-hcard__duotone" style={{ background: GRAD[card.goalId] }} />
+              <span className="eo-hcard__flag">{card.source}</span>
+              <button className="eo-hcard__shuffle" onClick={() => setHabitIdx(i => i + 1)} aria-label="Show me another">{ShuffleIcon}</button>
+              <div className="eo-hcard__hedwrap">
+                <h1 className="eo-hcard__hed">{card.headline} <em>{card.em}</em></h1>
+                <p className="eo-hcard__that">{card.tagline}</p>
               </div>
             </div>
-
-            {/* ② Detail — ownership state · category · tier · time association */}
-            <div className="eo-hcard eo-hcard--detail">
-              <div className="eo-hcard__pills-stack">
-                <span className="eo-pill">Trial</span>
-                <span className="eo-pill">{CAT_LABEL[card.goalId] || 'For you'}</span>
-                <span className="eo-pill">Tier {card.tier || 1}</span>
-                {card.anchor && <span className="eo-pill">{card.anchor}</span>}
-                <span className="eo-pill eo-pill--outline">To Do</span>
-              </div>
-              <h1 className="eo-hcard__hed">{card.headline} <em>{card.em}</em></h1>
-              <button className="eo-pill eo-hcard__why-btn" onClick={() => setShowWhy(true)}>Why this works →</button>
+            <div className="eo-hcard__why">
+              <p className="eo-hcard__why-label">Why this works</p>
+              <p className="eo-hcard__why-text">{card.why}</p>
+              {card.body
+                ? <button className="eo-hcard__read" onClick={() => setReadArticle(card)}>{card.source}: {card.article}<span>Read →</span></button>
+                : card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
             </div>
-
-            {/* ③ Content — today's brand-attributed piece */}
-            <div className="eo-hcard eo-hcard--content">
-              <div className="eo-hcard__content-head">
-                <img className="eo-hcard__content-bg" src={photo(card.goalId, card.id)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-                <div className="eo-hcard__content-head-inner">
-                  <span className="eo-pill">{todayContent.source}</span>
-                  <p className="eo-hcard__content-title">{todayContent.title}</p>
-                  <span className="eo-pill">Save</span>
-                </div>
-              </div>
-              <div className="eo-hcard__content-img" />
-            </div>
-
           </div>
 
-          {/* Why sheet */}
-          {showWhy && (
-            <div className="eo-why-sheet" onClick={() => setShowWhy(false)}>
-              <div className="eo-why-sheet__panel" onClick={e => e.stopPropagation()}>
-                <div className="eo-why-sheet__handle" />
-                <p className="eo-why-sheet__eyebrow">Why this works</p>
-                <h3 className="eo-why-sheet__hed">{card.headline} {card.em}</h3>
-                <p className="eo-why-sheet__body">{card.why}</p>
-                <button className="eo-btn primary" style={{ marginTop: 'auto' }} onClick={() => setShowWhy(false)}>Got it</button>
-              </div>
-            </div>
-          )}
-          <div className="eo-spacer" />
           <button className="eo-shuffle" onClick={() => setHabitIdx(i => i + 1)}>{ShuffleIcon} Show me another</button>
+          <div className="eo-spacer" />
           <button className="eo-btn primary" onClick={() => setStep('S_moment')}>I'll try it →</button>
           {nav(() => setStep('S_perm'), null)}
         </div>
       </div>
+      {readArticle && <ArticleView card={readArticle} onClose={() => setReadArticle(null)} />}
     </div>
   )
 
@@ -723,8 +558,15 @@ export default function ExpOnboarding({ onComplete }) {
       <div className="eo-screen">
         {topbar}
         <div className="eo-body">
-          <h2 className="eo-q">When in your day does <em>this live?</em></h2>
-          <p className="eo-lede">Pin it to a moment you already have — pick what fits.</p>
+          <div className="eo-chosen">
+            <span className="eo-chosen__dot" style={{ background: GRAD[card.goalId] }} />
+            <div className="eo-chosen__txt">
+              <p className="eo-chosen__eye">Your new habit</p>
+              <p className="eo-chosen__label">{card.label}</p>
+            </div>
+          </div>
+          <h2 className="eo-q">When does this live in <em>your day?</em></h2>
+          <p className="eo-lede">Pin “{card.label}” to a moment you already have — pick what fits.</p>
           <div className="eo-chips">
             {MOMENTS.map(m => (
               <span key={m} className={`eo-chip${moment === m ? ' on' : ''}`} onClick={() => setMoment(m)}>{m}</span>
@@ -752,13 +594,13 @@ export default function ExpOnboarding({ onComplete }) {
         {topbar}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <div>
-            <h2 className="eo-q">Want your plan <em>saved?</em></h2>
-            <p className="eo-lede" style={{ marginTop: 8 }}>Drop an email and we'll keep your habit and foundation so you can pick up anywhere.</p>
+            <h2 className="eo-q">Create your account to <em>start investing in your healthy habits.</em></h2>
+            <p className="eo-lede" style={{ marginTop: 8 }}>Your foundation and your new habit are ready. Add an email to save them and pick up on any device — nothing to set up tonight.</p>
           </div>
           <input className="eo-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com"
             onKeyDown={e => { if (e.key === 'Enter') finishOnboarding() }} />
           <div className="eo-spacer" />
-          <button className="eo-btn primary" onClick={finishOnboarding}>Start tonight →</button>
+          <button className="eo-btn primary" onClick={finishOnboarding}>Create account &amp; start →</button>
           {nav(() => setStep('S_moment'), finishOnboarding, 'Skip')}
         </div>
       </div>

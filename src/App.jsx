@@ -218,8 +218,9 @@ function AppHeader({ onMenu }) {
 
 function MenuOverlay({ current, onClose, onSwitch, onReset }) {
   const profiles = [
-    { id: 'new',         label: 'New user',        sub: 'Day 1 — one habit, just starting' },
-    { id: 'established', label: 'Established user', sub: '2 kept habits, 1 trial, 1 graduated' },
+    { id: 'day1', label: 'Day 1 — first session', sub: 'Just accepted her first habit' },
+    { id: 'day2', label: 'Day 2 — returning',      sub: 'Second day, trial continues' },
+    { id: 'day7', label: 'Day 7 — unlocking a slot', sub: 'Habit sticking; next slot opens' },
   ]
   return (
     <div className="menu-overlay" onClick={onClose}>

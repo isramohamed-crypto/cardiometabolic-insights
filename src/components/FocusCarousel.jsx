@@ -23,7 +23,7 @@ function readPrimary() {
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
 const IMAGERY = {
-  move:   '/forest.jpg',
+  move:   'https://picsum.photos/seed/vitalist-move-walk/900/1200',
   strong: 'https://picsum.photos/seed/vitalist-strong/900/1200',
   eat:    'https://picsum.photos/seed/vitalist-eat/900/1200',
   water:  'https://picsum.photos/seed/vitalist-water/900/1200',
@@ -156,63 +156,39 @@ const REC_ORDER = ['move', 'sleep', 'eat', 'water', 'stress', 'strong']
 function FirstRun({ name, primary, onSelect }) {
   const order = [primary, ...REC_ORDER.filter(g => g !== primary)].filter(g => RECOMMEND[g])
   const list  = order.length ? order : REC_ORDER
-  const [i, setI]             = useState(0)
+  const [i, setI]           = useState(0)
   const [leaving, setLeaving] = useState(false)
-  const [exiting, setExiting] = useState(false)
-  const rec   = RECOMMEND[list[i % list.length]]         || RECOMMEND.move
-  const next1 = RECOMMEND[list[(i + 1) % list.length]]   || RECOMMEND.sleep
-  const next2 = RECOMMEND[list[(i + 2) % list.length]]   || RECOMMEND.eat
+  const rec = RECOMMEND[list[i % list.length]] || RECOMMEND.move
 
   function choose() {
     setLeaving(true)
     setTimeout(() => onSelect(rec), 640)
   }
-  function showNext() {
-    if (exiting) return
-    setExiting(true)
-    setTimeout(() => { setI(prev => prev + 1); setExiting(false) }, 280)
-  }
-
   return (
     <div className="fr-root">
       <div className="fr-welcome">
         <p className="fr-brand">Vitalist</p>
         <h1 className="fr-hed">Welcome{name ? `, ${name}` : ''}.</h1>
-        <p className="fr-sub">Swap until one feels right.</p>
+        <p className="fr-sub">Here's one small thing to start with — swap it until one feels right.</p>
       </div>
-
-      <div className="fr-stack">
-        {/* ghost 2 — furthest back */}
-        <div className="fr-card fr-card--ghost2" style={{ background: GRAD[next2.goalId] }}>
-          <img className="fr-card__photo"
-               src={IMAGERY[next2.goalId] || `https://picsum.photos/seed/vitalist-${next2.goalId}/900/1200`}
-               alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-        </div>
-
-        {/* ghost 1 — middle */}
-        <div className="fr-card fr-card--ghost1" style={{ background: GRAD[next1.goalId] }}>
-          <img className="fr-card__photo"
-               src={IMAGERY[next1.goalId] || `https://picsum.photos/seed/vitalist-${next1.goalId}/900/1200`}
-               alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-        </div>
-
-        {/* active card */}
-        <div className={`fr-card fr-card--front${leaving ? ' fr-card--settle' : ''}${exiting ? ' fr-card--exit' : ''}`}>
-          <div className="fr-card__bg" style={{ background: GRAD[rec.goalId] || rec.bg }} />
-          <img className="fr-card__photo"
-               src={IMAGERY[rec.goalId] || `https://picsum.photos/seed/vitalist-${rec.goalId}/900/1200`}
-               alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-          <span className="fr-card__flag">{rec.source}</span>
-          <div className="fr-card__txt">
-            <h2 className="fr-card__hed">{rec.headline} <em>{rec.em}</em></h2>
-            <p className="fr-card__that">{rec.tagline}</p>
-          </div>
+      <div className={`fr-card${leaving ? ' fr-card--settle' : ''}`}>
+        <div className="fr-card__bg" style={{ background: GRAD[rec.goalId] || rec.bg }} />
+        <img
+          className="fr-card__photo"
+          src={IMAGERY[rec.goalId] || `https://picsum.photos/seed/vitalist-${rec.goalId}/900/1200`}
+          alt="" draggable="false"
+          onError={e => { e.currentTarget.style.display = 'none' }}
+        />
+        <div className="fr-card__scrim" />
+        <span className="fr-card__flag">{rec.source}</span>
+        <div className="fr-card__txt">
+          <h2 className="fr-card__hed">{rec.headline} <em>{rec.em}</em></h2>
+          <p className="fr-card__that">{rec.tagline}</p>
         </div>
       </div>
-
       <div className="fr-actions">
         <button className="fr-primary" onClick={choose}>I'll try it →</button>
-        <button className="fr-link" onClick={showNext}>Show me another</button>
+        <button className="fr-link" onClick={() => setI(i + 1)}>Show me another</button>
       </div>
     </div>
   )
@@ -270,47 +246,172 @@ function Reader({ content, habit, onClose }) {
   )
 }
 
-function NextSlotCard({ width }) {
+// ── Trial-week daily content (walk) — a piece waits beside the habit ────────
+const DAILY = {
+  1: {
+    label: 'Day 1 · Starting tonight',
+    reinforce: { hed: 'The hardest part may be starting.', body: "After a meal, staying where you are often feels easier. You don't need to feel motivated before you begin — starting slowly is enough." },
+    support: {
+      tag: 'Why walking is great', source: 'Verywell Health', read: '4 min',
+      hed: '8 benefits of walking every day', dek: 'Walking daily benefits your body, mind, and emotions — and may even help extend your life.',
+      body: [
+        'A daily walk is one of the most studied — and least demanding — things you can do for your health. It supports your heart, helps steady blood sugar, lifts your mood, and is linked to a longer life.',
+        "You don't need distance or speed for the benefit; regularity is what pays off. A short walk right after a meal counts, and it compounds quietly over weeks.",
+      ],
+    },
+    enjoy: {
+      tag: 'Read in Entertainment', source: 'PEOPLE', read: '3 min',
+      hed: 'Hugh Jackman & Sutton Foster — the latest', dek: 'A little celebrity distraction to keep you company on your walk.',
+      body: [
+        'You told us you like a bit of celebrity news — so here\'s something easy and feel-good to read while you move.',
+        'Queue it up, head out the door, and let the ten minutes take care of themselves.',
+      ],
+    },
+  },
+  2: {
+    label: 'Day 2 · Keeping it light',
+    reinforce: { hed: "This doesn't need to feel like exercise.", body: 'No pace target. No step goal. No need to work up a sweat. The habit is simply adding a little movement after a meal.' },
+    support: {
+      tag: 'Stay in today', source: 'Real Simple', read: '4 min',
+      hed: 'Walk from room to room for ten minutes', dek: 'No sidewalk, no problem — an easy way to move at home.',
+      body: [
+        'No sidewalk or bad weather? You can still get the same small win by walking from room to room for ten minutes.',
+        'Have stairs? One easy trip up and down every few minutes adds gentle intensity without turning it into a workout.',
+      ],
+    },
+    enjoy: {
+      tag: 'Listen', source: 'Verywell Mind', read: '12 min',
+      hed: '3 mistakes to avoid when creating goals', dek: 'A short podcast that pairs perfectly with your walk.',
+      body: [
+        'Most habits stall for the same few reasons — aiming too big, moving too fast, or leaning on willpower alone. This short podcast walks through three common mistakes and how to sidestep them.',
+        'Pop in your earbuds and listen while you walk; twelve minutes is just about right.',
+      ],
+    },
+  },
+  7: {
+    label: 'Day 7 · It becomes yours',
+    reinforce: { hed: "You're making movement part of an ordinary day.", body: "This isn't a major fitness program or a test of discipline. It's a small way of caring for yourself after a meal — and each time you return to it, it becomes more recognizably yours." },
+    support: {
+      tag: 'No pace goal', source: 'Real Simple', read: '4 min',
+      hed: 'The passeggiata — a walk with nowhere to be', dek: 'Walk slowly. Look around. Enjoy the transition out of your day.',
+      body: [
+        'The Italian passeggiata is a slow, social evening stroll with no destination and no pace goal — the whole point is to enjoy the transition out of your day.',
+        'Walk slowly, look around, invite someone along. After a week, your after-dinner walk can become exactly this: yours.',
+      ],
+    },
+    enjoy: {
+      tag: 'Wear', source: 'Health', read: '5 min',
+      hed: 'The most comfortable walking shoes', dek: 'The right shoe changes how a walk feels — and whether you keep it up.',
+      body: [
+        'A comfortable, supportive shoe can spare your feet, knees, and back by the end of the day — and make the habit something you actually look forward to.',
+        "A quick look at what makes a good everyday walking shoe, so the habit stays easy on your body.",
+      ],
+    },
+  },
+}
+function dayOf(habit) {
+  if (!habit || !habit.addedAt) return 1
+  return Math.max(1, Math.floor((Date.now() - new Date(habit.addedAt).getTime()) / 86400000) + 1)
+}
+function dailyFor(habit) {
+  if (!habit || habit.goalId !== 'move') return null
+  const day = dayOf(habit)
+  if (DAILY[day]) return { day, ...DAILY[day] }
+  if (day >= 7) return { day, ...DAILY[7] }
+  return null
+}
+
+function DailyView({ data, habit, onClose }) {
+  const [piece, setPiece] = useState(null)
+  if (piece) {
+    return (
+      <div className="fc-reader">
+        <div className="fc-reader__hero">
+          <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
+          <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+          <div className="fc-reader__hero-scrim" />
+          <button className="fc-reader__back" onClick={() => setPiece(null)} aria-label="Back">←</button>
+          <div className="fc-reader__hero-txt">
+            <span className="fc-reader__eye">{piece.tag}</span>
+            <h1 className="fc-reader__hed">{piece.hed}</h1>
+            <span className="fc-reader__meta">{piece.source} · {piece.read} read</span>
+          </div>
+        </div>
+        <div className="fc-reader__body">
+          {piece.body.map((p, i) => <p key={i}>{p}</p>)}
+          <p className="fc-reader__foot">Curated for your walk · Vitalist by People Inc.</p>
+          <button className="fc-reader__done" onClick={() => setPiece(null)}>Back to today</button>
+        </div>
+      </div>
+    )
+  }
   return (
-    <div className="fc-card fc-card--next" style={{ width }}>
-      <div className="fc-next__inner">
-        <div className="fc-next__mark">+</div>
-        <h3 className="fc-next__hed">One habit at a time.</h3>
-        <p className="fc-next__body">
-          Your next slot opens once this one feels automatic — earned, not
-          assigned. No rush.
-        </p>
+    <div className="fc-reader">
+      <div className="fc-daily__top" style={{ background: habit.bg }}>
+        <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <p className="fc-daily__eye">{data.label}</p>
+        <h1 className="fc-daily__hed">Beside your walk today</h1>
+      </div>
+      <div className="fc-reader__body">
+        <div className="fc-daily__reinforce">
+          <p className="fc-daily__rlabel">A note from Vita</p>
+          <h2 className="fc-daily__rh">{data.reinforce.hed}</h2>
+          <p className="fc-daily__rb">{data.reinforce.body}</p>
+        </div>
+        <button className="fc-daily__piece" onClick={() => setPiece(data.support)}>
+          <p className="fc-daily__ptag">{data.support.tag} · {data.support.source}</p>
+          <h3 className="fc-daily__ph">{data.support.hed}</h3>
+          <p className="fc-daily__pb">{data.support.dek}</p>
+          <span className="fc-daily__go">Read →</span>
+        </button>
+        <button className="fc-daily__piece" onClick={() => setPiece(data.enjoy)}>
+          <p className="fc-daily__ptag">{data.enjoy.tag} · {data.enjoy.source}</p>
+          <h3 className="fc-daily__ph">{data.enjoy.hed}</h3>
+          <p className="fc-daily__pb">{data.enjoy.dek}</p>
+          <span className="fc-daily__go">Open →</span>
+        </button>
+        <button className="fc-reader__done" onClick={onClose}>Back to today</button>
       </div>
     </div>
   )
 }
 
-function daysIn(habit) {
-  const added = habit.addedAt || TODAY
-  return Math.max(0, Math.floor((Date.now() - new Date(added).getTime()) / 86400000))
-}
-
-function isEligible(habit) {
-  return habit.status === 'trial' && daysIn(habit) >= 7
+function NextSlotCard({ width, unlocked }) {
+  return (
+    <div className="fc-card fc-card--next" style={{ width }}>
+      <div className="fc-next__inner">
+        <div className="fc-next__mark">+</div>
+        {unlocked ? (
+          <>
+            <h3 className="fc-next__hed">A slot just opened.</h3>
+            <p className="fc-next__body">
+              Your walk is sticking — that earned room for one more. Add your
+              next habit whenever you're ready.
+            </p>
+          </>
+        ) : (
+          <>
+            <h3 className="fc-next__hed">One habit at a time.</h3>
+            <p className="fc-next__body">
+              Your next slot opens once this one feels automatic — earned, not
+              assigned. No rush.
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  )
 }
 
 function streakLabel(habit) {
-  if (habit.status === 'my_habit' || habit.status === 'kept' || habit.status === 'established') {
-    const d = daysIn(habit)
-    const weeks = Math.floor(d / 7)
-    if (weeks < 1) return 'Just made yours'
-    return `${weeks} week${weeks !== 1 ? 's' : ''} strong`
+  if (habit.status === 'kept') {
+    const weeks = habit.tier || 1
+    return `${weeks} week${weeks !== 1 ? 's' : ''} kept`
   }
-  if (habit.status === 'adopted') {
-    const d = daysIn(habit)
-    const weeks = Math.floor(d / 7)
-    if (weeks < 1) return 'Building'
-    return `${weeks} week${weeks !== 1 ? 's' : ''} building`
-  }
-  // trial
-  const d = daysIn(habit)
-  if (d === 0) return 'Day 1 — starting today'
-  return `Day ${d + 1} of your trial`
+  const added = habit.addedAt || TODAY
+  const days = Math.max(0, Math.floor((Date.now() - new Date(added).getTime()) / 86400000))
+  if (days === 0) return 'Starting today'
+  return `Day ${days + 1} of your trial`
 }
 
 // Demo "detected from tracker" readouts per goal
@@ -325,10 +426,7 @@ function habitSubText(habit, done, sources) {
   if (done) return null
   if (trackerConnected(habit, sources)) return "Nothing to log — we'll track this automatically."
   if (WEARABLE[habit.goalId]) return 'Attach a tracker and this logs itself.'
-  if (habit.status === 'my_habit' || habit.status === 'kept' || habit.status === 'established')
-    return `${streakLabel(habit)}.`
-  if (habit.status === 'adopted') return `Settling in — ${streakLabel(habit)}.`
-  if (isEligible(habit)) return 'Seven days in. Ready to make it official?'
+  if (habit.status === 'kept') return `Settling in — ${streakLabel(habit)}.`
   return 'Tap when you\'ve done it.'
 }
 
@@ -347,152 +445,170 @@ function doneLabel(habit, done, sources) {
   return 'Tap when it\'s done'
 }
 
-// ── Pillar labels + daily content pool ──────────────────────────────────────
-const CAT_LABEL = {
-  move: 'Moving', strong: 'Strength', eat: 'Eating',
-  sleep: 'Sleep', stress: 'Stress & Calm', connect: 'People', water: 'Hydration',
-}
-
-const BRAND_LOGO = {
-  'EatingWell':      'https://logo.clearbit.com/eatingwell.com',
-  'Byrdie':          'https://logo.clearbit.com/byrdie.com',
-  'Verywell Health': 'https://logo.clearbit.com/verywellhealth.com',
-  'Verywell Mind':   'https://logo.clearbit.com/verywellmind.com',
-  'Prevention':      'https://logo.clearbit.com/prevention.com',
-  'Real Simple':     'https://logo.clearbit.com/realsimple.com',
-  'Sleep Foundation':'https://logo.clearbit.com/sleepfoundation.org',
-  'Health':          'https://logo.clearbit.com/health.com',
-  'Healthline':      'https://logo.clearbit.com/healthline.com',
-}
-
-function BrandPill({ source }) {
-  const logo = BRAND_LOGO[source]
-  const [err, setErr] = React.useState(false)
+// Split headline — bold first, italic last N words
+function HeadLine({ label }) {
+  // Find natural italic break — after first comma if present, else last 2 words
+  const commaIdx = label.indexOf(',')
+  let main, italic
+  if (commaIdx > 0) {
+    main   = label.slice(0, commaIdx + 1)
+    italic = label.slice(commaIdx + 1).trim()
+  } else {
+    const words = label.split(' ')
+    const split = Math.max(1, words.length - 2)
+    main   = words.slice(0, split).join(' ')
+    italic = words.slice(split).join(' ')
+  }
   return (
-    <span className="fc-brand-pill">
-      {logo && !err
-        ? <img src={logo} alt={source} className="fc-brand-pill__logo" onError={() => setErr(true)} />
-        : null}
-      {(!logo || err) && source}
-    </span>
+    <h2 className="fc-card__hed">
+      {main} {italic && <em>{italic}</em>}
+    </h2>
   )
 }
 
-const DAILY_CONTENT = {
-  move: [
-    { source: 'EatingWell',     title: 'The Simple Nighttime Habit That May Balance Blood Sugar' },
-    { source: 'Byrdie',          title: 'Why I Started Taking a Post-Dinner Walk Every Night' },
-    { source: 'Verywell Health', title: 'Walking After Eating: Benefits and What to Know' },
-  ],
-  strong: [
-    { source: 'Verywell Health', title: 'Research Shows Strength Training Every Week Can Help You Live Longer' },
-    { source: 'Prevention',      title: '5 Chair Exercises for Stronger Legs at Any Age' },
-    { source: 'EatingWell',      title: 'How to Build Strength at Home With No Equipment' },
-  ],
-  eat: [
-    { source: 'EatingWell',  title: 'Why Adding Vegetables to Dinner Is the Easiest Diet Change' },
-    { source: 'Byrdie',       title: 'The Simple Habit That Helped Me Eat More Vegetables' },
-    { source: 'Real Simple',  title: 'How to Add Vegetables to Every Meal Without Thinking About It' },
-  ],
-  sleep: [
-    { source: 'Sleep Foundation', title: 'How Light Affects Your Sleep and What to Do About It' },
-    { source: 'Verywell Health',   title: 'Blue Light and Sleep: What Is the Connection?' },
-    { source: 'Real Simple',       title: 'Night Owl Habits: How to Wind Down an Hour Earlier' },
-  ],
-  stress: [
-    { source: 'Verywell Mind', title: 'The Physiological Benefits of Deep Breathing' },
-    { source: 'Prevention',    title: '5 Breathing Exercises to Calm Anxiety Fast' },
-    { source: 'Health',        title: 'Why Box Breathing Is the Stress Tool More People Should Know' },
-  ],
-  connect: [
-    { source: 'Verywell Mind', title: 'Loneliness Is a Health Risk — Here Is What You Can Do' },
-    { source: 'Real Simple',   title: 'The Simple Act of Texting Can Fight Loneliness' },
-    { source: 'Health',        title: 'How Small Moments of Connection Add Up' },
-  ],
-  water: [
-    { source: 'Healthline',      title: 'How Much Water Do You Actually Need Each Day?' },
-    { source: 'Real Simple',     title: 'Simple Ways to Drink More Water Every Day' },
-    { source: 'Verywell Health', title: 'Signs You Might Be Mildly Dehydrated' },
-  ],
-}
-function getTodayContent(habit) {
-  const pool = DAILY_CONTENT[habit.goalId] || []
-  if (!pool.length) return { source: habit.source || '', title: habit.label }
-  const day = Math.floor(Date.now() / 86400000)
-  return pool[day % pool.length]
-}
-
-// ── Habit card — front layout ────────────────────────────────────────────────
-function Card({ habit, done, onDone, width }) {
-  const today = getTodayContent(habit)
-  const cat   = CAT_LABEL[habit.goalId] || habit.goalId
+function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width }) {
+  const sub     = habitSubText(habit, done, sources)
+  const chip    = doneLabel(habit, done, sources)
+  const content = CONTENT[habit.goalId]
+  const daily   = dailyFor(habit)
 
   return (
     <div className="fc-card" style={{ width }}>
-      {/* background layers */}
+      {/* Full-bleed gradient background (fallback under the photo) */}
       <div className="fc-card__bg" style={{ background: habit.bg }} />
+
+      {/* Editorial imagery — full-bleed photo + brand duotone + motif */}
       <div className="fc-card__editorial">
-        <img className="fc-card__photo" src={photoFor(habit)} alt="" draggable="false"
-             onError={e => { e.currentTarget.style.display = 'none' }} />
+        <img
+          className="fc-card__photo"
+          src={photoFor(habit)}
+          alt=""
+          draggable="false"
+          onError={e => { e.currentTarget.style.display = 'none' }}
+        />
         <div className="fc-card__duotone" style={{ background: habit.bg }} />
         <div className="fc-card__motif" />
       </div>
 
-      {/* content overlay — top / mid / foot */}
-      <div className="fc-card__overlay">
-        <div className="fc-card__top">
-          <button
-            className={`fc-status-pill${done ? ' fc-status-pill--done' : ''}`}
+      {/* Bottom scrim */}
+      <div className="fc-card__scrim" />
+
+      {/* Stacked cards over the image — habit + editorial, one connected unit */}
+      <div className="fc-card__stack">
+        <div className="fc-hcard">
+          {habit.source && <p className="fc-hcard__source">{habit.source}</p>}
+          <HeadLine label={habit.label} />
+          {sub && <p className="fc-card__sub">{sub}</p>}
+          <CardWearable habit={habit} sources={sources} onConnect={onConnect} />
+          <div
+            className={`fc-done-chip${done ? ' done' : ''}`}
             onClick={() => onDone(habit.id)}
           >
-            {done ? '✓  Done' : 'To Do'}
+            <div className="fc-done-chip__circle">{done ? '✓' : ''}</div>
+            <span className="fc-done-chip__label">{chip}</span>
+          </div>
+        </div>
+
+        {daily ? (
+          <button className="fc-ecard" onClick={() => onDaily && onDaily(daily, habit)}>
+            <span className="fc-ecard__tag">Today · Day {daily.day}</span>
+            <span className="fc-ecard__hed">{daily.support.hed}</span>
+            <span className="fc-ecard__meta">Content beside your walk <span className="fc-ecard__go">→</span></span>
           </button>
-        </div>
-
-        <div className="fc-card__mid">
-          <span className="fc-cat-pill">{cat}</span>
-          <h2 className="fc-card__hed">{habit.label}</h2>
-        </div>
-
-        <div className="fc-card__foot">
-          <BrandPill source={today.source} />
-          <p className="fc-card__content-title">{today.title}</p>
-        </div>
+        ) : content ? (
+          <button className="fc-ecard" onClick={() => onRead && onRead(content, habit)}>
+            <span className="fc-ecard__tag">Related read</span>
+            <span className="fc-ecard__hed">{content.hed}</span>
+            <span className="fc-ecard__meta">{content.source} · {content.read} read <span className="fc-ecard__go">→</span></span>
+          </button>
+        ) : null}
       </div>
     </div>
   )
 }
 
+// Vita — the in-habit coach. Warm, specific, never clinical. (Demo: scripted.)
+function vitaReply(text, habit) {
+  const t = (text || '').toLowerCase()
+  const g = habit && habit.goalId
+  const whyByGoal = {
+    move: 'A short walk after eating pulls glucose out of your bloodstream for fuel, so it blunts the post-meal spike — no gym, no gear. Ten minutes is plenty; the point is timing.',
+    sleep: 'Dimmer light and a steadier wind-down in the last stretch before bed let your body make melatonin on schedule, so you fall asleep more easily. Consistency matters more than perfection.',
+    eat: 'Front-loading fiber and protein flattens your glucose response and keeps you full longer — small, repeatable choices beat any strict plan.',
+    stress: 'Long, slow exhales flip on your parasympathetic nervous system — the body\'s calm-down switch. A few breaths can interrupt the spiral before it builds.',
+    strong: 'Standing and lifting work your largest muscles, which steadies blood sugar and keeps you strong and independent as you age.',
+    connect: 'Small, regular contact does most of the work of connection — and connection is a genuine health factor, not a nice-to-have.',
+  }
+  // medical guardrail
+  if (/\b(dose|dosage|medication|prescription|symptom|pain|diagnos|blood pressure reading|a1c)\b/.test(t))
+    return "That's one for your doctor — I can't weigh in on medical specifics. What I can do is help you build the habit around it. Want to bring it to your next visit? Your care summary can hold it."
+  // the coach scene: phone must stay by the bed
+  if (/(phone|by the bed|bedside|call|mom|mother|reach|emergenc)/.test(t) && (g === 'sleep' || /sleep|wind ?down|bed|night/.test(t)))
+    return "Keeping your phone close for your mom comes first — that's not up for debate. The wind-down was never about banishing the phone, just softening its pull. Try this tonight: set it to Do Not Disturb but add your mom as an allowed contact, so only her call gets through. Flip on the warm night screen and turn it face-down. You still wind down, you're still reachable — and that counts as done. I've left a short read on gentle wind-downs in your feed for whenever you want it."
+  if (/why|work|science|help/.test(t)) return (whyByGoal[g] || 'The short version: it earns its place. Kept small and tied to a moment you already have, it sticks — and it compounds on its own.') + (g ? ' There\'s a short read waiting on your card for the details.' : '')
+  if (/miss|skip|slip|off day|fail|behind/.test(t)) return "A missed day isn't a broken streak — there are no streaks here. Just pick it up tomorrow. The habit is the direction, not a perfect record."
+  if (/easier|stick|hard|forget|remember|struggl/.test(t)) return "Make it smaller and pin it to something you already do — right after dinner, when the TV goes off. Shrink it until it feels almost too easy, then let it grow once it's automatic."
+  if (/add|new habit|another/.test(t)) return "You can add one anytime from your Yours page — want me to take you there?"
+  if (/focus|next|more/.test(t)) return "Let's stay with this one for now. A second habit opens up once this feels automatic — earned, not assigned. No rush."
+  return "Good question. Honestly: keep it small, tie it to a moment you already have, and let your phone confirm it so there's nothing to log. Want me to break any part of that down?"
+}
+
 function AISheet({ habit, onClose, onAddHabit }) {
+  const [msgs, setMsgs] = useState(() => [{ role: 'vita', text: `Hi, I'm Vita. Ask me anything about ${habit ? `"${habit.label}"` : 'your habits'} — even the messy, real-life stuff.` }])
+  const [input, setInput] = useState('')
+  const started = msgs.some(m => m.role === 'user')
+  const scroller = useRef(null)
+  useEffect(() => { if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight }, [msgs])
+
+  function send(text) {
+    const clean = (text || '').trim()
+    if (!clean) return
+    if (/add|new habit/i.test(clean) && onAddHabit) {
+      setMsgs(m => [...m, { role: 'user', text: clean }, { role: 'vita', text: 'Taking you to your habits now…' }])
+      setTimeout(onAddHabit, 600)
+      setInput('')
+      return
+    }
+    setMsgs(m => [...m, { role: 'user', text: clean }, { role: 'vita', text: vitaReply(clean, habit) }])
+    setInput('')
+  }
+
   return (
     <div className="fc-ai-sheet" onClick={onClose}>
       <div className="fc-ai-sheet__panel" onClick={e => e.stopPropagation()}>
         <div className="fc-ai-sheet__handle" />
-
         <div className="fc-ai-sheet__intro">
           <div className="fc-ai-sheet__avatar">{SparkIcon}</div>
           <div>
-            <p className="fc-ai-sheet__hi">Hey — I'm your Vitalist guide.</p>
-            <p className="fc-ai-sheet__sub">Ask me anything, or start here.</p>
+            <p className="fc-ai-sheet__hi">Vita</p>
+            <p className="fc-ai-sheet__sub">{habit ? `Here for "${habit.label}"` : 'Your Vitalist coach'}</p>
           </div>
         </div>
 
-        {habit && (
-          <>
-            <p className="fc-ai-sheet__group">About “{habit.label}”</p>
-            <button className="fc-ai-chip" onClick={onClose}>Why does this actually work?</button>
-            <button className="fc-ai-chip" onClick={onClose}>How do I make it easier to stick to?</button>
-            <button className="fc-ai-chip" onClick={onClose}>What if I miss a day?</button>
-          </>
+        <div className="vita-msgs" ref={scroller}>
+          {msgs.map((m, i) => (
+            <div key={i} className={`vita-msg vita-msg--${m.role}`}>{m.text}</div>
+          ))}
+        </div>
+
+        {!started && (
+          <div className="vita-chips">
+            {habit && <button className="fc-ai-chip" onClick={() => send('Why does this actually work?')}>Why does this actually work?</button>}
+            {habit && <button className="fc-ai-chip" onClick={() => send('How do I make it easier to stick to?')}>How do I make it easier to stick to?</button>}
+            <button className="fc-ai-chip" onClick={() => send('What if I miss a day?')}>What if I miss a day?</button>
+            <button className="fc-ai-chip" onClick={() => send('How do I add a new habit?')}>How do I add a new habit?</button>
+          </div>
         )}
 
-        <p className="fc-ai-sheet__group">Anything else</p>
-        <button className="fc-ai-chip" onClick={() => (onAddHabit ? onAddHabit() : onClose())}>How do I add a new habit?</button>
-        <button className="fc-ai-chip" onClick={onClose}>What should I focus on next?</button>
-
         <div className="fc-ai-sheet__composer">
-          <input className="fc-ai-input" placeholder="Ask Vitalist…" readOnly onMouseDown={e => e.preventDefault()} />
-          <span className="fc-ai-send" aria-hidden="true">↑</span>
+          <input
+            className="fc-ai-input"
+            placeholder="Ask Vita…"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') send(input) }}
+          />
+          <button className="fc-ai-send" aria-label="Send" onClick={() => send(input)}>↑</button>
         </div>
       </div>
     </div>
@@ -545,52 +661,6 @@ function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
   )
 }
 
-function MyHabitsSection({ habits, done, onToggleDone }) {
-  return (
-    <div className="fc-my-habits">
-      <p className="fc-my-habits__label">My habits</p>
-      {habits.map(h => {
-        const isDone = done.includes(h.id)
-        return (
-          <div key={h.id} className="fc-my-habit-row">
-            <div className="fc-my-habit-row__swatch" style={{ background: h.bg }} />
-            <div className="fc-my-habit-row__body">
-              <p className="fc-my-habit-row__name">{h.label}</p>
-              <p className="fc-my-habit-row__meta">{streakLabel(h)}</p>
-            </div>
-            <button
-              className={`fc-my-habit-row__check${isDone ? ' done' : ''}`}
-              onClick={() => onToggleDone(h.id)}
-            >
-              {isDone ? '✓' : ''}
-            </button>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function Day7Sheet({ habit, onAdopt, onDrop, onClose }) {
-  const d = daysIn(habit)
-  return (
-    <div className="fc-ai-sheet" onClick={onClose}>
-      <div className="fc-ai-sheet__panel fc-d7__panel" onClick={e => e.stopPropagation()}>
-        <div className="fc-ai-sheet__handle" />
-        <p className="fc-d7__eyebrow">Day {d}</p>
-        <h2 className="fc-d7__hed">Still in?</h2>
-        <p className="fc-d7__habit">"{habit.label}"</p>
-        <p className="fc-d7__body">
-          A week is enough to know if something fits. If it did, make it yours.
-          If it didn't, that's data too.
-        </p>
-        <button className="fc-d7__adopt" onClick={onAdopt}>Make it mine</button>
-        <button className="fc-d7__drop" onClick={onDrop}>Let it go</button>
-      </div>
-    </div>
-  )
-}
-
 export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const name            = readName()
   const [habits, setHabits] = useState(() => readHabits() || [])
@@ -601,12 +671,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [overview, setOverview] = useState(false)
   const [askHabit, setAskHabit] = useState(null)
   const [reading, setReading]   = useState(null)
+  const [readingDay, setReadingDay] = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
-  const [showDecision, setShowDecision] = useState(false)
-
-  const working     = habits.filter(h => h.status === 'trial' || h.status === 'adopted')
-  const established = habits.filter(h => h.status === 'my_habit' || h.status === 'kept' || h.status === 'established')
 
   const connectSource = useCallback((source) => {
     setSources(prev => {
@@ -616,20 +683,6 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       return next
     })
   }, [])
-
-  function adoptHabit(id) {
-    const next = habits.map(h => h.id === id ? { ...h, status: 'adopted' } : h)
-    setHabits(next)
-    try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch {}
-    setShowDecision(false)
-  }
-
-  function dropHabit(id) {
-    const next = habits.filter(h => h.id !== id)
-    setHabits(next)
-    try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch {}
-    setShowDecision(false)
-  }
 
   function onSelectRecommendation(rec) {
     const today = new Date().toISOString().slice(0, 10)
@@ -677,8 +730,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     dragging.current = false
     const delta = dragCurrX.current - dragStartX.current
     if (Math.abs(delta) > 50) {
-      // pages = each working habit + one "next slot" card at the end
-      if (delta < 0 && idx < working.length) { setIdx(i => i + 1); setShowHint(false) }
+      // pages = each habit + one "next slot" card at the end (index habits.length)
+      if (delta < 0 && idx < habits.length) { setIdx(i => i + 1); setShowHint(false) }
       else if (delta > 0 && idx > 0) setIdx(i => i - 1)
     }
     setDragX(0)
@@ -713,7 +766,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     )
   }
 
-  const pageCount   = working.length + 1 // working habits + "next slot" card
+  const pageCount   = habits.length + 1 // habits + "next slot" card
   const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
   const translatePx = -(idx * vw) + dragX
   const isActiveDrag = dragging.current && Math.abs(dragX) > 2
@@ -735,65 +788,37 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         </div>
       </div>
 
-      {/* Scrollable content — carousel + my habits stacked vertically */}
-      <div className="fc-page-scroll">
-        {/* Working on it — swipe carousel */}
-        <div className="fc-routine">
-          <div className="fc-routine__slot">
-            {(() => {
-              const h = working[Math.min(idx, working.length - 1)]
-              if (!h) return null
-              if (h.status === 'trial' && isEligible(h)) {
-                const d = daysIn(h)
-                return (
-                  <button className="fc-routine__slot-label fc-routine__slot-label--decision" onClick={() => setShowDecision(true)}>
-                    Day {d} · Decide →
-                  </button>
-                )
-              }
-              return <p className="fc-routine__slot-label">Working on it</p>
-            })()}
-            {/* Cards — carousel */}
-            <div
-              className="fc-stage"
-              onTouchStart={e => startDrag(e.touches[0].clientX)}
-              onTouchMove={e => { e.preventDefault(); moveDrag(e.touches[0].clientX) }}
-              onTouchEnd={endDrag}
-              onMouseDown={e => { e.preventDefault(); startDrag(e.clientX) }}
-              style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
-            >
-              <div
-                className="fc-strip"
-                style={{
-                  transform: `translateX(${translatePx}px)`,
-                  transition: isActiveDrag ? 'none' : 'transform .32s cubic-bezier(.42,0,.22,1)',
-                }}
-              >
-                {working.map(h => (
-                  <Card
-                    key={h.id}
-                    habit={h}
-                    width={vw}
-                    done={done.includes(h.id)}
-                    onDone={toggleDone}
-                    sources={sources}
-                    onConnect={connectSource}
-                    onRead={(content, habit) => setReading({ content, habit })}
-                  />
-                ))}
-                <NextSlotCard width={vw} />
-              </div>
-            </div>
-          </div>
+      {/* Cards — carousel */}
+      <div
+        className="fc-stage"
+        onTouchStart={e => startDrag(e.touches[0].clientX)}
+        onTouchMove={e => { e.preventDefault(); moveDrag(e.touches[0].clientX) }}
+        onTouchEnd={endDrag}
+        onMouseDown={e => { e.preventDefault(); startDrag(e.clientX) }}
+        style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
+      >
+        <div
+          className="fc-strip"
+          style={{
+            transform: `translateX(${translatePx}px)`,
+            transition: isActiveDrag ? 'none' : 'transform .32s cubic-bezier(.42,0,.22,1)',
+          }}
+        >
+          {habits.map(h => (
+            <Card
+              key={h.id}
+              habit={h}
+              width={vw}
+              done={done.includes(h.id)}
+              onDone={toggleDone}
+              sources={sources}
+              onConnect={connectSource}
+              onRead={(content, habit) => setReading({ content, habit })}
+              onDaily={(data, habit) => setReadingDay({ data, habit })}
+            />
+          ))}
+          <NextSlotCard width={vw} unlocked={habits.some(h => h.status === 'kept' && dayOf(h) >= 7)} />
         </div>
-
-        {/* My habits — established habits scroll below carousel */}
-        {established.length > 0 && (
-          <MyHabitsSection habits={established} done={done} onToggleDone={toggleDone} />
-        )}
-
-        {/* Bottom padding clears fixed nav */}
-        <div style={{ height: 103 }} />
       </div>
 
       {pageCount > 1 && (
@@ -805,20 +830,27 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       )}
       {showHint && <div className="fc-swipe-hint">swipe to see all</div>}
 
-      {/* AI chat — app-level circular button, not attached to a card */}
-      {working.length > 0 && (
+      {/* Vita — app-level coach bar */}
+      {habits.length > 0 && (
         <button
           className="fc-ai-fab"
-          aria-label="Ask Vitalist AI"
-          onClick={() => setAskHabit(working[Math.min(idx, working.length - 1)])}
+          aria-label="Ask Vita"
+          onClick={() => setAskHabit(habits[Math.min(idx, habits.length - 1)])}
         >
-          <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+          <span className="fc-ai-fab__spark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+          </span>
+          <span className="fc-ai-fab__txt">
+            <span className="fc-ai-fab__name">Ask Vita</span>
+            <span className="fc-ai-fab__hint">Stuck tonight? I can help with this habit.</span>
+          </span>
+          <span className="fc-ai-fab__go" aria-hidden="true">→</span>
         </button>
       )}
 
       {overview && (
         <Overview
-          habits={working}
+          habits={habits}
           done={done}
           onSelect={i => { setIdx(i); setOverview(false) }}
           onClose={() => setOverview(false)}
@@ -835,20 +867,12 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       {reading && (
         <Reader content={reading.content} habit={reading.habit} onClose={() => setReading(null)} />
       )}
+      {readingDay && (
+        <DailyView data={readingDay.data} habit={readingDay.habit} onClose={() => setReadingDay(null)} />
+      )}
       {postConfirm && (
         <PostConfirm habit={postConfirm} sources={sources} onConnect={connectSource} onClose={() => setPostConfirm(null)} />
       )}
-      {showDecision && (() => {
-        const h = working[Math.min(idx, working.length - 1)]
-        return h ? (
-          <Day7Sheet
-            habit={h}
-            onAdopt={() => adoptHabit(h.id)}
-            onDrop={() => dropHabit(h.id)}
-            onClose={() => setShowDecision(false)}
-          />
-        ) : null
-      })()}
     </div>
   )
 }
