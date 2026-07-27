@@ -3,15 +3,15 @@ import './ExpOnboarding.css'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
-  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Any of these part of your week already?',
+  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Any of these already sound like you?',
     options: ['Vegetables or fruit with most meals', 'Cook at home most nights', 'Fish or plant protein a couple times a week', 'Swap a sugary drink for water most days', 'Olive oil or nuts as your go-to fat'] },
-  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Do any of these sound like you?',
+  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Any of these already sound like you?',
     options: ['A daily walk, any length', 'Take the stairs when you can', 'Get up and move during long sitting', 'A few minutes of stretching most days'] },
-  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: "How's sleep going? Tap what's already true.",
+  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: 'Any of these already sound like you?',
     options: ['A fairly consistent bedtime', 'Screens off for the last stretch before bed', 'Some daylight early in the day', 'Cool, dark bedroom'] },
-  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Any of these already in your life?',
+  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Any of these already sound like you?',
     options: ['Take real breaks in the day', 'Time outdoors most days', 'Something that clears your head — music, a walk, quiet', 'Time for a hobby you enjoy'] },
-  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Staying connected looks like a lot of things.',
+  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Any of these already sound like you?',
     options: ['See friends or family most weeks', 'Check in with someone close, by call or text', 'Share a meal with others most weeks', 'Part of a group, class, or community'] },
 ]
 const PILLAR_ORDER = PILLARS.map(p => p.id)
