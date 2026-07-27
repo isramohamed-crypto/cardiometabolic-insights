@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 const OPTIONS = [
-  { emoji: '🍽️', label: 'Staying consistent with healthy eating',              pct: 41, fill: 'var(--color-teal-light)'  },
-  { emoji: '💊', label: 'Remembering to take medications every day',            pct: 27, fill: 'var(--color-lime-light)'  },
-  { emoji: '🧠', label: 'Managing stress without it affecting my health',       pct: 22, fill: 'var(--color-warm-light)'  },
-  { emoji: '🩺', label: 'Knowing what to ask my doctor',                        pct: 10, fill: 'var(--color-sage-light)'  },
+  { emoji: '', label: 'Staying consistent with healthy eating',              pct: 41, fill: 'var(--color-teal-light)'  },
+  { emoji: '', label: 'Remembering to take medications every day',            pct: 27, fill: 'var(--color-lime-light)'  },
+  { emoji: '', label: 'Managing stress without it affecting my health',       pct: 22, fill: 'var(--color-warm-light)'  },
+  { emoji: '', label: 'Knowing what to ask my doctor',                        pct: 10, fill: 'var(--color-sage-light)'  },
 ]
 
 export default function CommunityPoll() {

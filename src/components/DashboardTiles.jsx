@@ -34,7 +34,7 @@ const TILE_DEFS = [
     label: 'LDL',
     sublabel: 'Cholesterol',
     unit: 'mg/dL',
-    icon: '🫀',
+    icon: '',
     type: 'periodic',
     badge: 'Annual test',
     placeholder: 'e.g. 142',
@@ -55,7 +55,7 @@ const TILE_DEFS = [
     label: 'Blood pressure',
     shortLabel: 'BP',
     unit: 'mmHg',
-    icon: '🩺',
+    icon: '',
     type: 'daily',
     badge: 'Daily',
     placeholder: 'e.g. 128/82',
@@ -74,7 +74,7 @@ const TILE_DEFS = [
   {
     id: 'appt',
     label: 'Next appt',
-    icon: '📅',
+    icon: '',
     type: 'appointment',
     badge: 'Upcoming',
     defaultOn: true,
@@ -84,7 +84,7 @@ const TILE_DEFS = [
     id: 'glucose',
     label: 'Blood sugar',
     unit: 'mg/dL',
-    icon: '🔬',
+    icon: '',
     type: 'daily',
     badge: 'Daily',
     placeholder: 'e.g. 95',
@@ -103,7 +103,7 @@ const TILE_DEFS = [
     id: 'weight',
     label: 'Weight',
     unit: 'lbs',
-    icon: '⚖️',
+    icon: '',
     type: 'daily',
     badge: 'Weekly',
     placeholder: 'e.g. 185',
@@ -115,7 +115,7 @@ const TILE_DEFS = [
     id: 'a1c',
     label: 'A1C',
     unit: '%',
-    icon: '🧪',
+    icon: '',
     type: 'periodic',
     badge: 'Quarterly',
     placeholder: 'e.g. 6.5',
@@ -134,7 +134,7 @@ const TILE_DEFS = [
     id: 'cycle',
     label: 'Cycle & symptoms',
     shortLabel: 'Cycle',
-    icon: '🌸',
+    icon: '',
     type: 'daily',
     badge: 'Daily',
     placeholder: 'Day 1–28 or symptom note',
@@ -315,7 +315,7 @@ function CycleLogModal({ current, onClose, onSave }) {
       <div className="reading-modal" style={{ maxHeight: '88vh', overflowY: 'auto' }}>
         <div className="reading-modal__header">
           <div>
-            <p className="reading-modal__title">🌸 Cycle & symptoms</p>
+            <p className="reading-modal__title">Cycle & symptoms</p>
             <p style={{ margin: 0, fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500 }}>
               {selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
             </p>
@@ -497,7 +497,7 @@ function GlucoseLogModal({ current, onClose, onSave }) {
       <div className="reading-modal">
         <div className="reading-modal__header">
           <div>
-            <p className="reading-modal__title">🔬 Log Blood sugar</p>
+            <p className="reading-modal__title">Log Blood sugar</p>
             <p style={{ margin: 0, fontSize: 11, color: 'var(--color-text-muted)', fontWeight: 500 }}>
               {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
             </p>
@@ -596,7 +596,7 @@ function LogModal({ def, current, onClose, onSave }) {
           </p>
         )}
         {def.type === 'periodic' && (
-          <p style={{ fontSize: 12, color: 'var(--color-text-muted)', margin: '-8px 0 12px', lineHeight: 1.4, fontStyle: 'italic' }}>
+          <p style={{ fontSize: 12, color: 'var(--color-text-muted)', margin: '-8px 0 12px', lineHeight: 1.4 }}>
             This updates {def.badge.toLowerCase()} — we'll keep it on your dashboard until you log a new one.
           </p>
         )}

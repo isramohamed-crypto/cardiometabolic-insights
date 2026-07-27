@@ -30,7 +30,7 @@
   color: var(--color-ink);
   margin: 0;
 }
-.cp-header__title em { font-style: italic; color: var(--color-ink); }
+.cp-header__title em { color: var(--color-ink); }
 
 /* ── Section ─────────────────────────────────────────────────────────────── */
 .cp-section { margin: 0 0 32px; }
@@ -335,7 +335,6 @@
   padding: 0 20px;
   font-size: 13px;
   color: var(--color-muted);
-  font-style: italic;
   margin: 0;
 }
 
@@ -521,6 +520,5 @@
 .cp-empty__footnote {
   font-size: 13px;
   color: var(--color-muted);
-  font-style: italic;
   margin: 0;
 }

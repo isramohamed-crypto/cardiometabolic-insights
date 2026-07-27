@@ -4,25 +4,25 @@ import './VerywellMindSection.css'
 const CARDS = [
   {
     id: 'body-scan',
-    icon: '🧘',
+    icon: '',
     frontTitle: 'Body Scan Meditation',
     back: "Spending just 10 minutes scanning from head to toe helps you notice where stress lives in your body — and begin to release it.",
   },
   {
     id: 'breathing',
-    icon: '🌬️',
+    icon: '',
     frontTitle: '4-7-8 Breathing',
     back: "Inhale for 4 counts, hold for 7, exhale for 8. This simple pattern activates your parasympathetic nervous system and lowers blood pressure.",
   },
   {
     id: 'mindful-eating',
-    icon: '🍃',
+    icon: '',
     frontTitle: 'Mindful Eating',
     back: "Slowing down between bites and noticing flavors, textures, and hunger cues can improve digestion and reduce stress-related overeating.",
   },
   {
     id: 'gratitude',
-    icon: '✨',
+    icon: '',
     frontTitle: 'Gratitude Practice',
     back: "Writing down three things you're grateful for each day is linked to lower cortisol levels and better heart rate variability over time.",
   },

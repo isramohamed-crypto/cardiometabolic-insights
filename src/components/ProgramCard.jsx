@@ -1,10 +1,10 @@
 import React from 'react'
 
 const modules = [
-  { icon: '🥗', name: 'Nutrition', status: 'Week 3', active: true,  locked: false },
-  { icon: '🏃', name: 'Movement',  status: 'Week 2', active: false, locked: false },
-  { icon: '😴', name: 'Sleep',     status: 'Week 1', active: false, locked: false },
-  { icon: '💊', name: 'Medication',status: 'Locked', active: false, locked: true  },
+  { icon: '', name: 'Nutrition', status: 'Week 3', active: true,  locked: false },
+  { icon: '', name: 'Movement',  status: 'Week 2', active: false, locked: false },
+  { icon: '', name: 'Sleep',     status: 'Week 1', active: false, locked: false },
+  { icon: '', name: 'Medication',status: 'Locked', active: false, locked: true  },
 ]
 
 export default function ProgramCard() {

@@ -112,7 +112,7 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
             <p className="hcs-header__eyebrow">Today's habits</p>
             <h2 className="hcs-header__title">
               {allDone
-                ? 'Perfect day 🎉'
+                ? 'Perfect day'
                 : done >= DAILY_MINIMUM
                   ? `Day earned ✓`
                   : `${done} of ${total} done`}
@@ -188,7 +188,6 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
           {/* Comeback banner */}
           {isComeback && (
             <div className="hcs-comeback">
-              <span className="hcs-comeback__emoji">💪</span>
               <div className="hcs-comeback__body">
                 <div className="hcs-comeback__title">Welcome back — {streak}-day comeback</div>
                 <div className="hcs-comeback__sub">You broke your streak and started again. That takes guts.</div>
@@ -201,7 +200,7 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
             key={allDone ? 'perfect' : dayEarned ? 'earned' : 'pending'}
             className={`hcs-day-status ${dayEarned ? (allDone ? 'hcs-day-status--perfect' : 'hcs-day-status--earned') : 'hcs-day-status--pending'}`}
           >
-            <span className="hcs-day-status__icon">{allDone ? '⭐' : dayEarned ? '✓' : '○'}</span>
+            <span className="hcs-day-status__icon">{dayEarned ? '✓' : '○'}</span>
             <span className="hcs-day-status__label">
               {allDone ? 'Perfect day' : dayEarned ? 'Day earned' : `${DAILY_MINIMUM - done} more to earn today`}
             </span>
@@ -240,7 +239,7 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
                   </div>
                   {(() => {
                     const hs = computeHabitStreak(habit.id)
-                    if (hs >= 2) return <span className="hcs-habit__streak">🔥 {hs}d</span>
+                    if (hs >= 2) return <span className="hcs-habit__streak">{hs}d</span>
                     return null
                   })()}
                 </button>
@@ -260,7 +259,7 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
           <div className="hcs-earned-toast" aria-live="polite">
             <span className="hcs-earned-toast__check">✓</span>
             <span>Day earned!</span>
-            {streak > 0 && <span className="hcs-earned-toast__streak">🔥 {streak}d</span>}
+            {streak > 0 && <span className="hcs-earned-toast__streak">{streak}d</span>}
           </div>
         )}
       </div>
@@ -268,7 +267,6 @@ export default function HabitCheckinSheet({ open, onClose, onComplete }) {
       {celebrating && (
         <div className="hcs-celebrate" onClick={() => setCelebrating(null)}>
           <div className="hcs-celebrate__card">
-            <div className="hcs-celebrate__emoji">🔥</div>
             <div className="hcs-celebrate__streak">{celebrating} days</div>
             <div className="hcs-celebrate__msg">
               {celebrating === 3  && 'Three days running — momentum is building.'}

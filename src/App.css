@@ -1,5 +1,8 @@
 * { box-sizing: border-box; }
 
+/* No italics anywhere — <em> keeps its accent color, drops the slant */
+em, i, cite, address, dfn, var { font-style: normal; }
+
 body {
   margin: 0;
   padding: 0;
@@ -100,7 +103,6 @@ body {
   line-height: 0.95;
   font-family: 'Poppins', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 31px;
   letter-spacing: -.015em;
   color: var(--color-ink);
@@ -176,8 +178,8 @@ body {
 .cs-metric__v { font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 23px; color: var(--color-ink); margin: 6px 0 0; }
 .cs-good { font-family: 'DM Sans'; font-size: 15px; font-weight: 800; color: #004620; }
 .cs-warn { font-family: 'DM Sans'; font-size: 15px; font-weight: 800; color: var(--color-tangerine); }
-.cs-note { font-size: 12.8px; color: var(--color-muted); margin: 13px 0 0; font-style: italic; }
-.cs-quote { font-family: 'Poppins', sans-serif; font-weight: 400; font-style: italic; font-size: 18px; color: var(--color-ink); line-height: 1.5; margin: 0 0 11px; }
+.cs-note { font-size: 12.8px; color: var(--color-muted); margin: 13px 0 0; }
+.cs-quote { font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 18px; color: var(--color-ink); line-height: 1.5; margin: 0 0 11px; }
 .cs-quote span { color: var(--color-ink); font-weight: 700; font-style: normal; }
 .cs-q { font-size: 17px; color: var(--color-ink); line-height: 1.5; margin: 0 0 11px; padding-left: 17px; position: relative; }
 .cs-q::before { content: '•'; position: absolute; left: 0; color: var(--color-chip-border); }

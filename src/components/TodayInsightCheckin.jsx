@@ -164,7 +164,6 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
     <div className="tic-card tic-card--standalone">
       <div className="tic-insight">
         <p className="ai-eyebrow">
-          <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
           AI Insights · Based on your profile
         </p>
         <h4 className="insight-title">Perimenopause may be driving your LDL — here's the biology</h4>
@@ -235,7 +234,6 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
     <div className="tic-card tic-card--standalone">
       <div className="tic-insight">
         <p className="ai-eyebrow">
-          <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
           AI Insights · From your tracking
         </p>
         <h4 className="insight-title">Stress is showing up in your numbers 48 hrs later</h4>
@@ -304,7 +302,6 @@ export default function TodayInsightCheckin({ onOpenCheckin, tick = 0 }) {
   const lockCard = (
     <div className={`tic-unlock${checkinCount >= INSIGHT_THRESHOLD ? ' tic-unlock--ready' : ''}`}>
       <p className="ai-eyebrow">
-        <span className="ai-eyebrow__icon" aria-hidden="true">✨</span>
         AI Insights
       </p>
       <p className="tic-unlock__title">{unlockTitle}</p>

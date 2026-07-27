@@ -61,7 +61,6 @@ export default function ForYouNow() {
                 aria-label={t.quote}
               />
               <div className="rs-card__quote-block">
-                <div className="rs-card__avatar" style={{ background: 'var(--color-teal-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>💊</div>
                 <div className="rs-card__quote-text">
                   <p className="rs-card__quote">&ldquo;{t.quote}&rdquo;</p>
                   {t.author && (

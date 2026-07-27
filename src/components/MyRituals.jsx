@@ -15,7 +15,7 @@ const CAT = {
 // ── Habit library ──────────────────────────────────────────────────────────────
 const HABIT_LIBRARY = [
   {
-    id: 'hl_walk', icon: '🚶', label: '10-min walk', category: 'Move',
+    id: 'hl_walk', icon: '', label: '10-min walk', category: 'Move',
     desc: 'After meals is best',
     hook: 'Drops blood sugar 22% — no medication needed',
     stat: '22%', statLabel: 'DROP IN POST-MEAL GLUCOSE', statColor: '#2D9B83',
@@ -29,7 +29,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_bp_med', icon: '💊', label: 'Take BP medication', category: 'Monitor',
+    id: 'hl_bp_med', icon: '', label: 'Take BP medication', category: 'Monitor',
     desc: 'Same time every day',
     hook: 'Missing 2 doses a week can push BP back up 10 mmHg',
     stat: '#1', statLabel: 'FACTOR IN BLOOD PRESSURE CONTROL', statColor: '#F59E0B',
@@ -43,7 +43,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_chol_med', icon: '💊', label: 'Take cholesterol medication', category: 'Monitor',
+    id: 'hl_chol_med', icon: '', label: 'Take cholesterol medication', category: 'Monitor',
     desc: 'Statins work on a schedule',
     hook: 'Taken consistently, statins cut LDL by up to 35%',
     stat: '35%', statLabel: 'AVERAGE LDL REDUCTION ON STATINS', statColor: '#F59E0B',
@@ -57,7 +57,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_dm_med', icon: '💊', label: 'Take diabetes medication', category: 'Monitor',
+    id: 'hl_dm_med', icon: '', label: 'Take diabetes medication', category: 'Monitor',
     desc: 'Timing is everything for glucose control',
     hook: 'Consistent timing is as important as the dose itself',
     stat: '1.5%', statLabel: 'A1C REDUCTION WITH CONSISTENT METFORMIN', statColor: '#F59E0B',
@@ -71,7 +71,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_meno_hrt', icon: '💊', label: 'Take HRT or supplements', category: 'Monitor',
+    id: 'hl_meno_hrt', icon: '', label: 'Take HRT or supplements', category: 'Monitor',
     desc: 'Supports heart health during transition',
     hook: 'Started early, HRT can lower cardiovascular risk by 30%',
     stat: '30%', statLabel: 'LOWER CARDIOVASCULAR RISK ON HRT', statColor: '#F59E0B',
@@ -85,7 +85,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_bg_check', icon: '🔬', label: 'Check blood sugar', category: 'Monitor',
+    id: 'hl_bg_check', icon: '', label: 'Check blood sugar', category: 'Monitor',
     desc: 'Fasting gives the clearest baseline',
     hook: 'People who track are 2× more likely to hit their A1C target',
     stat: '2×', statLabel: 'MORE LIKELY TO HIT TARGETS WHEN TRACKING', statColor: '#F59E0B',
@@ -99,7 +99,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_fiber', icon: '🥣', label: 'Eat a fiber-rich breakfast', category: 'Nourish',
+    id: 'hl_fiber', icon: '', label: 'Eat a fiber-rich breakfast', category: 'Nourish',
     desc: 'Oats and legumes bind LDL in the gut',
     hook: 'Oat fiber binds LDL before it ever reaches your bloodstream',
     stat: '15%', statLabel: 'LDL REDUCTION FROM DAILY OAT FIBER', statColor: '#E07B4A',
@@ -113,7 +113,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_sodium', icon: '🧂', label: 'Limit sodium today', category: 'Nourish',
+    id: 'hl_sodium', icon: '', label: 'Limit sodium today', category: 'Nourish',
     desc: 'Under 1,500 mg makes a measurable difference',
     hook: 'Cutting sodium is as powerful as adding a blood pressure med',
     stat: '5 mmHg', statLabel: 'AVERAGE SYSTOLIC DROP ON LOW-SODIUM DIET', statColor: '#E07B4A',
@@ -127,7 +127,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_strength', icon: '🏋️', label: '15-min strength training', category: 'Move',
+    id: 'hl_strength', icon: '', label: '15-min strength training', category: 'Move',
     desc: 'Builds bone and metabolic resilience',
     hook: 'Weights protect the bone density menopause quietly steals',
     stat: '3%', statLabel: 'BONE DENSITY PRESERVED PER YEAR', statColor: '#2D9B83',
@@ -141,7 +141,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_dinner_walk', icon: '🌆', label: '10-min post-dinner walk', category: 'Move',
+    id: 'hl_dinner_walk', icon: '', label: '10-min post-dinner walk', category: 'Move',
     desc: 'Blunts the evening glucose spike',
     hook: "Your biggest glucose spike of the day happens right after dinner",
     stat: '22%', statLabel: 'LOWER POST-MEAL GLUCOSE', statColor: '#2D9B83',
@@ -155,7 +155,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_protein', icon: '🥚', label: 'Eat a protein-rich breakfast', category: 'Nourish',
+    id: 'hl_protein', icon: '', label: 'Eat a protein-rich breakfast', category: 'Nourish',
     desc: 'Reduces hunger hormones all day',
     hook: 'Cuts hunger hormones 25% — critical on GLP-1 meds',
     stat: '25%', statLabel: 'REDUCTION IN HUNGER HORMONE (GHRELIN)', statColor: '#E07B4A',
@@ -169,7 +169,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_glp1', icon: '💉', label: 'Log your weekly GLP-1 dose', category: 'Monitor',
+    id: 'hl_glp1', icon: '', label: 'Log your weekly GLP-1 dose', category: 'Monitor',
     desc: 'Most missed doses go unnoticed',
     hook: '89% of missed doses go undetected without a log',
     stat: '89%', statLabel: 'OF MISSED DOSES GO UNDETECTED WITHOUT A LOG', statColor: '#F59E0B',
@@ -183,7 +183,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_symptoms', icon: '🩺', label: 'Note any symptoms today', category: 'Monitor',
+    id: 'hl_symptoms', icon: '', label: 'Note any symptoms today', category: 'Monitor',
     desc: 'Logs help your care team see patterns',
     hook: 'A week of notes is 3× more useful than verbal recall at your visit',
     stat: '3×', statLabel: 'MORE CLINICALLY USEFUL THAN VERBAL RECALL', statColor: '#F59E0B',
@@ -197,7 +197,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_breathe', icon: '💨', label: '5-min deep breathing', category: 'Mind',
+    id: 'hl_breathe', icon: '', label: '5-min deep breathing', category: 'Mind',
     desc: 'Interrupts the stress-to-numbers pipeline',
     hook: "Today's stress shows up in your BP numbers 48 hours from now",
     stat: '48h', statLabel: 'LAG BETWEEN STRESS AND BP/GLUCOSE SPIKE', statColor: '#EC4899',
@@ -211,7 +211,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_sleep', icon: '😴', label: 'Aim for 7+ hours sleep', category: 'Rest',
+    id: 'hl_sleep', icon: '', label: 'Aim for 7+ hours sleep', category: 'Rest',
     desc: 'Sleep deprivation worsens every condition',
     hook: 'One bad week raises insulin resistance 37% — even without changing your diet',
     stat: '37%', statLabel: 'HIGHER INSULIN RESISTANCE AFTER POOR SLEEP', statColor: '#8B5CF6',
@@ -225,7 +225,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_water', icon: '💧', label: 'Drink 2 glasses of water', category: 'Hydrate',
+    id: 'hl_water', icon: '', label: 'Drink 2 glasses of water', category: 'Hydrate',
     desc: 'Dehydration quietly raises BP',
     hook: 'Mild dehydration silently raises your blood pressure',
     stat: '8%', statLabel: 'BP RISE FROM MILD DEHYDRATION', statColor: '#3B82F6',
@@ -239,7 +239,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_log', icon: '📊', label: 'Log a health number', category: 'Monitor',
+    id: 'hl_log', icon: '', label: 'Log a health number', category: 'Monitor',
     desc: 'Tracking doubles your odds of hitting targets',
     hook: 'Trackers are 2× as likely to reach their health goals',
     stat: '2×', statLabel: 'MORE LIKELY TO HIT HEALTH TARGETS WHEN TRACKING', statColor: '#F59E0B',
@@ -253,7 +253,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_grateful', icon: '📓', label: 'Write one gratitude note', category: 'Mind',
+    id: 'hl_grateful', icon: '', label: 'Write one gratitude note', category: 'Mind',
     desc: 'Lowers inflammatory markers over time',
     hook: 'Lowers cortisol 23% — which drives BP and blood sugar up',
     stat: '23%', statLabel: 'LOWER CORTISOL IN REGULAR GRATITUDE JOURNALERS', statColor: '#EC4899',
@@ -267,7 +267,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_stretch', icon: '🧘', label: 'Morning stretch', category: 'Move',
+    id: 'hl_stretch', icon: '', label: 'Morning stretch', category: 'Move',
     desc: 'Starts circulation before your day begins',
     hook: 'Morning movement drops cortisol 15% before your day even starts',
     stat: '15%', statLabel: 'CORTISOL REDUCTION AFTER MORNING MOVEMENT', statColor: '#2D9B83',
@@ -281,7 +281,7 @@ const HABIT_LIBRARY = [
     ],
   },
   {
-    id: 'hl_meds_gen', icon: '💊', label: 'Take all medications', category: 'Monitor',
+    id: 'hl_meds_gen', icon: '', label: 'Take all medications', category: 'Monitor',
     desc: 'Adherence is the #1 predictor of outcomes',
     hook: 'Adherence predicts your health more than diet or exercise combined',
     stat: '#1', statLabel: 'PREDICTOR OF HEALTH OUTCOMES ACROSS CHRONIC CONDITIONS', statColor: '#F59E0B',
@@ -644,7 +644,6 @@ export default function MyRituals({ onAskAI }) {
         <div className="mr-header__right">
           {selectedHabits.length > 0 && (
             <div className={`mr-score${allDone ? ' mr-score--done' : ''}`}>
-              {allDone && <span className="mr-score__fire">🔥</span>}
               <span className="mr-score__done">{doneToday}</span>
               <span className="mr-score__sep">/</span>
               <span className="mr-score__total">{selectedHabits.length}</span>
@@ -717,7 +716,7 @@ export default function MyRituals({ onAskAI }) {
                     <span className="mr-picker__label">
                       <span className="mr-picker__tier-badge">T1</span>
                       {t1.label}
-                      {isPersonal && <span className="mr-picker__foryou">✨ Recommended</span>}
+                      {isPersonal && <span className="mr-picker__foryou">Recommended</span>}
                     </span>
                     <span className="mr-picker__desc">{t1.desc}</span>
                   </span>
@@ -779,7 +778,7 @@ export default function MyRituals({ onAskAI }) {
                 </div>
                 <div className="mr-card__body">
                   <div className="mr-card__meta">
-                    <span className={`mr-recommended-pill${isPersonal ? '' : ' mr-recommended-pill--hidden'}`}>✨ Recommended</span>
+                    <span className={`mr-recommended-pill${isPersonal ? '' : ' mr-recommended-pill--hidden'}`}>Recommended</span>
                     <span className="mr-tier-badge">T{currentTier}</span>
                   </div>
                   <span className="mr-card__label">{tierData.label}</span>
@@ -855,7 +854,7 @@ export default function MyRituals({ onAskAI }) {
               {/* Ask AI entry */}
               {onAskAI && (
                 <button className="mr-ask-ai-btn" onClick={() => onAskAI(habit)}>
-                  ✨ Ask Vitalist AI about this habit
+                  Ask Vitalist AI about this habit
                 </button>
               )}
 
@@ -881,7 +880,6 @@ export default function MyRituals({ onAskAI }) {
         {/* Locked slot cards */}
         {Array.from({ length: lockedSlots }).map((_, i) => (
           <div key={`slot-locked-${i}`} className="mr-empty-slot mr-empty-slot--locked" aria-label="Locked slot">
-            <div className="mr-empty-slot__lock">🔒</div>
             <div className="mr-empty-slot__label">Slot locked</div>
             <div className="mr-empty-slot__sub">
               {hasUnresolvedComplete ? 'Level up a habit to unlock' : 'Establish a habit to unlock more'}

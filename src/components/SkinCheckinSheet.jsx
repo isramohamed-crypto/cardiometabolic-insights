@@ -8,11 +8,11 @@ const CHECKINS_KEY = 'cardiometabolicCheckins'
 // Generic fallback scale, used only when a condition-specific playbook doesn't
 // define its own severity options.
 const FALLBACK_SEVERITY = [
-  { e: '✨', l: 'Feeling great — lots of energy today' },
-  { e: '🙂', l: 'Pretty good — minor tiredness or tension' },
-  { e: '😐', l: 'So-so — low energy or a bit stressed' },
-  { e: '😣', l: 'Rough day — hard to stay on track' },
-  { e: '😫', l: 'Really struggling — need some support' },
+  { e: '', l: 'Feeling great — lots of energy today' },
+  { e: '', l: 'Pretty good — minor tiredness or tension' },
+  { e: '', l: 'So-so — low energy or a bit stressed' },
+  { e: '', l: 'Rough day — hard to stay on track' },
+  { e: '', l: 'Really struggling — need some support' },
 ]
 
 const CONDITION_PLAYBOOKS = {
@@ -20,160 +20,160 @@ const CONDITION_PLAYBOOKS = {
     severityQ: 'How are you feeling about your cholesterol management today?',
     severitySub: 'Think about your habits, stress, and how in control you feel.',
     severityOpts: [
-      { e: '✨', l: 'On track — sticking to my plan' },
-      { e: '🙂', l: 'Pretty good — minor slip but nothing major' },
-      { e: '😐', l: 'Mixed — some good choices, some not so much' },
-      { e: '😣', l: 'Off track — struggling with diet or routine' },
-      { e: '😔', l: 'Struggling — feel like I\'ve slipped a lot today' },
+      { e: '', l: 'On track — sticking to my plan' },
+      { e: '', l: 'Pretty good — minor slip but nothing major' },
+      { e: '', l: 'Mixed — some good choices, some not so much' },
+      { e: '', l: 'Off track — struggling with diet or routine' },
+      { e: '', l: 'Struggling — feel like I\'ve slipped a lot today' },
     ],
     symptomsQ: 'What\'s most on your mind about your heart health today?',
     symptomsSub: 'Pick what resonates most right now.',
     symptoms: [
-      { e: '😌', l: 'Feeling good — no concerns today' },
-      { e: '🧪', l: 'Worried about my last lab results' },
-      { e: '🍔', l: 'Struggling with diet today' },
-      { e: '💊', l: 'Skipped or forgot my medication' },
-      { e: '😰', l: 'High stress or didn\'t sleep well' },
+      { e: '', l: 'Feeling good — no concerns today' },
+      { e: '', l: 'Worried about my last lab results' },
+      { e: '', l: 'Struggling with diet today' },
+      { e: '', l: 'Skipped or forgot my medication' },
+      { e: '', l: 'High stress or didn\'t sleep well' },
     ],
   },
   'High blood pressure': {
     severityQ: 'How is your blood pressure feeling today?',
     severitySub: 'Think about physical sensations, stress, and your readings if you have them.',
     severityOpts: [
-      { e: '✨', l: 'Calm — feeling relaxed, readings look good' },
-      { e: '🙂', l: 'Mostly okay — a little tension but manageable' },
-      { e: '😐', l: 'Unsettled — some stress or a higher reading' },
-      { e: '😣', l: 'Elevated — headache, tension, or a concerning reading' },
-      { e: '🚨', l: 'Worried — symptoms feel significant today' },
+      { e: '', l: 'Calm — feeling relaxed, readings look good' },
+      { e: '', l: 'Mostly okay — a little tension but manageable' },
+      { e: '', l: 'Unsettled — some stress or a higher reading' },
+      { e: '', l: 'Elevated — headache, tension, or a concerning reading' },
+      { e: '', l: 'Worried — symptoms feel significant today' },
     ],
     symptomsQ: 'What physical or emotional signs are you noticing today?',
     symptomsSub: 'Include how your body feels and your stress level.',
     symptoms: [
-      { e: '😌', l: 'Feeling fine — no symptoms today' },
-      { e: '🤕', l: 'Headache or pressure in my head' },
-      { e: '😤', l: 'Tense, stressed, or on edge' },
-      { e: '💊', l: 'Missed a dose of my medication' },
-      { e: '🧂', l: 'Ate more salt than usual today' },
+      { e: '', l: 'Feeling fine — no symptoms today' },
+      { e: '', l: 'Headache or pressure in my head' },
+      { e: '', l: 'Tense, stressed, or on edge' },
+      { e: '', l: 'Missed a dose of my medication' },
+      { e: '', l: 'Ate more salt than usual today' },
     ],
   },
   'Type 2 diabetes': {
     severityQ: 'How is your blood sugar management feeling today?',
     severitySub: 'Think about your energy, eating, and how in balance you feel.',
     severityOpts: [
-      { e: '✨', l: 'Balanced — energy steady and on plan' },
-      { e: '🙂', l: 'Pretty good — minor blips but overall okay' },
-      { e: '😐', l: 'Uneven — energy dipping or choices were mixed' },
-      { e: '😣', l: 'Off — noticeably high or low energy, struggled today' },
-      { e: '😔', l: 'Really hard day — way off routine or unwell' },
+      { e: '', l: 'Balanced — energy steady and on plan' },
+      { e: '', l: 'Pretty good — minor blips but overall okay' },
+      { e: '', l: 'Uneven — energy dipping or choices were mixed' },
+      { e: '', l: 'Off — noticeably high or low energy, struggled today' },
+      { e: '', l: 'Really hard day — way off routine or unwell' },
     ],
     symptomsQ: 'What are you noticing most about your health today?',
     symptomsSub: 'How your body and energy feel matters — pick what fits.',
     symptoms: [
-      { e: '😌', l: 'Feeling good — energy and mood are steady' },
-      { e: '😴', l: 'Tired or sluggish after eating' },
-      { e: '🍞', l: 'Ate more carbs or sugar than planned' },
-      { e: '💊', l: 'Missed a dose of medication or insulin' },
-      { e: '🧃', l: 'Had a low — needed to treat hypoglycemia' },
+      { e: '', l: 'Feeling good — energy and mood are steady' },
+      { e: '', l: 'Tired or sluggish after eating' },
+      { e: '', l: 'Ate more carbs or sugar than planned' },
+      { e: '', l: 'Missed a dose of medication or insulin' },
+      { e: '', l: 'Had a low — needed to treat hypoglycemia' },
     ],
   },
   'Weight / metabolic health': {
     severityQ: 'How are you feeling about your health and habits today?',
     severitySub: 'This is about how you feel — not a number on a scale.',
     severityOpts: [
-      { e: '✨', l: 'Great — motivated and making good choices' },
-      { e: '🙂', l: 'Good — mostly on track today' },
-      { e: '😐', l: 'Neutral — going through the motions' },
-      { e: '😣', l: 'Struggling — cravings, low motivation, or stress eating' },
-      { e: '😔', l: 'Really hard — feel like today was a step back' },
+      { e: '', l: 'Great — motivated and making good choices' },
+      { e: '', l: 'Good — mostly on track today' },
+      { e: '', l: 'Neutral — going through the motions' },
+      { e: '', l: 'Struggling — cravings, low motivation, or stress eating' },
+      { e: '', l: 'Really hard — feel like today was a step back' },
     ],
     symptomsQ: 'What feels most relevant to your wellbeing today?',
     symptomsSub: 'Pick what best describes your day so far.',
     symptoms: [
-      { e: '😌', l: 'Feeling good — in a positive groove' },
-      { e: '🏃', l: 'Was active or exercised today' },
-      { e: '🍽️', l: 'Overate or emotional eating happened' },
-      { e: '😴', l: 'Low energy or didn\'t move much' },
-      { e: '😤', l: 'Stress made healthy choices harder' },
+      { e: '', l: 'Feeling good — in a positive groove' },
+      { e: '', l: 'Was active or exercised today' },
+      { e: '', l: 'Overate or emotional eating happened' },
+      { e: '', l: 'Low energy or didn\'t move much' },
+      { e: '', l: 'Stress made healthy choices harder' },
     ],
   },
   'Heart disease': {
     severityQ: 'How is your heart health feeling today?',
     severitySub: 'Think about physical comfort, energy, and your emotional state.',
     severityOpts: [
-      { e: '✨', l: 'Comfortable — no symptoms, feeling well' },
-      { e: '🙂', l: 'Good — slight tiredness but nothing concerning' },
-      { e: '😐', l: 'Mixed — some discomfort or lower energy than usual' },
-      { e: '😣', l: 'Concerning — symptoms I\'m aware of today' },
-      { e: '🚨', l: 'Significant — symptoms that worry me' },
+      { e: '', l: 'Comfortable — no symptoms, feeling well' },
+      { e: '', l: 'Good — slight tiredness but nothing concerning' },
+      { e: '', l: 'Mixed — some discomfort or lower energy than usual' },
+      { e: '', l: 'Concerning — symptoms I\'m aware of today' },
+      { e: '', l: 'Significant — symptoms that worry me' },
     ],
     symptomsQ: 'What are you noticing today?',
     symptomsSub: 'Physical and emotional — both count.',
     symptoms: [
-      { e: '😌', l: 'Feeling well — no symptoms today' },
-      { e: '😮‍💨', l: 'Breathlessness with normal activity' },
-      { e: '😩', l: 'Unusual tiredness or fatigue' },
-      { e: '💓', l: 'Chest discomfort or palpitations' },
-      { e: '😟', l: 'Anxious or emotionally drained about my condition' },
+      { e: '', l: 'Feeling well — no symptoms today' },
+      { e: '', l: 'Breathlessness with normal activity' },
+      { e: '', l: 'Unusual tiredness or fatigue' },
+      { e: '', l: 'Chest discomfort or palpitations' },
+      { e: '', l: 'Anxious or emotionally drained about my condition' },
     ],
   },
   'Recovery': {
     severityQ: 'How is your recovery going today?',
     severitySub: 'Think about how your body feels and how you\'re coping emotionally.',
     severityOpts: [
-      { e: '✨', l: 'Great — feeling strong and confident' },
-      { e: '🙂', l: 'Good — steady progress, a few hard moments' },
-      { e: '😐', l: 'Mixed — okay physically but emotionally tiring' },
-      { e: '😣', l: 'Tough day — setbacks or symptoms affecting me' },
-      { e: '😔', l: 'Really hard — physically or emotionally overwhelmed' },
+      { e: '', l: 'Great — feeling strong and confident' },
+      { e: '', l: 'Good — steady progress, a few hard moments' },
+      { e: '', l: 'Mixed — okay physically but emotionally tiring' },
+      { e: '', l: 'Tough day — setbacks or symptoms affecting me' },
+      { e: '', l: 'Really hard — physically or emotionally overwhelmed' },
     ],
     symptomsQ: 'What\'s most present for you today?',
     symptomsSub: 'Both physical and emotional are worth logging.',
     symptoms: [
-      { e: '😌', l: 'Feeling good — a strong recovery day' },
-      { e: '😩', l: 'More fatigue than expected' },
-      { e: '💓', l: 'Heart or chest awareness today' },
-      { e: '😟', l: 'Feeling anxious or worried about my health' },
-      { e: '💊', l: 'Medication side effects or questions came up' },
+      { e: '', l: 'Feeling good — a strong recovery day' },
+      { e: '', l: 'More fatigue than expected' },
+      { e: '', l: 'Heart or chest awareness today' },
+      { e: '', l: 'Feeling anxious or worried about my health' },
+      { e: '', l: 'Medication side effects or questions came up' },
     ],
   },
   'Family history': {
     severityQ: 'How are you feeling about your cardiovascular health today?',
     severitySub: 'Managing risk with family history is an ongoing effort — how\'s today going?',
     severityOpts: [
-      { e: '✨', l: 'On it — making proactive choices today' },
-      { e: '🙂', l: 'Pretty good — mostly following my plan' },
-      { e: '😐', l: 'Neutral — not bad, but not my best effort' },
-      { e: '😣', l: 'Off track — stress or habits working against me' },
-      { e: '😔', l: 'Worried — anxiety about risk is weighing on me' },
+      { e: '', l: 'On it — making proactive choices today' },
+      { e: '', l: 'Pretty good — mostly following my plan' },
+      { e: '', l: 'Neutral — not bad, but not my best effort' },
+      { e: '', l: 'Off track — stress or habits working against me' },
+      { e: '', l: 'Worried — anxiety about risk is weighing on me' },
     ],
     symptomsQ: 'What\'s on your mind about your health today?',
     symptomsSub: 'Log what\'s most present — physical or emotional.',
     symptoms: [
-      { e: '😌', l: 'Feeling good — no concerns today' },
-      { e: '🧪', l: 'Thinking about upcoming tests or results' },
-      { e: '🏃', l: 'Got some exercise in — felt good' },
-      { e: '😰', l: 'Anxious about my family history today' },
-      { e: '🍽️', l: 'Struggled with heart-healthy eating' },
+      { e: '', l: 'Feeling good — no concerns today' },
+      { e: '', l: 'Thinking about upcoming tests or results' },
+      { e: '', l: 'Got some exercise in — felt good' },
+      { e: '', l: 'Anxious about my family history today' },
+      { e: '', l: 'Struggled with heart-healthy eating' },
     ],
   },
   'Prevention focused': {
     severityQ: 'How are your prevention habits feeling today?',
     severitySub: 'Staying ahead of risk takes consistency — how\'s today looking?',
     severityOpts: [
-      { e: '✨', l: 'Excellent — all my healthy habits in place' },
-      { e: '🙂', l: 'Good — mostly on track today' },
-      { e: '😐', l: 'Okay — some habits slipped a little' },
-      { e: '😣', l: 'Struggling — hard to stay consistent today' },
-      { e: '😔', l: 'Off — lots of habits missed, need a reset' },
+      { e: '', l: 'Excellent — all my healthy habits in place' },
+      { e: '', l: 'Good — mostly on track today' },
+      { e: '', l: 'Okay — some habits slipped a little' },
+      { e: '', l: 'Struggling — hard to stay consistent today' },
+      { e: '', l: 'Off — lots of habits missed, need a reset' },
     ],
     symptomsQ: 'What\'s most relevant to your health today?',
     symptomsSub: 'Pick what fits your day best.',
     symptoms: [
-      { e: '😌', l: 'Feeling well — energy and mood are good' },
-      { e: '🏃', l: 'Was active — got movement in today' },
-      { e: '🥗', l: 'Ate well — mostly whole foods' },
-      { e: '😴', l: 'Slept poorly or feeling run down' },
-      { e: '😤', l: 'Stressful day — harder to stick to good habits' },
+      { e: '', l: 'Feeling well — energy and mood are good' },
+      { e: '', l: 'Was active — got movement in today' },
+      { e: '', l: 'Ate well — mostly whole foods' },
+      { e: '', l: 'Slept poorly or feeling run down' },
+      { e: '', l: 'Stressful day — harder to stick to good habits' },
     ],
   },
 }
@@ -183,15 +183,15 @@ const CONDITION_PLAYBOOKS = {
 // mix physical + emotional and are only used to label historical per-
 // condition answers). Order must match TrackPage.jsx's SYMPTOM_LABELS.
 const PHYSICAL_SYMPTOMS = [
-  { e: '😌', l: 'Feeling fine — no symptoms' },
-  { e: '😩', l: 'Fatigue or low energy' },
-  { e: '🤕', l: 'Headache or head pressure' },
-  { e: '😣', l: 'Cramps or abdominal discomfort' },
-  { e: '💓', l: 'Heart racing or palpitations' },
-  { e: '😮‍💨', l: 'Shortness of breath' },
-  { e: '🌡️', l: 'Dizziness or lightheadedness' },
-  { e: '🔥', l: 'Hot flashes or night sweats' },
-  { e: '😟', l: 'Chest tightness or discomfort' },
+  { e: '', l: 'Feeling fine — no symptoms' },
+  { e: '', l: 'Fatigue or low energy' },
+  { e: '', l: 'Headache or head pressure' },
+  { e: '', l: 'Cramps or abdominal discomfort' },
+  { e: '', l: 'Heart racing or palpitations' },
+  { e: '', l: 'Shortness of breath' },
+  { e: '', l: 'Dizziness or lightheadedness' },
+  { e: '', l: 'Hot flashes or night sweats' },
+  { e: '', l: 'Chest tightness or discomfort' },
 ]
 
 // Resolves a stored symptoms value (array of indices — or, for older saved
@@ -208,11 +208,11 @@ const GENERIC_PLAYBOOK = {
   symptomsQ: 'What\'s most on your mind about your health today?',
   symptomsSub: 'Pick the most prominent thing.',
   symptoms: [
-    { e: '😌', l: 'Feeling good — no real concerns' },
-    { e: '😴', l: 'Tired or low energy' },
-    { e: '😤', l: 'Stressed or emotionally drained' },
-    { e: '💊', l: 'Medication or treatment question came up' },
-    { e: '🍽️', l: 'Struggled with healthy eating or habits' },
+    { e: '', l: 'Feeling good — no real concerns' },
+    { e: '', l: 'Tired or low energy' },
+    { e: '', l: 'Stressed or emotionally drained' },
+    { e: '', l: 'Medication or treatment question came up' },
+    { e: '', l: 'Struggled with healthy eating or habits' },
   ],
 }
 
@@ -247,13 +247,13 @@ const COMMON_TREATMENTS = [
 
 // Category lookup — maps keywords in a treatment name to a display category
 const TREATMENT_CATEGORY_RULES = [
-  { cat: '💊 Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
-  { cat: '🫀 Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
-  { cat: '🩸 Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
-  { cat: '⚖️ Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
-  { cat: '🌸 Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
-  { cat: '❤️ Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
-  { cat: '🥗 Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
+  { cat: 'Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
+  { cat: 'Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
+  { cat: 'Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
+  { cat: 'Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
+  { cat: 'Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
+  { cat: 'Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
+  { cat: 'Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
 ]
 
 function categoryFor(name) {
@@ -261,7 +261,7 @@ function categoryFor(name) {
   for (const rule of TREATMENT_CATEGORY_RULES) {
     if (rule.keys.some(k => lower.includes(k))) return rule.cat
   }
-  return '📋 Other'
+  return 'Other'
 }
 
 function groupByCategory(names) {
@@ -275,13 +275,13 @@ function groupByCategory(names) {
 }
 
 const DAY_CONTEXT = [
-  { e: '😰', l: 'Stressful day',    detail: { prompt: 'What was stressful?',             placeholder: 'Work, family, finances…' } },
-  { e: '😴', l: 'Rough night',      detail: { prompt: 'What was off?',                   placeholder: 'Couldn\'t sleep, woke up a lot…' } },
-  { e: '🍔', l: 'Ate off plan',     detail: { prompt: 'What did you eat?',               placeholder: 'Fast food, salty meal, alcohol…' } },
-  { e: '🏃', l: 'Exercised today',  detail: { prompt: 'What did you do?',                placeholder: 'Walk, gym, swimming, cycling…' } },
-  { e: '💊', l: 'Missed a dose',    detail: { prompt: 'Which medication?',               placeholder: 'Statin, blood pressure, diabetes med…' } },
-  { e: '🧪', l: 'Got lab results',  detail: { prompt: 'What came back?',                 placeholder: 'Cholesterol, A1C, blood pressure reading…' } },
-  { e: '👍', l: 'Normal day', wide: true },
+  { e: '', l: 'Stressful day',    detail: { prompt: 'What was stressful?',             placeholder: 'Work, family, finances…' } },
+  { e: '', l: 'Rough night',      detail: { prompt: 'What was off?',                   placeholder: 'Couldn\'t sleep, woke up a lot…' } },
+  { e: '', l: 'Ate off plan',     detail: { prompt: 'What did you eat?',               placeholder: 'Fast food, salty meal, alcohol…' } },
+  { e: '', l: 'Exercised today',  detail: { prompt: 'What did you do?',                placeholder: 'Walk, gym, swimming, cycling…' } },
+  { e: '', l: 'Missed a dose',    detail: { prompt: 'Which medication?',               placeholder: 'Statin, blood pressure, diabetes med…' } },
+  { e: '', l: 'Got lab results',  detail: { prompt: 'What came back?',                 placeholder: 'Cholesterol, A1C, blood pressure reading…' } },
+  { e: '', l: 'Normal day', wide: true },
 ]
 
 /* ── Storage helpers ──────────────────────────────────────────────── */
@@ -380,11 +380,11 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
       const hasMind = selected.some(id => ['hl_breathe','hl_grateful'].includes(id))
       const hasSleep = selected.includes('hl_sleep')
       if ((movement === 'not-yet' || movement === 'little') && !hasMovement)
-        return { emoji: '🚶', text: "You haven't moved much today — want to make it a daily habit?", cta: 'Add a movement habit' }
+        return { emoji: '', text: "You haven't moved much today — want to make it a daily habit?", cta: 'Add a movement habit' }
       if (stress >= 4 && !hasMind)
-        return { emoji: '💨', text: "High stress logged — a short breathing habit can help buffer it.", cta: 'Add a breathing habit' }
+        return { emoji: '', text: "High stress logged — a short breathing habit can help buffer it.", cta: 'Add a breathing habit' }
       if (sleep === 'poorly' && !hasSleep)
-        return { emoji: '😴', text: "Poor sleep logged — tracking it as a habit helps surface patterns.", cta: 'Add a sleep habit' }
+        return { emoji: '', text: "Poor sleep logged — tracking it as a habit helps surface patterns.", cta: 'Add a sleep habit' }
     } catch (_) {}
     return null
   }
@@ -408,20 +408,20 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
   if (!open) return null
 
   // Insight copy driven by the new signals
-  let insightIcon = '📊', insightHead = '', insightBody = ''
+  let insightIcon = '', insightHead = '', insightBody = ''
   if (stress >= 4) {
-    insightIcon = '⚠️'
+    insightIcon = ''
     insightHead = 'Stress + a harder day — worth keeping an eye on'
     insightBody = 'Stress can raise blood pressure and blood sugar and make it harder to stick to your routine. A short wind-down tonight can help your body recover.'
   } else if (stress === 3) {
     insightHead = 'Moderate stress logged — we\'ll keep watching'
     insightBody = 'Chronic stress is a real cardiovascular risk factor. Even a 10-minute walk or breathing exercise can take the edge off.'
   } else if (sleep === 'poorly') {
-    insightIcon = '😴'
+    insightIcon = ''
     insightHead = 'Poor sleep logged — it shows up in your numbers'
     insightBody = 'Sleep under 6 hours is linked to elevated blood pressure and blood sugar the following day. Your trends on Track capture this pattern.'
   } else if (movement === 'yes' && (sleep === 'well' || stress <= 2)) {
-    insightIcon = '✅'
+    insightIcon = ''
     insightHead = 'Strong day logged — this is what progress looks like'
     insightBody = 'Movement + good sleep are the two highest-impact habits for long-term cardiometabolic health. Consistency is the work.'
   } else {
@@ -456,7 +456,6 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                 <span className="ci-start-card__arrow">{wearableSynced ? '✓' : '›'}</span>
               </button>
               <button className="ci-start-card ci-start-card--ghost" type="button" onClick={() => setStep(1)}>
-                <span className="ci-start-card__icon">✏️</span>
                 <span className="ci-start-card__body">
                   <span className="ci-start-card__title">Just answer a few questions</span>
                   <span className="ci-start-card__desc">Quick and manual — no devices needed.</span>
@@ -479,9 +478,9 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <p className="ci-sub">Sleep quality is one of the strongest predictors of how your numbers behave the next day.</p>
             <div className="ci-opts ci-opts--list">
               {[
-                { v: 'well',   e: '😴', l: 'Well — felt rested and recovered' },
-                { v: 'okay',   e: '🙂', l: 'Okay — decent but not great' },
-                { v: 'poorly', e: '😩', l: 'Poorly — tired, restless, or too little' },
+                { v: 'well',   e: '', l: 'Well — felt rested and recovered' },
+                { v: 'okay',   e: '', l: 'Okay — decent but not great' },
+                { v: 'poorly', e: '', l: 'Poorly — tired, restless, or too little' },
               ].map(opt => (
                 <button key={opt.v} className={`ci-opt ci-opt--row${sleep === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setSleep(opt.v)}>
                   <span className="ci-opt__emoji">{opt.e}</span>
@@ -508,11 +507,11 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <p className="ci-sub">High stress is one of the biggest drivers of blood pressure and blood sugar spikes — it usually shows up in your numbers 24–48 hours later.</p>
             <div className="ci-opts ci-opts--list">
               {[
-                { v: 1, e: '😌', l: 'Very low — calm and in control' },
-                { v: 2, e: '🙂', l: 'Low — mostly relaxed' },
-                { v: 3, e: '😐', l: 'Moderate — some tension' },
-                { v: 4, e: '😤', l: 'High — noticeably stressed' },
-                { v: 5, e: '😫', l: 'Very high — overwhelmed or anxious' },
+                { v: 1, e: '', l: 'Very low — calm and in control' },
+                { v: 2, e: '', l: 'Low — mostly relaxed' },
+                { v: 3, e: '', l: 'Moderate — some tension' },
+                { v: 4, e: '', l: 'High — noticeably stressed' },
+                { v: 5, e: '', l: 'Very high — overwhelmed or anxious' },
               ].map(opt => (
                 <button key={opt.v} className={`ci-opt ci-opt--row${stress === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setStress(opt.v)}>
                   <span className="ci-opt__emoji">{opt.e}</span>
@@ -539,9 +538,9 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
             <p className="ci-sub">Even a short walk counts — movement is one of the most direct levers for your cardiometabolic health.</p>
             <div className="ci-opts ci-opts--list">
               {[
-                { v: 'yes',     e: '🏃', l: 'Yes — got a good workout or walk in' },
-                { v: 'little',  e: '🚶', l: 'A little — some light movement' },
-                { v: 'not-yet', e: '🛋️', l: 'Not yet today' },
+                { v: 'yes',     e: '', l: 'Yes — got a good workout or walk in' },
+                { v: 'little',  e: '', l: 'A little — some light movement' },
+                { v: 'not-yet', e: '', l: 'Not yet today' },
               ].map(opt => (
                 <button key={opt.v} className={`ci-opt ci-opt--row${movement === opt.v ? ' ci-opt--sel' : ''}`} onClick={() => setMovement(opt.v)}>
                   <span className="ci-opt__emoji">{opt.e}</span>
@@ -579,7 +578,6 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
         {step === 5 && (
           <div className="ci-done">
             <button className="ci-close" onClick={onClose} style={{ position: 'absolute', top: 16, right: 16 }}>✕</button>
-            <div className="ci-done__emoji">🎉</div>
             <h3 className="ci-done__title">Check-in logged.</h3>
             <p className="ci-done__sub">
               We saved how you're feeling and what's going on today.
@@ -591,7 +589,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
               <p className="ci-insight__body">{insightBody}</p>
             </div>
             <p className="ci-done__where">
-              📊 Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
+              Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
             </p>
             {nudge && (
               <div style={{ background: '#f0faf8', border: '1px solid #c0e8df', borderRadius: 12, padding: '12px 14px', marginTop: 8, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
@@ -626,16 +624,16 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
           const vStress = (viewing.contextLabels || []).some(l => l?.toLowerCase().includes('stress'))
           const vNormal = (viewing.contextLabels || []).some(l => l?.toLowerCase().includes('normal'))
           const vSev = viewing.severity
-          let vIcon = '📊', vHead = '', vBody = ''
+          let vIcon = '', vHead = '', vBody = ''
           if (vStress && vSev != null && vSev >= 2) {
-            vIcon = '⚠️'
+            vIcon = ''
             vHead = 'Stress + a harder day — worth keeping an eye on'
             vBody = 'Stress can raise blood pressure and blood sugar, and make it harder to stick to your routine. A short wind-down tonight can help your body recover.'
           } else if (vStress) {
             vHead = "Stressful day logged — we'll keep watching"
             vBody = 'Chronic stress is a real cardiovascular risk factor. Even a 10-minute walk or breathing exercise can take the edge off.'
           } else if (vNormal || vSev === 0) {
-            vIcon = '✅'
+            vIcon = ''
             vHead = 'Steady day logged — consistency is the work'
             vBody = 'Consistent check-ins reveal the patterns that matter most for long-term cardiometabolic health.'
           } else {
@@ -646,7 +644,6 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
           return (
             <div className="ci-done">
               <button className="ci-close" onClick={onClose} style={{ position: 'absolute', top: 16, right: 16 }}>✕</button>
-              <div className="ci-done__emoji">🎉</div>
               <h3 className="ci-done__title">Check-in logged.</h3>
               <p className="ci-done__sub">
                 We saved how you're feeling and what's going on today.
@@ -658,7 +655,7 @@ export default function SkinCheckinSheet({ open, onClose, onComplete, onViewTrac
                 <p className="ci-insight__body">{vBody}</p>
               </div>
               <p className="ci-done__where">
-                📊 Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
+                Your check-ins build your trends, triggers, and patterns on <strong>Track</strong>.
               </p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
                 <button type="button" onClick={() => { setViewing(null); setStep(0) }} style={{

@@ -23,7 +23,7 @@ import { useSavedItems } from '../context/SavedItemsContext'
 const LABELS = {
   try:     { default: '+ Mark as tried',       tried: '✓ Tried' },
   save:    { default: '+ Save',                tried: '✓ Saved' },
-  helpful: { default: '♡ Found this helpful',  tried: '♥ Found this helpful' },
+  helpful: { default: 'Found this helpful',  tried: 'Found this helpful' },
 }
 
 export default function MarkAsTried({

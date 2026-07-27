@@ -7,18 +7,18 @@ const MEDICATION_IDS  = new Set(['hl_bp_med','hl_chol_med','hl_dm_med','hl_meno_
 
 // Minimal display data — mirrors HABIT_LIBRARY icons/labels
 const PILL_DATA = {
-  hl_walk:        { icon: '🚶', label: '10-min walk' },
-  hl_fiber:       { icon: '🥣', label: 'Fiber breakfast' },
-  hl_sodium:      { icon: '🧂', label: 'Limit sodium' },
-  hl_stretch:     { icon: '🧘', label: 'Morning stretch' },
-  hl_protein:     { icon: '🥚', label: 'Protein breakfast' },
-  hl_sleep:       { icon: '😴', label: '7+ hrs sleep' },
-  hl_breathe:     { icon: '💨', label: 'Deep breathing' },
-  hl_water:       { icon: '💧', label: 'Hydration' },
-  hl_strength:    { icon: '🏋️', label: 'Strength' },
-  hl_dinner_walk: { icon: '🌆', label: 'Post-dinner walk' },
-  hl_log:         { icon: '📊', label: 'Log a number' },
-  hl_grateful:    { icon: '📓', label: 'Gratitude note' },
+  hl_walk:        { icon: '', label: '10-min walk' },
+  hl_fiber:       { icon: '', label: 'Fiber breakfast' },
+  hl_sodium:      { icon: '', label: 'Limit sodium' },
+  hl_stretch:     { icon: '', label: 'Morning stretch' },
+  hl_protein:     { icon: '', label: 'Protein breakfast' },
+  hl_sleep:       { icon: '', label: '7+ hrs sleep' },
+  hl_breathe:     { icon: '', label: 'Deep breathing' },
+  hl_water:       { icon: '', label: 'Hydration' },
+  hl_strength:    { icon: '', label: 'Strength' },
+  hl_dinner_walk: { icon: '', label: 'Post-dinner walk' },
+  hl_log:         { icon: '', label: 'Log a number' },
+  hl_grateful:    { icon: '', label: 'Gratitude note' },
 }
 
 function todayKey() { return new Date().toISOString().slice(0, 10) }
@@ -78,7 +78,7 @@ export default function DailyPillbox({ tick = 0 }) {
           <p className="dp-eyebrow">Today's habits</p>
           <p className="dp-score">
             {allDone
-              ? "All done today 🔥"
+              ? "All done today"
               : doneCount === 0
                 ? `${habits.length} habit${habits.length !== 1 ? 's' : ''} to do`
                 : `${doneCount} of ${habits.length} done`}

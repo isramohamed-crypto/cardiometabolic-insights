@@ -55,12 +55,7 @@ export default function Registration({ onClose, onStartOnboarding }) {
         <div className="reg-hero">
           <div className="reg-hero__bg">
             <div className="reg-hero__icons">
-              <span className="reg-hero__icon">🫀</span>
-              <span className="reg-hero__icon">🌸</span>
-              <span className="reg-hero__icon">🩺</span>
               <span className="reg-hero__icon">⏳</span>
-              <span className="reg-hero__icon">📊</span>
-              <span className="reg-hero__icon">💊</span>
             </div>
           </div>
           <div className="reg-hero__content">

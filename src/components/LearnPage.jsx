@@ -29,11 +29,11 @@ const JOURNEYS = [
     locked: false,
     defaultOpen: false,
     activities: [
-      { type: 'Swipe to learn', icon: '📖', name: 'What your lipid panel actually tells you', meta: '4 cards · 2 min', done: true },
-      { type: 'Quiz',           icon: '🧩', name: 'Cholesterol myths vs. facts',              meta: '4 questions · 2 min', done: true },
-      { type: 'Tap to learn',   icon: '👆', name: 'Reading your blood pressure reading',      meta: 'Interactive · 2 min', done: true },
-      { type: 'Expert Q&A',     icon: '🎬', name: 'What your A1C means for heart risk',       meta: '2:10 · Video', done: false },
-      { type: 'Step-by-step',   icon: '📋', name: 'How to prepare for your next lab test',    meta: '4 steps · 3 min', done: false },
+      { type: 'Swipe to learn', icon: '', name: 'What your lipid panel actually tells you', meta: '4 cards · 2 min', done: true },
+      { type: 'Quiz',           icon: '', name: 'Cholesterol myths vs. facts',              meta: '4 questions · 2 min', done: true },
+      { type: 'Tap to learn',   icon: '', name: 'Reading your blood pressure reading',      meta: 'Interactive · 2 min', done: true },
+      { type: 'Expert Q&A',     icon: '', name: 'What your A1C means for heart risk',       meta: '2:10 · Video', done: false },
+      { type: 'Step-by-step',   icon: '', name: 'How to prepare for your next lab test',    meta: '4 steps · 3 min', done: false },
     ],
   },
   {
@@ -50,12 +50,12 @@ const JOURNEYS = [
     locked: false,
     defaultOpen: true,
     activities: [
-      { type: 'Swipe to learn',  icon: '📖', name: 'The foods that actually move cholesterol',           meta: '5 cards · 2 min',  done: true },
-      { type: 'Step-by-step',    icon: '📋', name: 'The Mediterranean swap method',                      meta: '4 steps · 3 min',  done: true },
-      { type: 'Expert Q&A',      icon: '🎬', name: 'A dietitian answers: is fat bad for your heart?',   meta: '2:45 · Video',     done: true },
-      { type: 'Patient story',   icon: '🎬', name: 'How Marcus cut his LDL by 30 points with food',     meta: '1:45 · Video',     done: false },
-      { type: 'Swipe to learn',  icon: '📖', name: 'Reading food labels for heart health',              meta: '4 cards · 2 min',  done: false },
-      { type: 'Micro-challenge', icon: '⚡',        name: 'Make one heart-healthy swap this week',             meta: 'Try now · 3 min',  done: false },
+      { type: 'Swipe to learn',  icon: '', name: 'The foods that actually move cholesterol',           meta: '5 cards · 2 min',  done: true },
+      { type: 'Step-by-step',    icon: '', name: 'The Mediterranean swap method',                      meta: '4 steps · 3 min',  done: true },
+      { type: 'Expert Q&A',      icon: '', name: 'A dietitian answers: is fat bad for your heart?',   meta: '2:45 · Video',     done: true },
+      { type: 'Patient story',   icon: '', name: 'How Marcus cut his LDL by 30 points with food',     meta: '1:45 · Video',     done: false },
+      { type: 'Swipe to learn',  icon: '', name: 'Reading food labels for heart health',              meta: '4 cards · 2 min',  done: false },
+      { type: 'Micro-challenge', icon: '',        name: 'Make one heart-healthy swap this week',             meta: 'Try now · 3 min',  done: false },
     ],
   },
   {
@@ -72,11 +72,11 @@ const JOURNEYS = [
     locked: false,
     defaultOpen: false,
     activities: [
-      { type: 'Swipe to learn',  icon: '📖', name: 'How exercise changes your lipid profile',         meta: '4 cards · 2 min',      done: false },
-      { type: 'Interactive',     icon: '👆', name: 'Find your activity level',                        meta: 'Tap to explore · 2 min', done: false },
-      { type: 'Step-by-step',    icon: '📋', name: 'Building a 30-minute weekly walking habit',       meta: '5 steps · 3 min',      done: false },
-      { type: 'Expert Q&A',      icon: '🎬', name: 'Cardio vs. strength training for heart health',   meta: '2:30 · Video',         done: false },
-      { type: 'Micro-challenge', icon: '⚡',        name: 'Walk for 20 minutes today',                       meta: 'Try now',                   done: false },
+      { type: 'Swipe to learn',  icon: '', name: 'How exercise changes your lipid profile',         meta: '4 cards · 2 min',      done: false },
+      { type: 'Interactive',     icon: '', name: 'Find your activity level',                        meta: 'Tap to explore · 2 min', done: false },
+      { type: 'Step-by-step',    icon: '', name: 'Building a 30-minute weekly walking habit',       meta: '5 steps · 3 min',      done: false },
+      { type: 'Expert Q&A',      icon: '', name: 'Cardio vs. strength training for heart health',   meta: '2:30 · Video',         done: false },
+      { type: 'Micro-challenge', icon: '',        name: 'Walk for 20 minutes today',                       meta: 'Try now',                   done: false },
     ],
   },
   {
@@ -93,12 +93,12 @@ const JOURNEYS = [
     locked: false,
     defaultOpen: false,
     activities: [
-      { type: 'Swipe to learn',  icon: '📖', name: 'The stress-cortisol-cholesterol chain',                         meta: '5 cards · 2 min',  done: false },
-      { type: 'Micro-challenge', icon: '⚡',        name: '3-minute breathing reset',                                       meta: 'Try now · 3 min',  done: false },
-      { type: 'Expert Q&A',      icon: '🎬', name: 'How stress impacts cardiovascular risk',                         meta: '2:30 · Video',     done: false },
-      { type: 'Patient story',   icon: '🎬', name: 'Diane on learning to manage stress alongside her diagnosis',     meta: '1:32 · Video',     done: false },
-      { type: 'Swipe to learn',  icon: '📖', name: '5 evidence-backed ways to lower stress',                        meta: '5 cards · 2 min',  done: false },
-      { type: 'Micro-challenge', icon: '🧘', name: '3-minute guided meditation',                                     meta: 'Try now · 3 min',  done: false },
+      { type: 'Swipe to learn',  icon: '', name: 'The stress-cortisol-cholesterol chain',                         meta: '5 cards · 2 min',  done: false },
+      { type: 'Micro-challenge', icon: '',        name: '3-minute breathing reset',                                       meta: 'Try now · 3 min',  done: false },
+      { type: 'Expert Q&A',      icon: '', name: 'How stress impacts cardiovascular risk',                         meta: '2:30 · Video',     done: false },
+      { type: 'Patient story',   icon: '', name: 'Diane on learning to manage stress alongside her diagnosis',     meta: '1:32 · Video',     done: false },
+      { type: 'Swipe to learn',  icon: '', name: '5 evidence-backed ways to lower stress',                        meta: '5 cards · 2 min',  done: false },
+      { type: 'Micro-challenge', icon: '', name: '3-minute guided meditation',                                     meta: 'Try now · 3 min',  done: false },
     ],
   },
   {
@@ -202,7 +202,7 @@ function JourneyCard({ journey }) {
         <p className="lp-journey__lock">{lockMsg}</p>
       )}
       {locked && !lockMsg && (
-        <p className="lp-journey__lock">🔒 Coming soon</p>
+        <p className="lp-journey__lock">Coming soon</p>
       )}
       {open && activities.length === 0 && (
         <div className="lp-journey__activities">

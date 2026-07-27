@@ -41,7 +41,6 @@ export default function InStyleSection() {
           playsInline
           aria-hidden="true"
         />
-        <div className="is-card__scrim" />
 
         <div className="is-card__content">
           <p className="is-card__logo">InStyle</p>

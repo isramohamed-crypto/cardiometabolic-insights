@@ -38,7 +38,6 @@ export default function HealthPulseCard({ onOpen, tick = 0 }) {
         className="hp-card"
         onClick={onOpen}
       >
-        <div className="hp-card__icon">📋</div>
         <div className="hp-card__body">
           <div className="hp-card__eyebrow">Weekly Health Pulse · 3 min</div>
           <div className="hp-card__title">

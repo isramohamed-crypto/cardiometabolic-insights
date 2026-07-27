@@ -31,13 +31,13 @@ const COMMON_TREATMENTS = [
 ]
 
 const TX_CATEGORY_RULES = [
-  { cat: '💊 Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
-  { cat: '🫀 Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
-  { cat: '🩸 Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
-  { cat: '⚖️ Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
-  { cat: '🌸 Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
-  { cat: '❤️ Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
-  { cat: '🥗 Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
+  { cat: 'Cholesterol',        keys: ['statin','lipitor','crestor','zocor','pravachol','lovastatin','fluvastatin','zetia','ezetimibe','fenofibrate','niacin','repatha','evolocumab','praluent','alirocumab','leqvio','inclisiran','fish oil','omega-3','red yeast','psyllium','berberine'] },
+  { cat: 'Blood pressure',     keys: ['lisinopril','amlodipine','norvasc','losartan','cozaar','metoprolol','atenolol','hctz','hydrochlorothiazide','chlorthalidone','valsartan','diovan','ramipril','carvedilol','spironolactone'] },
+  { cat: 'Blood sugar',        keys: ['metformin','ozempic','wegovy','semaglutide','liraglutide','victoza','jardiance','empagliflozin','farxiga','dapagliflozin','invokana','canagliflozin','januvia','sitagliptin','actos','pioglitazone','glipizide','glimepiride','insulin','cgm','glucose monitor'] },
+  { cat: 'Weight management',  keys: ['mounjaro','zepbound','tirzepatide','contrave','naltrexone','bupropion','orlistat','xenical'] },
+  { cat: 'Hormones',           keys: ['estradiol','progesterone','estrogen','vaginal','hormone','hrt'] },
+  { cat: 'Heart & circulation',keys: ['aspirin','clopidogrel','plavix','ticagrelor','brilinta','warfarin','coumadin','apixaban','eliquis','rivaroxaban','xarelto','digoxin','amiodarone','entresto','sacubitril','cardiac rehab'] },
+  { cat: 'Lifestyle & diet',   keys: ['mediterranean','dash diet','coq10','magnesium','vitamin d','vitamin k','blood pressure monitor'] },
 ]
 
 function categoryForTx(name) {
@@ -45,7 +45,7 @@ function categoryForTx(name) {
   for (const rule of TX_CATEGORY_RULES) {
     if (rule.keys.some(k => lower.includes(k))) return rule.cat
   }
-  return '📋 Other'
+  return 'Other'
 }
 
 function groupTxByCategory(names) {
@@ -60,12 +60,12 @@ function groupTxByCategory(names) {
 
 // All available tile types for My Numbers
 const ALL_TILE_DEFS = [
-  { id: 'ldl',     label: 'LDL Cholesterol', icon: '🫀' },
-  { id: 'bp',      label: 'Blood Pressure',  icon: '💉' },
-  { id: 'glucose', label: 'Blood Sugar',      icon: '🔬' },
-  { id: 'weight',  label: 'Weight',           icon: '⚖️' },
-  { id: 'a1c',     label: 'A1C',              icon: '🩸' },
-  { id: 'cycle',   label: 'Cycle',            icon: '🌸' },
+  { id: 'ldl',     label: 'LDL Cholesterol', icon: '' },
+  { id: 'bp',      label: 'Blood Pressure',  icon: '' },
+  { id: 'glucose', label: 'Blood Sugar',      icon: '' },
+  { id: 'weight',  label: 'Weight',           icon: '' },
+  { id: 'a1c',     label: 'A1C',              icon: '' },
+  { id: 'cycle',   label: 'Cycle',            icon: '' },
 ]
 
 function readTileConfig() {
@@ -179,13 +179,13 @@ function trendDataFor(condition, range) {
 // Mock fallback when the user has 0 check-ins. Once they start logging,
 // these percentages are computed from actual check-in history.
 const TRIGGERS_MOCK = [
-  { e: '😰', l: 'Stressful day',      p: 45, c: 'var(--color-teal)' },
-  { e: '😴', l: 'Rough night',        p: 25, c: 'var(--color-blue)' },
-  { e: '🌤️', l: 'Weather change',     p: 10, c: 'var(--color-sage)' },
-  { e: '🍽️', l: 'New food',           p:  5, c: 'var(--color-warm)' },
-  { e: '🧴', l: 'Tried new product',  p:  0, c: 'var(--color-coral)' },
-  { e: '🏃', l: 'Routine changed',    p:  0, c: 'var(--color-lime)' },
-  { e: '👍', l: 'Normal day',         p: 15, c: 'var(--color-text-muted)' },
+  { e: '', l: 'Stressful day',      p: 45, c: 'var(--color-teal)' },
+  { e: '', l: 'Rough night',        p: 25, c: 'var(--color-blue)' },
+  { e: '', l: 'Weather change',     p: 10, c: 'var(--color-sage)' },
+  { e: '', l: 'New food',           p:  5, c: 'var(--color-warm)' },
+  { e: '', l: 'Tried new product',  p:  0, c: 'var(--color-coral)' },
+  { e: '', l: 'Routine changed',    p:  0, c: 'var(--color-lime)' },
+  { e: '', l: 'Normal day',         p: 15, c: 'var(--color-text-muted)' },
 ]
 
 // Compute trigger percentages from the user's check-in history. Each check-in
@@ -209,44 +209,44 @@ function computeTriggers(checkins) {
 }
 
 const ACTIONS = [
-  { icon: '🌬️', bg: 'rgba(0, 185, 226,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → elevated readings cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
-  { icon: '💊', bg: 'rgba(27, 188, 60,.1)',    tag: 'MEDICATIONS · ROUTINE', tagC: 'var(--color-teal)', title: 'Add medication timing to your daily checklist', body: 'You log your medications 5/7 days. Consistent daily timing could improve your health score average.', cta: 'Add to checklist', ctaBg: 'rgba(27, 188, 60,.1)', ctaC: 'var(--color-teal)' },
-  { icon: '📖', bg: 'rgba(0, 83, 226,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#0053E2', title: 'Continue: Stress + Heart Health journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(0, 83, 226,.1)', ctaC: '#0053E2' },
-  { icon: '🥗', bg: 'rgba(232, 239, 101,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(232, 239, 101,.15)', ctaC: '#8A7A30' },
+  { icon: '', bg: 'rgba(0, 185, 226,.12)', tag: 'STRESS · TONIGHT', tagC: '#0D7C8F', title: '3-min breathing before bed', body: 'Your HRV is 15% below baseline. Breathwork tonight can interrupt the stress → elevated readings cascade.', cta: 'Start now →', ctaBg: 'var(--color-teal)', ctaC: '#fff' },
+  { icon: '', bg: 'rgba(27, 188, 60,.1)',    tag: 'MEDICATIONS · ROUTINE', tagC: 'var(--color-teal)', title: 'Add medication timing to your daily checklist', body: 'You log your medications 5/7 days. Consistent daily timing could improve your health score average.', cta: 'Add to checklist', ctaBg: 'rgba(27, 188, 60,.1)', ctaC: 'var(--color-teal)' },
+  { icon: '', bg: 'rgba(0, 83, 226,.1)',    tag: 'LEARN · NEXT MODULE', tagC: '#0053E2', title: 'Continue: Stress + Heart Health journey', body: "You're 12% through. Next up: the 3-minute breathing reset micro-challenge.", cta: 'Continue →', ctaBg: 'rgba(0, 83, 226,.1)', ctaC: '#0053E2' },
+  { icon: '', bg: 'rgba(232, 239, 101,.15)',  tag: 'NUTRITION · FOR YOU', tagC: '#8A7A30', title: 'Anti-inflammatory dinner tonight', body: 'Omega-3s + turmeric support barrier repair. One-pan salmon, 25 minutes.', cta: 'See recipe →', ctaBg: 'rgba(232, 239, 101,.15)', ctaC: '#8A7A30' },
 ]
 
 const METRICS = [
-  { e: '😴', l: 'Sleep',       v: '72', u: '/100', d: '6h 23m · 45m deep',    tc: 'var(--color-teal)',   tl: '↑ +4 vs wk',  sp: SLEEP_DATA },
-  { e: '😰', l: 'Stress',      v: 'Med-Hi', u: '', d: '3.2hrs high stress',   tc: 'var(--color-warm)',   tl: '↓ worse',     sp: STRESS_DATA.map(v => v * 10) },
-  { e: '⚡',  l: 'Readiness',  v: '62', u: '/100', d: 'Temp +0.3°C',          tc: 'var(--color-text-muted)', tl: '→ stable', sp: [68,65,62,70,66,55,58,72,68,58,70,74,60,62] },
-  { e: '💓', l: 'HRV',         v: '38', u: 'ms',   d: '15% below baseline',   tc: 'var(--color-warm)',   tl: '↓ -6 vs avg', sp: [42,40,38,45,41,35,36,44,42,34,43,46,37,38] },
-  { e: '❤️', l: 'Resting HR',  v: '64', u: 'bpm',  d: 'vs. 60 baseline',      tc: '#E8EF65',             tl: '↑ +4 bpm',    sp: [60,61,63,59,62,65,64,60,61,66,60,58,64,64] },
-  { e: '🛡️', l: 'Resilience',  v: 'Mod', u: '',    d: 'Recovery: 62',         tc: 'var(--color-text-muted)', tl: '→ stable', sp: [55,58,52,65,60,48,50,65,58,45,62,68,52,55] },
+  { e: '', l: 'Sleep',       v: '72', u: '/100', d: '6h 23m · 45m deep',    tc: 'var(--color-teal)',   tl: '↑ +4 vs wk',  sp: SLEEP_DATA },
+  { e: '', l: 'Stress',      v: 'Med-Hi', u: '', d: '3.2hrs high stress',   tc: 'var(--color-warm)',   tl: '↓ worse',     sp: STRESS_DATA.map(v => v * 10) },
+  { e: '',  l: 'Readiness',  v: '62', u: '/100', d: 'Temp +0.3°C',          tc: 'var(--color-text-muted)', tl: '→ stable', sp: [68,65,62,70,66,55,58,72,68,58,70,74,60,62] },
+  { e: '', l: 'HRV',         v: '38', u: 'ms',   d: '15% below baseline',   tc: 'var(--color-warm)',   tl: '↓ -6 vs avg', sp: [42,40,38,45,41,35,36,44,42,34,43,46,37,38] },
+  { e: '', l: 'Resting HR',  v: '64', u: 'bpm',  d: 'vs. 60 baseline',      tc: '#E8EF65',             tl: '↑ +4 bpm',    sp: [60,61,63,59,62,65,64,60,61,66,60,58,64,64] },
+  { e: '', l: 'Resilience',  v: 'Mod', u: '',    d: 'Recovery: 62',         tc: 'var(--color-text-muted)', tl: '→ stable', sp: [55,58,52,65,60,48,50,65,58,45,62,68,52,55] },
 ]
 
 const EPROS = [
-  { icon: '📋', iconBg: 'rgba(27, 188, 60,.1)',   title: 'HRQOL — Quality of Life',    sub: 'How your condition impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(27, 188, 60,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
-  { icon: '📊', iconBg: 'rgba(0, 185, 226,.12)', title: 'PHQ-9 — Symptom Severity',   sub: 'Track how you\'ve been feeling over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(0, 185, 226,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
-  { icon: '🧠', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of managing a chronic condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
+  { icon: '', iconBg: 'rgba(27, 188, 60,.1)',   title: 'HRQOL — Quality of Life',    sub: 'How your condition impacts your daily life. 10 questions, ~2 min.', pill: 'Recommended', pillBg: 'rgba(27, 188, 60,.1)', pillC: 'var(--color-teal)', last: 'Mar 24' },
+  { icon: '', iconBg: 'rgba(0, 185, 226,.12)', title: 'PHQ-9 — Symptom Severity',   sub: 'Track how you\'ve been feeling over the past week. 7 questions.',    pill: 'Recommended', pillBg: 'rgba(0, 185, 226,.12)', pillC: '#0D7C8F', last: 'Apr 3' },
+  { icon: '', iconBg: 'rgba(246,76,34,.1)',   title: 'HADS — Anxiety & Mood',     sub: 'Understand the emotional side of managing a chronic condition.',       pill: 'Recommended', pillBg: 'rgba(246,76,34,.1)', pillC: 'var(--color-warm)', last: 'Mar 10' },
 ]
 
 const MOOD_LABELS = [
-  { e: '😄', l: 'Great' },
-  { e: '🙂', l: 'Good' },
-  { e: '😐', l: 'Neutral' },
-  { e: '😔', l: 'Low' },
-  { e: '😫', l: 'Rough day' },
+  { e: '', l: 'Great' },
+  { e: '', l: 'Good' },
+  { e: '', l: 'Neutral' },
+  { e: '', l: 'Low' },
+  { e: '', l: 'Rough day' },
 ]
 const SYMPTOM_LABELS = [
-  { e: '😌', l: 'No symptoms' },
-  { e: '😩', l: 'Fatigue' },
-  { e: '🤕', l: 'Headache' },
-  { e: '😣', l: 'Cramps' },
-  { e: '💓', l: 'Palpitations' },
-  { e: '😮‍💨', l: 'Shortness of breath' },
-  { e: '🌡️', l: 'Dizziness' },
-  { e: '🔥', l: 'Hot flashes' },
-  { e: '😟', l: 'Chest tightness' },
+  { e: '', l: 'No symptoms' },
+  { e: '', l: 'Fatigue' },
+  { e: '', l: 'Headache' },
+  { e: '', l: 'Cramps' },
+  { e: '', l: 'Palpitations' },
+  { e: '', l: 'Shortness of breath' },
+  { e: '', l: 'Dizziness' },
+  { e: '', l: 'Hot flashes' },
+  { e: '', l: 'Chest tightness' },
 ]
 
 function formatCheckinDate(iso) {
@@ -340,18 +340,18 @@ function readMyNumbers() {
     const readings = JSON.parse(localStorage.getItem('aheadReadings') || '{}')
     const config = JSON.parse(localStorage.getItem('aheadTileConfig') || 'null')
     const TILE_META = {
-      ldl:     { label: 'LDL Cholesterol', icon: '🫀', unit: 'mg/dL', periodic: true },
-      bp:      { label: 'Blood Pressure',  icon: '💉', unit: '',      periodic: false },
-      glucose: { label: 'Blood Sugar',     icon: '🔬', unit: 'mg/dL', periodic: false },
-      weight:  { label: 'Weight',          icon: '⚖️', unit: 'lbs',   periodic: false },
-      a1c:     { label: 'A1C',             icon: '🩸', unit: '%',     periodic: true },
-      cycle:   { label: 'Cycle',           icon: '🌸', unit: '',      periodic: false },
+      ldl:     { label: 'LDL Cholesterol', icon: '', unit: 'mg/dL', periodic: true },
+      bp:      { label: 'Blood Pressure',  icon: '', unit: '',      periodic: false },
+      glucose: { label: 'Blood Sugar',     icon: '', unit: 'mg/dL', periodic: false },
+      weight:  { label: 'Weight',          icon: '', unit: 'lbs',   periodic: false },
+      a1c:     { label: 'A1C',             icon: '', unit: '%',     periodic: true },
+      cycle:   { label: 'Cycle',           icon: '', unit: '',      periodic: false },
     }
     const activeIds = config || ['ldl', 'bp']
     return activeIds
       .filter(id => readings[id]?.value)
       .map(id => {
-        const meta = TILE_META[id] || { label: id, icon: '📊', unit: '' }
+        const meta = TILE_META[id] || { label: id, icon: '', unit: '' }
         const r = readings[id]
         let display = r.value
         let numericVal = null
@@ -395,7 +395,7 @@ function readTreatments() {
 // ── 2-month history data (established user demo) ─────────────────────────────
 const HISTORY_METRICS = [
   {
-    id: 'ldl', icon: '🫀', label: 'LDL Cholesterol', unit: 'mg/dL',
+    id: 'ldl', icon: '', label: 'LDL Cholesterol', unit: 'mg/dL',
     color: '#2D9B83', target: 100, targetLabel: 'Optimal <100',
     lowerIsBetter: true,
     points: [
@@ -405,7 +405,7 @@ const HISTORY_METRICS = [
     ],
   },
   {
-    id: 'bp', icon: '🩺', label: 'Blood Pressure', unit: 'mmHg (systolic)',
+    id: 'bp', icon: '', label: 'Blood Pressure', unit: 'mmHg (systolic)',
     color: '#8B5CF6', target: 120, targetLabel: 'Normal <120',
     lowerIsBetter: true,
     points: [
@@ -417,7 +417,7 @@ const HISTORY_METRICS = [
     ],
   },
   {
-    id: 'glucose', icon: '🔬', label: 'Fasting Blood Sugar', unit: 'mg/dL',
+    id: 'glucose', icon: '', label: 'Fasting Blood Sugar', unit: 'mg/dL',
     color: '#F59E0B', target: 100, targetLabel: 'Normal <100',
     lowerIsBetter: true,
     points: [
@@ -429,7 +429,7 @@ const HISTORY_METRICS = [
     ],
   },
   {
-    id: 'weight', icon: '⚖️', label: 'Weight', unit: 'lbs',
+    id: 'weight', icon: '', label: 'Weight', unit: 'lbs',
     color: '#3B82F6',
     lowerIsBetter: true,
     points: [
@@ -641,7 +641,7 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
           onClick={() => setAiOpen(o => !o)}
           aria-expanded={aiOpen}
         >
-          <span className="tp-ai-summary__badge">✨ AI Insights</span>
+          <span className="tp-ai-summary__badge">AI Insights</span>
           <span className="tp-ai-summary__teaser">
             {isNew ? 'Patterns appear as you log' : (aiOpen ? 'Tap to collapse' : '3 patterns to know')}
           </span>
@@ -734,15 +734,15 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
       <div className="tp-section">
         {(() => {
           const STRESS_STYLE = [null,
-            { e: '😄', bg: '#d1fae5' },
-            { e: '🙂', bg: '#d1fae5' },
-            { e: '😐', bg: '#fef3c7' },
-            { e: '😔', bg: '#fee2e2' },
-            { e: '😫', bg: '#fee2e2' },
+            { e: '', bg: '#d1fae5' },
+            { e: '', bg: '#d1fae5' },
+            { e: '', bg: '#fef3c7' },
+            { e: '', bg: '#fee2e2' },
+            { e: '', bg: '#fee2e2' },
           ]
           const STRESS_LABEL = ['', 'Great day', 'Good day', 'Moderate stress', 'High stress', 'Rough day']
-          const sleepMap = { well: '😴 Slept well', okay: '💤 OK sleep', poorly: '😩 Poor sleep' }
-          const movMap = { yes: '🏃 Active', 'a little': '🚶 Some movement', 'not-yet': '🛋️ Rest day' }
+          const sleepMap = { well: 'Slept well', okay: 'OK sleep', poorly: 'Poor sleep' }
+          const movMap = { yes: 'Active', 'a little': 'Some movement', 'not-yet': 'Rest day' }
 
           const now = new Date()
 
@@ -1068,7 +1068,6 @@ export default function TrackPage({ onOpenCheckin, checkinTick = 0 }) {
               </div>
             </div>
             <div className="tp-er-trend">
-              <span className="tp-er-trend-arrow">📉</span>
               <span className="tp-er-trend-text"><strong>Improving:</strong> Score dropped from 16 (Jan) → 12 (Feb) → 9 (Apr). Your routine is working.</span>
             </div>
             <div className="tp-er-history">
