@@ -173,6 +173,7 @@
 .eo-hcard__why { padding:14px 16px 16px }
 .eo-hcard__why-label { font:800 10.5px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#b7442c; margin:0 0 5px }
 .eo-hcard__why-text { font:400 13.5px/1.5 'Mulish'; color:#5b5b62; margin:0 }
+.eo-hcard__cite { font:700 12px/1.4 'Mulish'; font-style:italic; color:#1b2a4a; margin:8px 0 0; padding-top:8px; border-top:1px solid #efe8dd }
 .eo-shuffle { align-self:center; display:inline-flex; align-items:center; gap:7px; background:#fff; border:1.5px solid #e0d8cc; border-radius:999px; padding:9px 16px; font:800 13px 'Mulish'; color:#1b2a4a; cursor:pointer; margin-top:12px; transition:all .15s }
 .eo-shuffle:hover { background:#f5f0e8; border-color:#9db4d6 }
 

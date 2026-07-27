@@ -106,9 +106,9 @@ const GRAD = {
 }
 const HABIT_OPTIONS = {
   move: [
-    { goalId: 'move', label: '10-minute walk after dinner', headline: 'Ten minutes outside,', em: 'after dinner.', tagline: "That's it.", source: 'EatingWell', why: 'A short walk after eating blunts your post-meal blood-sugar spike — up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.' },
-    { goalId: 'move', label: 'Take the stairs when you can', headline: 'Take the stairs,', em: 'when you can.', tagline: 'Small hits add up.', source: 'Verywell Fit', why: 'Short bursts of stair-climbing raise your heart rate and build leg strength in seconds a day — one of the easiest ways to add movement without carving out time.' },
-    { goalId: 'move', label: 'Ten squats before the shower', headline: 'Ten squats,', em: 'before the shower.', tagline: 'Thirty seconds.', source: 'Verywell Fit', why: 'Squats work the largest muscles in your body, which helps regulate blood sugar and keeps you strong as you age. Anchoring them to your shower makes them automatic.' },
+    { goalId: 'move', label: 'Walk for 10 minutes after a meal', headline: 'Walk ten minutes,', em: 'after a meal.', tagline: "That's it.", source: 'EatingWell', article: 'The Simple Nighttime Habit That May Balance Blood Sugar', why: 'A short walk after eating blunts your post-meal blood-sugar spike — by up to 22% — with no equipment and no workout. Ten minutes is plenty; the point is timing, not intensity.' },
+    { goalId: 'move', label: 'Do 5 controlled chair stands after breakfast', headline: 'Five chair stands,', em: 'after breakfast.', tagline: 'Slow and controlled.', source: 'Verywell Health', article: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer', why: "Standing up from a chair without your hands is real lower-body strength work — and research links regular strength training to a longer life. Five slow, controlled reps after breakfast is enough to start." },
+    { goalId: 'move', label: 'Stretch hips, glutes, and spine for five minutes', headline: 'Five minutes of stretch,', em: 'hips, glutes, spine.', tagline: 'Loosen up.', source: 'Health', article: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging', why: "Mobility through your hips, glutes, and spine is one of the clearest markers of how well you'll move as you age. Five minutes a day keeps those areas supple and eases everyday stiffness." },
   ],
   eat: [
     { goalId: 'eat', label: 'Veg with every dinner', headline: 'Vegetables,', em: 'with dinner.', tagline: 'Just dinner, to start.', source: 'EatingWell', why: 'Front-loading fiber and vegetables flattens your glucose response and keeps you full — an easy anchor that crowds out less helpful choices without a strict plan.' },
@@ -511,6 +511,7 @@ export default function ExpOnboarding({ onComplete }) {
             <div className="eo-hcard__why">
               <p className="eo-hcard__why-label">Why this works</p>
               <p className="eo-hcard__why-text">{card.why}</p>
+              {card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
             </div>
           </div>
 
