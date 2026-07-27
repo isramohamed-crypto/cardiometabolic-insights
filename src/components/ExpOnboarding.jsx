@@ -3,15 +3,15 @@ import './ExpOnboarding.css'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
-  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Any of these already sound like you?',
+  { id: 'eating', num: 1, label: 'Eating', goalId: 'eat', q: 'Which of these already describe how you eat?',
     options: ['Vegetables or fruit with most meals', 'Cook at home most nights', 'Fish or plant protein a couple times a week', 'Swap a sugary drink for water most days', 'Olive oil or nuts as your go-to fat'] },
-  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Any of these already sound like you?',
+  { id: 'moving', num: 2, label: 'Moving', goalId: 'move', q: 'Which of these already describe how you move?',
     options: ['A daily walk, any length', 'Take the stairs when you can', 'Get up and move during long sitting', 'A few minutes of stretching most days'] },
-  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: 'Any of these already sound like you?',
+  { id: 'sleep', num: 3, label: 'Sleep', goalId: 'sleep', q: 'Which of these are already true about your sleep?',
     options: ['A fairly consistent bedtime', 'Screens off for the last stretch before bed', 'Some daylight early in the day', 'Cool, dark bedroom'] },
-  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Any of these already sound like you?',
+  { id: 'stress', num: 4, label: 'Stress & Calm', goalId: 'stress', q: 'Which of these already help you handle stress?',
     options: ['Take real breaks in the day', 'Time outdoors most days', 'Something that clears your head — music, a walk, quiet', 'Time for a hobby you enjoy'] },
-  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Any of these already sound like you?',
+  { id: 'people', num: 5, label: 'People', goalId: 'connect', q: 'Which of these already describe how you connect?',
     options: ['See friends or family most weeks', 'Check in with someone close, by call or text', 'Share a meal with others most weeks', 'Part of a group, class, or community'] },
 ]
 const PILLAR_ORDER = PILLARS.map(p => p.id)
@@ -255,10 +255,10 @@ export default function ExpOnboarding({ onComplete }) {
 
   const logo   = <button className="eo-onblogo" onClick={() => setStep('S_auth')}>Vitalist</button>
   const status = <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-  const nav = (onBack) => (
+  const nav = (onBack, onSkip, skipLabel) => (
     <div className="eo-nav">
       {onBack ? <button className="eo-nav__back" onClick={onBack}>← Back</button> : <span />}
-      <span />
+      {onSkip ? <button className="eo-nav__skip" onClick={onSkip}>{skipLabel || 'Skip'}</button> : <span />}
     </div>
   )
 

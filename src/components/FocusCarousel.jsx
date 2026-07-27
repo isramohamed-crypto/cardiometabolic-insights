@@ -646,6 +646,42 @@ function MyHabitsSection({ habits, done, onToggleDone }) {
   )
 }
 
+// Vertical habit card (list preview) — tap to open its detail
+function VHabitCard({ habit, done, onOpen, onToggle }) {
+  const meta = done ? 'Done today' : streakLabel(habit)
+  return (
+    <div className="fc-vcard" onClick={onOpen}>
+      <div className="fc-vcard__img" style={{ background: habit.bg }}>
+        <img src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="fc-vcard__duo" style={{ background: habit.bg }} />
+      </div>
+      <div className="fc-vcard__body">
+        <p className="fc-vcard__label">{habit.label}</p>
+        <p className="fc-vcard__meta">{meta}</p>
+      </div>
+      <button className={`fc-vcard__check${done ? ' done' : ''}`} onClick={e => { e.stopPropagation(); onToggle() }} aria-label="Mark done">{done ? '✓' : ''}</button>
+    </div>
+  )
+}
+
+// Empty slot — earned (open) or still locked
+function SlotCard({ unlocked, onAdd }) {
+  if (unlocked) {
+    return (
+      <button className="fc-slot fc-slot--open" onClick={onAdd}>
+        <span className="fc-slot__mark">+</span>
+        <div className="fc-slot__txt"><p className="fc-slot__label">A slot just opened</p><p className="fc-slot__sub">Add your next habit</p></div>
+      </button>
+    )
+  }
+  return (
+    <div className="fc-slot">
+      <span className="fc-slot__mark">◇</span>
+      <div className="fc-slot__txt"><p className="fc-slot__label">Your next slot</p><p className="fc-slot__sub">Opens once this one sticks — earned, not assigned</p></div>
+    </div>
+  )
+}
+
 function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
   const doneSet  = new Set(done)
   const doneCount = habits.filter(h => doneSet.has(h.id)).length
@@ -703,6 +739,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [askHabit, setAskHabit] = useState(null)
   const [reading, setReading]   = useState(null)
   const [readingDay, setReadingDay] = useState(null)
+  const [openHabit, setOpenHabit] = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
@@ -799,10 +836,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     )
   }
 
-  const pageCount   = working.length + 1 // working habits + "next slot" card
   const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
-  const translatePx = -(idx * vw) + dragX
-  const isActiveDrag = dragging.current && Math.abs(dragX) > 2
+  const allHabits   = [...working, ...established]
+  const slotOpen    = habits.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
 
   return (
     <div className="fc-root">
@@ -821,67 +857,47 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         </div>
       </div>
 
-      {/* Scrollable content — "Working on it" carousel + "My habits" list */}
+      {/* Vertical list — your habits stacked, with empty slots for what's next */}
       <div className="fc-page-scroll">
-        {/* Working on it — swipe carousel */}
-        <div className="fc-routine">
-          <div
-            className="fc-stage"
-            onTouchStart={e => startDrag(e.touches[0].clientX)}
-            onTouchMove={e => { e.preventDefault(); moveDrag(e.touches[0].clientX) }}
-            onTouchEnd={endDrag}
-            onMouseDown={e => { e.preventDefault(); startDrag(e.clientX) }}
-            style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
-          >
-            <div
-              className="fc-strip"
-              style={{
-                transform: `translateX(${translatePx}px)`,
-                transition: isActiveDrag ? 'none' : 'transform .32s cubic-bezier(.42,0,.22,1)',
-              }}
-            >
-              {working.map(h => (
-                <Card
-                  key={h.id}
-                  habit={h}
-                  width={vw}
-                  done={done.includes(h.id)}
-                  onDone={toggleDone}
-                  sources={sources}
-                  onConnect={connectSource}
-                  onRead={(content, habit) => setReading({ content, habit })}
-                  onDaily={(data, habit) => setReadingDay({ data, habit })}
-                />
-              ))}
-              <NextSlotCard width={vw} unlocked={working.some(h => dayOf(h) >= 7)} />
-            </div>
-          </div>
+        <p className="fc-vlist__label">My habits</p>
+        <div className="fc-vlist">
+          {allHabits.map(h => (
+            <VHabitCard
+              key={h.id}
+              habit={h}
+              done={done.includes(h.id)}
+              onOpen={() => setOpenHabit(h)}
+              onToggle={() => toggleDone(h.id)}
+            />
+          ))}
+          <SlotCard unlocked={slotOpen} onAdd={() => onNavigate('Yours')} />
         </div>
-
-        {/* My habits — established habits scroll below the carousel */}
-        {established.length > 0 && (
-          <MyHabitsSection habits={established} done={done} onToggleDone={toggleDone} />
-        )}
-
-        {/* Bottom padding clears fixed nav */}
-        <div style={{ height: 103 }} />
+        <div style={{ height: 156 }} />
       </div>
 
-      {pageCount > 1 && (
-        <div className="fc-dots">
-          {Array.from({ length: pageCount }).map((_, i) => (
-            <div key={i} className={`fc-dot${i === idx ? ' on' : ''}`} onClick={() => setIdx(i)} />
-          ))}
+      {/* Habit detail — full card with all its content, opened from the list */}
+      {openHabit && (
+        <div className="fc-detail">
+          <button className="fc-detail__back" onClick={() => setOpenHabit(null)} aria-label="Back">←</button>
+          <Card
+            habit={openHabit}
+            width={vw}
+            done={done.includes(openHabit.id)}
+            onDone={toggleDone}
+            sources={sources}
+            onConnect={connectSource}
+            onRead={(content, habit) => setReading({ content, habit })}
+            onDaily={(data, habit) => setReadingDay({ data, habit })}
+          />
         </div>
       )}
-      {showHint && <div className="fc-swipe-hint">swipe to see all</div>}
 
       {/* Vita — app-level coach bar */}
-      {working.length > 0 && (
+      {allHabits.length > 0 && (
         <button
           className="fc-ai-fab"
           aria-label="Ask Vita"
-          onClick={() => setAskHabit(working[Math.min(idx, working.length - 1)])}
+          onClick={() => setAskHabit(openHabit || allHabits[0])}
         >
           <span className="fc-ai-fab__spark">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
