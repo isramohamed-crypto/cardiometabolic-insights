@@ -251,23 +251,64 @@ const DAILY = {
   1: {
     label: 'Day 1 · Starting tonight',
     reinforce: { hed: 'The hardest part may be starting.', body: "After a meal, staying where you are often feels easier. You don't need to feel motivated before you begin — starting slowly is enough." },
-    support:   { source: 'Verywell Health', hed: '8 benefits of walking every day', body: 'Walking daily benefits your body, mind, and emotions — and may even help extend your life.', url: 'https://www.verywellhealth.com/benefits-of-walking-every-day-11719538' },
-    enjoy:     { tag: 'Read in Entertainment', source: 'PEOPLE', hed: 'Hugh Jackman & Sutton Foster — the latest', body: 'You told us you like celebs — read the latest while you walk today.', url: 'https://people.com/hugh-jackman-sutton-foster-quiet-summer-together-in-north-carolina-wanted-to-get-away-exclusive-12025459' },
+    support: {
+      tag: 'Why walking is great', source: 'Verywell Health', read: '4 min',
+      hed: '8 benefits of walking every day', dek: 'Walking daily benefits your body, mind, and emotions — and may even help extend your life.',
+      body: [
+        'A daily walk is one of the most studied — and least demanding — things you can do for your health. It supports your heart, helps steady blood sugar, lifts your mood, and is linked to a longer life.',
+        "You don't need distance or speed for the benefit; regularity is what pays off. A short walk right after a meal counts, and it compounds quietly over weeks.",
+      ],
+    },
+    enjoy: {
+      tag: 'Read in Entertainment', source: 'PEOPLE', read: '3 min',
+      hed: 'Hugh Jackman & Sutton Foster — the latest', dek: 'A little celebrity distraction to keep you company on your walk.',
+      body: [
+        'You told us you like a bit of celebrity news — so here\'s something easy and feel-good to read while you move.',
+        'Queue it up, head out the door, and let the ten minutes take care of themselves.',
+      ],
+    },
   },
   2: {
     label: 'Day 2 · Keeping it light',
     reinforce: { hed: "This doesn't need to feel like exercise.", body: 'No pace target. No step goal. No need to work up a sweat. The habit is simply adding a little movement after a meal.' },
-    support:   { source: 'Real Simple', hed: 'Walk from room to room for ten minutes', body: 'Have stairs? Add one easy trip up and down every few minutes.', url: 'https://www.realsimple.com/ways-to-stay-active-at-home-11897354' },
-    enjoy:     { tag: 'Listen', source: 'Verywell Mind', hed: '3 mistakes to avoid when creating goals', body: 'Goals are a great way to stick to habits — listen to our podcast on the three mistakes to avoid.', url: 'https://www.verywellmind.com/3-mistakes-to-avoid-when-creating-goals-for-yourself-friday-fix-the-verywell-mind-podcast-5213293' },
+    support: {
+      tag: 'Stay in today', source: 'Real Simple', read: '4 min',
+      hed: 'Walk from room to room for ten minutes', dek: 'No sidewalk, no problem — an easy way to move at home.',
+      body: [
+        'No sidewalk or bad weather? You can still get the same small win by walking from room to room for ten minutes.',
+        'Have stairs? One easy trip up and down every few minutes adds gentle intensity without turning it into a workout.',
+      ],
+    },
+    enjoy: {
+      tag: 'Listen', source: 'Verywell Mind', read: '12 min',
+      hed: '3 mistakes to avoid when creating goals', dek: 'A short podcast that pairs perfectly with your walk.',
+      body: [
+        'Most habits stall for the same few reasons — aiming too big, moving too fast, or leaning on willpower alone. This short podcast walks through three common mistakes and how to sidestep them.',
+        'Pop in your earbuds and listen while you walk; twelve minutes is just about right.',
+      ],
+    },
   },
   7: {
     label: 'Day 7 · It becomes yours',
     reinforce: { hed: "You're making movement part of an ordinary day.", body: "This isn't a major fitness program or a test of discipline. It's a small way of caring for yourself after a meal — and each time you return to it, it becomes more recognizably yours." },
-    support:   { source: 'Real Simple', hed: 'The art of the passeggiata — a walk with no pace goal', body: 'Walk slowly. Look around. Invite someone along. The point is to enjoy the transition out of your day.', url: 'https://www.realsimple.com/what-is-passeggiata-11911501' },
-    enjoy:     { tag: 'Wear', source: 'Health', hed: 'The most comfortable walking shoes', body: 'A comfortable walking shoe can make a huge difference in how your body feels at the end of the day.', url: 'https://www.health.com/style/comfortable-walking-shoes' },
+    support: {
+      tag: 'No pace goal', source: 'Real Simple', read: '4 min',
+      hed: 'The passeggiata — a walk with nowhere to be', dek: 'Walk slowly. Look around. Enjoy the transition out of your day.',
+      body: [
+        'The Italian passeggiata is a slow, social evening stroll with no destination and no pace goal — the whole point is to enjoy the transition out of your day.',
+        'Walk slowly, look around, invite someone along. After a week, your after-dinner walk can become exactly this: yours.',
+      ],
+    },
+    enjoy: {
+      tag: 'Wear', source: 'Health', read: '5 min',
+      hed: 'The most comfortable walking shoes', dek: 'The right shoe changes how a walk feels — and whether you keep it up.',
+      body: [
+        'A comfortable, supportive shoe can spare your feet, knees, and back by the end of the day — and make the habit something you actually look forward to.',
+        "A quick look at what makes a good everyday walking shoe, so the habit stays easy on your body.",
+      ],
+    },
   },
 }
-function openURL(url) { try { window.open(url, '_blank', 'noopener') } catch (_) {} }
 function dayOf(habit) {
   if (!habit || !habit.addedAt) return 1
   return Math.max(1, Math.floor((Date.now() - new Date(habit.addedAt).getTime()) / 86400000) + 1)
@@ -281,6 +322,29 @@ function dailyFor(habit) {
 }
 
 function DailyView({ data, habit, onClose }) {
+  const [piece, setPiece] = useState(null)
+  if (piece) {
+    return (
+      <div className="fc-reader">
+        <div className="fc-reader__hero">
+          <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
+          <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+          <div className="fc-reader__hero-scrim" />
+          <button className="fc-reader__back" onClick={() => setPiece(null)} aria-label="Back">←</button>
+          <div className="fc-reader__hero-txt">
+            <span className="fc-reader__eye">{piece.tag}</span>
+            <h1 className="fc-reader__hed">{piece.hed}</h1>
+            <span className="fc-reader__meta">{piece.source} · {piece.read} read</span>
+          </div>
+        </div>
+        <div className="fc-reader__body">
+          {piece.body.map((p, i) => <p key={i}>{p}</p>)}
+          <p className="fc-reader__foot">Curated for your walk · Vitalist by People Inc.</p>
+          <button className="fc-reader__done" onClick={() => setPiece(null)}>Back to today</button>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="fc-reader">
       <div className="fc-daily__top" style={{ background: habit.bg }}>
@@ -294,17 +358,17 @@ function DailyView({ data, habit, onClose }) {
           <h2 className="fc-daily__rh">{data.reinforce.hed}</h2>
           <p className="fc-daily__rb">{data.reinforce.body}</p>
         </div>
-        <button className="fc-daily__piece" onClick={() => data.support.url && openURL(data.support.url)}>
-          <p className="fc-daily__ptag">{data.support.source}</p>
+        <button className="fc-daily__piece" onClick={() => setPiece(data.support)}>
+          <p className="fc-daily__ptag">{data.support.tag} · {data.support.source}</p>
           <h3 className="fc-daily__ph">{data.support.hed}</h3>
-          <p className="fc-daily__pb">{data.support.body}</p>
-          <span className="fc-daily__go">Read ↗</span>
+          <p className="fc-daily__pb">{data.support.dek}</p>
+          <span className="fc-daily__go">Read →</span>
         </button>
-        <button className="fc-daily__piece" onClick={() => data.enjoy.url && openURL(data.enjoy.url)}>
+        <button className="fc-daily__piece" onClick={() => setPiece(data.enjoy)}>
           <p className="fc-daily__ptag">{data.enjoy.tag} · {data.enjoy.source}</p>
           <h3 className="fc-daily__ph">{data.enjoy.hed}</h3>
-          <p className="fc-daily__pb">{data.enjoy.body}</p>
-          <span className="fc-daily__go">Open ↗</span>
+          <p className="fc-daily__pb">{data.enjoy.dek}</p>
+          <span className="fc-daily__go">Open →</span>
         </button>
         <button className="fc-reader__done" onClick={onClose}>Back to today</button>
       </div>
