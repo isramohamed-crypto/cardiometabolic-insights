@@ -249,10 +249,10 @@ export default function ExpOnboarding({ onComplete }) {
 
   const logo   = <button className="eo-onblogo" onClick={() => setStep('S_auth')}>Vitalist</button>
   const status = <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-  const nav = (onBack) => (
+  const nav = (onBack, onSkip, skipLabel) => (
     <div className="eo-nav">
       {onBack ? <button className="eo-nav__back" onClick={onBack}>← Back</button> : <span />}
-      <span />
+      {onSkip ? <button className="eo-nav__skip" onClick={onSkip}>{skipLabel || 'Skip'}</button> : <span />}
     </div>
   )
 
