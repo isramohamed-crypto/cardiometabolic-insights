@@ -57,7 +57,7 @@ function BottomNav({ activePage, onNavigate, badges = {} }) {
   const tabs = [
     { id: 'Building', icon: '◈', label: 'Routine' },
     { id: 'Read',     icon: '▤', label: 'Read' },
-    { id: 'Yours',    icon: '', label: 'Yours' },
+    { id: 'Yours',    icon: '❁', label: 'Collection' },
     { id: 'Me',       icon: '◉', label: 'Me' },
   ]
   return (

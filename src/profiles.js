@@ -27,6 +27,7 @@ export const PROFILES = {
     goals: ['move'],
     sources: ['steps'],
     name: 'Beth',
+    returning: '0',
     completions: [],
   },
 
@@ -37,6 +38,7 @@ export const PROFILES = {
     goals: ['move'],
     sources: ['steps'],
     name: 'Beth',
+    returning: '1',
     completions: [],
   },
 
@@ -47,6 +49,7 @@ export const PROFILES = {
     goals: ['move'],
     sources: ['steps', 'sleep'],
     name: 'Beth',
+    returning: '1',
     completions: ['walk_habit'],
   },
 }
@@ -64,6 +67,7 @@ export function seedProfile(name) {
     localStorage.setItem('vitalistExp_sources',    JSON.stringify(p.sources || []))
     localStorage.setItem('vitalistExp_name',       p.name || '')
     localStorage.setItem('vitalistExp_profile',    name)
+    localStorage.setItem('vitalistExp_returning',  p.returning || '0')
     localStorage.setItem('vitalistExp_complete',   '1')
     const today = new Date().toISOString().slice(0, 10)
     localStorage.setItem(`vitalistExp_completions_${today}`, JSON.stringify(p.completions || []))

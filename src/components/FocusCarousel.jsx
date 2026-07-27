@@ -19,6 +19,21 @@ function readName() {
 function readPrimary() {
   try { return localStorage.getItem('vitalistExp_primary') || '' } catch { return '' }
 }
+function readReturning() {
+  try { return localStorage.getItem('vitalistExp_returning') === '1' } catch { return false }
+}
+function readGoals() {
+  try { return JSON.parse(localStorage.getItem('vitalistExp_goals') || '[]') } catch { return [] }
+}
+
+// Candidate "next habit" per pillar — surfaced when a slot opens (mirrors onboarding)
+const NEXT_OPTIONS = {
+  sleep:  { goalId: 'sleep',  label: 'Dim the lights an hour before bed',           source: 'Sleep Foundation', anchor: 'After 9pm',                    why: 'Light is the strongest lever on your body clock. Lowering it in the evening helps you fall asleep faster — no need to change your bedtime.' },
+  eat:    { goalId: 'eat',    label: 'Add a vegetable to one meal',                 source: 'EatingWell',       anchor: 'At lunch or dinner',           why: 'It piggybacks on a meal you already eat. One extra serving of vegetables a day is among the most consistent predictors of better long-term metabolic health.' },
+  stress: { goalId: 'stress', label: 'Three slow breaths before the day starts',    source: 'Vitalist',         anchor: 'Before your feet hit the floor', why: 'A 60-second reset that tells your nervous system the day is safe to begin. Small, but it compounds.' },
+  strong: { goalId: 'strong', label: 'One set of sit-to-stands',                    source: 'Vitalist',         anchor: 'While the kettle boils',       why: 'Leg strength is one of the clearest markers of how well you age. A single daily set is enough to start.' },
+  move:   { goalId: 'move',   label: 'A short walk after another meal',             source: 'EatingWell',       anchor: 'After lunch',                  why: 'You already do this after dinner — repeating it after a second meal roughly doubles the blood-sugar benefit.' },
+}
 
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
@@ -179,6 +194,7 @@ function FirstRun({ name, primary, onSelect }) {
           alt="" draggable="false"
           onError={e => { e.currentTarget.style.display = 'none' }}
         />
+        <div className="fr-card__scrim" />
         <span className="fr-card__flag">{rec.source}</span>
         <div className="fr-card__txt">
           <h2 className="fr-card__hed">{rec.headline} <em>{rec.em}</em></h2>
@@ -228,6 +244,7 @@ function Reader({ content, habit, onClose }) {
       <div className="fc-reader__hero">
         <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
+        <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
         <div className="fc-reader__hero-txt">
           <span className="fc-reader__eye">{content.eye}</span>
@@ -327,6 +344,7 @@ function DailyView({ data, habit, onClose }) {
         <div className="fc-reader__hero">
           <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
           <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+          <div className="fc-reader__hero-scrim" />
           <button className="fc-reader__back" onClick={() => setPiece(null)} aria-label="Back">←</button>
           <div className="fc-reader__hero-txt">
             <span className="fc-reader__eye">{piece.tag}</span>
@@ -368,6 +386,31 @@ function DailyView({ data, habit, onClose }) {
           <span className="fc-daily__go">Open →</span>
         </button>
         <button className="fc-reader__done" onClick={onClose}>Back to today</button>
+      </div>
+    </div>
+  )
+}
+
+// Single article reader — opened directly from a surfaced article preview
+function PieceReader({ piece, habit, onClose }) {
+  return (
+    <div className="fc-reader">
+      <div className="fc-reader__hero">
+        <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
+        <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+        <div className="fc-reader__hero-scrim" />
+        <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <div className="fc-reader__hero-txt">
+          {piece.tag && <span className="fc-reader__eye">{piece.tag}</span>}
+          <h1 className="fc-reader__hed">{piece.hed}</h1>
+          {(piece.source || piece.read) && <span className="fc-reader__meta">{piece.source}{piece.read ? ` · ${piece.read} read` : ''}</span>}
+        </div>
+      </div>
+      <div className="fc-reader__body">
+        {piece.dek && <p className="fc-reader__dek">{piece.dek}</p>}
+        {(piece.body || []).map((p, i) => <p key={i}>{p}</p>)}
+        <p className="fc-reader__foot">Curated for you · Vitalist by People Inc.</p>
+        <button className="fc-reader__done" onClick={onClose}>Back</button>
       </div>
     </div>
   )
@@ -474,11 +517,14 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width }) {
+function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
   const sub     = habitSubText(habit, done, sources)
   const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
   const daily   = dailyFor(habit)
+  const articles = daily
+    ? [daily.support, daily.enjoy].filter(p => p && p.hed && p.body)
+    : content ? [{ tag: 'Related read', ...content }] : []
 
   return (
     <div className="fc-card" style={{ width }}>
@@ -498,6 +544,9 @@ function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width 
         <div className="fc-card__motif" />
       </div>
 
+      {/* Bottom scrim */}
+      <div className="fc-card__scrim" />
+
       {/* Stacked cards over the image — habit + editorial, one connected unit */}
       <div className="fc-card__stack">
         <div className="fc-hcard">
@@ -514,19 +563,24 @@ function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width 
           </div>
         </div>
 
-        {daily ? (
-          <button className="fc-ecard" onClick={() => onDaily && onDaily(daily, habit)}>
-            <span className="fc-ecard__tag">Today · Day {daily.day}</span>
-            <span className="fc-ecard__hed">{daily.support.hed}</span>
-            <span className="fc-ecard__meta">Content beside your walk <span className="fc-ecard__go">→</span></span>
-          </button>
-        ) : content ? (
-          <button className="fc-ecard" onClick={() => onRead && onRead(content, habit)}>
-            <span className="fc-ecard__tag">Related read</span>
-            <span className="fc-ecard__hed">{content.hed}</span>
-            <span className="fc-ecard__meta">{content.source} · {content.read} read <span className="fc-ecard__go">→</span></span>
-          </button>
-        ) : null}
+        {articles.length > 0 && (
+          <div className="fc-articles">
+            <p className="fc-articles__label">{daily ? `Beside your walk · Day ${daily.day}` : 'Supporting content'}</p>
+            {articles.map((pc, i) => (
+              <button key={i} className="fc-artcard" onClick={() => onReadPiece && onReadPiece(pc, habit)}>
+                <div className="fc-artcard__img" style={{ background: habit.bg }}>
+                  <img src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+                  <div className="fc-artcard__duo" style={{ background: habit.bg }} />
+                </div>
+                <div className="fc-artcard__body">
+                  <span className="fc-artcard__tag">{pc.tag}</span>
+                  <span className="fc-artcard__hed">{pc.hed}</span>
+                  <span className="fc-artcard__meta">{pc.source}{pc.read ? ` · ${pc.read} read` : ''} <span className="fc-artcard__go">→</span></span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -646,39 +700,46 @@ function MyHabitsSection({ habits, done, onToggleDone }) {
   )
 }
 
-// Vertical habit card (list preview) — tap to open its detail
-function VHabitCard({ habit, done, onOpen, onToggle }) {
-  const meta = done ? 'Done today' : streakLabel(habit)
+// Vertical habit card (list preview) — tap to open its detail. No check-off here.
+function VHabitCard({ habit, done, onOpen }) {
+  const trial = habit.status === 'trial' || habit.status === 'adopted'
+  const day   = Math.min(dayOf(habit), 7)
   return (
-    <div className="fc-vcard" onClick={onOpen}>
+    <button className="fc-vcard" onClick={onOpen}>
       <div className="fc-vcard__img" style={{ background: habit.bg }}>
         <img src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-vcard__duo" style={{ background: habit.bg }} />
       </div>
       <div className="fc-vcard__body">
+        <span className={`fc-vcard__badge${trial ? '' : ' kept'}`}>{trial ? 'Trial' : 'Kept'}</span>
         <p className="fc-vcard__label">{habit.label}</p>
-        <p className="fc-vcard__meta">{meta}</p>
+        {trial ? (
+          <div className="fc-vcard__trial">
+            <div className="fc-dots" aria-hidden="true">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <span key={i} className={`fc-dot${i < day ? ' on' : ''}`} />
+              ))}
+            </div>
+            <span className="fc-vcard__meta">{done ? 'Done today · ' : ''}Day {day} of 7</span>
+          </div>
+        ) : (
+          <p className="fc-vcard__meta">{done ? 'Done today' : streakLabel(habit)}</p>
+        )}
       </div>
-      <button className={`fc-vcard__check${done ? ' done' : ''}`} onClick={e => { e.stopPropagation(); onToggle() }} aria-label="Mark done">{done ? '✓' : ''}</button>
-    </div>
+      <span className="fc-vcard__chev" aria-hidden="true">›</span>
+    </button>
   )
 }
 
-// Empty slot — earned (open) or still locked
+// Empty slot — bigger, grayed "your next habit" placeholder
 function SlotCard({ unlocked, onAdd }) {
-  if (unlocked) {
-    return (
-      <button className="fc-slot fc-slot--open" onClick={onAdd}>
-        <span className="fc-slot__mark">+</span>
-        <div className="fc-slot__txt"><p className="fc-slot__label">A slot just opened</p><p className="fc-slot__sub">Add your next habit</p></div>
-      </button>
-    )
-  }
+  const Tag = unlocked ? 'button' : 'div'
   return (
-    <div className="fc-slot">
-      <span className="fc-slot__mark">◇</span>
-      <div className="fc-slot__txt"><p className="fc-slot__label">Your next slot</p><p className="fc-slot__sub">Opens once this one sticks — earned, not assigned</p></div>
-    </div>
+    <Tag className={`fc-slot${unlocked ? ' fc-slot--open' : ''}`} onClick={unlocked ? onAdd : undefined}>
+      <span className="fc-slot__mark">+</span>
+      <p className="fc-slot__label">Your next habit</p>
+      <p className="fc-slot__sub">{unlocked ? 'A slot just opened — add one to your routine' : 'Room to add to your routine, once this one sticks'}</p>
+    </Tag>
   )
 }
 
@@ -730,6 +791,7 @@ function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
 
 export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const name            = readName()
+  const returning       = readReturning()
   const [habits, setHabits] = useState(() => readHabits() || [])
   const [firstRun, setFirstRun] = useState(() => { try { return localStorage.getItem('vitalistExp_firstrun') === '1' } catch { return false } })
   const [postConfirm, setPostConfirm] = useState(null)
@@ -739,6 +801,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [askHabit, setAskHabit] = useState(null)
   const [reading, setReading]   = useState(null)
   const [readingDay, setReadingDay] = useState(null)
+  const [readPiece, setReadPiece] = useState(null)
+  const [addFlow, setAddFlow]   = useState(false)
+  const [addPick, setAddPick]   = useState(null)
   const [openHabit, setOpenHabit] = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
@@ -778,12 +843,34 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     setPostConfirm(habit)
   }
 
+  function addNewHabit(opt) {
+    const today = new Date().toISOString().slice(0, 10)
+    const habit = {
+      id: opt.goalId + '_' + Date.now(),
+      goalId: opt.goalId,
+      label: opt.label,
+      bg: GRAD[opt.goalId] || opt.bg,
+      source: opt.source,
+      status: 'trial',
+      addedAt: today,
+      tier: 1,
+      anchor: opt.anchor || null,
+    }
+    const next = [...habits, habit]
+    try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch (_) {}
+    setHabits(next)
+    setAddFlow(false)
+    setAddPick(null)
+    setPostConfirm(habit)
+  }
+
   const dragStartX = useRef(null)
   const dragCurrX  = useRef(null)
   const dragging   = useRef(false)
   const [dragX, setDragX] = useState(0)
 
   useEffect(() => { writeDone(done) }, [done])
+  useEffect(() => { try { localStorage.setItem('vitalistExp_returning', '1') } catch (_) {} }, [])
   useEffect(() => {
     if (!showHint) return
     const t = setTimeout(() => setShowHint(false), 3000)
@@ -840,6 +927,12 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const allHabits   = [...working, ...established]
   const slotOpen    = habits.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
 
+  // Candidate next habits — from the pillars she chose, minus ones she already has
+  const ownedGoals  = new Set(habits.map(h => h.goalId))
+  let   candGoals   = readGoals().filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
+  if (candGoals.length === 0) candGoals = ['sleep', 'eat', 'stress'].filter(g => !ownedGoals.has(g))
+  const candidates  = candGoals.slice(0, 3).map(g => NEXT_OPTIONS[g]).filter(Boolean)
+
   return (
     <div className="fc-root">
       {/* Top bar */}
@@ -853,7 +946,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
           </button>
         </div>
         <div className="fc-eyebrow-row">
-          <span className="fc-eyebrow">{name ? `Welcome back, ${name}` : 'Your daily routine'}</span>
+          <span className="fc-eyebrow">{name ? (returning ? `Welcome back, ${name}` : `Welcome, ${name}`) : 'Your daily routine'}</span>
         </div>
       </div>
 
@@ -867,10 +960,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
               habit={h}
               done={done.includes(h.id)}
               onOpen={() => setOpenHabit(h)}
-              onToggle={() => toggleDone(h.id)}
             />
           ))}
-          <SlotCard unlocked={slotOpen} onAdd={() => onNavigate('Yours')} />
+          <SlotCard unlocked={slotOpen} onAdd={() => { setAddPick(null); setAddFlow(true) }} />
         </div>
         <div style={{ height: 156 }} />
       </div>
@@ -886,9 +978,43 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             onDone={toggleDone}
             sources={sources}
             onConnect={connectSource}
-            onRead={(content, habit) => setReading({ content, habit })}
-            onDaily={(data, habit) => setReadingDay({ data, habit })}
+            onReadPiece={(piece, habit) => setReadPiece({ piece, habit })}
           />
+        </div>
+      )}
+
+      {/* Single article reader — opened from a surfaced preview */}
+      {readPiece && (
+        <PieceReader piece={readPiece.piece} habit={readPiece.habit} onClose={() => setReadPiece(null)} />
+      )}
+
+      {/* In-home add-a-habit flow — opens when a slot unlocks */}
+      {addFlow && (
+        <div className="fc-add">
+          <button className="fc-detail__back" onClick={() => { setAddFlow(false); setAddPick(null) }} aria-label="Back">←</button>
+          <div className="fc-add__scroll">
+            <p className="fc-add__eyebrow">A slot opened</p>
+            <h2 className="fc-add__title">Choose your next habit</h2>
+            <p className="fc-add__sub">Picked from the pillars you told us matter. Try one for a week — no pressure to keep it.</p>
+            {candidates.map(opt => {
+              const open = addPick && addPick.goalId === opt.goalId
+              return (
+                <div key={opt.goalId} className={`fc-add__card${open ? ' open' : ''}`} onClick={() => setAddPick(open ? null : opt)}>
+                  <div className="fc-add__card-img" style={{ background: GRAD[opt.goalId] || opt.bg }} />
+                  <div className="fc-add__card-body">
+                    <p className="fc-add__card-label">{opt.label}</p>
+                    <p className="fc-add__card-anchor">{opt.anchor}</p>
+                    {open && (
+                      <>
+                        <p className="fc-add__why">{opt.why}</p>
+                        <button className="fc-add__accept" onClick={e => { e.stopPropagation(); addNewHabit(opt) }}>Add to my routine</button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
 
@@ -923,7 +1049,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         <AISheet
           habit={askHabit}
           onClose={() => setAskHabit(null)}
-          onAddHabit={() => { setAskHabit(null); onNavigate('Yours') }}
+          onAddHabit={() => { setAskHabit(null); setAddPick(null); setAddFlow(true) }}
         />
       )}
       {reading && (
