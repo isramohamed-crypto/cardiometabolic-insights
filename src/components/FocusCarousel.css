@@ -70,7 +70,7 @@
 .fc-card__stack {
   position: relative;
   margin-top: auto;
-  padding: 0 14px 156px;
+  padding: 0 14px 182px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -598,7 +598,7 @@
 .fc-ai-fab {
   position: fixed;
   left: 14px; right: 14px;
-  bottom: 82px;
+  bottom: 110px;
   z-index: 40;
   display: flex;
   align-items: center;
@@ -632,7 +632,7 @@
 /* ── Dots ────────────────────────────────────────────────────────────────── */
 .fc-dots {
   position: fixed;
-  bottom: 150px;
+  bottom: 88px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -657,7 +657,7 @@
 /* ── Swipe hint ──────────────────────────────────────────────────────────── */
 .fc-swipe-hint {
   position: fixed;
-  bottom: 174px;
+  bottom: 182px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10px;
