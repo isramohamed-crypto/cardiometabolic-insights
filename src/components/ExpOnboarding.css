@@ -4,7 +4,7 @@
 .eo-root {
   position: fixed; inset: 0;
   background: #FFFDF5;
-  font-family: 'Mulish', system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   color: #15151d;
   display: flex; flex-direction: column;
   overflow: hidden;
@@ -21,11 +21,11 @@
 .eo-status {
   display: flex; justify-content: space-between;
   padding: 13px 22px 4px;
-  font: 800 11px 'Mulish'; color: #8b8b90; flex: none;
+  font: 800 11px 'DM Sans'; color: #8b8b90; flex: none;
 }
 .eo-prog {
   display: flex; justify-content: space-between; padding: 8px 22px 0;
-  font: 800 11px 'Mulish'; letter-spacing:.12em; text-transform:uppercase; color:#8b8b90; flex:none;
+  font: 800 11px 'DM Sans'; letter-spacing:.12em; text-transform:uppercase; color:#8b8b90; flex:none;
 }
 .eo-prog .step { color: #1b2a4a }
 .eo-track { height: 4px; background: #e6e1d9; border-radius: 999px; margin: 8px 22px 0; overflow: hidden; flex: none }
@@ -37,27 +37,27 @@
 .eo-hdr__row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px }
 .eo-hdr__logo { background:none; border:none; cursor:pointer; padding:0;
   font-family:'Archivo',system-ui; font-weight:900; font-style:italic; font-size:19px; letter-spacing:-.02em; color:#1b2a4a }
-.eo-hdr__num { font:800 11px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90 }
+.eo-hdr__num { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90 }
 .eo-hdr__track { height:4px; background:#e6e1d9; border-radius:999px; overflow:hidden }
 .eo-hdr__fill { height:100%; background:#12203b; border-radius:999px; transition:width .4s cubic-bezier(.25,.46,.45,.94) }
 
 /* ── Onboarding bottom nav — back (left) · skip (right) ──────────────────── */
 .eo-nav { display:flex; align-items:center; justify-content:space-between; margin-top:12px }
-.eo-nav__back, .eo-nav__skip { background:none; border:none; cursor:pointer; font:700 14px 'Mulish'; color:#8b8b90; padding:8px 4px }
+.eo-nav__back, .eo-nav__skip { background:none; border:none; cursor:pointer; font:700 14px 'DM Sans'; color:#8b8b90; padding:8px 4px }
 .eo-nav__back:hover, .eo-nav__skip:hover { color:#1b2a4a }
 .eo-hero { margin:-16px -22px 0; padding:32px 22px 28px; background:linear-gradient(115deg,#f8e5df,#edeae4) }
-.eo-eye { font:800 11px 'Mulish'; letter-spacing:.14em; text-transform:uppercase; color:#b7442c; margin:0 }
+.eo-eye { font:800 11px 'DM Sans'; letter-spacing:.14em; text-transform:uppercase; color:#b7442c; margin:0 }
 .eo-eye.navy { color:#1b2a4a }
 .eo-disp { font-family:'Archivo',system-ui; font-weight:900; letter-spacing:-.015em; line-height:1.04; color:#15151d; margin:.28em 0 0 }
 .eo-disp em { font-style:italic; color:#1b2a4a }
 .eo-q { font-family:'Archivo',system-ui; font-weight:900; letter-spacing:-.01em; font-size:21px; line-height:1.1; color:#15151d; margin:0 }
 .eo-q em { font-style:italic; color:#1b2a4a }
-.eo-lede { font:400 14px/1.45 'Mulish'; color:#5b5b62; margin:0 }
+.eo-lede { font:400 14px/1.45 'DM Sans'; color:#5b5b62; margin:0 }
 .eo-chips { display:flex; flex-wrap:wrap; gap:8px; overflow-y:auto; flex:1; align-content:flex-start }
 .eo-chip {
   display:inline-flex; align-items:center; gap:6px;
   background:#f3ece3; border:1.5px solid transparent; border-radius:999px;
-  padding:8px 13px; font:700 13px 'Mulish'; color:#15151d;
+  padding:8px 13px; font:700 13px 'DM Sans'; color:#15151d;
   cursor:pointer; transition:all .15s; user-select:none;
 }
 .eo-chip:hover { background:#ece4db }
@@ -84,16 +84,16 @@
 .eo-opt.on { background:#fff; border-color:#1b2a4a }
 .eo-opt .emo { font-size:20px; line-height:1; flex:none }
 .eo-opt .txt { flex:1; min-width:0 }
-.eo-opt .txt b { display:block; font:700 15px 'Mulish'; color:#15151d }
-.eo-opt .txt span { font:400 12.5px 'Mulish'; color:#5b5b62 }
+.eo-opt .txt b { display:block; font:700 15px 'DM Sans'; color:#15151d }
+.eo-opt .txt span { font:400 12.5px 'DM Sans'; color:#5b5b62 }
 .eo-radio { width:21px; height:21px; border-radius:999px; border:2px solid #c9bfae; flex:none; display:flex; align-items:center; justify-content:center; transition:border-color .15s }
 .eo-radio.on { border-color:#1b2a4a }
 .eo-radio.on::after { content:''; width:11px; height:11px; border-radius:999px; background:#1b2a4a }
 .eo-green { background:#E3F8E8; border:1px solid #C7EAD0; border-radius:14px; padding:13px 15px }
-.eo-green .lab { font:800 11px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#004620 }
+.eo-green .lab { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#004620 }
 .eo-btn {
   border:none; border-radius:999px; padding:15px 22px;
-  font:800 15px 'Mulish'; text-align:center;
+  font:800 15px 'DM Sans'; text-align:center;
   display:flex; align-items:center; justify-content:center; gap:8px;
   cursor:pointer; transition:opacity .15s,transform .1s; flex:none;
 }
@@ -103,13 +103,13 @@
 .eo-btn.ghost { background:#fff; border:1px solid #e7ded2; color:#15151d }
 .eo-btn.ghost:hover { background:#f5f0e8 }
 .eo-btn:disabled { opacity:.45; cursor:default; transform:none }
-.eo-link { font:700 14px 'Mulish'; color:#5b5b62; text-decoration:underline; text-align:center; cursor:pointer; background:none; border:none; padding:4px 0 }
+.eo-link { font:700 14px 'DM Sans'; color:#5b5b62; text-decoration:underline; text-align:center; cursor:pointer; background:none; border:none; padding:4px 0 }
 .eo-link:hover { color:#3a3a42 }
 .eo-spacer { flex:1 }
 .eo-input {
   width:100%; box-sizing:border-box;
   background:#fff; border:1.5px solid #e0d8cc; border-radius:14px;
-  padding:15px 16px; font:700 17px 'Mulish'; color:#15151d;
+  padding:15px 16px; font:700 17px 'DM Sans'; color:#15151d;
   outline:none; transition:border-color .15s;
 }
 .eo-input::placeholder { color:#b7b1a6; font-weight:600 }
@@ -123,32 +123,32 @@
 .eo-cover__duotone { position:absolute; inset:0; mix-blend-mode:soft-light; opacity:.92 }
 .eo-cover__motif { position:absolute; inset:0; opacity:.10; mix-blend-mode:overlay; background:repeating-radial-gradient(circle at 82% 16%, transparent 0 40px, rgba(255,255,255,.6) 40px 41px) }
 .eo-cover__overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(18,14,12,.97) 0%,rgba(18,14,12,.82) 28%,rgba(18,14,12,.4) 50%,rgba(18,14,12,.12) 65%,transparent 78%),linear-gradient(to bottom,rgba(18,14,12,.5) 0%,transparent 18%) }
-.eo-cover__status { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between; padding:13px 22px 4px; font:800 11px 'Mulish'; color:rgba(255,255,255,.7) }
+.eo-cover__status { position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between; padding:13px 22px 4px; font:800 11px 'DM Sans'; color:rgba(255,255,255,.7) }
 .eo-cover__flag-row { position:absolute; top:48px; left:22px; display:flex; flex-direction:column; gap:8px }
-.eo-cover__flag { display:inline-flex; align-items:center; background:#fff; color:#15151d; border-radius:999px; padding:5px 13px; font:800 11px 'Mulish'; letter-spacing:.06em }
-.eo-cover__eyebrow { font:800 11px 'Mulish'; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.75); margin:0 }
+.eo-cover__flag { display:inline-flex; align-items:center; background:#fff; color:#15151d; border-radius:999px; padding:5px 13px; font:800 11px 'DM Sans'; letter-spacing:.06em }
+.eo-cover__eyebrow { font:800 11px 'DM Sans'; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.75); margin:0 }
 .eo-cover__content { position:relative; padding:22px 22px 40px; display:flex; flex-direction:column; gap:14px }
 .eo-cover__hed { font-family:'Archivo',system-ui; font-weight:900; letter-spacing:-.02em; line-height:1.08; color:#fff; font-size:32px; text-shadow:0 2px 22px rgba(0,0,0,.55),0 1px 4px rgba(0,0,0,.5); -webkit-text-stroke:.4px rgba(0,0,0,.18) }
 .eo-cover__hed em { font-style:italic; color:#bcd0ea }
 .eo-cover__that { font-family:'Archivo',system-ui; font-weight:900; font-size:17px; color:rgba(255,255,255,.8); margin-top:-6px; text-shadow:0 1px 12px rgba(0,0,0,.55) }
-.eo-cover__primary { background:#9db4d6; color:#fff; border:none; border-radius:999px; padding:15px 22px; font:800 15px 'Mulish'; cursor:pointer; transition:opacity .15s,transform .1s; width:100% }
+.eo-cover__primary { background:#9db4d6; color:#fff; border:none; border-radius:999px; padding:15px 22px; font:800 15px 'DM Sans'; cursor:pointer; transition:opacity .15s,transform .1s; width:100% }
 .eo-cover__primary:hover { opacity:.9 }
 .eo-cover__primary:active { transform:scale(.97) }
 .eo-cover__row { display:flex; justify-content:space-between; align-items:center }
-.eo-cover__link { font:700 14px 'Mulish'; color:rgba(255,255,255,.8); text-decoration:underline; cursor:pointer; background:none; border:none }
+.eo-cover__link { font:700 14px 'DM Sans'; color:rgba(255,255,255,.8); text-decoration:underline; cursor:pointer; background:none; border:none }
 /* why panel */
 .eo-why { position:absolute; bottom:0; left:0; right:0; background:#FFFDF5; border-radius:22px 22px 0 0; padding:22px 22px 36px; box-shadow:0 -12px 32px rgba(24,18,15,.18); animation:eoUp .28s cubic-bezier(.25,.46,.45,.94) both }
 @keyframes eoUp { from { transform:translateY(100%) } to { transform:translateY(0) } }
 .eo-why__handle { width:36px; height:4px; border-radius:999px; background:#e0d8cc; margin:0 auto 18px }
-.eo-why__label { font:800 11px 'Mulish'; letter-spacing:.12em; text-transform:uppercase; color:#b7442c; margin-bottom:8px }
-.eo-why__text { font:400 15px/1.5 'Mulish'; color:#5b5b62 }
-.eo-why__close { margin-top:18px; width:100%; background:none; border:1.5px solid #e7ded2; border-radius:999px; padding:12px; font:700 14px 'Mulish'; color:#5b5b62; cursor:pointer }
+.eo-why__label { font:800 11px 'DM Sans'; letter-spacing:.12em; text-transform:uppercase; color:#b7442c; margin-bottom:8px }
+.eo-why__text { font:400 15px/1.5 'DM Sans'; color:#5b5b62 }
+.eo-why__close { margin-top:18px; width:100%; background:none; border:1.5px solid #e7ded2; border-radius:999px; padding:12px; font:700 14px 'DM Sans'; color:#5b5b62; cursor:pointer }
 /* S5 */
 .eo-notif-icon { width:72px; height:72px; border-radius:999px; background:#E3F8E8; border:1px solid #C7EAD0; display:flex; align-items:center; justify-content:center; font-size:30px; align-self:center }
 /* S_wear */
 .eo-wear-icon { width:72px; height:72px; border-radius:999px; background:#eef2f8; border:1px solid #cdd9ec; display:flex; align-items:center; justify-content:center; font-size:32px; align-self:center }
 .eo-wear-sources { display:flex; flex-wrap:wrap; gap:8px; justify-content:center }
-.eo-wear-chip { font:800 11px 'Mulish'; letter-spacing:.04em; color:#4a6a9a; background:#eef2f8; border:1px solid #cdd9ec; border-radius:999px; padding:6px 12px }
+.eo-wear-chip { font:800 11px 'DM Sans'; letter-spacing:.04em; color:#4a6a9a; background:#eef2f8; border:1px solid #cdd9ec; border-radius:999px; padding:6px 12px }
 
 /* ── Brand wordmark (top-left, all screens) ──────────────────────────────── */
 .eo-brand {
@@ -166,7 +166,7 @@
 .eo-hdrbar .eo-topline { display:flex; align-items:center; justify-content:space-between; padding:2px 22px 8px }
 .eo-onblogo { background:none; border:none; cursor:pointer; padding:0;
   font-family:'Archivo',system-ui; font-weight:900; font-style:italic; font-size:19px; letter-spacing:-.02em; color:#1b2a4a }
-.eo-hdrbar__num { font:800 11px 'Mulish'; letter-spacing:.08em; text-transform:uppercase; color:#8b8b90 }
+.eo-hdrbar__num { font:800 11px 'DM Sans'; letter-spacing:.08em; text-transform:uppercase; color:#8b8b90 }
 .eo-topbar-track { height:4px; background:#e6e1d9; border-radius:999px; margin:0 22px }
 .eo-topbar-fill { height:100%; background:#004620; border-radius:999px; transition:width .4s cubic-bezier(.25,.46,.45,.94) }
 
@@ -176,19 +176,19 @@
 .eo-hcard__photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(.28) contrast(1.05) brightness(.92) }
 .eo-hcard__duotone { position:absolute; inset:0; mix-blend-mode:soft-light; opacity:.9 }
 .eo-hcard__img::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(18,14,12,.92), transparent 62%) }
-.eo-hcard__flag { position:absolute; top:12px; left:12px; z-index:2; background:#fff; color:#15151d; border-radius:999px; padding:4px 11px; font:800 10px 'Mulish'; letter-spacing:.05em }
+.eo-hcard__flag { position:absolute; top:12px; left:12px; z-index:2; background:#fff; color:#15151d; border-radius:999px; padding:4px 11px; font:800 10px 'DM Sans'; letter-spacing:.05em }
 .eo-hcard__shuffle { position:absolute; top:10px; right:10px; z-index:2; width:36px; height:36px; border-radius:50%; background:rgba(20,16,14,.55); border:1px solid rgba(255,255,255,.3); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px) }
 .eo-hcard__hedwrap { position:relative; z-index:2; padding:16px }
 .eo-hcard__hed { font-family:'Archivo',system-ui; font-weight:900; font-size:24px; line-height:1.06; letter-spacing:-.02em; color:#fff; margin:0; text-shadow:0 2px 16px rgba(0,0,0,.5) }
 .eo-hcard__hed em { font-style:italic; color:#bcd0ea }
 .eo-hcard__that { font-family:'Archivo',system-ui; font-weight:900; font-size:15px; color:rgba(255,255,255,.82); margin:6px 0 0 }
 .eo-hcard__why { padding:14px 16px 16px }
-.eo-hcard__why-label { font:800 10.5px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#b7442c; margin:0 0 5px }
-.eo-hcard__why-text { font:400 13.5px/1.5 'Mulish'; color:#5b5b62; margin:0 }
-.eo-hcard__cite { font:700 12px/1.4 'Mulish'; font-style:italic; color:#1b2a4a; margin:8px 0 0; padding-top:8px; border-top:1px solid #efe8dd }
-.eo-shuffle { align-self:center; display:inline-flex; align-items:center; gap:7px; background:#fff; border:1.5px solid #e0d8cc; border-radius:999px; padding:9px 16px; font:800 13px 'Mulish'; color:#1b2a4a; cursor:pointer; margin-top:12px; transition:all .15s }
+.eo-hcard__why-label { font:800 10.5px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#b7442c; margin:0 0 5px }
+.eo-hcard__why-text { font:400 13.5px/1.5 'DM Sans'; color:#5b5b62; margin:0 }
+.eo-hcard__cite { font:700 12px/1.4 'DM Sans'; font-style:italic; color:#1b2a4a; margin:8px 0 0; padding-top:8px; border-top:1px solid #efe8dd }
+.eo-shuffle { align-self:center; display:inline-flex; align-items:center; gap:7px; background:#fff; border:1.5px solid #e0d8cc; border-radius:999px; padding:9px 16px; font:800 13px 'DM Sans'; color:#1b2a4a; cursor:pointer; margin-top:12px; transition:all .15s }
 .eo-shuffle:hover { background:#f5f0e8; border-color:#9db4d6 }
-.eo-hcard__read { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; margin:10px 0 0; padding:10px 0 0; border:none; border-top:1px solid #efe8dd; background:none; cursor:pointer; font:700 italic 12px 'Mulish'; color:#1b2a4a }
+.eo-hcard__read { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; margin:10px 0 0; padding:10px 0 0; border:none; border-top:1px solid #efe8dd; background:none; cursor:pointer; font:700 italic 12px 'DM Sans'; color:#1b2a4a }
 .eo-hcard__read span { font-style:normal; font-weight:800; color:#b7442c; flex-shrink:0 }
 
 /* ── Full in-app article ─────────────────────────────────────────────────── */
@@ -198,20 +198,20 @@
 .eo-article__scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(18,14,12,.92), rgba(18,14,12,.25) 60%) }
 .eo-article__back { position:absolute; top:16px; left:14px; width:38px; height:38px; border-radius:50%; background:rgba(20,16,14,.5); border:1px solid rgba(255,255,255,.2); color:#fff; font-size:18px; cursor:pointer; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px) }
 .eo-article__htxt { position:absolute; left:22px; right:22px; bottom:20px }
-.eo-article__eye { display:block; font:800 11px 'Mulish'; letter-spacing:.12em; text-transform:uppercase; color:#e0906f; margin-bottom:6px }
+.eo-article__eye { display:block; font:800 11px 'DM Sans'; letter-spacing:.12em; text-transform:uppercase; color:#e0906f; margin-bottom:6px }
 .eo-article__hed { font-family:'Archivo',system-ui; font-weight:900; font-size:23px; line-height:1.12; letter-spacing:-.02em; color:#fff; margin:0; text-shadow:0 2px 16px rgba(0,0,0,.4) }
 .eo-article__body { padding:22px 22px 40px }
-.eo-article__body p { font:400 16px/1.65 'Mulish'; color:#2c2c30; margin:0 0 16px }
-.eo-article__foot { font:700 12px 'Mulish' !important; color:#9a8c7e !important; margin-top:6px !important }
-.eo-article__done { margin-top:12px; width:100%; background:#1b2a4a; color:#FFFDF5; border:none; border-radius:999px; padding:15px; font:800 15px 'Mulish'; cursor:pointer }
+.eo-article__body p { font:400 16px/1.65 'DM Sans'; color:#2c2c30; margin:0 0 16px }
+.eo-article__foot { font:700 12px 'DM Sans' !important; color:#9a8c7e !important; margin-top:6px !important }
+.eo-article__done { margin-top:12px; width:100%; background:#1b2a4a; color:#FFFDF5; border:none; border-radius:999px; padding:15px; font:800 15px 'DM Sans'; cursor:pointer }
 
 /* ── Segmented pillar progress ───────────────────────────────────────────── */
 .eo-pillbar { display:flex; gap:6px; padding:8px 22px 2px; flex:none }
 .eo-seg { flex:1; height:5px; border-radius:999px; background:#e6e1d9; transition:background .3s }
 .eo-seg.on { background:#004620 }
 .eo-badge-row { display:flex; align-items:center; gap:8px; margin-bottom:6px }
-.eo-badge { width:22px; height:22px; border-radius:6px; background:#d7e8a6; color:#3b5a12; font:800 12px 'Mulish'; display:flex; align-items:center; justify-content:center; flex:none }
-.eo-badge-label { display:inline-flex; align-items:center; gap:7px; font:800 14px 'Mulish'; letter-spacing:.12em; text-transform:uppercase; color:#004620; background:#E3F8E8; border:1px solid #C7EAD0; border-radius:999px; padding:7px 15px }
+.eo-badge { width:22px; height:22px; border-radius:6px; background:#d7e8a6; color:#3b5a12; font:800 12px 'DM Sans'; display:flex; align-items:center; justify-content:center; flex:none }
+.eo-badge-label { display:inline-flex; align-items:center; gap:7px; font:800 14px 'DM Sans'; letter-spacing:.12em; text-transform:uppercase; color:#004620; background:#E3F8E8; border:1px solid #C7EAD0; border-radius:999px; padding:7px 15px }
 .eo-badge-label::before { content:''; width:8px; height:8px; border-radius:2px; background:#004620 }
 
 /* ── Multi-select checkbox rows ──────────────────────────────────────────── */
@@ -219,37 +219,37 @@
 .eo-copt { display:flex; align-items:center; gap:12px; background:#f3ece3; border:1.5px solid transparent; border-radius:14px; padding:14px 15px; cursor:pointer; transition:all .15s; user-select:none }
 .eo-copt:hover { background:#ece4db }
 .eo-copt.on { background:#E3F8E8; border-color:#004620 }
-.eo-copt__label { font:700 14.5px 'Mulish'; color:#15151d; line-height:1.3 }
+.eo-copt__label { font:700 14.5px 'DM Sans'; color:#15151d; line-height:1.3 }
 .eo-cbox { width:24px; height:24px; border-radius:7px; border:2px solid #c9bfae; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:800; transition:all .15s }
 .eo-cbox.on { background:#004620; border-color:#004620 }
 
 /* ── Encouragement counter ───────────────────────────────────────────────── */
-.eo-cheer { display:flex; align-items:center; gap:7px; font:800 12px 'Mulish'; color:#004620; margin:0 0 6px }
+.eo-cheer { display:flex; align-items:center; gap:7px; font:800 12px 'DM Sans'; color:#004620; margin:0 0 6px }
 .eo-cheer__dot { width:8px; height:8px; border-radius:2px; background:#004620 }
 
 /* ── Foundation summary ──────────────────────────────────────────────────── */
 .eo-found { border:1px solid #e7ded2; border-radius:16px; padding:2px 16px; background:#fff; margin-top:4px }
 .eo-found__group { padding:13px 0; border-top:1px solid #efe8dd }
 .eo-found__group:first-child { border-top:none }
-.eo-found__label { font:800 11px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#004620; margin:0 0 6px }
-.eo-found__item { display:flex; align-items:center; gap:8px; font:600 14px 'Mulish'; color:#15151d; margin:5px 0 }
+.eo-found__label { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#004620; margin:0 0 6px }
+.eo-found__item { display:flex; align-items:center; gap:8px; font:600 14px 'DM Sans'; color:#15151d; margin:5px 0 }
 .eo-found__dot { width:8px; height:8px; border-radius:2px; background:#004620; flex-shrink:0 }
 
 /* ── Starting-line question meta ─────────────────────────────────────────── */
-.eo-dimmeta { font:800 11px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90; margin:-8px 0 2px }
+.eo-dimmeta { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90; margin:-8px 0 2px }
 
 /* ── Chosen-habit restatement pill ───────────────────────────────────────── */
 .eo-chosen { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #e7ded2; border-radius:14px; padding:12px 14px }
 .eo-chosen__dot { width:36px; height:36px; border-radius:10px; flex-shrink:0 }
 .eo-chosen__txt { min-width:0 }
-.eo-chosen__eye { font:800 10px 'Mulish'; letter-spacing:.1em; text-transform:uppercase; color:#004620; margin:0 }
-.eo-chosen__label { font:800 15px 'Mulish'; color:#1b2a4a; margin:2px 0 0; line-height:1.2 }
+.eo-chosen__eye { font:800 10px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#004620; margin:0 }
+.eo-chosen__label { font:800 15px 'DM Sans'; color:#1b2a4a; margin:2px 0 0; line-height:1.2 }
 
 /* ── Moment + notification toggle ────────────────────────────────────────── */
 .eo-notif { display:flex; align-items:center; justify-content:space-between; gap:12px; background:#f3ece3; border:1.5px solid transparent; border-radius:14px; padding:14px 16px; cursor:pointer; margin-top:10px }
 .eo-notif.on { background:#E3F8E8; border-color:#C7EAD0 }
-.eo-notif__label { font:700 14px 'Mulish'; color:#15151d; margin:0 }
-.eo-notif__sub { font:400 12px 'Mulish'; color:#5b5b62; margin:2px 0 0 }
+.eo-notif__label { font:700 14px 'DM Sans'; color:#15151d; margin:0 }
+.eo-notif__sub { font:400 12px 'DM Sans'; color:#5b5b62; margin:2px 0 0 }
 .eo-toggle { width:44px; height:26px; border-radius:999px; background:#c9bfae; flex-shrink:0; position:relative; transition:background .15s }
 .eo-toggle.on { background:#004620 }
 .eo-toggle__knob { position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:transform .15s }
@@ -264,14 +264,14 @@
 .eo-splash__scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(15,12,10,.96) 0%, rgba(15,12,10,.35) 46%, rgba(15,12,10,.5) 100%); }
 .eo-splash__top { position:absolute; top:28px; left:24px; }
 .eo-splash__brand { font-family:'Archivo',system-ui; font-weight:900; font-style:italic; font-size:26px; letter-spacing:-.02em; color:#fff; margin:0; }
-.eo-splash__by { font:700 11px 'Mulish'; letter-spacing:.06em; color:rgba(255,255,255,.6); margin:2px 0 0; }
+.eo-splash__by { font:700 11px 'DM Sans'; letter-spacing:.06em; color:rgba(255,255,255,.6); margin:2px 0 0; }
 .eo-splash__content { position:absolute; left:24px; right:24px; bottom:46px; display:flex; flex-direction:column; gap:14px; }
 .eo-splash__hed { font-family:'Archivo',system-ui; font-weight:900; font-size:38px; line-height:1.04; letter-spacing:-.025em; color:#fff; margin:0 0 6px; text-shadow:0 2px 24px rgba(0,0,0,.5); }
 .eo-splash__hed em { font-style:italic; color:#bcd0ea; }
-.eo-splash__cta { background:#FFFDF5; color:#1b2a4a; border:none; border-radius:999px; padding:17px 22px; font:800 16px 'Mulish'; cursor:pointer; transition:background .15s, transform .1s; }
+.eo-splash__cta { background:#FFFDF5; color:#1b2a4a; border:none; border-radius:999px; padding:17px 22px; font:800 16px 'DM Sans'; cursor:pointer; transition:background .15s, transform .1s; }
 .eo-splash__cta:hover { background:#fff; }
 .eo-splash__cta:active { transform:scale(.98); }
-.eo-splash__debug { align-self:center; background:none; border:none; color:rgba(255,255,255,.45); font:700 12px 'Mulish'; letter-spacing:.02em; text-decoration:underline; cursor:pointer; padding:4px; }
+.eo-splash__debug { align-self:center; background:none; border:none; color:rgba(255,255,255,.45); font:700 12px 'DM Sans'; letter-spacing:.02em; text-decoration:underline; cursor:pointer; padding:4px; }
 .eo-splash__debug:hover { color:rgba(255,255,255,.7); }
 
 /* ── Auth screen (legacy, unused) ────────────────────────────────────────── */
@@ -297,7 +297,7 @@
   position:absolute; left:24px; right:24px; bottom:26px;
 }
 .eo-auth__eyebrow {
-  font:800 12px 'Mulish'; letter-spacing:.14em; text-transform:uppercase;
+  font:800 12px 'DM Sans'; letter-spacing:.14em; text-transform:uppercase;
   color:rgba(255,253,245,.7); margin:0 0 6px;
 }
 .eo-auth__eyebrow span { opacity:.5; margin:0 4px; }
@@ -313,11 +313,11 @@
   display:flex; flex-direction:column; gap:16px;
 }
 .eo-auth__intro {
-  font:400 15px/1.5 'Mulish'; color:#4b4b53; margin:0; text-align:center;
+  font:400 15px/1.5 'DM Sans'; color:#4b4b53; margin:0; text-align:center;
 }
 .eo-auth__divider {
   display:flex; align-items:center; gap:12px;
-  color:#a99f8d; font:800 11px 'Mulish'; letter-spacing:.14em; text-transform:uppercase;
+  color:#a99f8d; font:800 11px 'DM Sans'; letter-spacing:.14em; text-transform:uppercase;
   margin:2px 0;
 }
 .eo-auth__divider::before, .eo-auth__divider::after {
@@ -327,7 +327,7 @@
 .eo-auth__btn {
   width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
   border:none; border-radius:14px; padding:16px 20px;
-  font:700 16px 'Mulish'; letter-spacing:-.01em; cursor:pointer;
+  font:700 16px 'DM Sans'; letter-spacing:-.01em; cursor:pointer;
   transition:opacity .15s, transform .1s, background .15s;
 }
 .eo-auth__btn:active { transform:scale(.98); }
@@ -341,11 +341,11 @@
 .eo-auth__btn.apple  { background:#15151d; color:#fff; }
 .eo-auth__btn.apple:hover { background:#26262e; }
 .eo-auth__legal {
-  font:400 11.5px/1.5 'Mulish'; color:#8b8b90; text-align:center; margin:4px 0 0;
+  font:400 11.5px/1.5 'DM Sans'; color:#8b8b90; text-align:center; margin:4px 0 0;
 }
 .eo-auth__legal a { color:#1b2a4a; font-weight:700; text-decoration:none; }
 .eo-auth__peek {
   align-self:center; background:none; border:none; cursor:pointer;
-  font:700 14px 'Mulish'; color:#5b5b62; text-decoration:underline; padding:6px 0;
+  font:700 14px 'DM Sans'; color:#5b5b62; text-decoration:underline; padding:6px 0;
 }
 .eo-auth__peek:hover { color:#3a3a42; }
