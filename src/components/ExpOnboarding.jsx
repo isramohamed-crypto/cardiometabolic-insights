@@ -32,16 +32,64 @@ const GAP = [
   { id: 'eat',     emoji: '🥗', label: 'Eat better' },
   { id: 'sleep',   emoji: '😴', label: 'Sleep better' },
   { id: 'stress',  emoji: '🧘', label: 'Handle stress' },
-  { id: 'connect', emoji: '👥', label: 'See my people more' },
+  { id: 'connect', emoji: '👥', label: 'Enjoy more social time' },
+  { id: 'phone',   emoji: '📵', label: 'Less time on my phone' },
   { id: 'meds',    emoji: '💊', label: 'Take my meds' },
   { id: 'appt',    emoji: '📞', label: 'Make that appointment' },
+  { id: 'screen',  emoji: '🩺', label: 'Get that screening' },
 ]
 
-// ── Dimension questions per goal (placeholder copy — Britt/Mark to finalize) ─
+// ── Dimension questions per goal (draft copy — Britt/Mark to refine) ────────
 const DIMENSIONS = {
   move: [
-    { q: 'Where are you starting from?', options: ['I barely move most days', "On my feet, but that's it", 'I walk plenty — real exercise is missing', 'I exercise, just not consistently'] },
-    { q: "What's realistic right now?", options: ['A few minutes a day', 'Ten to fifteen minutes', 'A solid half hour', 'I want a real routine'] },
+    { q: 'How much walking happens in a normal day?', options: ['Barely — car, desk, couch', 'On my feet at work, but no real walk', 'Ten or fifteen minutes, most days', 'Half an hour or more'] },
+    { q: 'What usually gets in the way?', options: [{ label: "By evening I'm done", sub: 'Energy runs out before the day does' }, 'No good place to walk', 'The weather, half the year', "Nothing really — I just don't think of it"] },
+    { q: 'What would feel doable on an ordinary Tuesday?', options: ['Five or ten minutes', 'About twenty', 'Half an hour', 'You tell me'] },
+  ],
+  strong: [
+    { q: "How's your strength right now?", options: ['I do no strength work', 'A little, here and there', 'Bodyweight or weights sometimes', 'I train regularly'] },
+    { q: 'Where would you feel it most?', options: ['Getting up and down', 'Carrying and lifting', 'Stairs and hills', 'Overall energy'] },
+    { q: "What's realistic to start?", options: ['A move or two a day', 'A short set a few times a week', 'Two real sessions a week', 'A full program'] },
+  ],
+  eat: [
+    { q: 'How do most of your meals happen?', options: ['I grab whatever is easiest', 'I eat on the go', 'Pretty okay, could be better', 'I cook, just inconsistently'] },
+    { q: "What's the toughest part of the day?", options: ['Breakfast / mornings', 'Lunch on the run', 'Evening snacking', 'Weekends'] },
+    { q: "What's realistic to start?", options: ['One small swap', 'One better meal a day', 'Most meals, most days', 'A real reset'] },
+  ],
+  sleep: [
+    { q: "What's sleep like lately?", options: ['Wired late into the night', 'I sleep, but never enough', 'I stay up later than I mean to', 'Mornings are the hard part'] },
+    { q: "What's usually the culprit?", options: ['Screens and scrolling', 'A racing mind', 'No set schedule', 'Waking through the night'] },
+    { q: "What's realistic to start?", options: ['One small wind-down cue', 'A consistent wake time', 'A full wind-down routine', "Not sure yet"] },
+  ],
+  stress: [
+    { q: 'How does stress usually show up?', options: ['Tight and wound-up', 'Scattered, hard to focus', 'Low and drained', 'It hits at night'] },
+    { q: 'When is it heaviest?', options: ['First thing in the morning', 'The midday crunch', 'Evenings', 'All day, honestly'] },
+    { q: "What's realistic to start?", options: ['A few breaths a day', 'One short reset', 'A daily practice', "Just exploring"] },
+  ],
+  connect: [
+    { q: 'How connected do you feel lately?', options: ['Pretty isolated', "I mean to reach out and don't", 'I see people, want more', 'Fairly connected'] },
+    { q: 'What gets in the way?', options: ['Busy schedules', 'Distance', 'Low energy', 'I lose track of time'] },
+    { q: "What's realistic to start?", options: ['One text a week', 'A regular check-in', 'Seeing people weekly', 'Joining something'] },
+  ],
+  meds: [
+    { q: "How's staying on your meds going?", options: ['I forget often', 'I remember some days', 'Mostly on track', 'Refills trip me up'] },
+    { q: 'When do you tend to slip?', options: ['Mornings', 'Evenings', 'Weekends / off-routine', 'When I travel'] },
+    { q: 'What would help most?', options: ['A daily reminder', 'Tying it to a routine', 'A pillbox or system', 'Refill nudges'] },
+  ],
+  appt: [
+    { q: 'Where is that appointment at?', options: ["Haven't started", 'Been meaning to call', 'Started but stalled', 'Booked, just prepping'] },
+    { q: "What's holding it up?", options: ['No time to call', 'Not sure who to see', 'A little avoidance', 'Insurance / logistics'] },
+    { q: 'What would move it forward?', options: ['A nudge to call', 'Help finding who', 'A prep checklist', 'Committing to a day'] },
+  ],
+  phone: [
+    { q: "How's screen time feeling?", options: ['It runs away from me', 'Fine most days', 'Worst at night', 'Never really checked'] },
+    { q: "When's it heaviest?", options: ['First thing in the morning', 'Through the work day', 'Evenings on the couch', 'In bed'] },
+    { q: "What's realistic to start?", options: ['One phone-free stretch', 'No phone at meals', 'Screens off before bed', 'A daily limit'] },
+  ],
+  screen: [
+    { q: 'Where is that screening at?', options: ["Haven't scheduled it", 'Been meaning to', 'Booked, just prepping', 'Overdue and avoiding it'] },
+    { q: "What's holding it up?", options: ['No time to arrange', 'A little dread', 'Not sure what I need', 'Insurance / logistics'] },
+    { q: 'What would move it forward?', options: ['A nudge to book', 'Knowing what to ask', 'A prep checklist', 'Committing to a day'] },
   ],
   default: [
     { q: 'Where are you starting from?', options: ["I haven't really started", 'I try sometimes', 'I do okay most days', 'I used to — and lost the thread'] },
@@ -96,6 +144,9 @@ export default function ExpOnboarding({ onComplete }) {
   const [gapGoals, setGapGoals] = useState([])
   const [primary, setPrimary]   = useState('')
   const [dimAns, setDimAns]     = useState({})        // { qIndex: optionIndex }
+  const [dimStep, setDimStep]   = useState(0)         // which starting-line question
+  const [otherOpen, setOtherOpen] = useState(false)
+  const [otherText, setOtherText] = useState('')
   const [habitIdx, setHabitIdx] = useState(0)
   const [showWhy, setShowWhy]   = useState(false)
   const [moment, setMoment]     = useState('')
@@ -208,7 +259,7 @@ export default function ExpOnboarding({ onComplete }) {
         <p className="eo-splash__by">by People Inc.</p>
       </div>
       <div className="eo-splash__content">
-        <h1 className="eo-splash__hed">Big change starts small — <em>one habit at a time.</em></h1>
+        <h1 className="eo-splash__hed">Helping you live a better life, <em>one habit at a time.</em></h1>
         <button className="eo-splash__cta" onClick={() => setStep('S_name')}>Get started →</button>
         <button className="eo-splash__debug" onClick={handleLookAround}>Just looking around</button>
       </div>
@@ -343,13 +394,17 @@ export default function ExpOnboarding({ onComplete }) {
                 {g.emoji} {g.label}
               </span>
             ))}
+            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>✏️ Something else</span>
           </div>
+          {otherOpen && (
+            <input className="eo-input" style={{ marginTop: 4 }} value={otherText} onChange={e => setOtherText(e.target.value)} placeholder="What's on your mind?" />
+          )}
           <div className="eo-spacer" />
-          <button className="eo-btn primary" disabled={gapGoals.length === 0}
-            onClick={() => { if (gapGoals.length === 1) { setPrimary(gapGoals[0]); setStep('S_dim') } else setStep('S_pick') }}>
+          <button className="eo-btn primary" disabled={gapGoals.length === 0 && !otherText.trim()}
+            onClick={() => { setDimStep(0); if (gapGoals.length === 1) { setPrimary(gapGoals[0]); setStep('S_dim') } else if (gapGoals.length === 0) { setPrimary(''); setStep('S_dim') } else setStep('S_pick') }}>
             Continue →
           </button>
-          {nav(() => setStep('S_foundation'), () => { if (gapGoals.length <= 1) { setPrimary(gapGoals[0] || 'move'); setStep('S_dim') } else setStep('S_pick') })}
+          {nav(() => setStep('S_foundation'), () => { setDimStep(0); if (gapGoals.length <= 1) { setPrimary(gapGoals[0] || ''); setStep('S_dim') } else setStep('S_pick') })}
         </div>
       </div>
     </div>
@@ -374,37 +429,39 @@ export default function ExpOnboarding({ onComplete }) {
           })}
           <div className="eo-green"><span className="lab">🤝 We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
           <div className="eo-spacer" />
-          <button className="eo-btn primary" disabled={!primary} onClick={() => setStep('S_dim')}>That one →</button>
-          {nav(() => setStep('S_gap'), () => { if (!primary) setPrimary(gapGoals[0]); setStep('S_dim') })}
+          <button className="eo-btn primary" disabled={!primary} onClick={() => { setDimStep(0); setStep('S_dim') }}>That one →</button>
+          {nav(() => setStep('S_gap'), () => { if (!primary) setPrimary(gapGoals[0]); setDimStep(0); setStep('S_dim') })}
         </div>
       </div>
     </div>
   )
 
-  // ── Dimension questions ──────────────────────────────────────────────────────
+  // ── Starting-line questions — one per screen ─────────────────────────────────
   if (step === 'S_dim') {
     const qs = dimsFor(goal)
-    const answered = qs.every((_, i) => dimAns[i] != null)
+    const q = qs[Math.min(dimStep, qs.length - 1)]
+    const chosen = dimAns[dimStep]
+    const optLabel = o => (typeof o === 'string' ? o : o.label)
+    const optSub = o => (typeof o === 'string' ? null : o.sub)
+    const goNext = () => { if (dimStep < qs.length - 1) setDimStep(dimStep + 1); else setStep('S_perm') }
+    const goBack = () => { if (dimStep > 0) setDimStep(dimStep - 1); else setStep(gapGoals.length > 1 ? 'S_pick' : 'S_gap') }
     return (
       <div className="eo-root">
         <div className="eo-screen">
           {topbar}
           <div className="eo-body">
-            <h2 className="eo-q">A little about <em>where you're starting.</em></h2>
-            {qs.map((dq, qi) => (
-              <div key={qi} className="eo-dimq">
-                <p className="eo-dimq__q">{dq.q}</p>
-                {dq.options.map((opt, oi) => (
-                  <div key={oi} className={`eo-opt${dimAns[qi] === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [qi]: oi }))}>
-                    <div className="txt"><b>{opt}</b></div>
-                    <span className={`eo-radio${dimAns[qi] === oi ? ' on' : ''}`} />
-                  </div>
-                ))}
+            <p className="eo-eye">Your starting line</p>
+            <p className="eo-dimmeta">Question {dimStep + 1} of {qs.length}</p>
+            <h2 className="eo-q">{q.q}</h2>
+            {q.options.map((o, oi) => (
+              <div key={oi} className={`eo-opt${chosen === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [dimStep]: oi }))}>
+                <div className="txt"><b>{optLabel(o)}</b>{optSub(o) && <span>{optSub(o)}</span>}</div>
+                <span className={`eo-radio${chosen === oi ? ' on' : ''}`} />
               </div>
             ))}
             <div className="eo-spacer" />
-            <button className="eo-btn primary" disabled={!answered} onClick={() => setStep('S_perm')}>Continue →</button>
-            {nav(() => setStep(gapGoals.length > 1 ? 'S_pick' : 'S_gap'), () => setStep('S_perm'))}
+            <button className="eo-btn primary" disabled={chosen == null} onClick={goNext}>Continue →</button>
+            {nav(goBack, goNext)}
           </div>
         </div>
       </div>
