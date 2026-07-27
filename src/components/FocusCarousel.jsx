@@ -23,7 +23,7 @@ function readPrimary() {
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
 const IMAGERY = {
-  move:   'https://picsum.photos/seed/vitalist-move-walk/900/1200',
+  move:   '/forest.jpg',
   strong: 'https://picsum.photos/seed/vitalist-strong/900/1200',
   eat:    'https://picsum.photos/seed/vitalist-eat/900/1200',
   water:  'https://picsum.photos/seed/vitalist-water/900/1200',
@@ -403,13 +403,24 @@ function NextSlotCard({ width, unlocked }) {
   )
 }
 
-function streakLabel(habit) {
-  if (habit.status === 'kept') {
-    const weeks = habit.tier || 1
-    return `${weeks} week${weeks !== 1 ? 's' : ''} kept`
-  }
+function daysIn(habit) {
   const added = habit.addedAt || TODAY
-  const days = Math.max(0, Math.floor((Date.now() - new Date(added).getTime()) / 86400000))
+  return Math.max(0, Math.floor((Date.now() - new Date(added).getTime()) / 86400000))
+}
+
+function streakLabel(habit) {
+  if (habit.status === 'kept' || habit.status === 'my_habit' || habit.status === 'established') {
+    const d = daysIn(habit)
+    const weeks = Math.floor(d / 7) || habit.tier || 1
+    return `${weeks} week${weeks !== 1 ? 's' : ''} strong`
+  }
+  if (habit.status === 'adopted') {
+    const d = daysIn(habit)
+    const weeks = Math.floor(d / 7)
+    if (weeks < 1) return 'Building'
+    return `${weeks} week${weeks !== 1 ? 's' : ''} building`
+  }
+  const days = daysIn(habit)
   if (days === 0) return 'Starting today'
   return `Day ${days + 1} of your trial`
 }
@@ -615,6 +626,32 @@ function AISheet({ habit, onClose, onAddHabit }) {
   )
 }
 
+function MyHabitsSection({ habits, done, onToggleDone }) {
+  return (
+    <div className="fc-my-habits">
+      <p className="fc-my-habits__label">My habits</p>
+      {habits.map(h => {
+        const isDone = done.includes(h.id)
+        return (
+          <div key={h.id} className="fc-my-habit-row">
+            <div className="fc-my-habit-row__swatch" style={{ background: h.bg }} />
+            <div className="fc-my-habit-row__body">
+              <p className="fc-my-habit-row__name">{h.label}</p>
+              <p className="fc-my-habit-row__meta">{streakLabel(h)}</p>
+            </div>
+            <button
+              className={`fc-my-habit-row__check${isDone ? ' done' : ''}`}
+              onClick={() => onToggleDone(h.id)}
+            >
+              {isDone ? '✓' : ''}
+            </button>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
   const doneSet  = new Set(done)
   const doneCount = habits.filter(h => doneSet.has(h.id)).length
@@ -675,6 +712,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
+  const working     = habits.filter(h => h.status === 'trial' || h.status === 'adopted')
+  const established = habits.filter(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established')
+
   const connectSource = useCallback((source) => {
     setSources(prev => {
       if (prev.includes(source)) return prev
@@ -730,8 +770,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     dragging.current = false
     const delta = dragCurrX.current - dragStartX.current
     if (Math.abs(delta) > 50) {
-      // pages = each habit + one "next slot" card at the end (index habits.length)
-      if (delta < 0 && idx < habits.length) { setIdx(i => i + 1); setShowHint(false) }
+      if (delta < 0 && idx < working.length) { setIdx(i => i + 1); setShowHint(false) }
       else if (delta > 0 && idx > 0) setIdx(i => i - 1)
     }
     setDragX(0)
@@ -766,7 +805,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     )
   }
 
-  const pageCount   = habits.length + 1 // habits + "next slot" card
+  const pageCount   = working.length + 1 // working habits + "next slot" card
   const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
   const translatePx = -(idx * vw) + dragX
   const isActiveDrag = dragging.current && Math.abs(dragX) > 2
@@ -788,37 +827,50 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         </div>
       </div>
 
-      {/* Cards — carousel */}
-      <div
-        className="fc-stage"
-        onTouchStart={e => startDrag(e.touches[0].clientX)}
-        onTouchMove={e => { e.preventDefault(); moveDrag(e.touches[0].clientX) }}
-        onTouchEnd={endDrag}
-        onMouseDown={e => { e.preventDefault(); startDrag(e.clientX) }}
-        style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
-      >
-        <div
-          className="fc-strip"
-          style={{
-            transform: `translateX(${translatePx}px)`,
-            transition: isActiveDrag ? 'none' : 'transform .32s cubic-bezier(.42,0,.22,1)',
-          }}
-        >
-          {habits.map(h => (
-            <Card
-              key={h.id}
-              habit={h}
-              width={vw}
-              done={done.includes(h.id)}
-              onDone={toggleDone}
-              sources={sources}
-              onConnect={connectSource}
-              onRead={(content, habit) => setReading({ content, habit })}
-              onDaily={(data, habit) => setReadingDay({ data, habit })}
-            />
-          ))}
-          <NextSlotCard width={vw} unlocked={habits.some(h => h.status === 'kept' && dayOf(h) >= 7)} />
+      {/* Scrollable content — "Working on it" carousel + "My habits" list */}
+      <div className="fc-page-scroll">
+        {/* Working on it — swipe carousel */}
+        <div className="fc-routine">
+          <div
+            className="fc-stage"
+            onTouchStart={e => startDrag(e.touches[0].clientX)}
+            onTouchMove={e => { e.preventDefault(); moveDrag(e.touches[0].clientX) }}
+            onTouchEnd={endDrag}
+            onMouseDown={e => { e.preventDefault(); startDrag(e.clientX) }}
+            style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
+          >
+            <div
+              className="fc-strip"
+              style={{
+                transform: `translateX(${translatePx}px)`,
+                transition: isActiveDrag ? 'none' : 'transform .32s cubic-bezier(.42,0,.22,1)',
+              }}
+            >
+              {working.map(h => (
+                <Card
+                  key={h.id}
+                  habit={h}
+                  width={vw}
+                  done={done.includes(h.id)}
+                  onDone={toggleDone}
+                  sources={sources}
+                  onConnect={connectSource}
+                  onRead={(content, habit) => setReading({ content, habit })}
+                  onDaily={(data, habit) => setReadingDay({ data, habit })}
+                />
+              ))}
+              <NextSlotCard width={vw} unlocked={working.some(h => dayOf(h) >= 7)} />
+            </div>
+          </div>
         </div>
+
+        {/* My habits — established habits scroll below the carousel */}
+        {established.length > 0 && (
+          <MyHabitsSection habits={established} done={done} onToggleDone={toggleDone} />
+        )}
+
+        {/* Bottom padding clears fixed nav */}
+        <div style={{ height: 103 }} />
       </div>
 
       {pageCount > 1 && (
@@ -831,11 +883,11 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       {showHint && <div className="fc-swipe-hint">swipe to see all</div>}
 
       {/* Vita — app-level coach bar */}
-      {habits.length > 0 && (
+      {working.length > 0 && (
         <button
           className="fc-ai-fab"
           aria-label="Ask Vita"
-          onClick={() => setAskHabit(habits[Math.min(idx, habits.length - 1)])}
+          onClick={() => setAskHabit(working[Math.min(idx, working.length - 1)])}
         >
           <span className="fc-ai-fab__spark">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
@@ -850,7 +902,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
 
       {overview && (
         <Overview
-          habits={habits}
+          habits={working}
           done={done}
           onSelect={i => { setIdx(i); setOverview(false) }}
           onClose={() => setOverview(false)}

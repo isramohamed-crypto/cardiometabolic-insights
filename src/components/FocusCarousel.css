@@ -46,6 +46,23 @@
   text-transform: uppercase;
 }
 
+/* ── Scrollable content — carousel + my habits stacked vertically ────────── */
+.fc-page-scroll {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Working on it — swipe carousel container ───────────────────────────── */
+.fc-routine {
+  position: relative;
+  height: calc(100dvh - 200px);
+  min-height: 320px;
+  flex-shrink: 0;
+}
+
 /* ── Full-bleed swipe stage ─────────────────────────────────────────────── */
 .fc-stage {
   position: absolute;
@@ -1049,3 +1066,68 @@
 .fc-hamburger span:nth-child(2) { width: 14px; }
 .fc-hamburger span:nth-child(3) { width: 17px; }
 .fc-hamburger:hover span { width: 20px !important; }
+
+/* ── My habits section ───────────────────────────────────────────────────── */
+.fc-my-habits {
+  padding: 27px 18px 11px;
+  background: #15151d;
+}
+.fc-my-habits__label {
+  font: 800 11px/1 'Mulish', sans-serif;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin: 0 0 17px;
+}
+.fc-my-habit-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.fc-my-habit-row:last-child { border-bottom: none; }
+.fc-my-habit-row__swatch {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.fc-my-habit-row__body {
+  flex: 1;
+  min-width: 0;
+}
+.fc-my-habit-row__name {
+  font: 600 15px/1.3 'Mulish', sans-serif;
+  color: rgba(255,255,255,.82);
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fc-my-habit-row__meta {
+  font: 500 12px/1 'Mulish', sans-serif;
+  color: rgba(255,255,255,.32);
+  margin: 0;
+}
+.fc-my-habit-row__check {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  border: 1.5px solid rgba(255,255,255,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1BBC3C;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: 'Mulish', sans-serif;
+}
+.fc-my-habit-row__check.done {
+  background: rgba(27,188,60,.18);
+  border-color: rgba(27,188,60,.45);
+}
