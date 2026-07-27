@@ -679,14 +679,21 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       )}
       {showHint && <div className="fc-swipe-hint">swipe to see all</div>}
 
-      {/* AI chat — app-level circular button, not attached to a card */}
+      {/* Vita — app-level coach bar */}
       {habits.length > 0 && (
         <button
           className="fc-ai-fab"
           aria-label="Ask Vita"
           onClick={() => setAskHabit(habits[Math.min(idx, habits.length - 1)])}
         >
-          <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+          <span className="fc-ai-fab__spark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+          </span>
+          <span className="fc-ai-fab__txt">
+            <span className="fc-ai-fab__name">Ask Vita</span>
+            <span className="fc-ai-fab__hint">Stuck tonight? I can help with this habit.</span>
+          </span>
+          <span className="fc-ai-fab__go" aria-hidden="true">→</span>
         </button>
       )}
 

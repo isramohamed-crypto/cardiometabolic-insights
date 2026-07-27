@@ -70,7 +70,7 @@
 .fc-card__stack {
   position: relative;
   margin-top: auto;
-  padding: 0 14px 100px;
+  padding: 0 14px 156px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -594,32 +594,45 @@
   cursor: pointer;
 }
 
-/* ── App-level AI button — circular, sparkle only ────────────────────────── */
+/* ── Vita — app-level wide coach bar ─────────────────────────────────────── */
 .fc-ai-fab {
   position: fixed;
-  bottom: 90px;
-  right: 18px;
+  left: 14px; right: 14px;
+  bottom: 82px;
   z-index: 40;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: #b7442c;
-  border: none;
-  color: #fff;
+  gap: 12px;
+  background: rgba(20,16,14,.74);
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 11px 14px;
   cursor: pointer;
   box-shadow: 0 10px 26px rgba(0,0,0,.42);
-  transition: transform .12s ease, background .15s;
+  font-family: 'Mulish', sans-serif;
+  text-align: left;
+  transition: background .15s;
 }
-.fc-ai-fab:hover { background: #a53d27; }
-.fc-ai-fab:active { transform: scale(.93); }
+.fc-ai-fab:hover { background: rgba(20,16,14,.86); }
+.fc-ai-fab__spark {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: #b7442c;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fc-ai-fab__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.fc-ai-fab__name { font: 800 14px 'Mulish', sans-serif; color: #fff; }
+.fc-ai-fab__hint { font: 600 12px 'Mulish', sans-serif; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-ai-fab__go { color: rgba(255,255,255,.7); font-size: 18px; flex-shrink: 0; }
 
 /* ── Dots ────────────────────────────────────────────────────────────────── */
 .fc-dots {
   position: fixed;
-  bottom: 98px;
+  bottom: 150px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -644,7 +657,7 @@
 /* ── Swipe hint ──────────────────────────────────────────────────────────── */
 .fc-swipe-hint {
   position: fixed;
-  bottom: 118px;
+  bottom: 174px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10px;
