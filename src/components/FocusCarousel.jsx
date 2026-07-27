@@ -246,16 +246,94 @@ function Reader({ content, habit, onClose }) {
   )
 }
 
-function NextSlotCard({ width }) {
+// ── Trial-week daily content (walk) — a piece waits beside the habit ────────
+const DAILY = {
+  1: {
+    label: 'Day 1 · Starting tonight',
+    reinforce: { hed: 'The hardest part may be starting.', body: "After a meal, staying where you are often feels easier. You don't need to feel motivated before you begin — starting slowly is enough." },
+    support:   { source: 'Verywell Health', hed: '8 benefits of walking every day', body: 'Walking daily benefits your body, mind, and emotions — and may even help extend your life.', url: 'https://www.verywellhealth.com/benefits-of-walking-every-day-11719538' },
+    enjoy:     { tag: 'Read in Entertainment', source: 'PEOPLE', hed: 'Hugh Jackman & Sutton Foster — the latest', body: 'You told us you like celebs — read the latest while you walk today.', url: 'https://people.com/hugh-jackman-sutton-foster-quiet-summer-together-in-north-carolina-wanted-to-get-away-exclusive-12025459' },
+  },
+  2: {
+    label: 'Day 2 · Keeping it light',
+    reinforce: { hed: "This doesn't need to feel like exercise.", body: 'No pace target. No step goal. No need to work up a sweat. The habit is simply adding a little movement after a meal.' },
+    support:   { source: 'Real Simple', hed: 'Walk from room to room for ten minutes', body: 'Have stairs? Add one easy trip up and down every few minutes.', url: 'https://www.realsimple.com/ways-to-stay-active-at-home-11897354' },
+    enjoy:     { tag: 'Listen', source: 'Verywell Mind', hed: '3 mistakes to avoid when creating goals', body: 'Goals are a great way to stick to habits — listen to our podcast on the three mistakes to avoid.', url: 'https://www.verywellmind.com/3-mistakes-to-avoid-when-creating-goals-for-yourself-friday-fix-the-verywell-mind-podcast-5213293' },
+  },
+  7: {
+    label: 'Day 7 · It becomes yours',
+    reinforce: { hed: "You're making movement part of an ordinary day.", body: "This isn't a major fitness program or a test of discipline. It's a small way of caring for yourself after a meal — and each time you return to it, it becomes more recognizably yours." },
+    support:   { source: 'Real Simple', hed: 'The art of the passeggiata — a walk with no pace goal', body: 'Walk slowly. Look around. Invite someone along. The point is to enjoy the transition out of your day.', url: 'https://www.realsimple.com/what-is-passeggiata-11911501' },
+    enjoy:     { tag: 'Wear', source: 'Health', hed: 'The most comfortable walking shoes', body: 'A comfortable walking shoe can make a huge difference in how your body feels at the end of the day.', url: 'https://www.health.com/style/comfortable-walking-shoes' },
+  },
+}
+function openURL(url) { try { window.open(url, '_blank', 'noopener') } catch (_) {} }
+function dayOf(habit) {
+  if (!habit || !habit.addedAt) return 1
+  return Math.max(1, Math.floor((Date.now() - new Date(habit.addedAt).getTime()) / 86400000) + 1)
+}
+function dailyFor(habit) {
+  if (!habit || habit.goalId !== 'move') return null
+  const day = dayOf(habit)
+  if (DAILY[day]) return { day, ...DAILY[day] }
+  if (day >= 7) return { day, ...DAILY[7] }
+  return null
+}
+
+function DailyView({ data, habit, onClose }) {
+  return (
+    <div className="fc-reader">
+      <div className="fc-daily__top" style={{ background: habit.bg }}>
+        <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <p className="fc-daily__eye">{data.label}</p>
+        <h1 className="fc-daily__hed">Beside your walk today</h1>
+      </div>
+      <div className="fc-reader__body">
+        <div className="fc-daily__reinforce">
+          <p className="fc-daily__rlabel">A note from Vita</p>
+          <h2 className="fc-daily__rh">{data.reinforce.hed}</h2>
+          <p className="fc-daily__rb">{data.reinforce.body}</p>
+        </div>
+        <button className="fc-daily__piece" onClick={() => data.support.url && openURL(data.support.url)}>
+          <p className="fc-daily__ptag">{data.support.source}</p>
+          <h3 className="fc-daily__ph">{data.support.hed}</h3>
+          <p className="fc-daily__pb">{data.support.body}</p>
+          <span className="fc-daily__go">Read ↗</span>
+        </button>
+        <button className="fc-daily__piece" onClick={() => data.enjoy.url && openURL(data.enjoy.url)}>
+          <p className="fc-daily__ptag">{data.enjoy.tag} · {data.enjoy.source}</p>
+          <h3 className="fc-daily__ph">{data.enjoy.hed}</h3>
+          <p className="fc-daily__pb">{data.enjoy.body}</p>
+          <span className="fc-daily__go">Open ↗</span>
+        </button>
+        <button className="fc-reader__done" onClick={onClose}>Back to today</button>
+      </div>
+    </div>
+  )
+}
+
+function NextSlotCard({ width, unlocked }) {
   return (
     <div className="fc-card fc-card--next" style={{ width }}>
       <div className="fc-next__inner">
         <div className="fc-next__mark">+</div>
-        <h3 className="fc-next__hed">One habit at a time.</h3>
-        <p className="fc-next__body">
-          Your next slot opens once this one feels automatic — earned, not
-          assigned. No rush.
-        </p>
+        {unlocked ? (
+          <>
+            <h3 className="fc-next__hed">A slot just opened.</h3>
+            <p className="fc-next__body">
+              Your walk is sticking — that earned room for one more. Add your
+              next habit whenever you're ready.
+            </p>
+          </>
+        ) : (
+          <>
+            <h3 className="fc-next__hed">One habit at a time.</h3>
+            <p className="fc-next__body">
+              Your next slot opens once this one feels automatic — earned, not
+              assigned. No rush.
+            </p>
+          </>
+        )}
       </div>
     </div>
   )
@@ -324,10 +402,11 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, sources, onConnect, onRead, width }) {
+function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width }) {
   const sub     = habitSubText(habit, done, sources)
   const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
+  const daily   = dailyFor(habit)
 
   return (
     <div className="fc-card" style={{ width }}>
@@ -366,13 +445,19 @@ function Card({ habit, done, onDone, sources, onConnect, onRead, width }) {
           </div>
         </div>
 
-        {content && (
+        {daily ? (
+          <button className="fc-ecard" onClick={() => onDaily && onDaily(daily, habit)}>
+            <span className="fc-ecard__tag">Today · Day {daily.day}</span>
+            <span className="fc-ecard__hed">{daily.support.hed}</span>
+            <span className="fc-ecard__meta">Content beside your walk <span className="fc-ecard__go">→</span></span>
+          </button>
+        ) : content ? (
           <button className="fc-ecard" onClick={() => onRead && onRead(content, habit)}>
             <span className="fc-ecard__tag">Related read</span>
             <span className="fc-ecard__hed">{content.hed}</span>
             <span className="fc-ecard__meta">{content.source} · {content.read} read <span className="fc-ecard__go">→</span></span>
           </button>
-        )}
+        ) : null}
       </div>
     </div>
   )
@@ -522,6 +607,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [overview, setOverview] = useState(false)
   const [askHabit, setAskHabit] = useState(null)
   const [reading, setReading]   = useState(null)
+  const [readingDay, setReadingDay] = useState(null)
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
@@ -664,9 +750,10 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
               sources={sources}
               onConnect={connectSource}
               onRead={(content, habit) => setReading({ content, habit })}
+              onDaily={(data, habit) => setReadingDay({ data, habit })}
             />
           ))}
-          <NextSlotCard width={vw} />
+          <NextSlotCard width={vw} unlocked={habits.some(h => h.status === 'kept' && dayOf(h) >= 7)} />
         </div>
       </div>
 
@@ -715,6 +802,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       )}
       {reading && (
         <Reader content={reading.content} habit={reading.habit} onClose={() => setReading(null)} />
+      )}
+      {readingDay && (
+        <DailyView data={readingDay.data} habit={readingDay.habit} onClose={() => setReadingDay(null)} />
       )}
       {postConfirm && (
         <PostConfirm habit={postConfirm} sources={sources} onConnect={connectSource} onClose={() => setPostConfirm(null)} />

@@ -594,6 +594,21 @@
   cursor: pointer;
 }
 
+/* ── Daily content view (trial-week arc) ─────────────────────────────────── */
+.fc-daily__top { position: relative; padding: 54px 22px 22px; }
+.fc-daily__eye { font: 800 11px 'Mulish', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.8); margin: 0 0 6px; }
+.fc-daily__hed { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -.02em; color: #fff; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,.4); }
+.fc-daily__reinforce { background: #f3ece3; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.fc-daily__rlabel { font: 800 10.5px 'Mulish', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #b7442c; margin: 0 0 6px; }
+.fc-daily__rh { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.01em; color: #15151d; margin: 0 0 6px; }
+.fc-daily__rb { font: 400 14px/1.5 'Mulish', sans-serif; color: #5b5b62; margin: 0; }
+.fc-daily__piece { display: block; width: 100%; text-align: left; position: relative; background: #fff; border: 1px solid #e7ded2; border-radius: 16px; padding: 15px 16px 40px; margin-bottom: 12px; cursor: pointer; font-family: 'Mulish', sans-serif; transition: background .15s; }
+.fc-daily__piece:hover { background: #faf7f2; }
+.fc-daily__ptag { font: 800 10px 'Mulish', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #9a8c7e; margin: 0 0 6px; }
+.fc-daily__ph { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: -.01em; color: #1b2a4a; margin: 0 0 5px; line-height: 1.15; }
+.fc-daily__pb { font: 400 13.5px/1.45 'Mulish', sans-serif; color: #5b5b62; margin: 0; }
+.fc-daily__go { position: absolute; bottom: 13px; left: 16px; font: 800 12px 'Mulish', sans-serif; color: #b7442c; }
+
 /* ── Vita — app-level wide coach bar ─────────────────────────────────────── */
 .fc-ai-fab {
   position: fixed;
