@@ -223,10 +223,10 @@ export default function ExpOnboarding({ onComplete }) {
 
   const logo   = <button className="eo-onblogo" onClick={() => setStep('S_auth')}>Vitalist</button>
   const status = <div className="eo-status"><span>9:41</span><span>▚ ▪ ▐</span></div>
-  const nav = (onBack, onSkip, skipLabel) => (
+  const nav = (onBack) => (
     <div className="eo-nav">
       {onBack ? <button className="eo-nav__back" onClick={onBack}>← Back</button> : <span />}
-      {onSkip ? <button className="eo-nav__skip" onClick={onSkip}>{skipLabel || 'Skip'}</button> : <span />}
+      <span />
     </div>
   )
 
@@ -240,7 +240,6 @@ export default function ExpOnboarding({ onComplete }) {
       {status}
       <div className="eo-topline">
         {logo}
-        <span className="eo-hdrbar__num">Step {Math.max(1, flowIdx + 1)} of {FLOW.length}</span>
       </div>
       <div className="eo-topbar-track"><div className="eo-topbar-fill" style={{ width: flowPct + '%' }} /></div>
     </div>
