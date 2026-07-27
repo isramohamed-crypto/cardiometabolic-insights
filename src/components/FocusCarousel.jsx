@@ -378,36 +378,88 @@ function Card({ habit, done, onDone, sources, onConnect, onRead, width }) {
   )
 }
 
+// Vita — the in-habit coach. Warm, specific, never clinical. (Demo: scripted.)
+function vitaReply(text, habit) {
+  const t = (text || '').toLowerCase()
+  const g = habit && habit.goalId
+  const whyByGoal = {
+    move: 'A short walk after eating pulls glucose out of your bloodstream for fuel, so it blunts the post-meal spike — no gym, no gear. Ten minutes is plenty; the point is timing.',
+    sleep: 'Dimmer light and a steadier wind-down in the last stretch before bed let your body make melatonin on schedule, so you fall asleep more easily. Consistency matters more than perfection.',
+    eat: 'Front-loading fiber and protein flattens your glucose response and keeps you full longer — small, repeatable choices beat any strict plan.',
+    stress: 'Long, slow exhales flip on your parasympathetic nervous system — the body\'s calm-down switch. A few breaths can interrupt the spiral before it builds.',
+    strong: 'Standing and lifting work your largest muscles, which steadies blood sugar and keeps you strong and independent as you age.',
+    connect: 'Small, regular contact does most of the work of connection — and connection is a genuine health factor, not a nice-to-have.',
+  }
+  // medical guardrail
+  if (/\b(dose|dosage|medication|prescription|symptom|pain|diagnos|blood pressure reading|a1c)\b/.test(t))
+    return "That's one for your doctor — I can't weigh in on medical specifics. What I can do is help you build the habit around it. Want to bring it to your next visit? Your care summary can hold it."
+  // the coach scene: phone must stay by the bed
+  if (/(phone|by the bed|bedside|call|mom|mother|reach|emergenc)/.test(t) && (g === 'sleep' || /sleep|wind ?down|bed|night/.test(t)))
+    return "Keeping your phone close for your mom comes first — that's not up for debate. The wind-down was never about banishing the phone, just softening its pull. Try this tonight: set it to Do Not Disturb but add your mom as an allowed contact, so only her call gets through. Flip on the warm night screen and turn it face-down. You still wind down, you're still reachable — and that counts as done. I've left a short read on gentle wind-downs in your feed for whenever you want it."
+  if (/why|work|science|help/.test(t)) return (whyByGoal[g] || 'The short version: it earns its place. Kept small and tied to a moment you already have, it sticks — and it compounds on its own.') + (g ? ' There\'s a short read waiting on your card for the details.' : '')
+  if (/miss|skip|slip|off day|fail|behind/.test(t)) return "A missed day isn't a broken streak — there are no streaks here. Just pick it up tomorrow. The habit is the direction, not a perfect record."
+  if (/easier|stick|hard|forget|remember|struggl/.test(t)) return "Make it smaller and pin it to something you already do — right after dinner, when the TV goes off. Shrink it until it feels almost too easy, then let it grow once it's automatic."
+  if (/add|new habit|another/.test(t)) return "You can add one anytime from your Yours page — want me to take you there?"
+  if (/focus|next|more/.test(t)) return "Let's stay with this one for now. A second habit opens up once this feels automatic — earned, not assigned. No rush."
+  return "Good question. Honestly: keep it small, tie it to a moment you already have, and let your phone confirm it so there's nothing to log. Want me to break any part of that down?"
+}
+
 function AISheet({ habit, onClose, onAddHabit }) {
+  const [msgs, setMsgs] = useState(() => [{ role: 'vita', text: `Hi, I'm Vita. Ask me anything about ${habit ? `"${habit.label}"` : 'your habits'} — even the messy, real-life stuff.` }])
+  const [input, setInput] = useState('')
+  const started = msgs.some(m => m.role === 'user')
+  const scroller = useRef(null)
+  useEffect(() => { if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight }, [msgs])
+
+  function send(text) {
+    const clean = (text || '').trim()
+    if (!clean) return
+    if (/add|new habit/i.test(clean) && onAddHabit) {
+      setMsgs(m => [...m, { role: 'user', text: clean }, { role: 'vita', text: 'Taking you to your habits now…' }])
+      setTimeout(onAddHabit, 600)
+      setInput('')
+      return
+    }
+    setMsgs(m => [...m, { role: 'user', text: clean }, { role: 'vita', text: vitaReply(clean, habit) }])
+    setInput('')
+  }
+
   return (
     <div className="fc-ai-sheet" onClick={onClose}>
       <div className="fc-ai-sheet__panel" onClick={e => e.stopPropagation()}>
         <div className="fc-ai-sheet__handle" />
-
         <div className="fc-ai-sheet__intro">
           <div className="fc-ai-sheet__avatar">{SparkIcon}</div>
           <div>
-            <p className="fc-ai-sheet__hi">Hey — I'm your Vitalist guide.</p>
-            <p className="fc-ai-sheet__sub">Ask me anything, or start here.</p>
+            <p className="fc-ai-sheet__hi">Vita</p>
+            <p className="fc-ai-sheet__sub">{habit ? `Here for "${habit.label}"` : 'Your Vitalist coach'}</p>
           </div>
         </div>
 
-        {habit && (
-          <>
-            <p className="fc-ai-sheet__group">About “{habit.label}”</p>
-            <button className="fc-ai-chip" onClick={onClose}>Why does this actually work?</button>
-            <button className="fc-ai-chip" onClick={onClose}>How do I make it easier to stick to?</button>
-            <button className="fc-ai-chip" onClick={onClose}>What if I miss a day?</button>
-          </>
+        <div className="vita-msgs" ref={scroller}>
+          {msgs.map((m, i) => (
+            <div key={i} className={`vita-msg vita-msg--${m.role}`}>{m.text}</div>
+          ))}
+        </div>
+
+        {!started && (
+          <div className="vita-chips">
+            {habit && <button className="fc-ai-chip" onClick={() => send('Why does this actually work?')}>Why does this actually work?</button>}
+            {habit && <button className="fc-ai-chip" onClick={() => send('How do I make it easier to stick to?')}>How do I make it easier to stick to?</button>}
+            <button className="fc-ai-chip" onClick={() => send('What if I miss a day?')}>What if I miss a day?</button>
+            <button className="fc-ai-chip" onClick={() => send('How do I add a new habit?')}>How do I add a new habit?</button>
+          </div>
         )}
 
-        <p className="fc-ai-sheet__group">Anything else</p>
-        <button className="fc-ai-chip" onClick={() => (onAddHabit ? onAddHabit() : onClose())}>How do I add a new habit?</button>
-        <button className="fc-ai-chip" onClick={onClose}>What should I focus on next?</button>
-
         <div className="fc-ai-sheet__composer">
-          <input className="fc-ai-input" placeholder="Ask Vitalist…" readOnly onMouseDown={e => e.preventDefault()} />
-          <span className="fc-ai-send" aria-hidden="true">↑</span>
+          <input
+            className="fc-ai-input"
+            placeholder="Ask Vita…"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') send(input) }}
+          />
+          <button className="fc-ai-send" aria-label="Send" onClick={() => send(input)}>↑</button>
         </div>
       </div>
     </div>
@@ -631,7 +683,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
       {habits.length > 0 && (
         <button
           className="fc-ai-fab"
-          aria-label="Ask Vitalist AI"
+          aria-label="Ask Vita"
           onClick={() => setAskHabit(habits[Math.min(idx, habits.length - 1)])}
         >
           <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
