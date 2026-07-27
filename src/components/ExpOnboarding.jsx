@@ -19,10 +19,11 @@ const CAT_LABEL = { eat: 'Eating', move: 'Moving', sleep: 'Sleep', stress: 'Stre
 
 function cheer(n) {
   if (n <= 0) return null
-  if (n >= 6) return `${n} so far — quite a foundation`
-  if (n === 5) return `${n} so far — keep going`
-  if (n >= 3) return `${n} so far — already building`
-  return `${n} so far — nice`
+  const noun = `${n} habit${n !== 1 ? 's' : ''} so far`
+  if (n >= 6) return `${noun} — quite a foundation`
+  if (n === 5) return `${noun} — keep going`
+  if (n >= 3) return `${noun} — already building`
+  return `${noun} — nice`
 }
 
 // ── Gap question — "what you know you should be doing" (no water) ────────────
@@ -293,7 +294,7 @@ export default function ExpOnboarding({ onComplete }) {
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <p className="eo-eye">Your foundation</p>
           <h1 className="eo-disp" style={{ fontSize: 30 }}>Let's start with <em>what's already working.</em></h1>
-          <p className="eo-lede">Before anything new — a few quick questions about what you already do. Tap anything that sounds like you, even roughly. Nothing here is a test.</p>
+          <p className="eo-lede">Before anything new — a few quick questions about the healthy habits you already have. Tap the habits that sound like you, even roughly. Nothing here is a test.</p>
           <div className="eo-spacer" />
           <button className="eo-btn primary" onClick={() => setStep('S_p_eating')}>Get started →</button>
           {nav(() => setStep('S_name'), () => setStep('S_p_eating'))}
