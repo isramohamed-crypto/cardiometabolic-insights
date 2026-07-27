@@ -157,6 +157,8 @@ export default function ExpOnboarding({ onComplete }) {
 
   const claimedCount = Object.values(claimed).reduce((a, arr) => a + arr.length, 0)
   const goal = primary || gapGoals[0] || 'move'
+  const goalLabel = (GAP.find(g => g.id === goal) || {}).label || 'your goal'
+  const goalLower = goalLabel.toLowerCase()
   const cards = habitCardsFor(goal)
   const card  = cards[habitIdx % cards.length]
 
@@ -450,7 +452,7 @@ export default function ExpOnboarding({ onComplete }) {
           {topbar}
           <div className="eo-body">
             <p className="eo-eye">Your starting line</p>
-            <p className="eo-dimmeta">Question {dimStep + 1} of {qs.length}</p>
+            <p className="eo-dimmeta">Since you chose “{goalLabel}”</p>
             <h2 className="eo-q">{q.q}</h2>
             {q.options.map((o, oi) => (
               <div key={oi} className={`eo-opt${chosen === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [dimStep]: oi }))}>
@@ -472,11 +474,12 @@ export default function ExpOnboarding({ onComplete }) {
     <div className="eo-root">
       <div className="eo-screen">
         {topbar}
-        <div className="eo-body" style={{ justifyContent: 'center', gap: 18 }}>
+        <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
+          <p className="eo-eye" style={{ textAlign: 'center' }}>For “{goalLabel}”</p>
           <div className="eo-wear-icon">📲</div>
           <div>
-            <h2 className="eo-q">Let your phone fill in the picture.</h2>
-            <p className="eo-lede" style={{ marginTop: 8 }}>Allow steps and sleep and we'll confirm most habits for you — nothing to log.</p>
+            <h2 className="eo-q">Let your phone track it for you.</h2>
+            <p className="eo-lede" style={{ marginTop: 8 }}>You chose to {goalLower}. Allow steps and sleep and Vitalist confirms it automatically — nothing to log.</p>
           </div>
           <div className="eo-wear-sources"><span className="eo-wear-chip">Steps</span><span className="eo-wear-chip">Sleep</span></div>
           <div className="eo-spacer" />
