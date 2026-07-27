@@ -12,6 +12,7 @@
 }
 
 .habit-section__eyebrow {
+  line-height: 0.95;
   font-size: var(--font-size-xs);
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -26,7 +27,7 @@
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 0.95;
 }
 
 .habit-section__badges {
@@ -38,6 +39,7 @@
 }
 
 .habit-badge {
+  line-height: 0.95;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -53,7 +55,7 @@
 }
 
 .habit-badge--perfect {
-  background: #FFF8E1;
+  background: var(--color-coconut);
   color: #B8860B;
 }
 
@@ -271,6 +273,7 @@
 }
 
 .habit-item__focus-badge {
+  line-height: 0.95;
   display: inline-block;
   margin-left: 6px;
   padding: 1px 7px;
@@ -329,6 +332,7 @@
 }
 
 .habit-item__done-tag {
+  line-height: 0.95;
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-teal);

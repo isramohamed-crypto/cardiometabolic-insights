@@ -30,7 +30,7 @@
   font-weight: 500;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 0.95;
 }
 
 /* Scroll row */
@@ -56,7 +56,7 @@
   flex-direction: column;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #F4EFE6;
+  background: var(--color-warm-hover);
 }
 
 .nbb-intro__photo-wrap {
@@ -93,15 +93,15 @@
   font-size: 17px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #1E6B52;
-  line-height: 1.25;
+  color: var(--color-leaf);
+  line-height: 0.95;
   letter-spacing: -0.01em;
 }
 
 .nbb-intro__sub {
   font-size: 13px;
   font-weight: 700;
-  color: #0D1B1E;
+  color: var(--color-ink);
   line-height: 1.4;
 }
 
@@ -132,22 +132,23 @@
 
 .nbb-card__panel {
   flex: 1;
-  background: #FBF0CE;
+  background: var(--color-coconut);
   padding: var(--space-4);
 }
 
 .nbb-card__heading {
+  line-height: 0.95;
   font-family: var(--font-serif);
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #1E6B52;
+  color: var(--color-leaf);
   letter-spacing: 0.01em;
   margin-bottom: var(--space-2);
 }
 
 .nbb-card__body {
   font-size: 12.5px;
-  color: #0D1B1E;
+  color: var(--color-ink);
   line-height: 1.55;
 }

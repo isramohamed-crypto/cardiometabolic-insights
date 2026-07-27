@@ -3,7 +3,7 @@
   position: fixed;
   inset: 0;
   z-index: 1050;
-  background: #FFFCF5;
+  background: #FFFDF5;
   overflow-y: auto;
   animation: ppFadeIn .2s ease-out;
 }
@@ -30,23 +30,25 @@
   padding: 14px 16px;
   background: rgba(255, 252, 245, 0.92);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid #F5EFE0;
+  border-bottom: 1px solid var(--color-warm-hover);
 }
 .pp-back {
   width: 36px; height: 36px;
   border-radius: 9999px;
   background: #fff;
-  border: 1px solid #EDE6D6;
-  color: #5C5C5C;
+  border: 1px solid var(--color-warm-hover);
+  color: var(--color-muted);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
 }
 .pp-back:active { transform: scale(.95) }
 
 .pp-header__title {
+  font-family: 'Poppins', sans-serif;
+  line-height: 0.95;
   font-size: 16px;
   font-weight: 600;
-  color: #1A1A1A;
+  color: var(--color-ink);
 }
 
 /* Strength banner */
@@ -70,6 +72,7 @@
 .pp-strength__tier { margin-bottom: 4px }
 
 .pp-tier {
+  line-height: 0.95;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -150,6 +153,8 @@
 .pp-ai__body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .pp-ai__title {
+  font-family: 'Poppins', sans-serif;
+  line-height: 0.95;
   font-size: 14px;
   font-weight: 600;
   color: var(--color-text-primary);
@@ -172,7 +177,7 @@
   background: #fff;
   margin: 0 16px 14px;
   border-radius: 16px;
-  border: 1px solid #F5EFE0;
+  border: 1px solid var(--color-warm-hover);
   box-shadow: 0 2px 12px rgba(30,50,42,.04);
   overflow: hidden;
 }
@@ -182,16 +187,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  border-bottom: 1px solid #F5EFE0;
+  border-bottom: 1px solid var(--color-warm-hover);
 }
 
 .pp-section__title {
+  font-family: 'Poppins', sans-serif;
+  line-height: 0.95;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
   font-weight: 700;
-  color: #1A1A1A;
+  color: var(--color-ink);
   letter-spacing: -0.005em;
 }
 
@@ -199,11 +206,12 @@
   font-size: 18px;
   width: 32px; height: 32px;
   display: flex; align-items: center; justify-content: center;
-  background: #FFFCF5;
+  background: #FFFDF5;
   border-radius: 9px;
 }
 
 .pp-section__count {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -218,17 +226,17 @@
 }
 .pp-section__count--incomplete {
   color: #B25E00;
-  background: #FFEDC9;
+  background: var(--color-coconut);
   box-shadow: inset 0 0 0 1px #F5C77A;
 }
 
 .pp-fields {}
 
 .pp-field {
-  border-bottom: 1px solid #F2EEFB;
+  border-bottom: 1px solid var(--color-chip-bg);
 }
 .pp-field:last-child { border-bottom: none }
-.pp-field--editing { background: #FBFAFE; }
+.pp-field--editing { background: var(--color-chip-bg); }
 
 .pp-field__row {
   display: flex;
@@ -243,17 +251,18 @@
   font-family: inherit;
   transition: background .12s;
 }
-.pp-field__row:hover:not(:disabled) { background: #FBFAFE }
+.pp-field__row:hover:not(:disabled) { background: var(--color-chip-bg) }
 .pp-field__row:disabled { cursor: default; opacity: 0.85 }
 
 .pp-field__main { flex: 1; min-width: 0; }
 
 .pp-field__label {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #8A8A8A;
+  color: var(--color-muted);
   margin-bottom: 3px;
   display: flex;
   align-items: center;
@@ -261,6 +270,7 @@
 }
 
 .pp-field__readonly-tag {
+  line-height: 0.95;
   font-size: 9px;
   font-weight: 700;
   color: #1BBC3C;
@@ -316,6 +326,7 @@
 .pp-tx-foot strong { color: var(--color-teal); font-weight: 700 }
 
 .pp-tx-group__label {
+  line-height: 0.95;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -325,6 +336,7 @@
 }
 
 .pp-tx-edit-label {
+  line-height: 0.95;
   display: block;
   font-size: 11px;
   font-weight: 700;
@@ -335,6 +347,7 @@
 }
 
 .pp-field__ai-tag {
+  line-height: 0.95;
   font-size: 9px;
   font-weight: 700;
   color: #1BBC3C;
@@ -347,6 +360,7 @@
 }
 
 .pp-field__onboarding-tag {
+  line-height: 0.95;
   font-size: 9px;
   font-weight: 700;
   color: #fff;
@@ -360,13 +374,13 @@
 .pp-field__value {
   font-size: 14px;
   font-weight: 500;
-  color: #1A1A1A;
+  color: var(--color-ink);
   word-break: break-word;
   line-height: 1.4;
 }
 
 .pp-field__value--empty {
-  color: #C9BFE0;
+  color: var(--color-cornflower);
   font-weight: 400;
   font-style: italic;
 }
@@ -403,11 +417,11 @@
   padding: 12px 14px;
   font-size: 15px;
   background: #fff;
-  border: 2px solid #EDE6D6;
+  border: 2px solid var(--color-warm-hover);
   border-radius: 12px;
   outline: none;
   font-family: inherit;
-  color: #1A1A1A;
+  color: var(--color-ink);
   box-sizing: border-box;
   transition: border-color .15s;
 }
@@ -422,16 +436,16 @@
 .pp-chip {
   font-size: 13px;
   font-weight: 500;
-  color: #5C5C5C;
+  color: var(--color-muted);
   background: #fff;
-  border: 1.5px solid #EDE6D6;
+  border: 1.5px solid var(--color-warm-hover);
   border-radius: 9999px;
   padding: 7px 12px;
   cursor: pointer;
   font-family: inherit;
   transition: all .12s;
 }
-.pp-chip:hover { border-color: #C9BFE0 }
+.pp-chip:hover { border-color: var(--color-cornflower) }
 .pp-chip--sel {
   background: #1BBC3C;
   color: #fff;
@@ -448,7 +462,7 @@
 .pp-editor__cancel {
   background: transparent;
   border: none;
-  color: #8A8A8A;
+  color: var(--color-muted);
   font-size: 13px;
   font-weight: 600;
   padding: 8px 14px;
@@ -456,7 +470,7 @@
   font-family: inherit;
   border-radius: 9999px;
 }
-.pp-editor__cancel:hover { color: #5C5C5C }
+.pp-editor__cancel:hover { color: var(--color-muted) }
 
 .pp-editor__save {
   background: #1BBC3C;

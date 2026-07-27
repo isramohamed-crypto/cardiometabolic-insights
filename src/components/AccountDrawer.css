@@ -134,6 +134,7 @@
   margin-bottom: 8px;
 }
 .ad-strength__label {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -164,6 +165,7 @@
   align-items: center;
 }
 .ad-tier {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -235,7 +237,7 @@
   transition: background .12s;
   font-family: inherit;
 }
-.ad-item:hover { background: #FFFCF5 }
+.ad-item:hover { background: #FFFDF5 }
 .ad-item:active { background: #E3F8E8 }
 
 .ad-item__icon {
@@ -245,7 +247,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFCF5;
+  background: #FFFDF5;
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -255,19 +257,19 @@
 .ad-item__label {
   font-size: 14px;
   font-weight: 600;
-  color: #1A1A1A;
+  color: var(--color-ink);
   margin-bottom: 1px;
 }
 
 .ad-item__desc {
   font-size: 12px;
-  color: #8A8A8A;
+  color: var(--color-muted);
   line-height: 1.35;
 }
 
 .ad-item__chev {
   font-size: 20px;
-  color: #C9BFE0;
+  color: var(--color-cornflower);
   flex-shrink: 0;
 }
 
@@ -277,7 +279,7 @@
 }
 .ad-footer p {
   font-size: 11px;
-  color: #C9BFE0;
+  color: var(--color-cornflower);
   letter-spacing: 0.04em;
   margin: 0;
 }

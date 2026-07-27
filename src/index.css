@@ -1,1 +1,48 @@
 /* Vitalist experiment — component CSS is self-contained */
+:root {
+  --font-serif: 'Poppins', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+
+  /* ── Brand colors ─────────────────────────────────────────────────────── */
+  --color-leaf:          #1BBC3C;
+  --color-green-apple:   #E8EF65;
+  --color-seaweed:       #004620;
+
+  /* ── Supporting — bright ──────────────────────────────────────────────── */
+  --color-mineral:       #00B9E2;
+  --color-plum:          #B676E7;
+  --color-guava:         #FF9CFF;
+  --color-watermelon:    #EF2673;
+  --color-tangerine:     #FF8C2F;
+  --color-blueberry:     #0053E2;
+
+  /* ── Supporting — light ───────────────────────────────────────────────── */
+  --color-coconut:       #FFFDF5;
+  --color-light-pink:    #FFDCED;
+  --color-vanilla:       #FCFFBC;
+  --color-cornflower:    #DEF9FF;
+
+  /* ── Ink / Text ──────────────────────────────────────────────────────── */
+  --color-ink:           #15151d;   /* primary text */
+  --color-muted:         #7b7168;   /* secondary text */
+  --color-ghost:         #c9bfae;   /* inactive / placeholder */
+
+  /* ── Structure ────────────────────────────────────────────────────────── */
+  --color-warm-border:   #ece5da;   /* row dividers / card borders */
+  --color-warm-hover:    #f6f0e7;   /* button hover backgrounds */
+  --color-chip-bg:       #eef2f8;   /* light blue chip/card backgrounds */
+  --color-chip-border:   #cdd9ec;   /* light blue chip/card borders */
+
+  /* ── Aliases (legacy) ─────────────────────────────────────────────────── */
+  --color-teal:          var(--color-leaf);
+  --color-teal-dark:     var(--color-seaweed);
+  --color-teal-light:    #E3F8E8;
+  --color-lime:          var(--color-green-apple);
+  --color-blue:          var(--color-blueberry);
+  --color-bg:            var(--color-coconut);
+  --cat-color:           var(--color-leaf);
+  --cat-bg:              #E3F8E8;
+  --pill-cat-bg:         #E3F8E8;
+  --color-border-light:  var(--color-warm-border);
+  --color-text-muted:    var(--color-muted);
+}

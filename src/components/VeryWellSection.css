@@ -30,7 +30,7 @@
   font-weight: 500;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 0.95;
 }
 
 /* Scroll row */
@@ -66,7 +66,7 @@
 /* ── Hero card ── */
 .vw-card--hero {
   width: 220px;
-  background: #9eecf8;
+  background: var(--color-cornflower);
   padding: 18px 16px 20px;
   gap: var(--space-2);
   justify-content: space-between;
@@ -93,8 +93,8 @@
   font-family: var(--font-serif);
   font-size: 22px;
   font-weight: 800;
-  color: #0D1B1E;
-  line-height: 1.15;
+  color: var(--color-ink);
+  line-height: 0.95;
   letter-spacing: -0.02em;
   margin: 0;
 }
@@ -110,7 +110,7 @@
 .vw-card--tip {
   width: 220px;
   background: #fff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-warm-border);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   padding: 16px;
   gap: var(--space-3);
@@ -128,14 +128,14 @@
   font-family: var(--font-serif);
   font-size: 20px;
   font-weight: 800;
-  color: #0D1B1E;
-  line-height: 1.15;
+  color: var(--color-ink);
+  line-height: 0.95;
   margin: 0;
 }
 
 .vw-card--tip__body {
   font-size: 13px;
-  color: #374151;
+  color: var(--color-ink);
   line-height: 1.6;
   margin: 0;
   flex: 1;

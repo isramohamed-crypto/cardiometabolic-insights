@@ -39,7 +39,7 @@
   font-weight: 500;
   color: var(--color-text-primary);
   letter-spacing: -0.03em;
-  line-height: 1.1;
+  line-height: 0.95;
 }
 
 /* Header */
@@ -52,11 +52,12 @@
 }
 
 .ew-header__eyebrow {
+  line-height: 0.95;
   font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: #639a3a;
+  color: var(--color-leaf);
   margin-bottom: 4px;
 }
 
@@ -66,7 +67,7 @@
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 0.95;
   margin-bottom: 6px;
 }
 
@@ -78,7 +79,7 @@
 
 .ew-header__badge {
   flex-shrink: 0;
-  background: #639a3a;
+  background: var(--color-leaf);
   border-radius: var(--radius-md);
   padding: 6px 10px;
 }
@@ -163,17 +164,17 @@
 }
 
 .ew-intro-card__panel {
-  background: #639a3a;
+  background: var(--color-leaf);
   padding: 12px 14px 14px;
   flex-shrink: 0;
 }
 
 .ew-intro-card__title {
-  font-family: 'manofa', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 22px;
   font-weight: 300;
-  color: #1a1a1a;
-  line-height: 1.05;
+  color: var(--color-ink);
+  line-height: 0.95;
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 0.01em;
@@ -181,7 +182,7 @@
 }
 
 .ew-intro-card__sub {
-  font-family: 'salais', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #fff;
@@ -230,11 +231,11 @@
 .ew-card__front {
   display: flex;
   flex-direction: column;
-  background: #1a2e1a;
+  background: var(--color-seaweed);
 }
 
 .ew-card__front-body {
-  background: #639a3a;
+  background: var(--color-leaf);
   padding: 12px 12px 10px;
   display: flex;
   flex-direction: column;
@@ -249,11 +250,11 @@
 }
 
 .ew-card__front-title {
-  font-family: 'manofa', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 19px;
   font-weight: 300;
-  color: #1a1a1a;
-  line-height: 1.05;
+  color: var(--color-ink);
+  line-height: 0.95;
   text-transform: uppercase;
   text-align: left;
   letter-spacing: 0.01em;
@@ -280,7 +281,7 @@
 
 /* Back */
 .ew-card__back {
-  background: #639a3a;
+  background: var(--color-leaf);
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -292,13 +293,13 @@
   font-size: 72px;
   line-height: .7;
   color: rgba(255,255,255,.25);
-  font-family: Georgia, serif;
+  font-family: 'Poppins', sans-serif;
   margin-bottom: 8px;
   display: block;
 }
 
 .ew-card__back-text {
-  font-family: 'manofa', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: var(--font-size-sm);
   font-weight: 400;
   color: #fff;

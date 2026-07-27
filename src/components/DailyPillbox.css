@@ -9,7 +9,7 @@
 }
 
 .dp-card--done {
-  background: linear-gradient(135deg, #f0fdf9 0%, #fef9f0 100%);
+  background: linear-gradient(135deg, #E3F8E8 0%, var(--color-coconut) 100%);
 }
 
 .dp-header {
@@ -20,11 +20,12 @@
 }
 
 .dp-eyebrow {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--color-teal, #2D9B83);
+  color: var(--color-teal, #1BBC3C);
   margin: 0 0 3px;
 }
 
@@ -35,7 +36,7 @@
   color: var(--color-text-primary);
   margin: 0;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 0.95;
 }
 
 /* Checkmark badge when all done */
@@ -43,7 +44,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--color-teal, #2D9B83);
+  background: var(--color-teal, #1BBC3C);
   color: #fff;
   display: flex;
   align-items: center;
@@ -76,7 +77,7 @@
   justify-content: center;
   font-size: 13px;
   font-weight: 800;
-  color: var(--color-teal, #2D9B83);
+  color: var(--color-teal, #1BBC3C);
 }
 
 /* Pills row */
@@ -93,9 +94,9 @@
   gap: 5px;
   padding: 8px 14px 8px 10px;
   border-radius: 99px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--color-warm-border);
   background: #fff;
-  color: #475569;
+  color: var(--color-muted);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -106,9 +107,9 @@
 }
 
 .dp-pill:hover {
-  border-color: var(--color-teal, #2D9B83);
-  color: var(--color-teal, #2D9B83);
-  background: #f0fdf9;
+  border-color: var(--color-teal, #1BBC3C);
+  color: var(--color-teal, #1BBC3C);
+  background: #E3F8E8;
 }
 
 .dp-pill:active {
@@ -116,14 +117,14 @@
 }
 
 .dp-pill--done {
-  background: var(--color-teal, #2D9B83);
-  border-color: var(--color-teal, #2D9B83);
+  background: var(--color-teal, #1BBC3C);
+  border-color: var(--color-teal, #1BBC3C);
   color: #fff;
 }
 
 .dp-pill--done:hover {
-  background: #25876f;
-  border-color: #25876f;
+  background: #004620;
+  border-color: #004620;
   color: #fff;
 }
 

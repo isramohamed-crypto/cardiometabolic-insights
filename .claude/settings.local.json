@@ -37,7 +37,18 @@
       "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg /Users/sarahpage/Downloads/*.png)",
       "Bash(ls -lt /Users/sarahpage/Downloads/*.jpg)",
       "Bash(ls /Users/sarahpage/Downloads/ew*)",
-      "Bash(ls /Users/sarahpage/Downloads/people*)"
+      "Bash(ls /Users/sarahpage/Downloads/people*)",
+      "Skill(run)",
+      "Bash(npm run *)",
+      "Bash(echo \"started pid $!\")",
+      "Read(//tmp/**)",
+      "Bash(npx --yes chromium-cli --help)",
+      "Bash(command -v chromium-cli)",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "Bash(npx --yes playwright --version)",
+      "Read(//Users/esther.estroff/Library/Caches/ms-playwright/**)",
+      "Bash(find / -maxdepth 6 -iname \"Google Chrome.app\")",
+      "Bash(git add *)"
     ]
   }
 }

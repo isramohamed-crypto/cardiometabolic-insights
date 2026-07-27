@@ -458,7 +458,7 @@ function AppointmentModal({ initial, doctorFallback, onSave, onClose }) {
           fontFamily: 'var(--font-sans)',
         }}
       >
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 800, color: '#004620', marginBottom: 4, letterSpacing: '-0.01em' }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 800, color: '#004620', marginBottom: 4, letterSpacing: '-0.01em', lineHeight: 0.95 }}>
           {initial ? 'Edit appointment' : 'Add your next appointment'}
         </h3>
         <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18, lineHeight: 1.5 }}>

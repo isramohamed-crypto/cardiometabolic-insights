@@ -50,6 +50,7 @@
 .ob-hero > * { position: relative; z-index: 1 }
 
 .ob-hero__eyebrow {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .1em;
@@ -64,7 +65,7 @@
   font-weight: 800;
   letter-spacing: -.02em;
   color: var(--color-text-primary);    /* Charcoal on cream — AAA */
-  line-height: 1.2;
+  line-height: 0.95;
   margin: 0 0 8px;
 }
 
@@ -95,6 +96,7 @@
 }
 
 .ob-progress-label {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 600;
   color: var(--color-text-muted);
@@ -133,6 +135,7 @@
 }
 
 .ob-q-eyebrow {
+  line-height: 0.95;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .1em;
@@ -486,6 +489,7 @@
 }
 
 .ob-profile-card__label {
+  line-height: 0.95;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .1em;
@@ -506,6 +510,7 @@
 .ob-profile-row__icon { font-size: 18px; flex-shrink: 0; margin-top: 1px }
 
 .ob-profile-row__key {
+  line-height: 0.95;
   font-size: 11px;
   color: var(--color-text-muted);
   font-weight: 600;
@@ -522,8 +527,8 @@
 
 /* Skipped questions card */
 .ob-missing-card {
-  background: #FFF6E6;
-  border: 1px solid #FFE3A3;
+  background: var(--color-coconut);
+  border: 1px solid var(--color-vanilla);
   border-radius: 20px;
   padding: 14px 16px;
   margin-bottom: 16px;
@@ -531,6 +536,7 @@
 }
 
 .ob-missing-card__label {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -544,7 +550,7 @@
   align-items: center;
   gap: 10px;
   padding: 7px 0;
-  border-bottom: 1px solid #FFE3A3;
+  border-bottom: 1px solid var(--color-vanilla);
 }
 .ob-missing-row:last-child { border-bottom: none }
 
@@ -580,7 +586,7 @@
 .ob-habit-card {
   background: #fff;
   border-radius: 20px;
-  border: 1px solid var(--color-border-light, #e8e8e8);
+  border: 1px solid var(--color-border-light, var(--color-warm-border));
   padding: 18px 18px 14px;
   margin-top: 20px;
   box-shadow: 0 2px 16px rgba(0,0,0,.06);
@@ -589,7 +595,7 @@
 }
 
 .ob-habit-card--confirmed {
-  border-color: var(--cat-color, #2D9B83);
+  border-color: var(--cat-color, #1BBC3C);
   box-shadow: 0 4px 20px rgba(0,0,0,.08);
 }
 
@@ -633,6 +639,7 @@
 }
 
 .ob-habit-card__ai-tag {
+  line-height: 0.95;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .05em;
@@ -648,12 +655,13 @@
 /* Why row: category chip + hook */
 .ob-habit-card__why {
   padding: 10px 12px;
-  background: var(--cat-bg, #f0fdf9);
+  background: var(--cat-bg, #E3F8E8);
   border-radius: 12px;
   margin-bottom: 14px;
 }
 
 .ob-habit-card__cat {
+  line-height: 0.95;
   display: inline-block;
   font-size: 10px;
   font-weight: 700;
@@ -695,7 +703,7 @@
   letter-spacing: .07em;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  line-height: 1.3;
+  line-height: 0.95;
   max-width: 160px;
 }
 
@@ -754,20 +762,20 @@
   font-weight: 500;
   color: var(--color-text-primary);
   margin: 0;
-  line-height: 1.25;
+  line-height: 0.95;
   letter-spacing: -0.02em;
 }
 
 .ob-q3-response__body {
   font-size: 15px;
   line-height: 1.6;
-  color: #374151;
+  color: var(--color-ink);
   margin: 0;
 }
 
 .ob-q3-response__cue {
   font-size: 13px;
-  color: var(--color-text-muted, #94a3b8);
+  color: var(--color-text-muted, var(--color-muted));
   margin: 0;
   font-style: italic;
 }
@@ -785,7 +793,7 @@
   width: 72px;
   height: 72px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #2D9B83, #1BC53C);
+  background: linear-gradient(135deg, #1BBC3C, var(--color-leaf));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -821,6 +829,7 @@
 }
 
 .ob-win__wn-title {
+  line-height: 0.95;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .08em;
@@ -846,6 +855,6 @@
   flex-shrink: 0;
 }
 
-.ob-win__wn-dot--1 { background: #2D9B83 }
+.ob-win__wn-dot--1 { background: #1BBC3C }
 .ob-win__wn-dot--2 { background: var(--color-blue) }
-.ob-win__wn-dot--3 { background: #8B5CF6 }
+.ob-win__wn-dot--3 { background: var(--color-plum) }

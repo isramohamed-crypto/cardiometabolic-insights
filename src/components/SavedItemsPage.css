@@ -38,6 +38,7 @@
 }
 .si-back:active { transform: scale(.95) }
 .si-header__title {
+  line-height: 0.95;
   font-family: var(--font-serif);
   font-size: 17px;
   font-weight: 700;
@@ -52,6 +53,7 @@
 }
 
 .si-count {
+  line-height: 0.95;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -83,6 +85,7 @@
 .si-item__body { flex: 1; min-width: 0; }
 
 .si-chip {
+  line-height: 0.95;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -146,6 +149,7 @@
   margin-bottom: 16px;
 }
 .si-empty__title {
+  line-height: 0.95;
   font-family: var(--font-serif);
   font-size: 18px;
   font-weight: 700;
