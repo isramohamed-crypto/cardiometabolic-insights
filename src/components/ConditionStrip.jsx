@@ -14,7 +14,7 @@ function readConditions() {
 // Per-condition content cards
 const CONDITION_CONTENT = {
   'High cholesterol': {
-    icon: '🫀',
+    icon: '',
     gradient: 'linear-gradient(135deg, #0A2463 0%, #1B4FBF 100%)',
     label: 'Cholesterol',
     stat: '1 in 3 adults has high LDL cholesterol — most have no symptoms.',
@@ -22,7 +22,7 @@ const CONDITION_CONTENT = {
     cta: 'Know your number',
   },
   'High blood pressure': {
-    icon: '🩺',
+    icon: '',
     gradient: 'linear-gradient(135deg, #7B0D1E 0%, #C1292E 100%)',
     label: 'Blood Pressure',
     stat: 'Hypertension affects nearly half of U.S. adults — and two-thirds don\'t have it under control.',
@@ -30,7 +30,7 @@ const CONDITION_CONTENT = {
     cta: 'Track your readings',
   },
   'Type 2 diabetes': {
-    icon: '🔬',
+    icon: '',
     gradient: 'linear-gradient(135deg, #0D5C63 0%, #0A9396 100%)',
     label: 'Blood Sugar',
     stat: 'People with type 2 diabetes are 2–4x more likely to develop heart disease.',
@@ -38,7 +38,7 @@ const CONDITION_CONTENT = {
     cta: 'Log your levels',
   },
   'Weight / metabolic health': {
-    icon: '⚖️',
+    icon: '',
     gradient: 'linear-gradient(135deg, #2D6A4F 0%, #52B788 100%)',
     label: 'Metabolic Health',
     stat: 'Losing just 5–10% of body weight can lower LDL, blood pressure, and blood sugar simultaneously.',
@@ -46,7 +46,7 @@ const CONDITION_CONTENT = {
     cta: 'See your trends',
   },
   'Heart disease': {
-    icon: '❤️‍🩹',
+    icon: '',
     gradient: 'linear-gradient(135deg, #6B2737 0%, #C9184A 100%)',
     label: 'Heart Health',
     stat: 'After a cardiac event, consistent follow-up care reduces recurrence risk by up to 40%.',
@@ -54,7 +54,7 @@ const CONDITION_CONTENT = {
     cta: 'Stay on track',
   },
   'Recovery': {
-    icon: '❤️‍🩹',
+    icon: '',
     gradient: 'linear-gradient(135deg, #6B2737 0%, #C9184A 100%)',
     label: 'Recovery',
     stat: 'After a cardiac event, consistent follow-up care reduces recurrence risk by up to 40%.',
@@ -62,7 +62,7 @@ const CONDITION_CONTENT = {
     cta: 'Stay on track',
   },
   'Family history': {
-    icon: '👨‍👩‍👧',
+    icon: '',
     gradient: 'linear-gradient(135deg, #2D1B69 0%, #5C3D8F 100%)',
     label: 'Family Risk',
     stat: 'Having a first-degree relative with heart disease doubles your own risk.',
@@ -70,7 +70,7 @@ const CONDITION_CONTENT = {
     cta: 'Build your baseline',
   },
   'Prevention focused': {
-    icon: '🛡️',
+    icon: '',
     gradient: 'linear-gradient(135deg, #014F86 0%, #0077B6 100%)',
     label: 'Prevention',
     stat: 'Primary prevention — acting before a diagnosis — is the most cost-effective form of cardiac care.',
@@ -80,7 +80,7 @@ const CONDITION_CONTENT = {
 }
 
 const DEFAULT_CARD = {
-  icon: '📊',
+  icon: '',
   gradient: 'linear-gradient(135deg, #0A2463 0%, #1B4FBF 100%)',
   label: 'Your Health',
   stat: 'Small, consistent actions compound into meaningful health outcomes over months and years.',

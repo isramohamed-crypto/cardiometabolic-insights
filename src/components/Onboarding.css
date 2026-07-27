@@ -70,7 +70,6 @@
 }
 
 .ob-hero__title em {
-  font-style: italic;
   color: var(--color-teal);            /* Leaf green italic accent */
   font-weight: 700;
 }
@@ -719,7 +718,6 @@
 .ob-habit-card__source {
   font-size: 10px;
   color: var(--color-text-muted);
-  font-style: italic;
   margin: 0;
   line-height: 1.4;
 }
@@ -777,7 +775,6 @@
   font-size: 13px;
   color: var(--color-text-muted, var(--color-muted));
   margin: 0;
-  font-style: italic;
 }
 
 /* ── WIN SCREEN (summary) ── */

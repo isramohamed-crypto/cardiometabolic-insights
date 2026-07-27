@@ -382,7 +382,6 @@
 .pp-field__value--empty {
   color: var(--color-cornflower);
   font-weight: 400;
-  font-style: italic;
 }
 
 .pp-field__add {

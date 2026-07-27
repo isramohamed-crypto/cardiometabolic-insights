@@ -28,7 +28,6 @@
 .rp-header__title {
   font-family: 'Poppins', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 26px;
   letter-spacing: -.015em;
   color: var(--color-ink);
@@ -115,7 +114,7 @@
   color: var(--color-ink);
   margin: 0 0 8px;
 }
-.rp-feature__hed em { font-style: italic; color: var(--color-ink); }
+.rp-feature__hed em { color: var(--color-ink); }
 .rp-feature__dek {
   font-size: 14px;
   line-height: 1.45;

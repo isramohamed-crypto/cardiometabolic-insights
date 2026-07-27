@@ -9,8 +9,8 @@ const Q1 = {
   text: 'Who are you using Vitalist for?',
   sub: 'This shapes the content, voice, and guidance we show you.',
   options: [
-    { id: 'myself', icon: '🧑', label: 'Myself', desc: 'I\'m focused on my own health journey' },
-    { id: 'other',  icon: '🤝', label: 'Someone else', desc: 'A partner, family member, or someone I care for' },
+    { id: 'myself', icon: '', label: 'Myself', desc: 'I\'m focused on my own health journey' },
+    { id: 'other',  icon: '', label: 'Someone else', desc: 'A partner, family member, or someone I care for' },
   ],
 }
 
@@ -23,12 +23,12 @@ const Q3 = {
   text: "Let's explore why you're here.",
   sub: 'Pick the one that resonates most.',
   options: [
-    { id: 'risk',       icon: '🔭', label: 'I want to get ahead of my risk',        desc: 'Proactive about future health before problems develop' },
-    { id: 'confidence', icon: '✨', label: 'I want to feel in control',              desc: 'Of my numbers, my choices, my direction' },
-    { id: 'sleep',      icon: '😴', label: "It's affecting my energy and sleep",     desc: 'Fatigue, poor rest, low motivation' },
-    { id: 'triggers',   icon: '🔍', label: "I don't understand what's happening",   desc: 'My body feels different and I want answers' },
-    { id: 'treatment',  icon: '💊', label: "I'm managing a lot and want support",   desc: 'Conditions, medications, appointments — it adds up' },
-    { id: 'frustrated', icon: '🌀', label: "I've tried things and nothing sticks",  desc: 'Looking for a more sustainable approach' },
+    { id: 'risk',       icon: '', label: 'I want to get ahead of my risk',        desc: 'Proactive about future health before problems develop' },
+    { id: 'confidence', icon: '', label: 'I want to feel in control',              desc: 'Of my numbers, my choices, my direction' },
+    { id: 'sleep',      icon: '', label: "It's affecting my energy and sleep",     desc: 'Fatigue, poor rest, low motivation' },
+    { id: 'triggers',   icon: '', label: "I don't understand what's happening",   desc: 'My body feels different and I want answers' },
+    { id: 'treatment',  icon: '', label: "I'm managing a lot and want support",   desc: 'Conditions, medications, appointments — it adds up' },
+    { id: 'frustrated', icon: '', label: "I've tried things and nothing sticks",  desc: 'Looking for a more sustainable approach' },
   ],
 }
 
@@ -37,20 +37,20 @@ const Q4 = {
   text: 'What does your health picture look like right now?',
   sub: 'Select all that apply — the more we know, the better we can tailor your experience.',
   options: [
-    { id: 'cholesterol', icon: '🫀', label: 'High cholesterol',              desc: 'LDL, HDL, or triglyceride concerns',                       group: 'diagnosed' },
-    { id: 'hypertension',icon: '🩺', label: 'High blood pressure',           desc: 'Hypertension or pre-hypertension',                         group: 'diagnosed' },
-    { id: 'diabetes',    icon: '🔬', label: 'Type 2 diabetes',               desc: 'Managing blood sugar levels',                              group: 'diagnosed' },
-    { id: 'obesity',     icon: '⚖️', label: 'Weight / metabolic health',     desc: 'BMI, metabolic syndrome, or weight-related goals',          group: 'diagnosed' },
-    { id: 'heart',       icon: '❤️‍🩹', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event',              group: 'diagnosed' },
-    { id: 'menopause',   icon: '🌸', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms',             group: 'diagnosed' },
+    { id: 'cholesterol', icon: '', label: 'High cholesterol',              desc: 'LDL, HDL, or triglyceride concerns',                       group: 'diagnosed' },
+    { id: 'hypertension',icon: '', label: 'High blood pressure',           desc: 'Hypertension or pre-hypertension',                         group: 'diagnosed' },
+    { id: 'diabetes',    icon: '', label: 'Type 2 diabetes',               desc: 'Managing blood sugar levels',                              group: 'diagnosed' },
+    { id: 'obesity',     icon: '', label: 'Weight / metabolic health',     desc: 'BMI, metabolic syndrome, or weight-related goals',          group: 'diagnosed' },
+    { id: 'heart',       icon: '', label: 'Heart disease',               desc: 'Coronary artery disease, prior cardiac event',              group: 'diagnosed' },
+    { id: 'menopause',   icon: '', label: 'Menopause / hormonal changes',  desc: 'Perimenopause, menopause, or related symptoms',             group: 'diagnosed' },
     // ↑ first 6 always visible ↓ revealed by "Show more"
-    { id: 'glp1',        icon: '💉', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar',        group: 'diagnosed' },
-    { id: 'family_hx',   icon: '👨‍👩‍👧', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family',         group: 'proactive' },
-    { id: 'borderline',  icon: '📊', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed',           group: 'proactive' },
+    { id: 'glp1',        icon: '', label: 'Weight loss medication (GLP-1)', desc: 'Taking or considering Ozempic, Wegovy, or similar',        group: 'diagnosed' },
+    { id: 'family_hx',   icon: '', label: 'Family history',              desc: 'Heart disease, stroke, or diabetes in the family',         group: 'proactive' },
+    { id: 'borderline',  icon: '', label: 'Borderline numbers',             desc: 'Numbers that are elevated but not yet diagnosed',           group: 'proactive' },
     { id: 'longevity',   icon: '⏳', label: 'Longevity & healthy aging',      desc: 'Planning ahead for quality of life as I get older',         group: 'proactive' },
-    { id: 'prevention',  icon: '🛡️', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive',                    group: 'proactive' },
-    { id: 'post_event',  icon: '❤️‍🩹', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis',        group: 'proactive' },
-    { id: 'other_dx',    icon: '💭', label: 'Something else',                 desc: 'Tell us in your own words',                                group: 'diagnosed' },
+    { id: 'prevention',  icon: '', label: 'Prevention focused',            desc: 'No diagnosis yet, but being proactive',                    group: 'proactive' },
+    { id: 'post_event',  icon: '', label: 'Recovery',                     desc: 'Managing health after a cardiac event or diagnosis',        group: 'proactive' },
+    { id: 'other_dx',    icon: '', label: 'Something else',                 desc: 'Tell us in your own words',                                group: 'diagnosed' },
   ],
 }
 const Q4_VISIBLE_DEFAULT = 6  // how many options show before "Show more"
@@ -59,40 +59,40 @@ const Q_LIFE = {
   text: "What's most important to you in your life?",
   sub: 'This helps us connect your health to what actually matters to you.',
   options: [
-    { id: 'family',   icon: '👨‍👩‍👧', label: 'Caring for my family',       desc: 'Being present and healthy for the people I love' },
-    { id: 'food',     icon: '🍽️', label: 'Food and entertaining',         desc: 'Enjoying meals, cooking, and sharing food with others' },
-    { id: 'travel',   icon: '✈️', label: 'Travel and exploring',          desc: 'Seeing new places and having adventures' },
-    { id: 'culture',  icon: '🎭', label: 'Entertainment and culture',     desc: 'Music, arts, shows, and the things that bring joy' },
-    { id: 'finances', icon: '💰', label: 'My financial freedom',          desc: 'Building security and making the most of what I\'ve earned' },
-    { id: 'fitness',  icon: '💪', label: 'Fitness and feeling strong',    desc: 'Physical strength, energy, and an active life' },
-    { id: 'home',     icon: '🏡', label: 'Having a home that I love',     desc: 'Creating a space and life I\'m proud of' },
+    { id: 'family',   icon: '', label: 'Caring for my family',       desc: 'Being present and healthy for the people I love' },
+    { id: 'food',     icon: '', label: 'Food and entertaining',         desc: 'Enjoying meals, cooking, and sharing food with others' },
+    { id: 'travel',   icon: '', label: 'Travel and exploring',          desc: 'Seeing new places and having adventures' },
+    { id: 'culture',  icon: '', label: 'Entertainment and culture',     desc: 'Music, arts, shows, and the things that bring joy' },
+    { id: 'finances', icon: '', label: 'My financial freedom',          desc: 'Building security and making the most of what I\'ve earned' },
+    { id: 'fitness',  icon: '', label: 'Fitness and feeling strong',    desc: 'Physical strength, energy, and an active life' },
+    { id: 'home',     icon: '', label: 'Having a home that I love',     desc: 'Creating a space and life I\'m proud of' },
   ],
 }
 
 const Q5_TOPICS_PRIMARY = [
-  { label: 'Heart-healthy eating',    icon: '🥗', change: 'Eat more heart-healthy meals' },
-  { label: 'Exercise & movement',     icon: '🚶', change: 'Move more during the day' },
-  { label: 'Sleep & rest',            icon: '😴', change: 'Get better sleep' },
-  { label: 'Stress & mental health',  icon: '🧘', change: 'Manage my stress' },
-  { label: 'Medications & treatment', icon: '💊', change: 'Stay on top of my medications' },
-  { label: 'Blood pressure',          icon: '🩺', change: 'Track my blood pressure' },
-  { label: 'Blood sugar',             icon: '🔬', change: 'Track my blood sugar' },
-  { label: 'Weight management',       icon: '⚖️', change: 'Manage my weight' },
-  { label: 'Family & caregiving',     icon: '👨‍👩‍👧', change: 'Balance caregiving with my own health' },
-  { label: 'Work & daily life',       icon: '💼', change: 'Fit healthy habits into my workday' },
+  { label: 'Heart-healthy eating',    icon: '', change: 'Eat more heart-healthy meals' },
+  { label: 'Exercise & movement',     icon: '', change: 'Move more during the day' },
+  { label: 'Sleep & rest',            icon: '', change: 'Get better sleep' },
+  { label: 'Stress & mental health',  icon: '', change: 'Manage my stress' },
+  { label: 'Medications & treatment', icon: '', change: 'Stay on top of my medications' },
+  { label: 'Blood pressure',          icon: '', change: 'Track my blood pressure' },
+  { label: 'Blood sugar',             icon: '', change: 'Track my blood sugar' },
+  { label: 'Weight management',       icon: '', change: 'Manage my weight' },
+  { label: 'Family & caregiving',     icon: '', change: 'Balance caregiving with my own health' },
+  { label: 'Work & daily life',       icon: '', change: 'Fit healthy habits into my workday' },
 ]
 const Q5_TOPICS_MORE = [
-  { label: 'Menopause & hormonal health',        icon: '🌸', change: 'Manage menopause symptoms' },
-  { label: 'GLP-1 & weight loss medications',    icon: '💉', change: 'Stay consistent with my GLP-1 routine' },
+  { label: 'Menopause & hormonal health',        icon: '', change: 'Manage menopause symptoms' },
+  { label: 'GLP-1 & weight loss medications',    icon: '', change: 'Stay consistent with my GLP-1 routine' },
   { label: 'Healthy aging & longevity',          icon: '⏳', change: 'Build habits for long-term health' },
-  { label: 'Understanding my numbers',           icon: '📊', change: 'Understand what my numbers mean' },
-  { label: 'Preparing for appointments',         icon: '📋', change: 'Prepare better for appointments' },
-  { label: 'New treatments & research',          icon: '🧪', change: 'Stay informed on new treatments' },
-  { label: 'Alcohol & lifestyle',                icon: '🍷', change: 'Cut back on alcohol' },
-  { label: 'Cooking at home',                    icon: '🍳', change: 'Cook more meals at home' },
-  { label: 'Travel & staying on track',          icon: '✈️', change: 'Stay on track while traveling' },
-  { label: 'Confidence & self-image',            icon: '✨', change: 'Build confidence in my body' },
-  { label: 'Community & peer support',           icon: '🤝', change: 'Connect with others who get it' },
+  { label: 'Understanding my numbers',           icon: '', change: 'Understand what my numbers mean' },
+  { label: 'Preparing for appointments',         icon: '', change: 'Prepare better for appointments' },
+  { label: 'New treatments & research',          icon: '', change: 'Stay informed on new treatments' },
+  { label: 'Alcohol & lifestyle',                icon: '', change: 'Cut back on alcohol' },
+  { label: 'Cooking at home',                    icon: '', change: 'Cook more meals at home' },
+  { label: 'Travel & staying on track',          icon: '', change: 'Stay on track while traveling' },
+  { label: 'Confidence & self-image',            icon: '', change: 'Build confidence in my body' },
+  { label: 'Community & peer support',           icon: '', change: 'Connect with others who get it' },
 ]
 
 const Q5 = {
@@ -113,14 +113,14 @@ const Q3_RESPONSES = {
 // ── First-habit recommendation system ─────────────────────────────────────────
 // Mirrors data from MyRituals HABIT_LIBRARY for the onboarding card display.
 const HABIT_REC_DATA = {
-  hl_walk:    { icon: '🚶', label: '10-min walk after meals',   desc: 'After meals is best',           category: 'Move',     catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Drops blood sugar 22% — no medication needed',                    anchor: 'After your largest meal',  stat: '22%',   statLabel: 'DROP IN POST-MEAL GLUCOSE',             statColor: '#2D9B83', body: 'Even a brief walk after eating blunts the blood sugar spike by up to 22% — without any medication. It also lowers resting BP by 4–9 mmHg over weeks of consistency.',                                                              source: 'American Diabetes Association Clinical Guidelines, 2023' },
-  hl_fiber:   { icon: '🥣', label: 'Fiber-rich breakfast',      desc: 'Oats and legumes bind LDL',     category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Oat fiber binds LDL before it ever reaches your bloodstream',       anchor: 'Every morning',            stat: '15%',   statLabel: 'LDL REDUCTION FROM DAILY OAT FIBER',    statColor: '#E07B4A', body: 'Beta-glucan fiber found in oats and legumes physically binds LDL cholesterol in your gut before it enters your bloodstream — lowering it 10–15% over 8 weeks.',                                                                    source: 'American Heart Journal; Harvard T.H. Chan School of Public Health' },
-  hl_sodium:  { icon: '🧂', label: 'Limit sodium today',        desc: 'Under 1,500 mg makes a diff',   category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cutting sodium is as powerful as adding a blood pressure medication', anchor: 'At each meal',             stat: '5 mmHg', statLabel: 'AVERAGE SYSTOLIC DROP ON LOW-SODIUM',  statColor: '#E07B4A', body: 'Reducing sodium below 1,500 mg/day lowers systolic BP by an average of 5 mmHg — equivalent to adding one blood pressure medication for many people.',                                                                              source: 'DASH-Sodium Trial; AHA Dietary Guidelines' },
-  hl_stretch: { icon: '🧘', label: 'Morning stretch',           desc: 'Starts circulation early',      category: 'Move',     catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Morning movement drops cortisol 15% before your day even starts',    anchor: 'When you wake up',         stat: '15%',   statLabel: 'CORTISOL REDUCTION AFTER MORNING MOVE', statColor: '#2D9B83', body: 'Morning movement — even gentle stretching — reduces cortisol by 15% and activates the parasympathetic nervous system, setting a lower stress baseline for the day.',                                                                source: 'Journal of Behavioral Medicine; Applied Physiology' },
-  hl_protein: { icon: '🥚', label: 'Protein-rich breakfast',    desc: 'Reduces hunger hormones',       category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cuts hunger hormones 25% — critical on GLP-1 medications',           anchor: 'Every morning',            stat: '25%',   statLabel: 'REDUCTION IN HUNGER HORMONE (GHRELIN)', statColor: '#E07B4A', body: 'A high-protein breakfast reduces ghrelin — the hunger hormone — by up to 25% for the rest of the day. Especially important on GLP-1 medications to maintain muscle.',                                                              source: 'American Journal of Clinical Nutrition, 2023' },
-  hl_sleep:   { icon: '😴', label: 'Protect your sleep window', desc: 'Same time every night',         category: 'Rest',     catColor: '#8B5CF6', catBg: '#f5f3ff', hook: 'One bad week raises insulin resistance 37% without changing your diet', anchor: 'Same time every night',    stat: '37%',   statLabel: 'HIGHER INSULIN RESISTANCE AFTER POOR SLEEP', statColor: '#8B5CF6', body: 'Sleeping under 6 hours raises insulin resistance by 37%, elevates cortisol, and increases cardiovascular risk — even if everything else in your routine is perfect.',                                                            source: 'Annals of Internal Medicine; Sleep Research Society' },
-  hl_breathe: { icon: '💨', label: '5-min deep breathing',      desc: 'Interrupts the stress pipeline', category: 'Mind',    catColor: '#EC4899', catBg: '#fdf2f8', hook: "Today's stress shows up in your numbers 48 hours from now",           anchor: 'Once a day — same time',   stat: '48h',   statLabel: 'LAG BETWEEN STRESS AND BP/GLUCOSE SPIKE', statColor: '#EC4899', body: 'Stress elevates cortisol, which raises blood pressure and blood sugar — but the spike typically arrives 48 hours later. Daily breathing practice blunts cortisol before it compounds.', source: 'Journal of Hypertension; Psychosomatic Medicine' },
-  hl_water:   { icon: '💧', label: 'Start your day hydrated',   desc: 'Dehydration quietly raises BP', category: 'Hydrate',  catColor: '#3B82F6', catBg: '#eff6ff', hook: 'Mild dehydration silently raises your blood pressure',                anchor: 'Before anything else',     stat: '8%',    statLabel: 'BP RISE FROM MILD DEHYDRATION',         statColor: '#3B82F6', body: 'Even mild dehydration raises blood pressure and puts extra strain on kidneys — especially important for people on blood pressure or diabetes medications.',                                                                      source: 'European Journal of Nutrition; AHA Hydration Guidelines' },
+  hl_walk:    { icon: '', label: '10-min walk after meals',   desc: 'After meals is best',           category: 'Move',     catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Drops blood sugar 22% — no medication needed',                    anchor: 'After your largest meal',  stat: '22%',   statLabel: 'DROP IN POST-MEAL GLUCOSE',             statColor: '#2D9B83', body: 'Even a brief walk after eating blunts the blood sugar spike by up to 22% — without any medication. It also lowers resting BP by 4–9 mmHg over weeks of consistency.',                                                              source: 'American Diabetes Association Clinical Guidelines, 2023' },
+  hl_fiber:   { icon: '', label: 'Fiber-rich breakfast',      desc: 'Oats and legumes bind LDL',     category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Oat fiber binds LDL before it ever reaches your bloodstream',       anchor: 'Every morning',            stat: '15%',   statLabel: 'LDL REDUCTION FROM DAILY OAT FIBER',    statColor: '#E07B4A', body: 'Beta-glucan fiber found in oats and legumes physically binds LDL cholesterol in your gut before it enters your bloodstream — lowering it 10–15% over 8 weeks.',                                                                    source: 'American Heart Journal; Harvard T.H. Chan School of Public Health' },
+  hl_sodium:  { icon: '', label: 'Limit sodium today',        desc: 'Under 1,500 mg makes a diff',   category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cutting sodium is as powerful as adding a blood pressure medication', anchor: 'At each meal',             stat: '5 mmHg', statLabel: 'AVERAGE SYSTOLIC DROP ON LOW-SODIUM',  statColor: '#E07B4A', body: 'Reducing sodium below 1,500 mg/day lowers systolic BP by an average of 5 mmHg — equivalent to adding one blood pressure medication for many people.',                                                                              source: 'DASH-Sodium Trial; AHA Dietary Guidelines' },
+  hl_stretch: { icon: '', label: 'Morning stretch',           desc: 'Starts circulation early',      category: 'Move',     catColor: '#2D9B83', catBg: '#e6f7f4', hook: 'Morning movement drops cortisol 15% before your day even starts',    anchor: 'When you wake up',         stat: '15%',   statLabel: 'CORTISOL REDUCTION AFTER MORNING MOVE', statColor: '#2D9B83', body: 'Morning movement — even gentle stretching — reduces cortisol by 15% and activates the parasympathetic nervous system, setting a lower stress baseline for the day.',                                                                source: 'Journal of Behavioral Medicine; Applied Physiology' },
+  hl_protein: { icon: '', label: 'Protein-rich breakfast',    desc: 'Reduces hunger hormones',       category: 'Nourish',  catColor: '#E07B4A', catBg: '#fef3ec', hook: 'Cuts hunger hormones 25% — critical on GLP-1 medications',           anchor: 'Every morning',            stat: '25%',   statLabel: 'REDUCTION IN HUNGER HORMONE (GHRELIN)', statColor: '#E07B4A', body: 'A high-protein breakfast reduces ghrelin — the hunger hormone — by up to 25% for the rest of the day. Especially important on GLP-1 medications to maintain muscle.',                                                              source: 'American Journal of Clinical Nutrition, 2023' },
+  hl_sleep:   { icon: '', label: 'Protect your sleep window', desc: 'Same time every night',         category: 'Rest',     catColor: '#8B5CF6', catBg: '#f5f3ff', hook: 'One bad week raises insulin resistance 37% without changing your diet', anchor: 'Same time every night',    stat: '37%',   statLabel: 'HIGHER INSULIN RESISTANCE AFTER POOR SLEEP', statColor: '#8B5CF6', body: 'Sleeping under 6 hours raises insulin resistance by 37%, elevates cortisol, and increases cardiovascular risk — even if everything else in your routine is perfect.',                                                            source: 'Annals of Internal Medicine; Sleep Research Society' },
+  hl_breathe: { icon: '', label: '5-min deep breathing',      desc: 'Interrupts the stress pipeline', category: 'Mind',    catColor: '#EC4899', catBg: '#fdf2f8', hook: "Today's stress shows up in your numbers 48 hours from now",           anchor: 'Once a day — same time',   stat: '48h',   statLabel: 'LAG BETWEEN STRESS AND BP/GLUCOSE SPIKE', statColor: '#EC4899', body: 'Stress elevates cortisol, which raises blood pressure and blood sugar — but the spike typically arrives 48 hours later. Daily breathing practice blunts cortisol before it compounds.', source: 'Journal of Hypertension; Psychosomatic Medicine' },
+  hl_water:   { icon: '', label: 'Start your day hydrated',   desc: 'Dehydration quietly raises BP', category: 'Hydrate',  catColor: '#3B82F6', catBg: '#eff6ff', hook: 'Mild dehydration silently raises your blood pressure',                anchor: 'Before anything else',     stat: '8%',    statLabel: 'BP RISE FROM MILD DEHYDRATION',         statColor: '#3B82F6', body: 'Even mild dehydration raises blood pressure and puts extra strain on kidneys — especially important for people on blood pressure or diabetes medications.',                                                                      source: 'European Journal of Nutrition; AHA Hydration Guidelines' },
 }
 
 // Returns an ordered list of habit IDs, most relevant first, for cycling.
@@ -437,7 +437,6 @@ export default function Onboarding({ name, onClose }) {
               const firstName = (ans.q2 || '').trim().split(' ')[0]
               return (
                 <div className="ob-q3-response">
-                  <div className="ob-q3-response__spark">✨</div>
                   <h2 className="ob-q3-response__headline">
                     {firstName ? `${firstName}, ` : ''}{resp.headline}
                   </h2>

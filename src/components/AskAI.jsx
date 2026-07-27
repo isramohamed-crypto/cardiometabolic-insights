@@ -309,7 +309,7 @@ function RecipeOverlay({ recipe, onClose }) {
           <div className="recipe-overlay__meta">
             <span className="recipe-overlay__meta-item">⏱ {recipe.time}</span>
             <span className="recipe-overlay__meta-sep">·</span>
-            <span className="recipe-overlay__meta-item">🍽 {recipe.servings}</span>
+            <span className="recipe-overlay__meta-item">{recipe.servings}</span>
           </div>
           <p className="recipe-overlay__desc">{recipe.description}</p>
           <div className="recipe-overlay__nutrients">
@@ -417,7 +417,7 @@ function MiniArticleCard({ article }) {
 }
 
 function ArticlesFeed({ articles }) {
-  const typeLabel = { article: '📄 Article', recipe: '🍽 Recipe', video: '▶ Video' }
+  const typeLabel = { article: 'Article', recipe: 'Recipe', video: '▶ Video' }
   return (
     <div className="chat-articles-feed">
       <p className="chat-articles-feed__label">Related reading</p>
@@ -435,7 +435,6 @@ function ArticlesFeed({ articles }) {
 function MemoryNote({ text }) {
   return (
     <div className="chat-memory">
-      <span className="chat-memory__icon" aria-hidden="true">✨</span>
       <p>{text}</p>
     </div>
   )
@@ -774,7 +773,7 @@ export default function AskAI({ habitContext = null, onClearHabitContext = null 
             }
           }}
         >
-          ✨
+         
         </button>
       )}
 
@@ -784,7 +783,7 @@ export default function AskAI({ habitContext = null, onClearHabitContext = null 
             <input
               className="ask-ai__input"
               type="text"
-              placeholder={isNew ? '✨ New here? Ask me anything…' : '✨ Hi! Ask me anything…'}
+              placeholder={isNew ? 'New here? Ask me anything…' : 'Hi! Ask me anything…'}
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => setShowSuggestions(true)}
@@ -853,7 +852,7 @@ export default function AskAI({ habitContext = null, onClearHabitContext = null 
               <input
                 className="chat-overlay__input"
                 type="text"
-                placeholder="✨ Type something..."
+                placeholder="Type something..."
                 value={followUp}
                 onChange={e => setFollowUp(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendFollowUp()}

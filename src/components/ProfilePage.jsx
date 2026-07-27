@@ -41,7 +41,7 @@ const SECTIONS = [
   {
     id: 'basics',
     label: 'Basics',
-    icon: '👤',
+    icon: '',
     fields: [
       { id: 'name',      label: 'First name',  type: 'text',   placeholder: 'What should we call you?' },
       { id: 'pronouns',  label: 'Pronouns',    type: 'select', options: ['She / her', 'He / him', 'They / them', 'Other', 'Prefer not to say'] },
@@ -53,7 +53,7 @@ const SECTIONS = [
   {
     id: 'health',
     label: 'Health context',
-    icon: '🩺',
+    icon: '',
     fields: [
       { id: 'role',            label: 'Managing for',          type: 'select',      options: ['Myself', 'My child', 'Someone else'] },
       { id: 'diagnosisStatus', label: 'Diagnosis status',      type: 'select',      options: ['Yes, I have a diagnosis', 'Not yet / not sure'] },
@@ -65,7 +65,7 @@ const SECTIONS = [
   {
     id: 'care_team',
     label: 'Care team',
-    icon: '👩‍⚕️',
+    icon: '',
     fields: [
       { id: 'doctor_name',      label: 'Cardiologist or GP',  type: 'text', placeholder: 'Dr. Sarah Williams' },
       { id: 'doctor_specialty', label: 'Specialty',           type: 'text', placeholder: 'Cardiology / General Practice' },
@@ -75,7 +75,7 @@ const SECTIONS = [
   {
     id: 'lifestyle',
     label: 'Lifestyle',
-    icon: '🌿',
+    icon: '',
     fields: [
       { id: 'sleep',          label: 'Typical sleep quality', type: 'select', options: ['Great — wake up rested', 'Okay most nights', 'Poor — often disrupted', 'It really varies'] },
       { id: 'stress_level',   label: 'Day-to-day stress',     type: 'select', options: ['Low — pretty calm', 'Moderate — some pressure', 'High — frequently stressed', 'Very high — constant'] },
@@ -87,7 +87,7 @@ const SECTIONS = [
   {
     id: 'topics',
     label: 'Topics & preferences',
-    icon: '🎯',
+    icon: '',
     fields: [
       { id: 'focus',          label: 'What matters most',           type: 'select',      options: ['Taking control of my numbers', 'Improving my energy and sleep', 'Understanding what drives my condition', 'Managing my treatment plan', 'Finding an approach that actually sticks'] },
       { id: 'topics',         label: 'Topics I want to see more of',type: 'multiselect', options: ['Heart-healthy eating', 'Exercise & movement', 'Sleep & rest', 'Stress & mental health', 'Medications & treatment', 'Blood pressure', 'Blood sugar', 'Weight management', 'Understanding my numbers', 'Preparing for appointments', 'New treatments & research', 'Alcohol & lifestyle', 'Cooking at home', 'Travel & staying on track', 'Confidence & self-image', 'Community & peer support', 'Family & caregiving', 'Work & daily life'] },
@@ -230,7 +230,6 @@ export default function ProfilePage({ onClose, onAskAI }) {
             <div className="pp-strength__fill" style={{ width: `${pct}%` }} />
           </div>
           <button className="pp-ai" onClick={onAskAI}>
-            <span className="pp-ai__icon">✨</span>
             <span className="pp-ai__body">
               <span className="pp-ai__title">Have AI help me complete this</span>
               <span className="pp-ai__desc">Chat with Vitalist AI to fill in the rest</span>
@@ -334,7 +333,6 @@ function TreatmentsSection({ profile, onUpdate }) {
     <div className="pp-section">
       <div className="pp-section__head">
         <div className="pp-section__title">
-          <span className="pp-section__icon">🧴</span>
           <span>Treatments &amp; products</span>
         </div>
         {list.length > 0 && (
@@ -419,7 +417,7 @@ function TreatmentsSection({ profile, onUpdate }) {
             </React.Fragment>
           ))}
           <p className="pp-tx-foot">
-            💡 Add or remove items during your next health check-in. Dose &amp; frequency tracked here power adherence insights.
+            Add or remove items during your next health check-in. Dose &amp; frequency tracked here power adherence insights.
           </p>
         </div>
       )}
@@ -472,7 +470,7 @@ function Field({ field, profile, isAi, isOnboarding, editing, onEdit, onSet }) {
   const displayVal = Array.isArray(rawVal) ? rawVal.join(', ') : (rawVal || '')
   // AI tag takes precedence if somehow both are set (shouldn't happen in practice)
   const tag = isAi && has
-    ? <span className="pp-field__ai-tag">✨ From AI Insights</span>
+    ? <span className="pp-field__ai-tag">From AI Insights</span>
     : (isOnboarding && has
         ? <span className="pp-field__onboarding-tag">From onboarding</span>
         : null)

@@ -91,7 +91,7 @@ function eproSummaryItem(records) {
   const dlqiText = `DLQI ${latest.dlqi}/30 (${dlqiBand(latest.dlqi)}${trendArrow(latest.dlqi, previous?.dlqi)})`
   const poemText = `POEM ${latest.poem}/28 (${poemBand(latest.poem)}${trendArrow(latest.poem, previous?.poem)})`
   return {
-    icon: '📋',
+    icon: '',
     text: `${dlqiText} · ${poemText}`,
     reason: `From your Weekly Health Pulse${records.length > 1 ? ` (${records.length} entries)` : ''}`,
     isEpro: true,
@@ -112,7 +112,7 @@ function formatAppointmentDisplay(appt) {
 
 const SW_SLIDES = [
   {
-    step: '1 of 5', emoji: '📋',
+    step: '1 of 5', emoji: '',
     title: 'Bring your tracking data — even on your phone',
     body: 'Cardiologists and GPs say the single most useful thing a patient can bring is a log of trends over time. Your Vitalist summary does this automatically.',
     cite: 'Verywell Health',
@@ -120,7 +120,7 @@ const SW_SLIDES = [
     glow: 'radial-gradient(circle at 75% 20%,rgba(0, 185, 226,.2),transparent 60%)',
   },
   {
-    step: '2 of 5', emoji: '📊',
+    step: '2 of 5', emoji: '',
     title: 'Know your numbers before you walk in',
     body: "Ask your care team to share your latest cholesterol panel, blood pressure readings, and HbA1c. Coming in with your own record of trends helps your cardiologist or GP see the full picture.",
     cite: 'American Heart Association',
@@ -128,7 +128,7 @@ const SW_SLIDES = [
     glow: 'radial-gradient(circle at 20% 75%,rgba(232,134,106,.2),transparent 55%)',
   },
   {
-    step: '3 of 5', emoji: '💊',
+    step: '3 of 5', emoji: '',
     title: "List every medication and supplement you're taking",
     body: 'Include prescription medications, OTC supplements, and anything you\'ve stopped using. "Didn\'t work" or "caused side effects" is valuable information — it helps your care team find better options faster.',
     cite: 'Verywell Health',
@@ -136,7 +136,7 @@ const SW_SLIDES = [
     glow: 'radial-gradient(circle at 70% 25%,rgba(232, 239, 101,.2),transparent 55%)',
   },
   {
-    step: '4 of 5', emoji: '🤔',
+    step: '4 of 5', emoji: '',
     title: 'Ask about your cardiovascular risk score — not just your numbers',
     body: 'Individual cholesterol or blood pressure numbers only tell part of the story. Ask your cardiologist or GP about your 10-year cardiovascular risk score and what target ranges are right for your profile.',
     cite: 'Verywell Health',
@@ -144,7 +144,7 @@ const SW_SLIDES = [
     glow: 'radial-gradient(circle at 30% 65%,rgba(123,166,141,.25),transparent 55%)',
   },
   {
-    step: '5 of 5', emoji: '💬',
+    step: '5 of 5', emoji: '',
     title: 'Tell them about the life impact — not just the numbers',
     body: 'Fatigue, sleep disruption, and emotional burden matter for treatment decisions. Your care team needs the full picture to recommend the right lifestyle changes and therapies.',
     cite: 'Verywell Health',
@@ -299,10 +299,10 @@ function SwipeCards() {
 const PREPARE_PLAYBOOKS = {
   'High cholesterol': {
     summary: [
-      { icon: '📊', text: 'Stress → elevated readings pattern confirmed: high-stress days correlate with worse health metrics 48 hrs later, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
-      { icon: '😴', text: '82% of worst health days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
-      { icon: '📋', text: 'LDL tracking: moderate concern, improving over past 3 months with lifestyle changes', reason: 'Self-reported health scores' },
-      { icon: '💊', text: 'Currently managing with statin therapy + dietary changes. Adherent 5/7 days.', reason: 'Self-reported treatment' },
+      { icon: '', text: 'Stress → elevated readings pattern confirmed: high-stress days correlate with worse health metrics 48 hrs later, 3 of 4 weeks', reason: 'Oura HRV + self-reported context' },
+      { icon: '', text: '82% of worst health days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
+      { icon: '', text: 'LDL tracking: moderate concern, improving over past 3 months with lifestyle changes', reason: 'Self-reported health scores' },
+      { icon: '', text: 'Currently managing with statin therapy + dietary changes. Adherent 5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
       { text: 'My data shows stress correlates with worse readings 48 hours later. Is there an intervention for that window?', reason: 'Based on 21-day stress correlation' },
@@ -319,10 +319,10 @@ const PREPARE_PLAYBOOKS = {
   },
   'High blood pressure': {
     summary: [
-      { icon: '📊', text: 'Blood pressure elevated on 18 of 21 tracked days — highest readings on high-stress days', reason: 'Self-reported health scores + Oura' },
-      { icon: '😴', text: 'Sleep under 65 correlates with next-day elevated readings — 4 of 4 weeks', reason: 'Oura sleep data' },
-      { icon: '📋', text: 'Quality-of-life impact rated moderate. Fatigue and headaches noted in journal entries.', reason: 'Self-reported ePRO' },
-      { icon: '💊', text: 'Currently on ACE inhibitor + lifestyle modifications. Consistent 5/7 days.', reason: 'Self-reported treatment' },
+      { icon: '', text: 'Blood pressure elevated on 18 of 21 tracked days — highest readings on high-stress days', reason: 'Self-reported health scores + Oura' },
+      { icon: '', text: 'Sleep under 65 correlates with next-day elevated readings — 4 of 4 weeks', reason: 'Oura sleep data' },
+      { icon: '', text: 'Quality-of-life impact rated moderate. Fatigue and headaches noted in journal entries.', reason: 'Self-reported ePRO' },
+      { icon: '', text: 'Currently on ACE inhibitor + lifestyle modifications. Consistent 5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
       { text: 'My readings are still elevated despite medication. Should we adjust the dosage or add a second agent?', reason: 'Based on 3 months of tracking' },
@@ -339,10 +339,10 @@ const PREPARE_PLAYBOOKS = {
   },
   'Type 2 diabetes': {
     summary: [
-      { icon: '📊', text: 'Blood sugar management: moderate concern — stress days correlate with higher readings', reason: 'Self-reported tracking + Oura HRV' },
-      { icon: '🔍', text: 'Top contributors: poor sleep (45%) and high-carb meals (25%) — confirmed 3 of 4 weeks', reason: 'Check-in context tags' },
-      { icon: '📋', text: 'HbA1c trend: gradual improvement over 12 weeks with dietary modifications', reason: 'Self-reported progress' },
-      { icon: '💊', text: 'Currently on metformin + lifestyle program. Adherent ~5/7 days.', reason: 'Self-reported treatment' },
+      { icon: '', text: 'Blood sugar management: moderate concern — stress days correlate with higher readings', reason: 'Self-reported tracking + Oura HRV' },
+      { icon: '', text: 'Top contributors: poor sleep (45%) and high-carb meals (25%) — confirmed 3 of 4 weeks', reason: 'Check-in context tags' },
+      { icon: '', text: 'HbA1c trend: gradual improvement over 12 weeks with dietary modifications', reason: 'Self-reported progress' },
+      { icon: '', text: 'Currently on metformin + lifestyle program. Adherent ~5/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
       { text: 'My HbA1c is improving but still above target. Should we adjust medication or intensify lifestyle changes?', reason: 'Based on 12 weeks of data' },
@@ -359,10 +359,10 @@ const PREPARE_PLAYBOOKS = {
   },
   'Heart disease': {
     summary: [
-      { icon: '📊', text: 'Stress → symptom pattern confirmed: high-stress days correlate with fatigue and discomfort 48 hrs later', reason: 'Oura HRV + self-reported context' },
-      { icon: '😴', text: '82% of worst days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
-      { icon: '📋', text: 'Quality-of-life impact rated moderate. Activity limitations noted in journal entries.', reason: 'Self-reported ePRO' },
-      { icon: '💊', text: 'Currently on cardiac medications. Adherent 6/7 days.', reason: 'Self-reported treatment' },
+      { icon: '', text: 'Stress → symptom pattern confirmed: high-stress days correlate with fatigue and discomfort 48 hrs later', reason: 'Oura HRV + self-reported context' },
+      { icon: '', text: '82% of worst days follow nights with sleep score under 65', reason: 'Oura sleep data + health scores' },
+      { icon: '', text: 'Quality-of-life impact rated moderate. Activity limitations noted in journal entries.', reason: 'Self-reported ePRO' },
+      { icon: '', text: 'Currently on cardiac medications. Adherent 6/7 days.', reason: 'Self-reported treatment' },
     ],
     questions: [
       { text: 'My data shows a clear stress → symptom pattern. Are there preventive strategies for high-stress periods?', reason: 'Based on 21-day stress correlation' },
@@ -381,10 +381,10 @@ const PREPARE_PLAYBOOKS = {
 
 const GENERIC_PREPARE_PLAYBOOK = {
   summary: [
-    { icon: '📊', text: '21 days of daily health check-ins tracked — pattern data ready to review', reason: 'Self-reported health scores' },
-    { icon: '🔍', text: 'Top correlating factors: stress (45%), poor sleep (25%), dietary patterns (10%)', reason: 'Context tags across check-ins' },
-    { icon: '💡', text: 'Lifestyle data captured across tracked days — ready for care team review', reason: 'AI-assisted health tracking' },
-    { icon: '💊', text: 'Current management: lifestyle tracking and monitoring. No formal diagnosis yet.', reason: 'Self-reported approach' },
+    { icon: '', text: '21 days of daily health check-ins tracked — pattern data ready to review', reason: 'Self-reported health scores' },
+    { icon: '', text: 'Top correlating factors: stress (45%), poor sleep (25%), dietary patterns (10%)', reason: 'Context tags across check-ins' },
+    { icon: '', text: 'Lifestyle data captured across tracked days — ready for care team review', reason: 'AI-assisted health tracking' },
+    { icon: '', text: 'Current management: lifestyle tracking and monitoring. No formal diagnosis yet.', reason: 'Self-reported approach' },
   ],
   questions: [
     { text: 'Based on my tracking data and family history, what is your initial assessment of my cardiovascular risk?', reason: 'Pre-diagnosis exploration' },
@@ -611,7 +611,7 @@ export default function PreparePage() {
       <div className="pp-section">
         <div className="pp-ai-summary-card">
           <div className="pp-ai-summary-card__head">
-            <span className="pp-ai-summary-card__badge">✨ AI Summary</span>
+            <span className="pp-ai-summary-card__badge">AI Summary</span>
             <span className="pp-ai-summary-card__meta">For {dermName} · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
           </div>
           <p className="pp-ai-summary-card__lead">
@@ -708,7 +708,6 @@ export default function PreparePage() {
             const cMod = item.condition ? `--${item.condition.toLowerCase()}` : ''
             return (
               <div key={i} className="pp-q-row">
-                <div className={`pp-q-icon${cMod ? ` pp-q-icon${cMod}` : ''}`}>💡</div>
                 <div>
                   <div className="pp-q-text">{item.text}</div>
                   <div className="pp-q-reason">

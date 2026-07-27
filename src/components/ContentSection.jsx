@@ -3,7 +3,7 @@ import './ContentSection.css'
 import { HABIT_CONTENT as CONTENT } from '../data/habitContent'
 
 // ── Source logo abbreviation ───────────────────────────────────────────────────
-const TYPE_ICONS = { article: '📄', recipe: '🍽️', video: '▶' }
+const TYPE_ICONS = { article: '', recipe: '', video: '▶' }
 
 function readHabitIds() {
   try { return JSON.parse(localStorage.getItem('vitalistMyRituals2') || '[]') } catch { return [] }

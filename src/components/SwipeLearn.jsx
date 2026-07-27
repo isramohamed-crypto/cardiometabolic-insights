@@ -24,7 +24,6 @@ export default function SwipeLearn({ onLearnClick }) {
         {phase === 'next2' ? (
           <div className="swipe-learn__wrap swipe-learn__wrap--next">
             <div className="swipe-learn__next-card swipe-learn__next-card--placeholder">
-              <div className="swipe-learn__next-emoji">📊</div>
               <h2 className="swipe-learn__next-title">How lifestyle factors impact cardiometabolic risk</h2>
               <p className="swipe-learn__next-body">
                 An expert explains how stress, diet, sleep, and activity interact to accelerate or reduce cardiovascular and metabolic risk — and what the evidence says about each.
@@ -50,7 +49,6 @@ export default function SwipeLearn({ onLearnClick }) {
         ) : phase === 'next' ? (
           <div className="swipe-learn__wrap swipe-learn__wrap--next">
             <div className="swipe-learn__next-card">
-              <div className="swipe-learn__next-emoji">🫀</div>
               <h2 className="swipe-learn__next-title">3-minute breathing reset for blood pressure</h2>
               <p className="swipe-learn__next-body">
                 Slow, controlled breathing activates the parasympathetic nervous system and measurably lowers blood pressure in minutes. Used in cardiac rehab programs.

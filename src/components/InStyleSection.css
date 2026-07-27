@@ -49,16 +49,6 @@
   object-fit: cover;
 }
 
-.is-card__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(30, 18, 10, 0.05) 0%,
-    rgba(30, 18, 10, 0.35) 45%,
-    rgba(20, 12, 6, 0.88) 100%
-  );
-}
 
 .is-card__content {
   position: relative;
@@ -90,7 +80,6 @@
 
 .is-card__headline {
   font-family: var(--font-serif);
-  font-style: italic;
   font-weight: 700;
   font-size: 40px;
   color: var(--color-coconut);
@@ -126,7 +115,6 @@
   border-radius: var(--radius-md);
   padding: var(--space-4) var(--space-4);
   font-family: var(--font-serif);
-  font-style: italic;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.03em;

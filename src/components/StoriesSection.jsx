@@ -136,7 +136,7 @@ export default function StoriesSection({ onNavigate }) {
                 <div style={{ fontSize: 11, opacity: 0.7 }}>{s.detail}</div>
               </div>
             </div>
-            <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.45, fontStyle: 'italic', opacity: 0.95 }}>
+            <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.45, opacity: 0.95 }}>
               "{s.quote}"
             </div>
             <div style={{ fontSize: 12, lineHeight: 1.55, opacity: 0.75 }}>
@@ -147,7 +147,6 @@ export default function StoriesSection({ onNavigate }) {
               borderRadius: 10, padding: '10px 12px',
               display: 'flex', gap: 8, alignItems: 'flex-start',
             }}>
-              <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 600, lineHeight: 1.4 }}>{s.takeaway}</div>
                 <div style={{ fontSize: 11, opacity: 0.65, marginTop: 3 }}>{s.takeawaySub}</div>

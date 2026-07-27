@@ -79,7 +79,6 @@ export default function SettingsPage({ title, storageKey, sections, onClose, onN
               {sec.hint && <p className="sp-section-hint">{sec.hint}</p>}
               {contact && !contact.filled && (
                 <div className="sp-banner">
-                  <span className="sp-banner__icon">⚠️</span>
                   <span className="sp-banner__body">
                     <strong>No {sec.requiresContact.label} on file.</strong> {' '}
                     These settings won't deliver until you add one.
@@ -263,7 +262,7 @@ export const ACCOUNT_SECTIONS = [
   {
     id: 'login',
     label: 'Sign-in',
-    icon: '🔐',
+    icon: '',
     fields: [
       { id: 'email',    label: 'Email',    type: 'text', inputType: 'email', placeholder: 'you@email.com' },
       { id: 'phone',    label: 'Phone',    type: 'text', inputType: 'tel',   placeholder: '+1 555 555 5555' },
@@ -273,7 +272,7 @@ export const ACCOUNT_SECTIONS = [
   {
     id: 'privacy',
     label: 'Privacy & data',
-    icon: '🛡️',
+    icon: '',
     hint: 'Control how your data is used.',
     fields: [
       { id: 'data_share', label: 'Share anonymized data for research', type: 'toggle', hint: 'Helps improve eczema care for everyone. Can be turned off anytime.' },
@@ -286,7 +285,7 @@ export const NOTIFICATION_SECTIONS = [
   {
     id: 'push',
     label: 'Push notifications',
-    icon: '📱',
+    icon: '',
     hint: 'Reminders and updates pushed to your device.',
     fields: [
       { id: 'push_enabled',      label: 'Allow push notifications',      type: 'toggle' },
@@ -298,7 +297,7 @@ export const NOTIFICATION_SECTIONS = [
   {
     id: 'email',
     label: 'Email',
-    icon: '✉️',
+    icon: '',
     requiresContact: { storageKey: 'cardiometabolicAccount', field: 'email', label: 'email', navigateTo: 'account' },
     fields: [
       { id: 'email_digest', label: 'Weekly skin summary',    type: 'toggle' },
@@ -309,7 +308,7 @@ export const NOTIFICATION_SECTIONS = [
   {
     id: 'sms',
     label: 'SMS',
-    icon: '💬',
+    icon: '',
     requiresContact: { storageKey: 'cardiometabolicAccount', field: 'phone', label: 'phone', navigateTo: 'account' },
     fields: [
       { id: 'sms_reminders', label: 'Treatment reminders by text', type: 'toggle' },

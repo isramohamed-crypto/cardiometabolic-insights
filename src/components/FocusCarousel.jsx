@@ -179,7 +179,6 @@ function FirstRun({ name, primary, onSelect }) {
           alt="" draggable="false"
           onError={e => { e.currentTarget.style.display = 'none' }}
         />
-        <div className="fr-card__scrim" />
         <span className="fr-card__flag">{rec.source}</span>
         <div className="fr-card__txt">
           <h2 className="fr-card__hed">{rec.headline} <em>{rec.em}</em></h2>
@@ -229,7 +228,6 @@ function Reader({ content, habit, onClose }) {
       <div className="fc-reader__hero">
         <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
-        <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
         <div className="fc-reader__hero-txt">
           <span className="fc-reader__eye">{content.eye}</span>
@@ -329,7 +327,6 @@ function DailyView({ data, habit, onClose }) {
         <div className="fc-reader__hero">
           <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
           <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-          <div className="fc-reader__hero-scrim" />
           <button className="fc-reader__back" onClick={() => setPiece(null)} aria-label="Back">←</button>
           <div className="fc-reader__hero-txt">
             <span className="fc-reader__eye">{piece.tag}</span>
@@ -500,9 +497,6 @@ function Card({ habit, done, onDone, sources, onConnect, onRead, onDaily, width 
         <div className="fc-card__duotone" style={{ background: habit.bg }} />
         <div className="fc-card__motif" />
       </div>
-
-      {/* Bottom scrim */}
-      <div className="fc-card__scrim" />
 
       {/* Stacked cards over the image — habit + editorial, one connected unit */}
       <div className="fc-card__stack">

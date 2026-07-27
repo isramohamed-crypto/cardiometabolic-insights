@@ -100,7 +100,7 @@ export default function Breathe({ onClose }) {
 
         <div className={`breathe-orb${running ? ' run' : ''}`}>
           {done
-            ? <div className="breathe-phase">Done ✨</div>
+            ? <div className="breathe-phase">Done</div>
             : <>
                 <div className="breathe-phase">{timeLeft === TOTAL ? 'Ready' : phase.name}</div>
                 <div className="breathe-time">{fmt(timeLeft)}</div>
@@ -116,7 +116,7 @@ export default function Breathe({ onClose }) {
 
         {done && (
           <div className="breathe-fin">
-            <p>✨ Beautiful. Your cortisol just dropped. Your skin barrier thanks you.</p>
+            <p>Beautiful. Your cortisol just dropped. Your skin barrier thanks you.</p>
             <button className="breathe-btn" onClick={reset}>Do it again</button>
           </div>
         )}

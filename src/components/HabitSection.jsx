@@ -73,7 +73,7 @@ export default function HabitSection({ onOpenSheet }) {
     : 'rgba(255,255,255,0.15)'
 
   // Emoji shown inside the ring once earned
-  const ringEmoji = isPerfect ? '⭐' : isComeback ? '💪' : '🔥'
+  const ringEmoji = isPerfect ? '' : isComeback ? '' : ''
 
   function handleToggle(habitId) {
     const wasDone = completions.includes(habitId)
@@ -113,12 +113,12 @@ export default function HabitSection({ onOpenSheet }) {
           <div className="habit-section__badges">
             {isComeback && (
               <div className="habit-badge habit-badge--comeback">
-                <span>💪</span><span>Comeback</span>
+                <span>Comeback</span>
               </div>
             )}
             {streak > 0 && (
               <div className="habit-badge habit-badge--streak">
-                <span>🔥</span><span>{streak}d</span>
+                <span>{streak}d</span>
               </div>
             )}
           </div>
@@ -142,7 +142,7 @@ export default function HabitSection({ onOpenSheet }) {
           </div>
           <div className="habit-summary__sub">
             {isPerfect
-              ? '🎉 Perfect day!'
+              ? 'Perfect day!'
               : dayEarned && identity
                 ? `"${identity}"`
                 : dayEarned
@@ -183,7 +183,7 @@ export default function HabitSection({ onOpenSheet }) {
               </div>
               {(() => {
                 const hs = computeHabitStreak(habit.id)
-                if (hs >= 2) return <span className="habit-item__streak">🔥{hs}</span>
+                if (hs >= 2) return <span className="habit-item__streak">{hs}</span>
                 return null
               })()}
             </button>

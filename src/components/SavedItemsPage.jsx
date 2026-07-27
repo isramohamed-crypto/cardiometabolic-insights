@@ -5,7 +5,7 @@ import './SavedItemsPage.css'
 const VARIANT_META = {
   try:     { label: 'Tried',           dot: '✓' },
   save:    { label: 'Saved',           dot: '✓' },
-  helpful: { label: 'Found helpful',   dot: '♥' },
+  helpful: { label: 'Found helpful',   dot: '' },
 }
 
 function timeAgo(ts) {
@@ -47,7 +47,6 @@ export default function SavedItemsPage({ onClose }) {
       <main className="si-main">
         {sorted.length === 0 ? (
           <div className="si-empty">
-            <div className="si-empty__icon" aria-hidden>🔖</div>
             <h2 className="si-empty__title">Nothing here yet</h2>
             <p className="si-empty__body">
               Tap <strong>Mark as tried</strong>, <strong>Save</strong>, or <strong>Found this helpful</strong> on any tip,
