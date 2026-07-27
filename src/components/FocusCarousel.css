@@ -14,8 +14,9 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 50;
-  padding: 14px 22px 0;
+  padding: 14px 22px 12px;
   pointer-events: none;
+  background: #1BBC3C;
 }
 .fc-topbar * { pointer-events: auto; }
 

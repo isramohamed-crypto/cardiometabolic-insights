@@ -415,7 +415,7 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-lede">The thing that's been on your mind. Pick whatever fits.</p>
           <div className="eo-chips">
             {GAP.map(g => (
-              <span key={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
+              <span key={g.id} data-pillar={g.goalId} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
                 {g.emoji} {g.label}
               </span>
             ))}
