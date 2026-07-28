@@ -246,10 +246,12 @@
 .eo-checks { display:flex; flex-direction:column; gap:9px }
 .eo-copt { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--color-gray-10); border-radius:14px; padding:14px 15px; cursor:pointer; transition:all .15s; user-select:none }
 .eo-copt:hover { background:var(--color-warm-hover) }
-.eo-copt.on { background:#E3F8E8; border-color:#004620 }
+/* Selected: leaf outline, leaf checkbox, leaf label */
+.eo-copt.on { background:#E3F8E8; border-color:var(--color-leaf) }
+.eo-copt.on .eo-copt__label { color:var(--color-leaf) }
 .eo-copt__label { font:700 14.5px 'DM Sans'; color:#15151d; line-height:1.3 }
 .eo-cbox { width:24px; height:24px; border-radius:7px; background:#fff; border:1px solid var(--color-gray-10); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:800; transition:all .15s }
-.eo-cbox.on { background:#004620; border-color:#004620 }
+.eo-cbox.on { background:var(--color-leaf); border-color:var(--color-leaf) }
 
 /* ── Encouragement counter ───────────────────────────────────────────────── */
 .eo-cheer { display:flex; align-items:center; gap:7px; font:800 12px 'DM Sans'; color:#004620; margin:0 0 6px }
