@@ -291,6 +291,7 @@ function Reader({ content, habit, onClose }) {
         <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart habit={habit} piece={content} className="fc-save--reader" />
         <div className="fc-reader__hero-txt">
           <span className="fc-reader__eye">{content.eye}</span>
           <h1 className="fc-reader__hed">{content.hed}</h1>
@@ -445,6 +446,7 @@ function PieceReader({ piece, habit, onClose }) {
         <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart habit={habit} piece={piece} className="fc-save--reader" />
         <div className="fc-reader__hero-txt">
           {piece.tag && <span className="fc-reader__eye">{piece.tag}</span>}
           <h1 className="fc-reader__hed">{piece.hed}</h1>
