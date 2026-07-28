@@ -44,6 +44,7 @@ export default function HabitCard({
   const Tag = onClick ? 'button' : 'div'
 
   return (
+    <>
     <Tag
       className={`hcard hcard--${state} hcard--${size}`}
       style={gradient ? { background: gradient } : undefined}
@@ -92,36 +93,44 @@ export default function HabitCard({
         )}
 
         {why && onToggleWhy && (
-          <>
-            <button
-              className="hcard__whylink"
-              aria-expanded={whyOpen}
-              onClick={e => { e.stopPropagation(); onToggleWhy() }}
-            >
-              Why this works
-            </button>
-            {whyOpen && (
-              <div className="hcard__whybody">
-                <p className="hcard__whytext">{why}</p>
-                {article && (onReadArticle
-                  ? <button className="hcard__read" onClick={e => { e.stopPropagation(); onReadArticle() }}>
-                      <span className="hcard__readtxt">{source}: {article}</span>
-                      <span className="hcard__go">Read →</span>
-                    </button>
-                  : <p className="hcard__cite">{source}: {article}</p>)}
-              </div>
-            )}
-          </>
-        )}
-
-        {dots > 1 && (
-          <div className="hcard__dots" role="presentation">
-            {Array.from({ length: dots }, (_, i) => (
-              <span key={i} className={`hcard__dot${i === dotIndex ? ' on' : ''}`} />
-            ))}
-          </div>
+          <button
+            className="hcard__whylink"
+            aria-expanded={whyOpen}
+            onClick={e => { e.stopPropagation(); onToggleWhy() }}
+          >
+            Why this works
+          </button>
         )}
       </div>
+
+      {/* Why this works — drawer, pulls up from the bottom of the card */}
+      {why && onToggleWhy && whyOpen && (
+        <div className="hcard__drawer" onClick={e => e.stopPropagation()}>
+          <div className="hcard__drawer-handle" />
+          <p className="hcard__drawer-label">Why this works</p>
+          <p className="hcard__whytext">{why}</p>
+          {article && (onReadArticle
+            ? <button className="hcard__read" onClick={e => { e.stopPropagation(); onReadArticle() }}>
+                <span className="hcard__readtxt">{source}: {article}</span>
+                <span className="hcard__go">Read →</span>
+              </button>
+            : <p className="hcard__cite">{source}: {article}</p>)}
+          <button
+            className="hcard__drawer-close"
+            onClick={e => { e.stopPropagation(); onToggleWhy() }}
+          >
+            Close
+          </button>
+        </div>
+      )}
     </Tag>
+    {dots > 1 && (
+      <div className="hcard__dots" role="presentation">
+        {Array.from({ length: dots }, (_, i) => (
+          <span key={i} className={`hcard__dot${i === dotIndex ? ' on' : ''}`} />
+        ))}
+      </div>
+    )}
+    </>
   )
 }

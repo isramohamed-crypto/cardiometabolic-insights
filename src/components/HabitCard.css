@@ -85,14 +85,36 @@
   font:700 14px var(--font-body); color:rgba(255,255,255,.82); text-decoration:underline;
 }
 .hcard__whylink:hover { color:#fff }
-.hcard__whybody { margin:12px 0 0; padding-top:12px; border-top:1px solid rgba(255,255,255,.28) }
-.hcard__whytext { font:400 14px/1.5 var(--font-body); color:rgba(255,255,255,.88); margin:0 }
-.hcard__read { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; margin:10px 0 0; padding:0; border:none; background:none; cursor:pointer; font:700 12px var(--font-body); color:#fff }
-.hcard__readtxt { flex:1; min-width:0 }
-.hcard__go { font-weight:800; color:#fff; flex:none }
-.hcard__cite { display:flex; align-items:center; gap:10px; font:700 12px/1.4 var(--font-body); color:#fff; margin:8px 0 0 }
 
-/* ── Pager (unadopted, when several are offered) ── */
-.hcard__dots { display:flex; justify-content:center; gap:6px; margin:18px 0 0 }
-.hcard__dot { width:6px; height:6px; border-radius:999px; background:rgba(255,255,255,.45); transition:width .2s, background .2s }
-.hcard__dot.on { width:16px; background:#fff }
+/* Drawer — pulls up from the bottom of the card. Light sheet, so its contents
+   are ink-on-white rather than the white-on-photo used elsewhere on the card.
+   The card's overflow:hidden clips it to the 32px corners. */
+.hcard__drawer {
+  position:absolute; bottom:0; left:0; right:0; z-index:4;
+  background:var(--color-coconut);
+  border-radius:22px 22px 0 0;
+  padding:14px 20px 20px;
+  box-shadow:0 -12px 32px rgba(24,18,15,.18);
+  animation:hcardDrawerUp .28s cubic-bezier(.25,.46,.45,.94) both;
+  text-align:left;
+}
+@keyframes hcardDrawerUp { from { transform:translateY(100%) } to { transform:translateY(0) } }
+@media (prefers-reduced-motion: reduce) {
+  .hcard__drawer { animation:none }
+}
+.hcard__drawer-handle { width:36px; height:4px; border-radius:999px; background:var(--color-gray-10); margin:0 auto 16px }
+.hcard__drawer-label { font:800 11px var(--font-body); letter-spacing:.12em; text-transform:uppercase; color:var(--color-leaf); margin:0 0 8px }
+.hcard__whytext { font:400 14px/1.55 var(--font-body); color:var(--color-ink); margin:0 }
+.hcard__read { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; margin:12px 0 0; padding:12px 0 0; border:none; border-top:1px solid var(--color-gray-10); background:none; cursor:pointer; font:700 12px var(--font-body); color:var(--color-ink) }
+.hcard__readtxt { flex:1; min-width:0 }
+.hcard__go { font-weight:800; color:var(--color-leaf); flex:none }
+.hcard__cite { display:flex; align-items:center; gap:10px; font:700 12px/1.4 var(--font-body); color:var(--color-muted); margin:12px 0 0; padding:12px 0 0; border-top:1px solid var(--color-gray-10) }
+.hcard__drawer-close { margin-top:16px; width:100%; background:none; border:1px solid var(--color-gray-10); border-radius:999px; padding:12px; font:700 14px var(--font-body); color:var(--color-muted); cursor:pointer }
+.hcard__drawer-close:hover { background:var(--color-warm-hover); color:var(--color-ink) }
+
+/* ── Pager — now sits below the card, on the page ── */
+/* No top margin: the pager is a sibling of the card now, and its parent
+   (.eo-body) already supplies the gap. */
+.hcard__dots { display:flex; justify-content:center; gap:6px; margin:0; flex:none }
+.hcard__dot { width:6px; height:6px; border-radius:999px; background:rgba(0,0,0,.18); transition:width .2s, background .2s }
+.hcard__dot.on { width:16px; background:var(--color-leaf) }
