@@ -71,20 +71,39 @@
 .fc-slot__label { font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: -.01em; color: var(--color-muted); margin: 0; }
 .fc-slot__sub { font: 600 13px/1.4 var(--font-body); color: var(--color-ghost); margin: 0; max-width: 26ch; }
 
-/* ── Habit detail (opened from the list) ─────────────────────────────────── */
-.fc-detail { position: fixed; inset: 0; z-index: 800; background: var(--color-coconut); animation: fcReaderIn .28s cubic-bezier(.25,.46,.45,.94) both; }
-.fc-detail .fc-card { position: absolute; inset: 0; width: 100% !important; height: 100%; }
-.fc-detail__back { position: fixed; top: 14px; left: 14px; z-index: 820; width: 38px; height: 38px; border-radius: 50%; background: rgba(20,16,14,.55); border: 1px solid rgba(255,255,255,.25); color: #fff; font-size: 18px; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+/* ── Habit detail (opened from the list) ──────────────────────────────────
+   A popup, not a takeover: scrim + centred panel. */
+.fc-detail {
+  position: fixed; inset: 0; z-index: 800;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+  background: rgba(0,32,14,.55);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  animation: fcScrimIn .2s ease-out both;
+}
+@keyframes fcScrimIn { from { opacity: 0 } to { opacity: 1 } }
+.fc-detail__panel {
+  position: relative;
+  width: 100%; max-width: 460px;
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: var(--color-coconut);
+  border: 1px solid var(--color-gray-10);
+  border-radius: 32px;
+  box-shadow: 0 24px 64px rgba(0,32,14,.28);
+  animation: fcReaderIn .28s cubic-bezier(.25,.46,.45,.94) both;
+}
+/* Close sits inside the panel, so absolute rather than fixed */
+.fc-detail__back { position: absolute; top: 14px; right: 14px; z-index: 820; width: 38px; height: 38px; border-radius: 50%; background: rgba(20,16,14,.55); border: 1px solid rgba(255,255,255,.25); color: #fff; font-size: 15px; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 
-/* Detail scrolls so all inline content is reachable; image becomes a hero */
-.fc-detail { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-.fc-detail .fc-card { position: relative; inset: auto; height: auto !important; min-height: 100%; }
-/* `inset: auto` must come FIRST — as a shorthand it resets top/left/right,
-   so trailing it collapsed the hero to zero width and it never painted. */
+.fc-detail .fc-card { position: relative; inset: auto; width: 100% !important; height: auto !important; min-height: 0; }
+/* Hero is a fixed slice of the panel now, not a slice of the viewport — vh
+   would size against the window and overflow a popup.
+   `inset: auto` must come FIRST: as a shorthand it resets top/left/right. */
 .fc-detail .fc-card__bg,
 .fc-detail .fc-card__editorial,
-.fc-detail .fc-card__scrim { position: absolute; inset: auto; top: 0; left: 0; right: 0; height: 62vh; bottom: auto; }
-.fc-detail .fc-card__stack { margin-top: 44vh; padding-bottom: 128px; }
+.fc-detail .fc-card__scrim { position: absolute; inset: auto; top: 0; left: 0; right: 0; height: 300px; bottom: auto; }
+.fc-detail .fc-card__stack { margin-top: 210px; padding-bottom: 24px; }
 
 /* Surfaced article previews (with imagery) — under the habit card, tap to read */
 .fc-articles { display: flex; flex-direction: column; gap: 10px; }

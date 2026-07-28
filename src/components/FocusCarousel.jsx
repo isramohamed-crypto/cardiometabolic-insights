@@ -943,6 +943,12 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [addFlow, setAddFlow]   = useState(false)
   const [addPick, setAddPick]   = useState(null)
   const [openHabit, setOpenHabit] = useState(null)
+  useEffect(() => {
+    if (!openHabit) return
+    const onKey = e => { if (e.key === 'Escape') setOpenHabit(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [openHabit])
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
@@ -1121,8 +1127,15 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
 
       {/* Habit detail — full card with all its content, opened from the list */}
       {openHabit && (
-        <div className="fc-detail">
-          <button className="fc-detail__back" onClick={() => setOpenHabit(null)} aria-label="Back">←</button>
+        <div
+          className="fc-detail"
+          role="dialog"
+          aria-modal="true"
+          aria-label={openHabit.label}
+          onClick={() => setOpenHabit(null)}
+        >
+          <div className="fc-detail__panel" onClick={e => e.stopPropagation()}>
+          <button className="fc-detail__back" onClick={() => setOpenHabit(null)} aria-label="Close">✕</button>
           <Card
             habit={openHabit}
             width={vw}
@@ -1134,6 +1147,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             onUpdateHabit={updateHabit}
             onRetireHabit={retireHabit}
           />
+          </div>
         </div>
       )}
 
