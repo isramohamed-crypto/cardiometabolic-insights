@@ -6,7 +6,7 @@ const daysAgo = n => new Date(Date.now() - n * 86400000).toISOString().slice(0, 
 const walk = (addedAt, status, tier) => ({
   id: 'walk_habit', goalId: 'move', label: 'Walk for 10 minutes after a meal',
   bg: 'linear-gradient(155deg,#8a7565 0%,#4a3b32 72%)', source: 'EatingWell',
-  anchor: 'After a meal', status, tier, addedAt,
+  anchor: 'After dinner', status, tier, addedAt,
 })
 
 // The "already doing" foundation she claimed in onboarding (established)

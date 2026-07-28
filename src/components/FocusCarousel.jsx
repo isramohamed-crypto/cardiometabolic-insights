@@ -63,6 +63,10 @@ function writeSources(s) {
   try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
 }
 const WatchIcon = <i className="fa-solid fa-stopwatch" aria-hidden="true" />
+// Reminder / notification set icon
+const BellIcon = <i className="fa-solid fa-bell" aria-hidden="true" />
+// Step-counter / tracker connected icon (footsteps)
+const StepsIcon = <i className="fa-solid fa-shoe-prints" aria-hidden="true" />
 // AI indicator glyph (sparkles) — no emoji
 const SparkIcon = <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />
 
@@ -696,33 +700,29 @@ function MyHabitsSection({ habits, done, onToggleDone }) {
   )
 }
 
-// Vertical habit card (list preview) — tap to open its detail. No check-off here.
-function VHabitCard({ habit, done, onOpen }) {
-  const trial = habit.status === 'trial' || habit.status === 'adopted'
-  const day   = Math.min(dayOf(habit), 7)
+// Full-bleed habit card (list preview) — tap to open its detail. No check-off here.
+function VHabitCard({ habit, done, onOpen, sources = [] }) {
+  const trial     = habit.status === 'trial' || habit.status === 'adopted'
+  const day       = Math.min(dayOf(habit), 7)
+  const eyebrow   = done ? 'Done today' : (trial ? `Day ${day} of 7` : streakLabel(habit))
+  const wearable  = WEARABLE[habit.goalId]
+  const connected = wearable && sources.includes(wearable.source)
+  const when      = `${habit.anchor || 'After dinner'} · 7:30pm`
   return (
     <button className="fc-vcard" onClick={onOpen}>
-      <div className="fc-vcard__img" style={{ background: habit.bg }}>
-        <img src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-        <div className="fc-vcard__duo" style={{ background: habit.bg }} />
+      <img className="fc-vcard__img" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
+      <div className="fc-vcard__duo" style={{ background: habit.bg }} />
+      <div className="fc-vcard__scrim" />
+      <span className={`fc-vcard__pill${trial ? '' : ' kept'}`}>{trial ? 'Trial' : 'Kept'}</span>
+      <div className="fc-vcard__ind">
+        <span className="fc-vcard__ind-chip" title="Reminder set" aria-label="Reminder set">{BellIcon}</span>
+        {connected && <span className="fc-vcard__ind-chip on" title={`${wearable.label} connected`} aria-label={`${wearable.label} connected`}>{StepsIcon}</span>}
       </div>
-      <div className="fc-vcard__body">
-        <span className={`fc-vcard__badge${trial ? '' : ' kept'}`}>{trial ? 'Trial' : 'Kept'}</span>
+      <div className="fc-vcard__content">
+        <span className={`fc-vcard__eyebrow${done ? ' done' : ''}`}>{eyebrow}</span>
         <p className="fc-vcard__label">{habit.label}</p>
-        {trial ? (
-          <div className="fc-vcard__trial">
-            <div className="fc-dots" aria-hidden="true">
-              {Array.from({ length: 7 }).map((_, i) => (
-                <span key={i} className={`fc-dot${i < day ? ' on' : ''}`} />
-              ))}
-            </div>
-            <span className="fc-vcard__meta">{done ? 'Done today · ' : ''}Day {day} of 7</span>
-          </div>
-        ) : (
-          <p className="fc-vcard__meta">{done ? 'Done today' : streakLabel(habit)}</p>
-        )}
+        <p className="fc-vcard__anchor">{when}</p>
       </div>
-      <span className="fc-vcard__chev" aria-hidden="true">›</span>
     </button>
   )
 }
@@ -955,6 +955,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
               key={h.id}
               habit={h}
               done={done.includes(h.id)}
+              sources={sources}
               onOpen={() => setOpenHabit(h)}
             />
           ))}
