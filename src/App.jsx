@@ -314,7 +314,7 @@ export default function App() {
   const openMenu = () => setMenuOpen(true)
 
   return (
-    <div className={`exp-app${activePage === 'Building' ? ' dark-nav' : ''}`}>
+    <div className="exp-app">
       <div className="exp-page" key={dataVersion}>
         {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={openMenu} />}
         {activePage === 'Read'     && <><AppHeader onMenu={openMenu} /><ReadPage /></>}

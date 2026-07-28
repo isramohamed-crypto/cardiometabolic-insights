@@ -68,7 +68,6 @@ body {
   opacity: 1;
   animation: navDotPulse 1.6s ease-in-out infinite;
 }
-.exp-app.dark-nav .exp-bottom-nav__dot { border-color: rgba(15,12,10,0.82); }
 @keyframes navDotPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.25); }
