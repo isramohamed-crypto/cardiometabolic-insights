@@ -258,12 +258,13 @@
 .eo-cheer__dot { width:8px; height:8px; border-radius:2px; background:#004620 }
 
 /* ── Foundation summary ──────────────────────────────────────────────────── */
-.eo-found { border:1px solid var(--color-gray-10); border-radius:16px; padding:2px 16px; background:#fff; margin-top:4px }
-.eo-found__group { padding:13px 0; border-top:1px solid #efe8dd }
-.eo-found__group:first-child { border-top:none }
-.eo-found__label { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#004620; margin:0 0 6px }
-.eo-found__item { display:flex; align-items:center; gap:8px; font:600 14px 'DM Sans'; color:#15151d; margin:5px 0 }
-.eo-found__dot { width:8px; height:8px; border-radius:2px; background:#004620; flex-shrink:0 }
+/* Stacked cards, same geometry as the .eo-checks option rows */
+.eo-found { display:flex; flex-direction:column; gap:9px; margin-top:4px }
+.eo-found__group { background:#fff; border:1px solid var(--color-gray-10); border-radius:14px; padding:14px 15px }
+.eo-found__label { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:var(--color-leaf); margin:0 0 8px }
+.eo-found__item { display:flex; align-items:center; gap:12px; font:700 14.5px 'DM Sans'; color:#15151d; line-height:1.3; margin:6px 0 }
+.eo-found__item:last-child { margin-bottom:0 }
+.eo-found__dot { width:8px; height:8px; border-radius:2px; background:var(--color-leaf); flex-shrink:0 }
 
 /* ── Starting-line question meta ─────────────────────────────────────────── */
 .eo-dimmeta { font:800 11px 'DM Sans'; letter-spacing:.1em; text-transform:uppercase; color:#8b8b90; margin:-8px 0 2px }
