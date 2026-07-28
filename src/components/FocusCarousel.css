@@ -81,7 +81,9 @@
 .fc-detail .fc-card { position: relative; inset: auto; height: auto !important; min-height: 100%; }
 .fc-detail .fc-card__bg,
 .fc-detail .fc-card__editorial,
-.fc-detail .fc-card__scrim { position: absolute; top: 0; left: 0; right: 0; height: 62vh; bottom: auto; inset: auto; }
+/* `inset: auto` must come FIRST — as a shorthand it resets top/left/right,
+   so trailing it here collapsed the hero to zero width and it never painted. */
+.fc-detail .fc-card__scrim { position: absolute; inset: auto; top: 0; left: 0; right: 0; height: 62vh; bottom: auto; }
 .fc-detail .fc-card__stack { margin-top: 44vh; padding-bottom: 128px; }
 
 /* Surfaced article previews (with imagery) — under the habit card, tap to read */
