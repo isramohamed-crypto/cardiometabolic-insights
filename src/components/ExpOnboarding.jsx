@@ -452,8 +452,8 @@ export default function ExpOnboarding({ onComplete }) {
             const g = GAP.find(x => x.id === id)
             return (
               <div key={id} className={`eo-opt${primary === id ? ' on' : ''}`} onClick={() => setPrimary(id)}>
-                <div className="txt"><b>{g.label}</b></div>
                 <span className={`eo-radio${primary === id ? ' on' : ''}`} />
+                <div className="txt"><b>{g.label}</b></div>
               </div>
             )
           })}
@@ -485,8 +485,8 @@ export default function ExpOnboarding({ onComplete }) {
             <h2 className="eo-q">{q.q}</h2>
             {q.options.map((o, oi) => (
               <div key={oi} className={`eo-opt${chosen === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [dimStep]: oi }))}>
-                <div className="txt"><b>{optLabel(o)}</b>{optSub(o) && <span>{optSub(o)}</span>}</div>
                 <span className={`eo-radio${chosen === oi ? ' on' : ''}`} />
+                <div className="txt"><b>{optLabel(o)}</b>{optSub(o) && <span>{optSub(o)}</span>}</div>
               </div>
             ))}
             <div className="eo-spacer" />
