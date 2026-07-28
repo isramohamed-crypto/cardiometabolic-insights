@@ -3,7 +3,7 @@
   position: relative;
   width: 100%;
   height: 100dvh;
-  background: #15151d;
+  background: var(--color-coconut);
   font-family: 'DM Sans', sans-serif;
   overflow: hidden;
   user-select: none;
@@ -59,32 +59,32 @@
 }
 
 /* ── Vertical habit list + slots ─────────────────────────────────────────── */
-.fc-vlist__label { font: 800 12px 'DM Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); margin: 0 0 12px; padding: 0 4px; }
+.fc-vlist__label { font: 800 12px 'DM Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--color-muted); margin: 0 0 12px; padding: 0 4px; }
 .fc-vlist { display: flex; flex-direction: column; gap: 14px; }
-.fc-vcard { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 16px; cursor: pointer; text-align: left; transition: background .15s; -webkit-tap-highlight-color: transparent; }
-.fc-vcard:hover { background: rgba(255,255,255,.11); }
+.fc-vcard { display: flex; align-items: center; gap: 16px; background: #fff; border: 1px solid var(--color-warm-border); border-radius: 22px; padding: 16px; cursor: pointer; text-align: left; transition: background .15s; -webkit-tap-highlight-color: transparent; }
+.fc-vcard:hover { background: var(--color-warm-hover); }
 .fc-vcard__img { position: relative; width: 112px; height: 112px; border-radius: 16px; overflow: hidden; flex-shrink: 0; }
 .fc-vcard__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.28) contrast(1.05) brightness(.9); }
 .fc-vcard__duo { position: absolute; inset: 0; mix-blend-mode: soft-light; opacity: .9; }
 .fc-vcard__body { flex: 1; min-width: 0; }
-.fc-vcard__badge { display: inline-block; font: 800 9.5px 'DM Sans', sans-serif; letter-spacing: .09em; text-transform: uppercase; color: #bcd0ea; background: rgba(157,180,214,.16); border: 1px solid rgba(157,180,214,.32); border-radius: 999px; padding: 3px 9px; margin-bottom: 8px; }
-.fc-vcard__badge.kept { color: #8fe6b6; background: rgba(126,232,178,.14); border-color: rgba(126,232,178,.35); }
-.fc-vcard__label { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.015em; line-height: 1.15; color: #fff; margin: 0; }
-.fc-vcard__meta { font: 600 13.5px 'DM Sans', sans-serif; color: rgba(255,255,255,.6); margin: 6px 0 0; }
+.fc-vcard__badge { display: inline-block; font: 800 9.5px 'DM Sans', sans-serif; letter-spacing: .09em; text-transform: uppercase; color: #1b2a4a; background: var(--color-chip-bg); border: 1px solid var(--color-chip-border); border-radius: 999px; padding: 3px 9px; margin-bottom: 8px; }
+.fc-vcard__badge.kept { color: var(--color-seaweed); background: #E3F8E8; border-color: #C7EAD0; }
+.fc-vcard__label { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.015em; line-height: 1.15; color: var(--color-ink); margin: 0; }
+.fc-vcard__meta { font: 600 13.5px 'DM Sans', sans-serif; color: var(--color-muted); margin: 6px 0 0; }
 .fc-vcard__trial { margin: 8px 0 0; }
 .fc-dots { display: flex; gap: 5px; margin-bottom: 5px; }
-.fc-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.18); }
+.fc-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.14); }
 .fc-dot.on { background: #9db4d6; }
 .fc-vcard__trial .fc-vcard__meta { margin: 0; }
-.fc-vcard__chev { flex-shrink: 0; font-size: 28px; line-height: 1; color: rgba(255,255,255,.4); }
+.fc-vcard__chev { flex-shrink: 0; font-size: 28px; line-height: 1; color: var(--color-ghost); }
 
 /* Bigger, grayed "your next habit" slot */
-.fc-slot { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; border: 1.5px dashed rgba(255,255,255,.22); border-radius: 22px; padding: 34px 24px; background: none; width: 100%; color: inherit; cursor: default; }
+.fc-slot { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; border: 1.5px dashed rgba(0,0,0,.18); border-radius: 22px; padding: 34px 24px; background: none; width: 100%; color: inherit; cursor: default; }
 .fc-slot--open { cursor: pointer; }
-.fc-slot--open:hover { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.03); }
-.fc-slot__mark { width: 56px; height: 56px; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.32); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 300; color: rgba(255,255,255,.5); margin-bottom: 4px; }
-.fc-slot__label { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.01em; color: rgba(255,255,255,.6); margin: 0; }
-.fc-slot__sub { font: 600 13px/1.4 'DM Sans', sans-serif; color: rgba(255,255,255,.42); margin: 0; max-width: 26ch; }
+.fc-slot--open:hover { border-color: rgba(0,0,0,.3); background: rgba(0,0,0,.02); }
+.fc-slot__mark { width: 56px; height: 56px; border-radius: 50%; border: 1.5px dashed rgba(0,0,0,.24); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 300; color: var(--color-muted); margin-bottom: 4px; }
+.fc-slot__label { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.01em; color: var(--color-muted); margin: 0; }
+.fc-slot__sub { font: 600 13px/1.4 'DM Sans', sans-serif; color: var(--color-ghost); margin: 0; max-width: 26ch; }
 
 /* ── Habit detail (opened from the list) ─────────────────────────────────── */
 .fc-detail { position: fixed; inset: 0; z-index: 800; background: #15151d; animation: fcReaderIn .28s cubic-bezier(.25,.46,.45,.94) both; }
@@ -1059,7 +1059,7 @@
   justify-content: center;
   min-height: 100dvh;
   padding: 40px 32px;
-  background: #1b2a4a;
+  background: var(--color-coconut);
   text-align: center;
   gap: 16px;
 }
@@ -1067,10 +1067,10 @@
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
   font-size: 26px;
-  color: #fff;
+  color: var(--color-ink);
   margin: 0;
 }
-.fc-empty__body { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.5; margin: 0; }
+.fc-empty__body { font-size: 15px; color: var(--color-muted); line-height: 1.5; margin: 0; }
 .fc-empty__btn {
   background: #9db4d6;
   color: #1b2a4a;
