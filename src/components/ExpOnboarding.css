@@ -57,26 +57,17 @@
 .eo-chip {
   display:inline-flex; align-items:center; gap:8px;
   background:#fff; border:1px solid var(--color-gray-10); border-radius:999px;
-  padding:13px 19px; font:700 17px var(--font-body); color:#15151d;
+  padding:13px 19px; font:700 17px var(--font-body); color:var(--color-ink);
   cursor:pointer; transition:all .15s; user-select:none;
 }
 .eo-chip i { font-size:15px; color:var(--color-muted) }
-.eo-chip.on i { color:inherit }
 .eo-chip:hover { background:var(--color-warm-hover) }
-.eo-chip.on { background:#fff; border-color:#1b2a4a; color:#1b2a4a }
-.eo-chip.more { background:#fff; border:1px dashed var(--color-gray-10); color:#1b2a4a }
-
-/* ── Pillar chip colors — bright palette ────────────────────────────────── */
-.eo-chip.on[data-pillar="move"]    { background:var(--color-leaf);        border-color:var(--color-leaf);        color:var(--color-ink) }
-.eo-chip.on[data-pillar="eat"]     { background:var(--color-tangerine);   border-color:var(--color-tangerine);   color:var(--color-ink) }
-.eo-chip.on[data-pillar="strong"]  { background:var(--color-green-apple); border-color:var(--color-green-apple); color:var(--color-ink) }
-.eo-chip.on[data-pillar="sleep"]   { background:var(--color-blueberry);   border-color:var(--color-blueberry);   color:#fff }
-.eo-chip.on[data-pillar="stress"]  { background:var(--color-plum);        border-color:var(--color-plum);        color:var(--color-ink) }
-.eo-chip.on[data-pillar="connect"] { background:var(--color-mineral);     border-color:var(--color-mineral);     color:var(--color-ink) }
-.eo-chip.on[data-pillar="phone"]   { background:var(--color-mineral);     border-color:var(--color-mineral);     color:var(--color-ink) }
-.eo-chip.on[data-pillar="meds"]    { background:var(--color-watermelon);  border-color:var(--color-watermelon);  color:#fff }
-.eo-chip.on[data-pillar="appt"]    { background:var(--color-tangerine);   border-color:var(--color-tangerine);   color:var(--color-ink) }
-.eo-chip.on[data-pillar="screen"]  { background:var(--color-guava);       border-color:var(--color-guava);       color:var(--color-ink) }
+/* Selected: same rule as .eo-copt / .eo-cbox — white fill, leaf outline,
+   leaf label, and the icon follows the label. */
+.eo-chip.on { background:#fff; border-color:var(--color-leaf); color:var(--color-leaf) }
+.eo-chip.on i { color:inherit }
+.eo-chip.more { background:#fff; border:1px dashed var(--color-gray-10); color:var(--color-ink) }
+.eo-chip.more.on { border-style:solid; border-color:var(--color-leaf); color:var(--color-leaf) }
 /* Single-select rows — identical to .eo-copt / .eo-cbox, with a round mark */
 .eo-opt {
   display:flex; align-items:center; gap:12px;
