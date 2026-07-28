@@ -172,8 +172,8 @@
   gap: 14px;
   padding: 14px 16px;
   border-radius: 14px;
-  border: 2px solid transparent;
-  background: var(--color-bg);
+  border: 1px solid var(--color-gray-10);
+  background: #fff;
   cursor: pointer;
   transition: all .18s;
   text-align: left;
@@ -214,7 +214,7 @@
   width: 24px;
   height: 24px;
   border-radius: 9999px;
-  border: 2px solid var(--color-border);
+  border: 1px solid var(--color-gray-10);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -223,6 +223,7 @@
   color: #fff;
   font-size: 12px;
   font-weight: 700;
+  background: #fff;
 }
 
 .ob-opt--sel .ob-opt__check {
@@ -252,8 +253,8 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--color-text-primary);
-  background: var(--color-bg);
-  border: 2px solid transparent;
+  background: #fff;
+  border: 1px solid var(--color-gray-10);
   border-radius: 14px;
   outline: none;
   font-family: inherit;
@@ -280,8 +281,8 @@
   gap: 6px;
   padding: 9px 14px;
   border-radius: 9999px;
-  background: var(--color-bg);
-  border: 1.5px solid transparent;
+  background: #fff;
+  border: 1px solid var(--color-gray-10);
   font-size: 13px;
   font-weight: 500;
   color: var(--color-text-primary);
@@ -307,12 +308,12 @@
 
 /* "Show more / Show less" toggle chip — distinguished from selectable topics */
 .ob-chip--more {
-  background: transparent;
-  border: 1.5px dashed var(--color-border);
+  background: #fff;
+  border: 1px dashed var(--color-gray-10);
   color: var(--color-teal);
   font-weight: 600;
 }
-.ob-chip--more:hover { background: var(--color-bg) }
+.ob-chip--more:hover { background: var(--color-warm-hover) }
 
 .ob-q-count {
   margin: 14px 0 0;
@@ -397,7 +398,7 @@
   font-weight: 600;
   background: #fff;
   color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-gray-10);
   cursor: pointer;
   font-family: inherit;
   transition: opacity .15s;
