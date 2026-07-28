@@ -527,7 +527,9 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-eye">A place to start · {CAT_LABEL[card.goalId] || 'For you'}</p>
           <h2 className="eo-q" style={{ fontSize: 20 }}>Here's one small thing to try.</h2>
 
-          <div className="eo-hcard" style={{ background: GRAD[card.goalId] }}>
+          {/* Unadopted: offered during onboarding, still has an "Add this habit" CTA.
+              Shows the pillar kicker, image, title, subtitle and the why-link — no brand flag. */}
+          <div className="eo-hcard eo-hcard--unadopted" style={{ background: GRAD[card.goalId] }}>
             <img className="eo-hcard__photo" src={photo(card)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
             <div className="eo-hcard__duotone" style={{ background: GRAD[card.goalId] }} />
             <div className="eo-hcard__veil" />

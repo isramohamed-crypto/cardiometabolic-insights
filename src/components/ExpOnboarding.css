@@ -174,8 +174,15 @@
 .eo-topbar-fill { height:100%; background:#004620; border-radius:999px; transition:width .4s cubic-bezier(.25,.46,.45,.94) }
 
 /* ── Habit suggestion card (mid-onboarding) ──────────────────────────────── */
-/* Single full-bleed photo card — pill + kicker top-left, copy anchored bottom.
-   Geometry from Figma node 1154:1829. */
+/* ── Habit card (eo-hcard) ────────────────────────────────────────────────────
+   Single full-bleed photo card — copy anchored bottom. Geometry from Figma
+   node 1154:1829.
+
+   States (modifier on .eo-hcard):
+     --unadopted  Offered during onboarding; carries an "Add this habit" CTA.
+                  Shows the pillar kicker, background image, title, subtitle
+                  and the "Why this works" expand link. No brand flag.
+   ------------------------------------------------------------------------- */
 .eo-hcard {
   position:relative; flex:1 1 auto; min-height:0;
   display:flex; flex-direction:column; justify-content:flex-end;
@@ -195,6 +202,9 @@
 
 .eo-hcard__top { position:relative; z-index:2; display:flex; flex-direction:column; align-items:flex-start; gap:8px }
 .eo-hcard__flag { flex:none; background:#fff; color:var(--color-seaweed); border-radius:999px; padding:5px 12px; font:700 11px 'DM Sans'; letter-spacing:.06em }
+/* Unadopted cards don't carry the brand — the source is still named in the
+   "Read →" row inside Why this works. */
+.eo-hcard--unadopted .eo-hcard__flag { display:none }
 .eo-hcard__kicker { font:700 11px 'DM Sans'; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.85) }
 
 .eo-hcard__foot { position:relative; z-index:2; margin-top:auto; text-align:left }
