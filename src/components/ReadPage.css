@@ -407,3 +407,40 @@
   transition: background .15s;
 }
 .rd-detail__read-full:hover { background: var(--color-ink); }
+
+/* ── Save for later (inside a piece of content) ───────────────────────────── */
+.rd-detail__save {
+  position: absolute;
+  /* shares the back button's baseline */
+  top: 52px; right: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 700 13px var(--font-body);
+  color: #fff;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: background .15s;
+}
+.rd-detail__save:hover { background: rgba(255,255,255,.26); }
+.rd-detail__save.on { background: #fff; border-color: #fff; color: var(--color-seaweed); }
+
+/* Remove control on a Favorites row */
+.rp-fav__remove {
+  flex-shrink: 0;
+  align-self: center;
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  background: none;
+  border: 1px solid var(--color-gray-10);
+  color: var(--color-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.rp-fav__remove:hover { background: var(--color-warm-hover); color: var(--color-ink); }

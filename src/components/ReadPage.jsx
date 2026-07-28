@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSavedItems } from '../context/SavedItemsContext'
 import './ReadPage.css'
 
 // ── Real article content keyed to habits ─────────────────────────────────
@@ -320,11 +321,35 @@ function openURL(url) {
 }
 
 // ── Article detail ────────────────────────────────────────────────────────
+// Saved-item helpers. The full article rides along so the Favorites list can
+// reopen it without looking it back up.
+function savedIdFor(article) { return `read:${article.id}` }
+function savedItemFor(article) {
+  return {
+    id: savedIdFor(article),
+    title: article.hed,
+    source: article.source,
+    variant: 'save',
+    article,
+  }
+}
+
 function ArticleDetail({ article, onClose }) {
+  const { isMarked, toggle } = useSavedItems()
+  const saved = isMarked(savedIdFor(article))
   return (
     <div className="rd-detail">
       <div className="rd-detail__header" style={{ background: article.bg }}>
         <button className="rd-detail__back" onClick={onClose}>‹ Read</button>
+        <button
+          className={`rd-detail__save${saved ? ' on' : ''}`}
+          onClick={() => toggle(savedItemFor(article))}
+          aria-pressed={saved}
+          aria-label={saved ? 'Remove from favorites' : 'Save for later'}
+        >
+          <i className={saved ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'} aria-hidden="true" />
+          {saved ? 'Saved' : 'Save for later'}
+        </button>
         <div className="rd-detail__header-body">
           <p className="rd-detail__flag">{article.source}</p>
           <h1 className="rd-detail__hed">{article.hed}</h1>
@@ -358,6 +383,10 @@ function ArticleDetail({ article, onClose }) {
 // ── Main component ────────────────────────────────────────────────────────
 export default function ReadPage() {
   const [openArticle, setOpenArticle] = useState(null)
+  const { items, remove } = useSavedItems()
+  const favorites = items
+    .filter(it => it.variant === 'save' && String(it.id).startsWith('read:'))
+    .sort((a, b) => (b.markedAt || 0) - (a.markedAt || 0))
   const habits = readActiveHabits()
   const matchedArticles = getMatchedArticles(habits)
   const feature = matchedArticles[0] || GENERAL_ARTICLES[0]
@@ -374,6 +403,34 @@ export default function ReadPage() {
         <p className="rp-header__eye">Vitalist</p>
         <h1 className="rp-header__title">Read</h1>
       </div>
+
+      {/* Favorites — saved from inside a piece of content */}
+      {favorites.length > 0 && (
+        <>
+          <p className="rp-section-label">Favorites</p>
+          <div className="rp-list">
+            {favorites.map(it => (
+              <div key={it.id} className="rp-list-item" onClick={() => it.article && setOpenArticle(it.article)}>
+                <div className="rp-list-item__thumb" style={{ background: it.article?.bg }}>
+                  <i className={it.article?.icon || 'fa-solid fa-bookmark'} aria-hidden="true" />
+                </div>
+                <div className="rp-list-item__body">
+                  <p className="rp-list-item__eye">{it.source}</p>
+                  <h3 className="rp-list-item__hed">{it.title}</h3>
+                  <p className="rp-list-item__meta">{it.article?.readTime}</p>
+                </div>
+                <button
+                  className="rp-fav__remove"
+                  onClick={e => { e.stopPropagation(); remove(it.id) }}
+                  aria-label={`Remove ${it.title} from favorites`}
+                >
+                  <i className="fa-solid fa-xmark" aria-hidden="true" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Feature — habit-matched */}
       {feature && (
