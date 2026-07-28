@@ -432,7 +432,7 @@
   align-items: center;
   gap: 3px;
   flex-shrink: 0;
-  color: #b7442c;
+  color: var(--color-leaf);
   font-weight: 900;
   font-size: 10px;
   letter-spacing: .1em;
@@ -688,7 +688,7 @@
 .fc-daily__eye { font: 800 11px 'DM Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.8); margin: 0 0 6px; }
 .fc-daily__hed { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -.02em; color: #fff; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,.4); }
 .fc-daily__reinforce { background: #f3ece3; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
-.fc-daily__rlabel { font: 800 10.5px 'DM Sans', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #b7442c; margin: 0 0 6px; }
+.fc-daily__rlabel { font: 800 10.5px 'DM Sans', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--color-leaf); margin: 0 0 6px; }
 .fc-daily__rh { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 19px; letter-spacing: -.01em; color: #15151d; margin: 0 0 6px; }
 .fc-daily__rb { font: 400 14px/1.5 'DM Sans', sans-serif; color: #5b5b62; margin: 0; }
 .fc-daily__piece { display: block; width: 100%; text-align: left; position: relative; background: #fff; border: 1px solid #e7ded2; border-radius: 16px; padding: 15px 16px 40px; margin-bottom: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .15s; }
@@ -696,7 +696,7 @@
 .fc-daily__ptag { font: 800 10px 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #9a8c7e; margin: 0 0 6px; }
 .fc-daily__ph { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: -.01em; color: #1b2a4a; margin: 0 0 5px; line-height: 1.15; }
 .fc-daily__pb { font: 400 13.5px/1.45 'DM Sans', sans-serif; color: #5b5b62; margin: 0; }
-.fc-daily__go { position: absolute; bottom: 13px; left: 16px; font: 800 12px 'DM Sans', sans-serif; color: #b7442c; }
+.fc-daily__go { position: absolute; bottom: 13px; left: 16px; font: 800 12px 'DM Sans', sans-serif; color: var(--color-leaf); }
 
 /* ── Vita — app-level wide coach bar ─────────────────────────────────────── */
 .fc-ai-fab {
@@ -707,31 +707,31 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(20,16,14,.74);
-  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--color-warm-border);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 11px 14px;
   cursor: pointer;
-  box-shadow: 0 10px 26px rgba(0,0,0,.42);
+  box-shadow: 0 10px 26px rgba(0,48,26,.14);
   font-family: 'DM Sans', sans-serif;
   text-align: left;
   transition: background .15s;
 }
-.fc-ai-fab:hover { background: rgba(20,16,14,.86); }
+.fc-ai-fab:hover { background: #fff; }
 .fc-ai-fab__spark {
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: #b7442c;
+  background: var(--color-leaf);
   color: #fff;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 .fc-ai-fab__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
-.fc-ai-fab__name { font: 800 14px 'DM Sans', sans-serif; color: #fff; }
-.fc-ai-fab__hint { font: 600 12px 'DM Sans', sans-serif; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fc-ai-fab__go { color: rgba(255,255,255,.7); font-size: 18px; flex-shrink: 0; }
+.fc-ai-fab__name { font: 800 14px 'DM Sans', sans-serif; color: var(--color-ink); }
+.fc-ai-fab__hint { font: 600 12px 'DM Sans', sans-serif; color: var(--color-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-ai-fab__go { color: var(--color-muted); font-size: 18px; flex-shrink: 0; }
 
 /* ── Dots ────────────────────────────────────────────────────────────────── */
 .fc-dots {
@@ -935,7 +935,7 @@
 .fc-ai-sheet__avatar {
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: #b7442c;
+  background: var(--color-leaf);
   color: #fff;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -984,7 +984,7 @@
 .fc-ai-send {
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: #b7442c;
+  background: var(--color-leaf);
   color: #fff;
   border: none;
   cursor: pointer;
