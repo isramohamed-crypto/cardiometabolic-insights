@@ -112,7 +112,7 @@
 .fc-artcard__hed { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.18; letter-spacing: -.01em; color: #fff; }
 .fc-artcard__meta { font: 600 11.5px 'Mulish', sans-serif; color: rgba(255,255,255,.6); margin-top: 1px; }
 .fc-artcard__go { color: rgba(255,255,255,.75); }
-.fc-reader__dek { font: italic 600 15px/1.55 'Mulish', sans-serif; color: rgba(255,255,255,.7); margin: 0 0 14px; }
+.fc-reader__dek { font: 600 15px/1.55 'Mulish', sans-serif; color: rgba(255,255,255,.7); margin: 0 0 14px; }
 
 /* In-home add-a-habit flow (opens when a slot unlocks) */
 .fc-add { position: fixed; inset: 0; z-index: 900; background: #15151d; overflow-y: auto; -webkit-overflow-scrolling: touch; animation: fcReaderIn .28s cubic-bezier(.25,.46,.45,.94) both; }
@@ -320,7 +320,6 @@
   -webkit-text-stroke: .4px rgba(0,0,0,.18);
 }
 .fc-card__hed em {
-  font-style: italic;
   color: #bcd0ea;
 }
 
@@ -529,7 +528,6 @@
 .fc-next__hed {
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 21px;
   letter-spacing: -.015em;
   color: #fff;
@@ -552,8 +550,7 @@
 }
 .fr-welcome { flex: none; }
 .fr-brand {
-  font-family: 'Archivo', sans-serif; font-weight: 900; font-style: italic;
-  font-size: 20px; letter-spacing: -.02em; color: #fff; margin: 0 0 14px;
+  font-family: 'Archivo', sans-serif; font-weight: 900;  font-size: 20px; letter-spacing: -.02em; color: #fff; margin: 0 0 14px;
 }
 .fr-hed {
   font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 27px;
@@ -577,7 +574,7 @@
   line-height: 1.06; letter-spacing: -.02em; color: #fff; margin: 0;
   text-shadow: 0 2px 20px rgba(0,0,0,.5);
 }
-.fr-card__hed em { font-style: italic; color: #bcd0ea; }
+.fr-card__hed em { color: #bcd0ea; }
 .fr-card__that { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 17px; color: rgba(255,255,255,.75); margin: 8px 0 0; }
 .fr-actions { flex: none; display: flex; flex-direction: column; gap: 10px; }
 .fr-primary { background: #9db4d6; color: #fff; border: none; border-radius: 999px; padding: 16px; font: 800 15px 'Mulish', sans-serif; cursor: pointer; transition: background .15s; }
@@ -815,7 +812,6 @@
 .fc-overview__title {
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 26px;
   color: #fff;
   margin: 0;
@@ -1070,7 +1066,6 @@
 .fc-empty__hed {
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 26px;
   color: #fff;
   margin: 0;
@@ -1104,7 +1099,6 @@
   border: none;
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-style: italic;
   font-size: 22px;
   letter-spacing: -.02em;
   color: #fff;

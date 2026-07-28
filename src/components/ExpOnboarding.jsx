@@ -28,16 +28,16 @@ function cheer(n) {
 
 // ── Gap question — "what you know you should be doing" (no water) ────────────
 const GAP = [
-  { id: 'move',    emoji: '🚶', label: 'Move more' },
-  { id: 'strong',  emoji: '💪', label: 'Get stronger' },
-  { id: 'eat',     emoji: '🥗', label: 'Eat better' },
-  { id: 'sleep',   emoji: '😴', label: 'Sleep better' },
-  { id: 'stress',  emoji: '🧘', label: 'Handle stress' },
-  { id: 'connect', emoji: '👥', label: 'Enjoy more social time' },
-  { id: 'phone',   emoji: '📵', label: 'Less time on my phone' },
-  { id: 'meds',    emoji: '💊', label: 'Take my meds' },
-  { id: 'appt',    emoji: '📞', label: 'Make that appointment' },
-  { id: 'screen',  emoji: '🩺', label: 'Get that screening' },
+  { id: 'move',    emoji: '', label: 'Move more' },
+  { id: 'strong',  emoji: '', label: 'Get stronger' },
+  { id: 'eat',     emoji: '', label: 'Eat better' },
+  { id: 'sleep',   emoji: '', label: 'Sleep better' },
+  { id: 'stress',  emoji: '', label: 'Handle stress' },
+  { id: 'connect', emoji: '', label: 'Enjoy more social time' },
+  { id: 'phone',   emoji: '', label: 'Less time on my phone' },
+  { id: 'meds',    emoji: '', label: 'Take my meds' },
+  { id: 'appt',    emoji: '', label: 'Make that appointment' },
+  { id: 'screen',  emoji: '', label: 'Get that screening' },
 ]
 
 // ── Dimension questions per goal (draft copy — Britt/Mark to refine) ────────
@@ -418,10 +418,10 @@ export default function ExpOnboarding({ onComplete }) {
           <div className="eo-chips">
             {GAP.map(g => (
               <span key={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
-                {g.emoji} {g.label}
+                {g.label}
               </span>
             ))}
-            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>✏️ Something else</span>
+            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>Something else</span>
           </div>
           {otherOpen && (
             <input className="eo-input" style={{ marginTop: 4 }} value={otherText} onChange={e => setOtherText(e.target.value)} placeholder="What's on your mind?" />
@@ -453,7 +453,7 @@ export default function ExpOnboarding({ onComplete }) {
               </div>
             )
           })}
-          <div className="eo-green"><span className="lab">🤝 We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
+          <div className="eo-green"><span className="lab">We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
           <div className="eo-spacer" />
           <button className="eo-btn primary" disabled={!primary} onClick={() => { setDimStep(0); setStep('S_dim') }}>That one →</button>
           {nav(() => setStep('S_gap'), () => { if (!primary) setPrimary(gapGoals[0]); setDimStep(0); setStep('S_dim') })}
@@ -501,7 +501,6 @@ export default function ExpOnboarding({ onComplete }) {
         {topbar}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <p className="eo-eye" style={{ textAlign: 'center' }}>For “{goalLabel}”</p>
-          <div className="eo-wear-icon">📲</div>
           <div>
             <h2 className="eo-q">Let your phone track it for you.</h2>
             <p className="eo-lede" style={{ marginTop: 8 }}>You chose to {goalLower}. Allow steps and sleep and Vitalist confirms it automatically — nothing to log.</p>
