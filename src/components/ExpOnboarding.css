@@ -321,7 +321,7 @@
 .eo-auth__btn-icon { display:inline-flex; align-items:center; line-height:0; }
 .eo-auth__btn.email  { background:#1b2a4a; color:#FFFDF5; }
 .eo-auth__btn.email:hover { background:#22335a; }
-.eo-auth__btn.phone  { background:#fff; color:#1b2a4a; border:1.5px solid #1b2a4a; }
+.eo-auth__btn.phone  { background:#fff; color:#1b2a4a; border:1px solid #1b2a4a; }
 .eo-auth__btn.phone:hover { background:#f4f1ea; }
 .eo-auth__btn.google { background:#fff; color:#15151d; border:1px solid var(--color-gray-10); }
 .eo-auth__btn.google:hover { background:#FFFDF5; }

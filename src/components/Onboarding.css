@@ -481,7 +481,7 @@
 .ob-profile-card {
   background: #fff;
   border-radius: 20px;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-gray-10);
   box-shadow: 0 2px 12px rgba(30,50,42,.06);
   padding: 20px;
   margin-bottom: 24px;
@@ -586,7 +586,7 @@
 .ob-habit-card {
   background: #fff;
   border-radius: 20px;
-  border: 1px solid var(--color-border-light, var(--color-warm-border));
+  border: 1px solid var(--color-gray-10);
   padding: 18px 18px 14px;
   margin-top: 20px;
   box-shadow: 0 2px 16px rgba(0,0,0,.06);
@@ -819,8 +819,8 @@
 
 .ob-win__what-next {
   background: #fff;
-  border-radius: 18px;
-  border: 1px solid var(--color-border-light);
+  border-radius: 20px;
+  border: 1px solid var(--color-gray-10);
   padding: 18px 20px;
   margin: 24px 0;
   text-align: left;
