@@ -60,6 +60,8 @@
   padding:13px 19px; font:700 17px 'DM Sans'; color:#15151d;
   cursor:pointer; transition:all .15s; user-select:none;
 }
+.eo-chip i { font-size:15px; color:var(--color-muted) }
+.eo-chip.on i { color:inherit }
 .eo-chip:hover { background:var(--color-warm-hover) }
 .eo-chip.on { background:#fff; border-color:#1b2a4a; color:#1b2a4a }
 .eo-chip.more { background:#fff; border:1px dashed var(--color-gray-10); color:#1b2a4a }

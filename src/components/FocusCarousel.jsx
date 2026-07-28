@@ -62,13 +62,9 @@ function readSources() {
 function writeSources(s) {
   try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
 }
-const WatchIcon = (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5.5"/><path d="M8.5 3.5 9 8M15.5 3.5 15 8M8.5 20.5 9 16M15.5 20.5 15 16M12 9.5V12l1.8 1"/></svg>
-)
+const WatchIcon = <i className="fa-solid fa-stopwatch" aria-hidden="true" />
 // AI indicator glyph (sparkles) — no emoji
-const SparkIcon = (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".65"/></svg>
-)
+const SparkIcon = <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />
 
 function CardWearable({ habit, sources, onConnect }) {
   const w = WEARABLE[habit.goalId]
@@ -1026,7 +1022,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
           onClick={() => setAskHabit(openHabit || allHabits[0])}
         >
           <span className="fc-ai-fab__spark">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+            {SparkIcon}
           </span>
           <span className="fc-ai-fab__txt">
             <span className="fc-ai-fab__name">Ask Vita</span>

@@ -58,9 +58,7 @@ function daysSince(dateStr) {
   const t = new Date(dateStr).getTime()
   return isNaN(t) ? Infinity : Math.floor((Date.now() - t) / 86400000)
 }
-const WatchIcon = (
-  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5.5"/><path d="M8.5 3.5 9 8M15.5 3.5 15 8M8.5 20.5 9 16M15.5 20.5 15 16M12 9.5V12l1.8 1"/></svg>
-)
+const WatchIcon = <i className="fa-solid fa-stopwatch" aria-hidden="true" />
 
 function WearableTag({ goalId, sources, onConnect }) {
   const w = WEARABLE[goalId]

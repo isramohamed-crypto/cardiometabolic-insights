@@ -55,10 +55,10 @@ function handleURLParams() {
 
 function BottomNav({ activePage, onNavigate, badges = {} }) {
   const tabs = [
-    { id: 'Building', icon: '◈', label: 'Routine' },
-    { id: 'Read',     icon: '▤', label: 'Read' },
-    { id: 'Yours',    icon: '❁', label: 'Collection' },
-    { id: 'Me',       icon: '◉', label: 'Me' },
+    { id: 'Building', icon: 'fa-solid fa-list-check', label: 'Routine' },
+    { id: 'Read',     icon: 'fa-solid fa-book-open',  label: 'Read' },
+    { id: 'Yours',    icon: 'fa-solid fa-bookmark',   label: 'Collection' },
+    { id: 'Me',       icon: 'fa-solid fa-user',       label: 'Me' },
   ]
   return (
     <nav className="exp-bottom-nav">
@@ -69,7 +69,7 @@ function BottomNav({ activePage, onNavigate, badges = {} }) {
           onClick={() => onNavigate(t.id)}
         >
           <span className="ico">
-            {t.icon}
+            <i className={t.icon} aria-hidden="true" />
             {badges[t.id] && <span className="exp-bottom-nav__dot" />}
           </span>
           {t.label}

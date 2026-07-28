@@ -28,16 +28,16 @@ function cheer(n) {
 
 // ── Gap question — "what you know you should be doing" (no water) ────────────
 const GAP = [
-  { id: 'move',    emoji: '', label: 'Move more' },
-  { id: 'strong',  emoji: '', label: 'Get stronger' },
-  { id: 'eat',     emoji: '', label: 'Eat better' },
-  { id: 'sleep',   emoji: '', label: 'Sleep better' },
-  { id: 'stress',  emoji: '', label: 'Handle stress' },
-  { id: 'connect', emoji: '', label: 'Enjoy more social time' },
-  { id: 'phone',   emoji: '', label: 'Less time on my phone' },
-  { id: 'meds',    emoji: '', label: 'Take my meds' },
-  { id: 'appt',    emoji: '', label: 'Make that appointment' },
-  { id: 'screen',  emoji: '', label: 'Get that screening' },
+  { id: 'move',    icon: 'fa-solid fa-person-walking', label: 'Move more' },
+  { id: 'strong',  icon: 'fa-solid fa-dumbbell', label: 'Get stronger' },
+  { id: 'eat',     icon: 'fa-solid fa-carrot', label: 'Eat better' },
+  { id: 'sleep',   icon: 'fa-solid fa-moon', label: 'Sleep better' },
+  { id: 'stress',  icon: 'fa-solid fa-spa', label: 'Handle stress' },
+  { id: 'connect', icon: 'fa-solid fa-users', label: 'Enjoy more social time' },
+  { id: 'phone',   icon: 'fa-solid fa-mobile-screen-button', label: 'Less time on my phone' },
+  { id: 'meds',    icon: 'fa-solid fa-pills', label: 'Take my meds' },
+  { id: 'appt',    icon: 'fa-solid fa-phone', label: 'Make that appointment' },
+  { id: 'screen',  icon: 'fa-solid fa-stethoscope', label: 'Get that screening' },
 ]
 
 // ── Dimension questions per goal (draft copy — Britt/Mark to refine) ────────
@@ -279,9 +279,6 @@ export default function ExpOnboarding({ onComplete }) {
       <div className="eo-topbar-track"><div className="eo-topbar-fill" style={{ width: flowPct + '%' }} /></div>
     </div>
   )
-  const ShuffleIcon = (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
-  )
 
   // ── Splash ─────────────────────────────────────────────────────────────────
   if (step === 'S_auth') return (
@@ -424,6 +421,7 @@ export default function ExpOnboarding({ onComplete }) {
           <div className="eo-chips">
             {GAP.map(g => (
               <span key={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
+                <i className={g.icon} aria-hidden="true" />
                 {g.label}
               </span>
             ))}
