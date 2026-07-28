@@ -28,6 +28,7 @@
   --color-ghost:         #c9bfae;   /* inactive / placeholder */
 
   /* ── Structure ────────────────────────────────────────────────────────── */
+  --color-gray-10:       #E6E3D6;   /* Gray 10 — border on white pills/inputs (unselected) */
   --color-warm-border:   #ece5da;   /* row dividers / card borders */
   --color-warm-hover:    #f6f0e7;   /* button hover backgrounds */
   --color-chip-bg:       #eef2f8;   /* light blue chip/card backgrounds */
