@@ -65,11 +65,19 @@
 
 /* Bigger, grayed "your next habit" slot */
 .fc-slot { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; border: 1.5px dashed rgba(0,0,0,.18); border-radius: 32px; padding: 34px 24px; background: none; width: 100%; color: inherit; cursor: default; }
-.fc-slot--open { cursor: pointer; }
-.fc-slot--open:hover { border-color: rgba(0,0,0,.3); background: rgba(0,0,0,.02); }
 .fc-slot__mark { width: 56px; height: 56px; border-radius: 50%; border: 1.5px dashed rgba(0,0,0,.24); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 300; color: var(--color-muted); margin-bottom: 4px; }
 .fc-slot__label { font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: -.01em; color: var(--color-muted); margin: 0; }
 .fc-slot__sub { font: 600 13px/1.4 var(--font-body); color: var(--color-ghost); margin: 0; max-width: 26ch; }
+/* Unlocked: outline + circle + plus animate and turn green */
+.fc-slot--open { cursor: pointer; border-style: solid; animation: fcSlotWake 1.9s ease-in-out infinite; }
+.fc-slot--open .fc-slot__mark { border-style: solid; border-color: var(--color-leaf); color: var(--color-leaf); animation: fcMarkPulse 1.9s ease-in-out infinite; }
+.fc-slot--open .fc-slot__label { color: var(--color-seaweed); }
+.fc-slot--open:hover { background: rgba(27,188,60,.05); }
+@keyframes fcSlotWake { 0%,100% { border-color: rgba(27,188,60,.35); } 50% { border-color: rgba(27,188,60,.95); } }
+@keyframes fcMarkPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(27,188,60,.4); } 50% { transform: scale(1.09); box-shadow: 0 0 0 9px rgba(27,188,60,0); } }
+@media (prefers-reduced-motion: reduce) {
+  .fc-slot--open, .fc-slot--open .fc-slot__mark { animation: none; border-color: var(--color-leaf); }
+}
 
 /* ── Habit detail (opened from the list) ──────────────────────────────────
    A popup, not a takeover: scrim + centred panel. */
@@ -135,6 +143,16 @@
 .fc-add__why { font: 400 14px/1.6 var(--font-body); color: var(--color-ink); margin: 12px 0 0; }
 .fc-add__accept { margin-top: 16px; width: 100%; padding: 14px; border: none; border-radius: 14px; background: var(--color-leaf); color: #fff; font: var(--font-btn); cursor: pointer; }
 .fc-add__accept:hover { background: var(--color-seaweed); }
+/* Full-bleed shuffle layout (mirrors onboarding's habit suggestion) */
+.fc-add__screen { min-height: 100%; max-width: 560px; margin: 0 auto; padding: 62px 18px 34px; display: flex; flex-direction: column; }
+.fc-add__head { margin-bottom: 14px; }
+.fc-add__head .fc-add__title { font-size: 22px; margin: 0 0 6px; }
+.fc-add__head .fc-add__sub { margin: 0; }
+.fc-add__screen .hcard { flex: 1 1 auto; min-height: 46vh; }
+.fc-add__actions { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.fc-add__actions .fc-add__accept { margin-top: 0; }
+.fc-add__shuffle { width: 100%; padding: 13px; border-radius: 14px; border: 1px solid var(--color-gray-10); background: #fff; color: var(--color-ink); font: 800 14px var(--font-body); cursor: pointer; }
+.fc-add__shuffle:hover { background: var(--color-warm-hover); }
 
 /* ── Working on it — swipe carousel container ───────────────────────────── */
 .fc-routine {
@@ -190,12 +208,17 @@
 /* Flip affordance — top-right on the front, matching the detail back button */
 .fc-card__flipbtn {
   position: absolute; top: 14px; right: 14px; z-index: 830;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(20,16,14,.55); border: 1px solid rgba(255,255,255,.25);
-  color: #fff; font-size: 15px; cursor: pointer;
+  height: 40px; border-radius: 999px; padding: 0 16px;
+  background: rgba(20,16,14,.6); border: 1px solid rgba(255,255,255,.35);
+  color: #fff; font: 800 13px var(--font-body); letter-spacing: .01em; cursor: pointer;
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  display: flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 6px 16px rgba(20,16,14,.28);
 }
+.fc-card__flipbtn:hover { background: rgba(20,16,14,.78); }
+.fc-card__flipbtn i { font-size: 14px; }
+/* On the back face the same button is the close (X) — keep it round there */
+.fc-card__face--back .fc-card__flipbtn { width: 40px; padding: 0; justify-content: center; }
 
 @media (prefers-reduced-motion: reduce) {
   .fc-card__flip { transition: none; }
@@ -1280,4 +1303,46 @@
 /* Why this works */
 .fc-back__why { font: 400 14px/1.6 var(--font-body); color: var(--color-ink); margin: 0; }
 .fc-back__cite { font: 700 12px var(--font-body); color: var(--color-muted); margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--color-gray-10); }
+
+/* ─── Primary log action (promoted) + check animation ──────────────────────── */
+.fc-log { position: relative; display: flex; align-items: center; gap: 13px; width: 100%; padding: 14px 16px; border-radius: 16px; border: 1.5px solid var(--color-leaf); background: var(--color-teal-light, #E3F8E8); cursor: pointer; text-align: left; transition: background .2s, border-color .2s; overflow: visible; margin-top: 4px; }
+.fc-log:hover { background: #d5f2dd; }
+.fc-log.done { background: var(--color-leaf); border-color: var(--color-leaf); }
+.fc-log__circle { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--color-leaf); display: flex; align-items: center; justify-content: center; color: transparent; font-size: 13px; transition: background .2s, border-color .2s; }
+.fc-log.done .fc-log__circle { background: #fff; border-color: #fff; color: var(--color-leaf); }
+.fc-log.burst .fc-log__circle { animation: fcPop .5s cubic-bezier(.2,1.4,.5,1) both; }
+.fc-log__label { font: 800 15.5px var(--font-body); color: var(--color-seaweed); }
+.fc-log.done .fc-log__label { color: #fff; }
+@keyframes fcPop { 0% { transform: scale(.6); } 55% { transform: scale(1.25); } 100% { transform: scale(1); } }
+.fc-log__spark { position: absolute; left: 31px; top: 50%; width: 0; height: 0; pointer-events: none; }
+.fc-log__spark i { position: absolute; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: var(--color-leaf); transform: rotate(var(--a)) translateX(4px); opacity: 1; animation: fcSpark .6s ease-out forwards; }
+@keyframes fcSpark { 0% { transform: rotate(var(--a)) translateX(4px); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(26px); opacity: 0; } }
+.fc-done-note { font: 600 12px/1.45 var(--font-body); color: var(--color-muted); margin: 9px 2px 2px; }
+
+/* ─── Compact status chips (reminder + tracker) ────────────────────────────── */
+.fc-chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+.fc-chip { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px 8px 11px; border-radius: 12px; border: 1px solid var(--color-gray-10); background: #fff; }
+.fc-chip__ic { display: flex; align-items: center; justify-content: center; color: var(--color-ghost); }
+.fc-chip.active .fc-chip__ic { color: var(--color-tangerine); }
+.fc-chip__ic.on { color: var(--color-leaf); }
+.fc-chip__val { font: 800 13px var(--font-body); color: var(--color-ink); }
+.fc-chip__gear { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 8px; border: none; background: var(--color-warm-hover); color: var(--color-muted); cursor: pointer; }
+.fc-chip__gear:hover { background: var(--color-gray-10); color: var(--color-ink); }
+.fc-chip--static { background: var(--color-teal-light, #E3F8E8); border-color: #C7EAD0; }
+.fc-chip--connect { cursor: pointer; border-style: dashed; }
+.fc-chip--connect:hover { border-color: var(--color-muted); }
+.fc-chip__menu { position: absolute; bottom: calc(100% + 8px); left: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 7px; max-width: 250px; padding: 11px; border-radius: 14px; background: #fff; border: 1px solid var(--color-gray-10); box-shadow: 0 12px 30px rgba(20,16,14,.18); }
+.fc-chip__menu--list { flex-direction: column; flex-wrap: nowrap; min-width: 168px; padding: 7px; gap: 2px; }
+.fc-timechip { font: 700 13px var(--font-body); color: var(--color-ink); background: var(--color-warm-hover); border: 1px solid var(--color-gray-10); border-radius: 999px; padding: 7px 13px; cursor: pointer; }
+.fc-timechip.on { background: var(--color-leaf); border-color: var(--color-leaf); color: #fff; }
+.fc-timechip--off { background: none; border-color: #e6b3a6; color: var(--color-watermelon); }
+.fc-menu-item { text-align: left; font: 700 14px var(--font-body); color: var(--color-ink); background: none; border: none; border-radius: 8px; padding: 10px 11px; cursor: pointer; }
+.fc-menu-item:hover { background: var(--color-warm-hover); }
+.fc-menu-item--danger { color: var(--color-watermelon); }
+
+/* ─── "Why this works" — surfaced on the front, no extra tap ───────────────── */
+.fc-why { background: #fff; border: 1px solid var(--color-gray-10); border-radius: 18px; padding: 16px 17px 18px; }
+.fc-why__label { font: 800 10px var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--color-leaf); margin: 0 0 8px; }
+.fc-why__text { font: 400 14px/1.6 var(--font-body); color: var(--color-ink); margin: 0; }
+.fc-why__cite { font: 700 12px var(--font-body); color: var(--color-muted); margin: 10px 0 0; }
 

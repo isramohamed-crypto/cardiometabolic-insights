@@ -36,6 +36,10 @@ const NEXT_OPTIONS = {
   strong: { goalId: 'strong', label: 'One set of sit-to-stands',                    source: 'Vitalist',         anchor: 'While the kettle boils',       why: 'Leg strength is one of the clearest markers of how well you age. A single daily set is enough to start.' },
   move:   { goalId: 'move',   label: 'A short walk after another meal',             source: 'EatingWell',       anchor: 'After lunch',                  why: 'You already do this after dinner — repeating it after a second meal roughly doubles the blood-sugar benefit.' },
 }
+// Pillar labels for the add-flow kicker
+const GOAL_LABEL = { move: 'Moving', sleep: 'Sleep', eat: 'Nutrition', stress: 'Stress', strong: 'Strength', water: 'Hydration', connect: 'Connection' }
+// Best-recommendation order across top categories (used when no pillars were chosen)
+const REC_FALLBACK = ['sleep', 'eat', 'stress', 'move', 'strong']
 
 // Editorial imagery per goal — atmospheric placeholder photography (stable per seed).
 // Swap these URLs for Mark's real content shots when they land.
@@ -65,8 +69,11 @@ function writeSources(s) {
   try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
 }
 const WatchIcon = <i className="fa-solid fa-stopwatch" aria-hidden="true" />
-// Reminder / notification set icon
+// Reminder / notification set icon (bell = set, bell-slash = off)
 const BellIcon = <i className="fa-solid fa-bell" aria-hidden="true" />
+const BellOffIcon = <i className="fa-solid fa-bell-slash" aria-hidden="true" />
+// Settings gear
+const GearIcon = <i className="fa-solid fa-gear" aria-hidden="true" />
 // Step-counter / tracker connected icon (footsteps)
 const StepsIcon = <i className="fa-solid fa-shoe-prints" aria-hidden="true" />
 // AI indicator glyph (sparkles) — no emoji
@@ -476,11 +483,10 @@ function trackerConnected(habit, sources) {
   return !!(w && sources && sources.includes(w.source))
 }
 
-// Contextual sub-text — tracker-aware
+// Contextual sub-text — tracker/reminder detail lives in the status chips below.
 function habitSubText(habit, done, sources) {
   if (done) return null
-  if (trackerConnected(habit, sources)) return "Nothing to log — we'll track this automatically."
-  if (WEARABLE[habit.goalId]) return 'Attach a tracker and this logs itself.'
+  if (WEARABLE[habit.goalId]) return null
   if (habit.status === 'kept') return `Settling in — ${streakLabel(habit)}.`
   return 'Tap when you\'ve done it.'
 }
@@ -496,7 +502,7 @@ function doneLabel(habit, done, sources) {
     const hh = h % 12 || 12
     return `Seen today · ${hh}:${m}${ampm}`
   }
-  if (connected) return "We'll log this automatically"
+  if (connected) return 'Log it myself'
   return 'Tap when it\'s done'
 }
 
@@ -521,16 +527,30 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
+const REMINDER_TIMES = ['7:00am', '8:30am', '12:30pm', '6:00pm', '7:30pm', '9:00pm']
+
+function Card({ habit, done, onDone, sources, onConnect, onDisconnect, onReadPiece, width,
                onUpdateHabit, onRetireHabit }) {
   const [flipped, setFlipped] = useState(false)
+  const [remTime, setRemTime] = useState('7:30pm')
+  const [remOpen, setRemOpen] = useState(false)
+  const [notifOn, setNotifOn] = useState(true)
+  const [trkOpen, setTrkOpen] = useState(false)
+  const [burst, setBurst]     = useState(false)
   const sub     = habitSubText(habit, done, sources)
   const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
   const daily   = dailyFor(habit)
+  const wearable  = WEARABLE[habit.goalId]
+  const connected = trackerConnected(habit, sources)
   const articles = daily
     ? [daily.support, daily.enjoy].filter(p => p && p.hed && p.body)
     : content ? [{ tag: 'Related read', ...content }] : []
+
+  function handleLog() {
+    if (!done) { setBurst(true); setTimeout(() => setBurst(false), 750) }
+    onDone(habit.id)
+  }
 
   return (
     <div className="fc-card" style={{ width }}>
@@ -539,10 +559,10 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
       <button
         className="fc-card__flipbtn"
         onClick={() => setFlipped(true)}
-        aria-label="Edit habit and see details"
-        title="Edit & details"
+        aria-label="Settings, progress and tracking"
       >
         <i className="fa-solid fa-sliders" aria-hidden="true" />
+        <span>Settings &amp; progress</span>
       </button>
       {/* Full-bleed gradient background (fallback under the photo) */}
       <div className="fc-card__bg" style={{ background: habit.bg }} />
@@ -566,19 +586,64 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
       {/* Stacked cards over the image — habit + editorial, one connected unit */}
       <div className="fc-card__stack">
         <div className="fc-hcard">
-          <SaveHeart piece={content} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="panel" />
           {habit.source && <p className="fc-hcard__source">{habit.source}</p>}
           <HeadLine label={habit.label} />
           {sub && <p className="fc-card__sub">{sub}</p>}
-          <CardWearable habit={habit} sources={sources} onConnect={onConnect} />
-          <div
-            className={`fc-done-chip${done ? ' done' : ''}`}
-            onClick={() => onDone(habit.id)}
-          >
-            <div className="fc-done-chip__circle">{done ? '✓' : ''}</div>
-            <span className="fc-done-chip__label">{chip}</span>
+
+          {/* Primary action — log it (top of the IA), with a check animation */}
+          <button className={`fc-log${done ? ' done' : ''}${burst ? ' burst' : ''}`} onClick={handleLog}>
+            <span className="fc-log__circle"><i className="fa-solid fa-check" aria-hidden="true" /></span>
+            <span className="fc-log__label">{done ? chip : (connected ? 'Log it myself' : 'Tap to log it done')}</span>
+            {burst && <span className="fc-log__spark" aria-hidden="true">{Array.from({ length: 8 }).map((_, i) => <i key={i} style={{ '--a': `${i * 45}deg` }} />)}</span>}
+          </button>
+          {connected && !done && (
+            <p className="fc-done-note">Your tracker logs this automatically — this is just here if you'd rather mark it yourself.</p>
+          )}
+
+          {/* Compact status chips — reminder + tracker */}
+          <div className="fc-chips">
+            <div className={`fc-chip${notifOn ? ' active' : ''}${remOpen ? ' open' : ''}`}>
+              <span className="fc-chip__ic">{notifOn ? BellIcon : BellOffIcon}</span>
+              <span className="fc-chip__val">{notifOn ? remTime : 'Reminder off'}</span>
+              <button className="fc-chip__gear" onClick={() => setRemOpen(o => !o)} aria-label="Adjust reminder">{GearIcon}</button>
+              {remOpen && (
+                <div className="fc-chip__menu">
+                  {REMINDER_TIMES.map(t => (
+                    <button key={t} className={`fc-timechip${notifOn && t === remTime ? ' on' : ''}`} onClick={() => { setRemTime(t); setNotifOn(true); setRemOpen(false) }}>{t}</button>
+                  ))}
+                  <button className="fc-timechip fc-timechip--off" onClick={() => { setNotifOn(false); setRemOpen(false) }}>Turn off</button>
+                </div>
+              )}
+            </div>
+
+            {wearable && (connected ? (
+              <div className={`fc-chip fc-chip--static${trkOpen ? ' open' : ''}`}>
+                <span className="fc-chip__ic on">{StepsIcon}</span>
+                <span className="fc-chip__val">{wearable.label} connected</span>
+                <button className="fc-chip__gear" onClick={() => setTrkOpen(o => !o)} aria-label="Tracker settings">{GearIcon}</button>
+                {trkOpen && (
+                  <div className="fc-chip__menu fc-chip__menu--list">
+                    <button className="fc-menu-item" onClick={() => setTrkOpen(false)}>Update device</button>
+                    <button className="fc-menu-item fc-menu-item--danger" onClick={() => { onDisconnect && onDisconnect(wearable.source); setTrkOpen(false) }}>Disconnect</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button className="fc-chip fc-chip--connect" onClick={() => onConnect(wearable.source)}>
+                <span className="fc-chip__ic">{WatchIcon}</span>
+                <span className="fc-chip__val">Attach {wearable.label}</span>
+              </button>
+            ))}
           </div>
         </div>
+
+        {(habit.why || (content && content.body && content.body[0])) && (
+          <div className="fc-why">
+            <p className="fc-why__label">Why this works</p>
+            <p className="fc-why__text">{habit.why || content.body[0]}</p>
+            {habit.source && <p className="fc-why__cite">{habit.source}</p>}
+          </div>
+        )}
 
         {articles.length > 0 && (
           <div className="fc-articles">
@@ -601,7 +666,6 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
                   <span className="fc-artcard__hed">{pc.hed}</span>
                   <span className="fc-artcard__meta">{pc.source}{pc.read ? ` · ${pc.read} read` : ''} <span className="fc-artcard__go">→</span></span>
                 </div>
-                <SaveHeart piece={pc} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="art" />
               </div>
             ))}
           </div>
@@ -863,6 +927,8 @@ function VHabitCard({ habit, done, onOpen, sources = [] }) {
       daysDone={daysIn(habit)}
       reminder
       tracker={connected ? { label: wearable.label } : null}
+      done={done}
+      showStatus
       onClick={onOpen}
       ariaLabel={habit.label}
     />
@@ -941,7 +1007,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [readingDay, setReadingDay] = useState(null)
   const [readPiece, setReadPiece] = useState(null)
   const [addFlow, setAddFlow]   = useState(false)
-  const [addPick, setAddPick]   = useState(null)
+  const [addIdx, setAddIdx]     = useState(0)
+  const [addWhy, setAddWhy]     = useState(false)
   const [openHabit, setOpenHabit] = useState(null)
   useEffect(() => {
     if (!openHabit) return
@@ -960,6 +1027,14 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     setSources(prev => {
       if (prev.includes(source)) return prev
       const next = [...prev, source]
+      writeSources(next)
+      return next
+    })
+  }, [])
+
+  const disconnectSource = useCallback((source) => {
+    setSources(prev => {
+      const next = prev.filter(s => s !== source)
       writeSources(next)
       return next
     })
@@ -1017,7 +1092,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch (_) {}
     setHabits(next)
     setAddFlow(false)
-    setAddPick(null)
+    setAddWhy(false)
     setPostConfirm(habit)
   }
 
@@ -1084,11 +1159,16 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const allHabits   = [...working, ...established]
   const slotOpen    = live.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
 
-  // Candidate next habits — from the pillars she chose, minus ones she already has
+  // Candidate next habits — from the pillars she chose, minus ones she already has.
+  // If she picked no pillars, fall back to our best recommendation across top
+  // categories (up to 5 shuffleable cards).
   const ownedGoals  = new Set(live.map(h => h.goalId))
-  let   candGoals   = readGoals().filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
-  if (candGoals.length === 0) candGoals = ['sleep', 'eat', 'stress'].filter(g => !ownedGoals.has(g))
-  const candidates  = candGoals.slice(0, 3).map(g => NEXT_OPTIONS[g]).filter(Boolean)
+  const chosenGoals = readGoals().filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
+  const noPillars   = chosenGoals.length === 0
+  const candGoals   = noPillars
+    ? REC_FALLBACK.filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
+    : chosenGoals
+  const candidates  = candGoals.slice(0, 5).map(g => NEXT_OPTIONS[g]).filter(Boolean)
 
   return (
     <div className="fc-root">
@@ -1120,7 +1200,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
               onOpen={() => setOpenHabit(h)}
             />
           ))}
-          <SlotCard unlocked={slotOpen} onAdd={() => { setAddPick(null); setAddFlow(true) }} />
+          <SlotCard unlocked={slotOpen} onAdd={() => { setAddIdx(0); setAddWhy(false); setAddFlow(true) }} />
         </div>
         <div style={{ height: 156 }} />
       </div>
@@ -1143,6 +1223,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             onDone={toggleDone}
             sources={sources}
             onConnect={connectSource}
+            onDisconnect={disconnectSource}
             onReadPiece={(piece, habit) => setReadPiece({ piece, habit })}
             onUpdateHabit={updateHabit}
             onRetireHabit={retireHabit}
@@ -1156,35 +1237,47 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         <PieceReader piece={readPiece.piece} habit={readPiece.habit} onClose={() => setReadPiece(null)} />
       )}
 
-      {/* In-home add-a-habit flow — opens when a slot unlocks */}
-      {addFlow && (
-        <div className="fc-add">
-          <button className="fc-detail__back" onClick={() => { setAddFlow(false); setAddPick(null) }} aria-label="Back">←</button>
-          <div className="fc-add__scroll">
-            <p className="fc-add__eyebrow">A slot opened</p>
-            <h2 className="fc-add__title">Choose your next habit</h2>
-            <p className="fc-add__sub">Picked from the pillars you told us matter. Try one for a week — no pressure to keep it.</p>
-            {candidates.map(opt => {
-              const open = addPick && addPick.goalId === opt.goalId
-              return (
-                <div key={opt.goalId} className={`fc-add__card${open ? ' open' : ''}`} onClick={() => setAddPick(open ? null : opt)}>
-                  <div className="fc-add__card-img" style={{ background: GRAD[opt.goalId] || opt.bg }} />
-                  <div className="fc-add__card-body">
-                    <p className="fc-add__card-label">{opt.label}</p>
-                    <p className="fc-add__card-anchor">{opt.anchor}</p>
-                    {open && (
-                      <>
-                        <p className="fc-add__why">{opt.why}</p>
-                        <button className="fc-add__accept" onClick={e => { e.stopPropagation(); addNewHabit(opt) }}>Add to my routine</button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+      {/* In-home add-a-habit flow — full-bleed shuffleable card (mirrors onboarding) */}
+      {addFlow && candidates.length > 0 && (() => {
+        const opt = candidates[addIdx % candidates.length]
+        return (
+          <div className="fc-add">
+            <button className="fc-detail__back" onClick={() => { setAddFlow(false); setAddWhy(false) }} aria-label="Back">←</button>
+            <div className="fc-add__screen">
+              <div className="fc-add__head">
+                <p className="fc-add__eyebrow">{slotOpen ? 'A slot opened' : 'Add a habit'}</p>
+                <h2 className="fc-add__title">Here's one small thing to try.</h2>
+                <p className="fc-add__sub">{noPillars
+                  ? 'A few of our best places to start. Shuffle until one feels right.'
+                  : 'Picked from the pillars you told us matter. Shuffle until one feels right.'}</p>
+              </div>
+
+              <HabitCard
+                state="unadopted"
+                size="tall"
+                photo={photoFor({ goalId: opt.goalId })}
+                gradient={GRAD[opt.goalId] || opt.bg}
+                kicker={`${GOAL_LABEL[opt.goalId] || 'For you'} · card ${(addIdx % candidates.length) + 1} of ${candidates.length}`}
+                title={opt.label}
+                subtitle={opt.anchor}
+                why={opt.why}
+                whyOpen={addWhy}
+                onToggleWhy={() => setAddWhy(o => !o)}
+                source={opt.source}
+                dots={candidates.length}
+                dotIndex={addIdx % candidates.length}
+              />
+
+              <div className="fc-add__actions">
+                {candidates.length > 1 && (
+                  <button className="fc-add__shuffle" onClick={() => { setAddWhy(false); setAddIdx(i => i + 1) }}>Show me another</button>
+                )}
+                <button className="fc-add__accept" onClick={() => addNewHabit(opt)}>Add this habit</button>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      })()}
 
       {/* Vita — app-level coach bar */}
       {allHabits.length > 0 && (
@@ -1217,7 +1310,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
         <AISheet
           habit={askHabit}
           onClose={() => setAskHabit(null)}
-          onAddHabit={() => { setAskHabit(null); setAddPick(null); setAddFlow(true) }}
+          onAddHabit={() => { setAskHabit(null); setAddIdx(0); setAddWhy(false); setAddFlow(true) }}
         />
       )}
       {reading && (

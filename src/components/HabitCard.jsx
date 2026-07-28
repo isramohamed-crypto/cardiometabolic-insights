@@ -12,6 +12,7 @@ import './HabitCard.css'
 
 const BellIcon  = <i className="fa-solid fa-bell" aria-hidden="true" />
 const StepsIcon = <i className="fa-solid fa-shoe-prints" aria-hidden="true" />
+const CheckIcon = <i className="fa-solid fa-check" aria-hidden="true" />
 
 export default function HabitCard({
   state,
@@ -29,6 +30,8 @@ export default function HabitCard({
   daysDone,         // count of days completed
   reminder = false, // reminder set -> bell chip
   tracker = null,   // { label } when a tracker is connected -> steps chip
+  done = false,     // logged today -> completion state (Routine list)
+  showStatus = false, // render the To do / Done today status pill
   why,              // "Why this works" body
   whyOpen = false,
   onToggleWhy,
@@ -67,13 +70,18 @@ export default function HabitCard({
   return (
     <>
     <Tag
-      className={`hcard hcard--${state} hcard--${size}`}
+      className={`hcard hcard--${state} hcard--${size}${done ? ' hcard--done' : ''}`}
       style={gradient ? { background: gradient } : undefined}
       onClick={onClick}
       aria-label={ariaLabel}
       type={Tag === 'button' ? 'button' : undefined}
       {...swipeHandlers}
     >
+      {showStatus && (
+        <span className={`hcard__status${done ? ' done' : ''}`}>
+          {done ? <>{CheckIcon} Done today</> : 'To do'}
+        </span>
+      )}
       {photo && (
         <img
           className="hcard__photo" src={photo} alt="" draggable="false"

@@ -3,10 +3,18 @@ const TODAY   = new Date().toISOString().slice(0, 10)
 const daysAgo = n => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10)
 
 // The one habit Beth accepted in onboarding (Walk 10 min after a meal)
-const walk = (addedAt, status, tier) => ({
-  id: 'walk_habit', goalId: 'move', label: 'Walk for 10 minutes after a meal',
+const walk = (addedAt, status, tier, label) => ({
+  id: 'walk_habit', goalId: 'move',
+  label: label || 'Walk for 10 minutes after a meal',
   bg: 'linear-gradient(155deg,#8a7565 0%,#4a3b32 72%)', source: 'EatingWell',
   anchor: 'After dinner', status, tier, addedAt,
+})
+
+// The sleep habit she adds in week one, after the tier-up unlocks a second slot
+const sleep = (addedAt, status, tier) => ({
+  id: 'sleep_habit', goalId: 'sleep', label: 'Dim the lights an hour before bed',
+  bg: 'linear-gradient(155deg,#6d7b6a,#3a4436)', source: 'Sleep Foundation',
+  anchor: 'After 9pm', status, tier, addedAt,
 })
 
 // The "already doing" foundation she claimed in onboarding (established)
@@ -31,7 +39,8 @@ export const PROFILES = {
     completions: [],
   },
 
-  // Day 2 — returning the next day; trial continues
+  // Day 2 — the drip. She returns; trial is on day 2 and not yet logged today,
+  // so the check-off is live to demo. Tracker's connected; new day-2 content waits.
   day2: {
     habits: [walk(daysAgo(1), 'trial', 1)],
     collection: CLAIMS,
@@ -42,11 +51,16 @@ export const PROFILES = {
     completions: [],
   },
 
-  // Day 7 — habit is sticking; the keep + next-slot-unlock moment
+  // Day 7 — end of week one. The walk stepped up (10 → 20 min) and is sticking,
+  // the tier-up unlocked a second slot, and she's just added the sleep habit —
+  // so Home now shows two habits. Walk already logged today; sleep still to-do.
   day7: {
-    habits: [walk(daysAgo(6), 'kept', 1)],
+    habits: [
+      walk(daysAgo(8), 'kept', 2, 'Walk for 20 minutes after dinner'),
+      sleep(TODAY, 'trial', 1),
+    ],
     collection: CLAIMS,
-    goals: ['move'],
+    goals: ['move', 'sleep'],
     sources: ['steps', 'sleep'],
     name: 'Beth',
     returning: '1',
