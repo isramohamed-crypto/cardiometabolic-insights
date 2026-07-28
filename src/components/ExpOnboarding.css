@@ -178,10 +178,15 @@
    Single full-bleed photo card — copy anchored bottom. Geometry from Figma
    node 1154:1829.
 
-   States (modifier on .eo-hcard):
-     --unadopted  Offered during onboarding; carries an "Add this habit" CTA.
-                  Shows the pillar kicker, background image, title, subtitle
-                  and the "Why this works" expand link. No brand flag.
+   States (modifier on .eo-hcard) — full spec in docs/habit-card-states.md:
+     --unadopted  Being offered; carries an "Add this habit" CTA. Shows the
+                  pillar kicker, background image, title, subtitle and the
+                  "Why this works" expand link. No brand flag.
+     --trial      Adopted, still being tested. Shows a day counter.
+     --adopted    Fully adopted. Shows days done.
+   Both adopted states are editable (time of day, difficulty, promote/retire),
+   carry a time that drives the nudge, surface new content daily, and have a
+   to-do/done status set manually or pulled from usage data.
    ------------------------------------------------------------------------- */
 .eo-hcard {
   position:relative; flex:1 1 auto; min-height:0;
