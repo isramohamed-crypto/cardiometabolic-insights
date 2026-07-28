@@ -140,8 +140,49 @@
   flex-shrink: 0;
   height: 100%;
   position: relative;
+  perspective: 1600px;
+}
+
+/* ── Flip: front is the habit, back is edit + why + progress ────────────────
+   Both faces share one grid cell, so the card sizes to the taller of the two
+   and doesn't jump mid-flip. */
+.fc-card__flip {
+  display: grid;
+  min-height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.4,.2,.2,1);
+}
+.fc-card__flip.flipped { transform: rotateY(180deg); }
+.fc-card__face {
+  grid-area: 1 / 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 100%;
+}
+.fc-card__face--back { transform: rotateY(180deg); }
+/* The hidden face must not swallow taps */
+.fc-card__flip:not(.flipped) .fc-card__face--back,
+.fc-card__flip.flipped .fc-card__face--front { pointer-events: none; }
+
+/* Flip affordance — top-right on the front, matching the detail back button */
+.fc-card__flipbtn {
+  position: absolute; top: 14px; right: 14px; z-index: 830;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(20,16,14,.55); border: 1px solid rgba(255,255,255,.25);
+  color: #fff; font-size: 15px; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-card__flip { transition: none; }
+  .fc-card__flip.flipped { transform: none; }
+  .fc-card__face--back { transform: none; }
+  /* Swap instead of rotate */
+  .fc-card__flip:not(.flipped) .fc-card__face--back,
+  .fc-card__flip.flipped .fc-card__face--front { visibility: hidden; }
 }
 /* Stacked habit + editorial cards over the lower image */
 .fc-card__stack {
@@ -1187,3 +1228,35 @@
   background: rgba(27,188,60,.18);
   border-color: rgba(27,188,60,.45);
 }
+
+/* ── Card back — edit, why, progress ──────────────────────────────────────── */
+/* Top-aligned: the back has no hero image to sit under */
+.fc-back { position: relative; z-index: 2; padding: 74px 18px 200px; display: flex; flex-direction: column; gap: 14px; }
+.fc-back__panel { background: #fff; border: 1px solid var(--color-gray-10); border-radius: 20px; padding: 16px 17px; }
+.fc-back__label { font: 800 10.5px 'DM Sans', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--color-leaf); margin: 0 0 10px; }
+.fc-back__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--color-gray-10); }
+.fc-back__row:first-of-type { border-top: none; padding-top: 0; }
+.fc-back__rowlabel { font: 700 14px 'DM Sans', sans-serif; color: var(--color-ink); }
+.fc-back__hint { font: 400 12.5px/1.45 'DM Sans', sans-serif; color: var(--color-muted); margin: 6px 0 0; }
+.fc-back__time { font: 700 14px 'DM Sans', sans-serif; color: var(--color-ink); background: #fff; border: 1px solid var(--color-gray-10); border-radius: 10px; padding: 8px 10px; }
+
+/* Difficulty — segmented T1/T2/T3 */
+.fc-back__seg { display: flex; gap: 6px; }
+.fc-back__segbtn { flex: 1; background: #fff; border: 1px solid var(--color-gray-10); border-radius: 10px; padding: 9px 0; font: 700 13px 'DM Sans', sans-serif; color: var(--color-ink); cursor: pointer; transition: all .15s; }
+.fc-back__segbtn.on { background: #fff; border-color: var(--color-leaf); color: var(--color-leaf); }
+
+/* Status actions */
+.fc-back__act { width: 100%; border-radius: 999px; padding: 13px; font: 800 14px 'DM Sans', sans-serif; cursor: pointer; border: none; margin-top: 4px; }
+.fc-back__act--promote { background: var(--color-leaf); color: #fff; }
+.fc-back__act--retire { background: #fff; border: 1px solid var(--color-gray-10); color: var(--color-muted); }
+
+/* Progress — 7-day trial grid */
+.fc-back__days { display: flex; gap: 6px; margin: 0 0 10px; }
+.fc-back__day { flex: 1; height: 26px; border-radius: 7px; background: var(--color-warm-hover); border: 1px solid var(--color-gray-10); display: flex; align-items: center; justify-content: center; font: 700 11px 'DM Sans', sans-serif; color: var(--color-ghost); }
+.fc-back__day.on { background: var(--color-leaf); border-color: var(--color-leaf); color: #fff; }
+.fc-back__stat { display: flex; align-items: baseline; gap: 8px; font: 700 14px 'DM Sans', sans-serif; color: var(--color-ink); }
+.fc-back__stat b { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: -.02em; }
+
+/* Why this works */
+.fc-back__why { font: 400 14px/1.6 'DM Sans', sans-serif; color: var(--color-ink); margin: 0; }
+.fc-back__cite { font: 700 12px 'DM Sans', sans-serif; color: var(--color-muted); margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--color-gray-10); }

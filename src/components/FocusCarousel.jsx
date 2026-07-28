@@ -518,7 +518,9 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
+function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
+               onUpdateHabit, onRetireHabit }) {
+  const [flipped, setFlipped] = useState(false)
   const sub     = habitSubText(habit, done, sources)
   const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
@@ -529,6 +531,16 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
 
   return (
     <div className="fc-card" style={{ width }}>
+      <div className={`fc-card__flip${flipped ? ' flipped' : ''}`}>
+      <div className="fc-card__face fc-card__face--front">
+      <button
+        className="fc-card__flipbtn"
+        onClick={() => setFlipped(true)}
+        aria-label="Edit habit and see details"
+        title="Edit & details"
+      >
+        <i className="fa-solid fa-sliders" aria-hidden="true" />
+      </button>
       {/* Full-bleed gradient background (fallback under the photo) */}
       <div className="fc-card__bg" style={{ background: habit.bg }} />
 
@@ -583,7 +595,121 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
           </div>
         )}
       </div>
+      </div>
+
+      <div className="fc-card__face fc-card__face--back">
+        <CardBack
+          habit={habit}
+          done={done}
+          sources={sources}
+          onUpdate={onUpdateHabit}
+          onRetire={onRetireHabit}
+          onClose={() => setFlipped(false)}
+        />
+      </div>
+      </div>
     </div>
+  )
+}
+
+// Back of the habit card — edit, why it works, and progress.
+function CardBack({ habit, done, sources, onUpdate, onRetire, onClose }) {
+  const onTrial   = habit.status === 'trial' || habit.status === 'adopted'
+  const content   = CONTENT[habit.goalId]
+  const why       = habit.why || (content && content.body && content.body[0])
+  const wearable  = WEARABLE[habit.goalId]
+  const connected = wearable && sources.includes(wearable.source)
+  const day       = Math.min(dayOf(habit), 7)
+  const tier      = habit.tier || 1
+
+  return (
+    <>
+      <button
+        className="fc-card__flipbtn"
+        onClick={onClose}
+        aria-label="Back to habit"
+        title="Done"
+      >
+        <i className="fa-solid fa-xmark" aria-hidden="true" />
+      </button>
+
+      <div className="fc-back">
+        {/* ── Edit ── */}
+        <div className="fc-back__panel">
+          <p className="fc-back__label">Edit</p>
+
+          <div className="fc-back__row">
+            <span className="fc-back__rowlabel">Time of day</span>
+            <input
+              className="fc-back__time"
+              type="time"
+              value={habit.time || '19:30'}
+              onChange={e => onUpdate(habit.id, { time: e.target.value })}
+            />
+          </div>
+          <p className="fc-back__hint">
+            {habit.anchor ? `${habit.anchor} — ` : ''}this is when your nudge arrives.
+          </p>
+
+          <div className="fc-back__row" style={{ display: 'block' }}>
+            <span className="fc-back__rowlabel">Difficulty</span>
+            <div className="fc-back__seg" style={{ marginTop: 8 }}>
+              {[1, 2, 3].map(n => (
+                <button
+                  key={n}
+                  className={`fc-back__segbtn${tier === n ? ' on' : ''}`}
+                  onClick={() => onUpdate(habit.id, { tier: n })}
+                >
+                  T{n}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {onTrial && (
+            <button
+              className="fc-back__act fc-back__act--promote"
+              onClick={() => onUpdate(habit.id, { status: 'kept' })}
+            >
+              Keep this habit
+            </button>
+          )}
+          <button className="fc-back__act fc-back__act--retire" onClick={() => onRetire(habit.id)}>
+            Retire this habit
+          </button>
+        </div>
+
+        {/* ── Progress ── */}
+        <div className="fc-back__panel">
+          <p className="fc-back__label">Progress</p>
+          {onTrial && (
+            <div className="fc-back__days">
+              {Array.from({ length: 7 }, (_, i) => (
+                <span key={i} className={`fc-back__day${i < day ? ' on' : ''}`}>{i + 1}</span>
+              ))}
+            </div>
+          )}
+          <p className="fc-back__stat"><b>{daysIn(habit)}</b> days done</p>
+          <p className="fc-back__hint">
+            {onTrial ? `Day ${day} of the 7-day trial.` : streakLabel(habit) + '.'}
+            {' '}
+            {connected
+              ? `${wearable.label} is connected — this ticks off automatically.`
+              : 'Marked off by tapping, no tracker connected.'}
+            {done ? ' Done today.' : ''}
+          </p>
+        </div>
+
+        {/* ── Why this works ── */}
+        {why && (
+          <div className="fc-back__panel">
+            <p className="fc-back__label">Why this works</p>
+            <p className="fc-back__why">{why}</p>
+            {habit.source && <p className="fc-back__cite">{habit.source}</p>}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
@@ -808,8 +934,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
-  const working     = habits.filter(h => h.status === 'trial' || h.status === 'adopted')
-  const established = habits.filter(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established')
+  const live        = habits.filter(h => h.status !== 'retired')
+  const working     = live.filter(h => h.status === 'trial' || h.status === 'adopted')
+  const established = live.filter(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established')
 
   const connectSource = useCallback((source) => {
     setSources(prev => {
@@ -841,6 +968,18 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     setHabits(next)
     setFirstRun(false)
     setPostConfirm(habit)
+  }
+
+  function persistHabits(next) {
+    try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch (_) {}
+    setHabits(next)
+  }
+  function updateHabit(id, patch) {
+    persistHabits(habits.map(h => (h.id === id ? { ...h, ...patch } : h)))
+  }
+  function retireHabit(id) {
+    updateHabit(id, { status: 'retired' })
+    setOpenHabit(null)
   }
 
   function addNewHabit(opt) {
@@ -925,10 +1064,10 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
 
   const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
   const allHabits   = [...working, ...established]
-  const slotOpen    = habits.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
+  const slotOpen    = live.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
 
   // Candidate next habits — from the pillars she chose, minus ones she already has
-  const ownedGoals  = new Set(habits.map(h => h.goalId))
+  const ownedGoals  = new Set(live.map(h => h.goalId))
   let   candGoals   = readGoals().filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
   if (candGoals.length === 0) candGoals = ['sleep', 'eat', 'stress'].filter(g => !ownedGoals.has(g))
   const candidates  = candGoals.slice(0, 3).map(g => NEXT_OPTIONS[g]).filter(Boolean)
@@ -980,6 +1119,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             sources={sources}
             onConnect={connectSource}
             onReadPiece={(piece, habit) => setReadPiece({ piece, habit })}
+            onUpdateHabit={updateHabit}
+            onRetireHabit={retireHabit}
           />
         </div>
       )}
