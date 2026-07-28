@@ -1,0 +1,42 @@
+/* ── Save-for-later heart ─────────────────────────────────────────────────────
+   Variants by placement:
+     --art    on a light article row, far right
+     --panel  top-right of a light card
+     --hero   over a photo hero, mirroring that screen's back button
+   ------------------------------------------------------------------------- */
+.save {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 999px;
+  background: none;
+  border: 1px solid var(--color-gray-10);
+  color: var(--color-ghost);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.save:hover { background: var(--color-warm-hover); color: var(--color-muted); }
+.save.on { color: var(--color-watermelon); border-color: var(--color-watermelon); }
+
+/* On an article row: far right, vertically centred */
+.save--art { align-self: center; margin-right: 12px; }
+
+/* Top-right of a card, out of the headline's way */
+.save--panel { position: absolute; top: 14px; right: 14px; z-index: 3; }
+
+/* Over a photo hero — light treatment, sits opposite the back button */
+.save--hero {
+  position: absolute;
+  top: 16px; right: 14px;
+  z-index: 3;
+  width: 38px; height: 38px;
+  background: rgba(20,16,14,.5);
+  border-color: rgba(255,255,255,.25);
+  color: #fff;
+  font-size: 15px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.save--hero:hover { background: rgba(20,16,14,.68); color: #fff; }
+.save--hero.on { background: var(--color-watermelon); border-color: var(--color-watermelon); color: #fff; }

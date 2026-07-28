@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import './FocusCarousel.css'
 import HabitCard from './HabitCard'
-import { useSavedItems } from '../context/SavedItemsContext'
+import SaveHeart from './SaveHeart'
 
 const TODAY = new Date().toISOString().slice(0, 10)
 const STORAGE_KEY = `vitalistExp_completions_${TODAY}`
@@ -71,49 +71,6 @@ const BellIcon = <i className="fa-solid fa-bell" aria-hidden="true" />
 const StepsIcon = <i className="fa-solid fa-shoe-prints" aria-hidden="true" />
 // AI indicator glyph (sparkles) — no emoji
 const SparkIcon = <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />
-
-// ── Save-for-later heart. Ids share the `read:` namespace with the Read tab so
-// anything saved here shows up in Read > Favorites.
-function slugify(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
-}
-function savedIdForPiece(habit, piece) {
-  return `read:${habit.goalId}-${slugify(piece.hed)}`
-}
-function SaveHeart({ habit, piece, className = '' }) {
-  const { isMarked, toggle } = useSavedItems()
-  if (!piece || !piece.hed) return null
-  const id = savedIdForPiece(habit, piece)
-  const saved = isMarked(id)
-  return (
-    <button
-      className={`fc-save${saved ? ' on' : ''}${className ? ' ' + className : ''}`}
-      aria-pressed={saved}
-      aria-label={saved ? `Remove ${piece.hed} from favorites` : `Save ${piece.hed} for later`}
-      onClick={e => {
-        e.stopPropagation()
-        toggle({
-          id,
-          title: piece.hed,
-          source: piece.source || habit.source,
-          variant: 'save',
-          article: {
-            id,
-            hed: piece.hed,
-            source: piece.source || habit.source,
-            readTime: piece.read ? `${piece.read} read` : '',
-            dek: piece.dek,
-            bg: habit.bg,
-            icon: 'fa-solid fa-newspaper',
-            body: piece.body,
-          },
-        })
-      }}
-    >
-      <i className={saved ? 'fa-solid fa-heart' : 'fa-regular fa-heart'} aria-hidden="true" />
-    </button>
-  )
-}
 
 function CardWearable({ habit, sources, onConnect }) {
   const w = WEARABLE[habit.goalId]
@@ -291,7 +248,7 @@ function Reader({ content, habit, onClose }) {
         <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
-        <SaveHeart habit={habit} piece={content} className="fc-save--reader" />
+        <SaveHeart piece={content} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="hero" />
         <div className="fc-reader__hero-txt">
           <span className="fc-reader__eye">{content.eye}</span>
           <h1 className="fc-reader__hed">{content.hed}</h1>
@@ -446,7 +403,7 @@ function PieceReader({ piece, habit, onClose }) {
         <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
-        <SaveHeart habit={habit} piece={piece} className="fc-save--reader" />
+        <SaveHeart piece={piece} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="hero" />
         <div className="fc-reader__hero-txt">
           {piece.tag && <span className="fc-reader__eye">{piece.tag}</span>}
           <h1 className="fc-reader__hed">{piece.hed}</h1>
@@ -609,7 +566,7 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
       {/* Stacked cards over the image — habit + editorial, one connected unit */}
       <div className="fc-card__stack">
         <div className="fc-hcard">
-          <SaveHeart habit={habit} piece={content} className="fc-save--hcard" />
+          <SaveHeart piece={content} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="panel" />
           {habit.source && <p className="fc-hcard__source">{habit.source}</p>}
           <HeadLine label={habit.label} />
           {sub && <p className="fc-card__sub">{sub}</p>}
@@ -644,7 +601,7 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
                   <span className="fc-artcard__hed">{pc.hed}</span>
                   <span className="fc-artcard__meta">{pc.source}{pc.read ? ` · ${pc.read} read` : ''} <span className="fc-artcard__go">→</span></span>
                 </div>
-                <SaveHeart habit={habit} piece={pc} className="fc-save--art" />
+                <SaveHeart piece={pc} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="art" />
               </div>
             ))}
           </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './ExpOnboarding.css'
 import HabitCard from './HabitCard'
+import SaveHeart from './SaveHeart'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
@@ -152,6 +153,13 @@ function ArticleView({ card, onClose }) {
       <div className="eo-article__hero" style={{ background: GRAD[card.goalId] }}>
         <img className="eo-article__photo" src={photo(card)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <button className="eo-article__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart
+          piece={{ hed: card.article, source: card.source, read: card.read, dek: card.why, body: card.body }}
+          goalId={card.goalId}
+          bg={GRAD[card.goalId]}
+          source={card.source}
+          variant="hero"
+        />
         <div className="eo-article__htxt">
           <span className="eo-article__eye">{card.source} · {card.read || '4 min'} read</span>
           <h1 className="eo-article__hed">{card.article}</h1>
