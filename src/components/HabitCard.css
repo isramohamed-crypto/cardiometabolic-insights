@@ -45,7 +45,8 @@
 
 /* ── Top row: brand / status pill + kicker on the left, indicators right ── */
 .hcard__top { position:relative; z-index:2; display:flex; align-items:flex-start; justify-content:space-between; gap:12px }
-.hcard__topleft { display:flex; flex-direction:column; align-items:flex-start; gap:8px; min-width:0 }
+/* Source + Trial/Kept read as one inline labeling row */
+.hcard__topleft { display:flex; flex-direction:row; align-items:center; flex-wrap:wrap; gap:8px; min-width:0 }
 .hcard__flag { flex:none; background:#fff; color:var(--color-seaweed); border-radius:999px; padding:5px 12px; font:700 11px var(--font-body); letter-spacing:.06em }
 /* Unadopted cards don't carry the brand — the source is still named in the
    "Read →" row inside Why this works. */
@@ -106,6 +107,8 @@
   color:#fff; background:rgba(0,32,14,.5); border:1.5px solid rgba(255,255,255,.4);
   -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
 }
+/* To-do reads as a status via a hollow ring; Done is a solid green check pill */
+.hcard__status:not(.done)::before { content:''; width:9px; height:9px; border-radius:50%; border:2px solid currentColor; opacity:.95 }
 .hcard__status.done { color:var(--color-seaweed); background:#8fe6b6; border-color:#8fe6b6 }
 /* Whole-card treatment once logged */
 .hcard--done { outline:2.5px solid #8fe6b6; outline-offset:-2.5px }
