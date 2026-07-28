@@ -1,7 +1,11 @@
 /* Vitalist experiment — component CSS is self-contained */
 :root {
-  --font-serif: 'Poppins', sans-serif;
-  --font-sans: 'DM Sans', sans-serif;
+  /* ── Type ─────────────────────────────────────────────────────────────── */
+  --font-display: 'Poppins', sans-serif;   /* headlines, titles, numbers */
+  --font-body:    'DM Sans', sans-serif;   /* everything else */
+  /* Legacy aliases — --font-serif was never a serif */
+  --font-serif: var(--font-display);
+  --font-sans:  var(--font-body);
 
   /* ── Brand colors ─────────────────────────────────────────────────────── */
   --color-leaf:          #1BBC3C;
