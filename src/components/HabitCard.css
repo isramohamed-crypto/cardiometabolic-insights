@@ -93,7 +93,7 @@
   position:absolute; bottom:0; left:0; right:0; z-index:4;
   background:var(--color-coconut);
   border-radius:22px 22px 0 0;
-  padding:14px 20px 20px;
+  padding:10px 20px 22px;
   box-shadow:0 -12px 32px rgba(24,18,15,.18);
   animation:hcardDrawerUp .28s cubic-bezier(.25,.46,.45,.94) both;
   text-align:left;
@@ -102,15 +102,20 @@
 @media (prefers-reduced-motion: reduce) {
   .hcard__drawer { animation:none }
 }
-.hcard__drawer-handle { width:36px; height:4px; border-radius:999px; background:var(--color-gray-10); margin:0 auto 16px }
+/* Handle doubles as the dismiss control, so it needs a real hit area:
+   the button carries the padding, the span is the visible bar. */
+.hcard__drawer-grab {
+  display:block; width:100%; margin:0 0 10px; padding:4px 0 10px;
+  background:none; border:none; cursor:pointer;
+}
+.hcard__drawer-handle { display:block; width:36px; height:4px; border-radius:999px; background:var(--color-gray-10); margin:0 auto; transition:background .15s, width .15s }
+.hcard__drawer-grab:hover .hcard__drawer-handle { background:var(--color-ghost); width:44px }
 .hcard__drawer-label { font:800 11px var(--font-body); letter-spacing:.12em; text-transform:uppercase; color:var(--color-leaf); margin:0 0 8px }
 .hcard__whytext { font:400 14px/1.55 var(--font-body); color:var(--color-ink); margin:0 }
 .hcard__read { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; margin:12px 0 0; padding:12px 0 0; border:none; border-top:1px solid var(--color-gray-10); background:none; cursor:pointer; font:700 12px var(--font-body); color:var(--color-ink) }
 .hcard__readtxt { flex:1; min-width:0 }
 .hcard__go { font-weight:800; color:var(--color-leaf); flex:none }
 .hcard__cite { display:flex; align-items:center; gap:10px; font:700 12px/1.4 var(--font-body); color:var(--color-muted); margin:12px 0 0; padding:12px 0 0; border-top:1px solid var(--color-gray-10) }
-.hcard__drawer-close { margin-top:16px; width:100%; background:none; border:1px solid var(--color-gray-10); border-radius:999px; padding:12px; font:700 14px var(--font-body); color:var(--color-muted); cursor:pointer }
-.hcard__drawer-close:hover { background:var(--color-warm-hover); color:var(--color-ink) }
 
 /* ── Pager — now sits below the card, on the page ── */
 /* No top margin: the pager is a sibling of the card now, and its parent

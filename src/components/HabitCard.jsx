@@ -106,7 +106,14 @@ export default function HabitCard({
       {/* Why this works — drawer, pulls up from the bottom of the card */}
       {why && onToggleWhy && whyOpen && (
         <div className="hcard__drawer" onClick={e => e.stopPropagation()}>
-          <div className="hcard__drawer-handle" />
+          {/* The handle is the dismiss control — tap it to push the drawer down */}
+          <button
+            className="hcard__drawer-grab"
+            onClick={e => { e.stopPropagation(); onToggleWhy() }}
+            aria-label="Close why this works"
+          >
+            <span className="hcard__drawer-handle" />
+          </button>
           <p className="hcard__drawer-label">Why this works</p>
           <p className="hcard__whytext">{why}</p>
           {article && (onReadArticle
@@ -115,12 +122,6 @@ export default function HabitCard({
                 <span className="hcard__go">Read →</span>
               </button>
             : <p className="hcard__cite">{source}: {article}</p>)}
-          <button
-            className="hcard__drawer-close"
-            onClick={e => { e.stopPropagation(); onToggleWhy() }}
-          >
-            Close
-          </button>
         </div>
       )}
     </Tag>
