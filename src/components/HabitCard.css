@@ -27,7 +27,8 @@
 }
 
 /* ── Size variants ── */
-.hcard--tall { flex:1 1 auto; min-height:0; margin-top:6px }
+/* touch-action: the swipe takes the X axis, the browser keeps Y for scrolling */
+.hcard--tall { flex:1 1 auto; min-height:0; margin-top:6px; touch-action:pan-y }
 .hcard--wide { width:100%; aspect-ratio:16 / 11; background:#2a2a33; -webkit-tap-highlight-color:transparent }
 /* As a <button> in the list it needs the browser chrome reset */
 .hcard--wide { appearance:none; cursor:pointer; font:inherit; color:inherit }
@@ -120,6 +121,16 @@
 /* ── Pager — now sits below the card, on the page ── */
 /* No top margin: the pager is a sibling of the card now, and its parent
    (.eo-body) already supplies the gap. */
-.hcard__dots { display:flex; justify-content:center; gap:6px; margin:0; flex:none }
-.hcard__dot { width:6px; height:6px; border-radius:999px; background:rgba(0,0,0,.18); transition:width .2s, background .2s }
+.hcard__dots { display:flex; justify-content:center; align-items:center; gap:2px; margin:0; flex:none }
+/* A 6px dot is far too small to hit — the button carries the target, the
+   span is the visible dot. */
+.hcard__dot-btn {
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 5px; background:none; border:none; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.hcard__dot { display:block; width:6px; height:6px; border-radius:999px; background:rgba(0,0,0,.18); transition:width .2s, background .2s }
 .hcard__dot.on { width:16px; background:var(--color-leaf) }
+.hcard__dot-btn:hover .hcard__dot { background:rgba(0,0,0,.32) }
+.hcard__dot-btn:hover .hcard__dot.on { background:var(--color-leaf) }
+

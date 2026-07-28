@@ -553,6 +553,7 @@ export default function ExpOnboarding({ onComplete }) {
             onReadArticle={card.body ? () => setReadArticle(card) : undefined}
             dots={cards.length}
             dotIndex={habitIdx % cards.length}
+            onSelectIndex={i => { setWhyOpen(false); setHabitIdx(i) }}
           />
 
           <button className="eo-shuffle" onClick={() => { setWhyOpen(false); setHabitIdx(i => i + 1) }}>Show me another</button>

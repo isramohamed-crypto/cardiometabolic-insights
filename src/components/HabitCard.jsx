@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './HabitCard.css'
 
 // One habit card for every state. See docs/habit-card-states.md.
@@ -37,11 +37,32 @@ export default function HabitCard({
   onReadArticle,
   dots = 0,         // pager length
   dotIndex = 0,
+  onSelectIndex,    // (i) => void — dots + swipe both call this
   onClick,
   ariaLabel,
 }) {
   const adopted = state === 'trial' || state === 'adopted'
   const Tag = onClick ? 'button' : 'div'
+
+  // Swipe left/right through the pager. Horizontal only — we never
+  // preventDefault, so the page keeps scrolling vertically.
+  const swipeable = !!onSelectIndex && dots > 1 && !whyOpen
+  const startX = useRef(null)
+  const SWIPE_MIN = 40
+  function step(delta) {
+    onSelectIndex((dotIndex + delta + dots) % dots)
+  }
+  const swipeHandlers = swipeable ? {
+    onPointerDown: e => { startX.current = e.clientX },
+    onPointerUp: e => {
+      if (startX.current == null) return
+      const dx = e.clientX - startX.current
+      startX.current = null
+      if (Math.abs(dx) < SWIPE_MIN) return
+      step(dx < 0 ? 1 : -1)
+    },
+    onPointerCancel: () => { startX.current = null },
+  } : {}
 
   return (
     <>
@@ -51,6 +72,7 @@ export default function HabitCard({
       onClick={onClick}
       aria-label={ariaLabel}
       type={Tag === 'button' ? 'button' : undefined}
+      {...swipeHandlers}
     >
       {photo && (
         <img
@@ -105,7 +127,12 @@ export default function HabitCard({
 
       {/* Why this works — drawer, pulls up from the bottom of the card */}
       {why && onToggleWhy && whyOpen && (
-        <div className="hcard__drawer" onClick={e => e.stopPropagation()}>
+        <div
+          className="hcard__drawer"
+          onClick={e => e.stopPropagation()}
+          onPointerDown={e => e.stopPropagation()}
+          onPointerUp={e => e.stopPropagation()}
+        >
           {/* The handle is the dismiss control — tap it to push the drawer down */}
           <button
             className="hcard__drawer-grab"
@@ -126,9 +153,21 @@ export default function HabitCard({
       )}
     </Tag>
     {dots > 1 && (
-      <div className="hcard__dots" role="presentation">
+      <div className="hcard__dots">
         {Array.from({ length: dots }, (_, i) => (
-          <span key={i} className={`hcard__dot${i === dotIndex ? ' on' : ''}`} />
+          onSelectIndex ? (
+            <button
+              key={i}
+              className="hcard__dot-btn"
+              onClick={() => onSelectIndex(i)}
+              aria-label={`Show card ${i + 1} of ${dots}`}
+              aria-current={i === dotIndex ? 'true' : undefined}
+            >
+              <span className={`hcard__dot${i === dotIndex ? ' on' : ''}`} />
+            </button>
+          ) : (
+            <span key={i} className={`hcard__dot${i === dotIndex ? ' on' : ''}`} />
+          )
         ))}
       </div>
     )}
