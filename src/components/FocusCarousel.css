@@ -196,6 +196,7 @@
   gap: 10px;
 }
 .fc-hcard {
+  position: relative;
   background: #fff;
   border: 1px solid var(--color-gray-10);
   border-radius: 20px;
@@ -337,6 +338,7 @@
 }
 
 .fc-card__hed {
+  padding-right: 46px;
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 26px;
@@ -1261,3 +1263,24 @@
 /* Why this works */
 .fc-back__why { font: 400 14px/1.6 var(--font-body); color: var(--color-ink); margin: 0; }
 .fc-back__cite { font: 700 12px var(--font-body); color: var(--color-muted); margin: 10px 0 0; padding-top: 10px; border-top: 1px solid var(--color-gray-10); }
+
+/* ── Save for later — heart on content ────────────────────────────────────── */
+.fc-save {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 999px;
+  background: none;
+  border: 1px solid var(--color-gray-10);
+  color: var(--color-ghost);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.fc-save:hover { background: var(--color-warm-hover); color: var(--color-muted); }
+.fc-save.on { color: var(--color-watermelon); border-color: var(--color-watermelon); }
+
+/* On an article row: far right, vertically centred */
+.fc-save--art { align-self: center; margin-right: 12px; }
+/* On the habit panel: top-right, out of the headline's way */
+.fc-save--hcard { position: absolute; top: 14px; right: 14px; z-index: 3; }
