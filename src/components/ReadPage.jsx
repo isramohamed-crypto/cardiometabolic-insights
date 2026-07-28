@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSavedItems } from '../context/SavedItemsContext'
 import './ReadPage.css'
 
 // ── Real article content keyed to habits ─────────────────────────────────
@@ -13,7 +14,7 @@ const HABIT_ARTICLES = {
       dek: 'A short walk after dinner can blunt your post-meal glucose spike by up to 22% — no medication, no equipment.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#8a7565,#4a3b32)',
-      icon: '',
+      icon: 'fa-solid fa-person-walking',
       match: true,
       url: 'https://www.eatingwell.com/the-simple-nighttime-habit-that-may-balance-blood-sugar',
     },
@@ -26,7 +27,7 @@ const HABIT_ARTICLES = {
       dek: 'The nuanced answer — and why consistency beats intensity for long-term health.',
       readTime: '3 min read',
       bg: 'linear-gradient(155deg,#7a8a70,#3a4a36)',
-      icon: '',
+      icon: 'fa-solid fa-person-running',
       match: true,
       url: 'https://www.byrdie.com/is-it-bad-to-work-out-every-day-1',
     },
@@ -41,7 +42,7 @@ const HABIT_ARTICLES = {
       dek: 'The evidence is clear: you don\'t need a gym. You need consistency and the right movements.',
       readTime: '5 min read',
       bg: 'linear-gradient(155deg,#5a6a5a,#3a4a3a)',
-      icon: '',
+      icon: 'fa-solid fa-dumbbell',
       match: true,
       url: 'https://www.verywellhealth.com/strength-training-longevity',
     },
@@ -56,7 +57,7 @@ const HABIT_ARTICLES = {
       dek: 'Sleep scientists agree: consistency of wake time matters more than total hours. Here\'s why.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#4a5a7a,#2a3048)',
-      icon: '',
+      icon: 'fa-solid fa-clock',
       match: true,
       url: 'https://www.verywellhealth.com/same-wake-time-better-sleep',
     },
@@ -69,7 +70,7 @@ const HABIT_ARTICLES = {
       dek: 'Including the one most people keep on their nightstand every night.',
       readTime: '3 min read',
       bg: 'linear-gradient(155deg,#5a6a7a,#2a3a4a)',
-      icon: '',
+      icon: 'fa-solid fa-bed',
       match: true,
       url: 'https://www.thespruce.com/items-to-never-keep-in-a-bedroom-for-better-sleep-11692884',
     },
@@ -84,7 +85,7 @@ const HABIT_ARTICLES = {
       dek: 'Five slow breaths activate your body\'s off switch. The science behind why it works so fast.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)',
-      icon: '',
+      icon: 'fa-solid fa-lungs',
       match: true,
       url: 'https://www.verywellmind.com/the-benefits-of-deep-breathing',
     },
@@ -97,7 +98,7 @@ const HABIT_ARTICLES = {
       dek: 'Financial stress and health are more connected than most people realize.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#4a5a7a,#2a3a4a)',
-      icon: '',
+      icon: 'fa-solid fa-piggy-bank',
       match: false,
       url: 'https://www.investopedia.com/reduce-stress-with-these-2-simple-money-habits-backed-by-experts-11794598',
     },
@@ -112,7 +113,7 @@ const HABIT_ARTICLES = {
       dek: 'The evidence on loneliness as a health risk — and what actually helps.',
       readTime: '5 min read',
       bg: 'linear-gradient(155deg,#8a7a86,#443a44)',
-      icon: '',
+      icon: 'fa-solid fa-users',
       match: true,
       url: 'https://www.verywellmind.com/social-isolation-mental-health',
     },
@@ -125,7 +126,7 @@ const HABIT_ARTICLES = {
       dek: 'Simple rituals build belonging. Here\'s how to design ones that actually stick.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#8a5a5a,#4a2a2a)',
-      icon: '',
+      icon: 'fa-solid fa-house-user',
       match: true,
       url: 'https://www.parents.com/family-traditions-to-enjoy-together-8627648',
     },
@@ -140,7 +141,7 @@ const HABIT_ARTICLES = {
       dek: 'What you eat first thing sets the tone for your glucose response all day.',
       readTime: '4 min read',
       bg: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)',
-      icon: '',
+      icon: 'fa-solid fa-egg',
       match: true,
       url: 'https://www.eatingwell.com/5-best-breakfast-foods-for-better-blood-sugar',
     },
@@ -153,7 +154,7 @@ const HABIT_ARTICLES = {
       dek: 'Simple frameworks for eating well without spending your Sunday cooking.',
       readTime: '5 min read',
       bg: 'linear-gradient(155deg,#7a5a4a,#4a3a2a)',
-      icon: '',
+      icon: 'fa-solid fa-utensils',
       match: true,
       url: 'https://www.bhg.com/recipes/healthy/meal-planning-ideas/',
     },
@@ -168,7 +169,7 @@ const HABIT_ARTICLES = {
       dek: 'Living greenery genuinely moves the needle on mood — the why is more interesting than you\'d think.',
       readTime: '3 min read',
       bg: 'linear-gradient(155deg,#5a7a8a,#2d4a5a)',
-      icon: '',
+      icon: 'fa-solid fa-seedling',
       match: false,
       url: 'https://www.bhg.com/how-houseplants-help-fight-the-winter-blues-11896460',
     },
@@ -186,7 +187,7 @@ const GENERAL_ARTICLES = [
     dek: 'One specific thing that went well today — that\'s the whole practice. The science behind why it works.',
     readTime: '3 min read',
     bg: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)',
-    icon: '',
+    icon: 'fa-solid fa-book',
     url: 'https://www.verywellmind.com/how-to-keep-a-gratitude-journal-4771938',
   },
   {
@@ -198,7 +199,7 @@ const GENERAL_ARTICLES = [
     dek: 'The light in your bedroom after 9pm matters more than you think. Here\'s what to change tonight.',
     readTime: '4 min read',
     bg: 'linear-gradient(155deg,#6d7b6a,#3a4436)',
-    icon: '',
+    icon: 'fa-solid fa-lightbulb',
     url: 'https://www.bhg.com/relaxing-bedroom-lighting-11916744',
   },
   {
@@ -210,7 +211,7 @@ const GENERAL_ARTICLES = [
     dek: 'Research says yes — and some of the fixes are simpler than you\'d expect.',
     readTime: '4 min read',
     bg: 'linear-gradient(155deg,#5a6a7a,#2a3a4a)',
-    icon: '',
+    icon: 'fa-solid fa-couch',
     url: 'https://www.thespruce.com/does-bedroom-layout-affect-sleep-quality-11938739',
   },
   {
@@ -222,7 +223,7 @@ const GENERAL_ARTICLES = [
     dek: 'Financial stress is a health issue. This framework makes it manageable.',
     readTime: '6 min read',
     bg: 'linear-gradient(155deg,#4a5a7a,#2a3048)',
-    icon: '',
+    icon: 'fa-solid fa-wallet',
     url: 'https://www.investopedia.com/how-to-build-a-monthly-budget-that-actually-fits-your-life-11826802',
   },
   {
@@ -234,7 +235,7 @@ const GENERAL_ARTICLES = [
     dek: 'The whole family\'s rest is connected. What the research says, and what actually helps.',
     readTime: '5 min read',
     bg: 'linear-gradient(155deg,#7a5a6a,#4a2a3a)',
-    icon: '',
+    icon: 'fa-solid fa-child',
     url: 'https://www.parents.com/sleep-deprived-kids-and-parents-aren-t-just-cranky-their-mental-health-is-suffering-11696629',
   },
   {
@@ -246,7 +247,7 @@ const GENERAL_ARTICLES = [
     dek: 'One ordering habit that wastes money and kills produce before you can eat it.',
     readTime: '3 min read',
     bg: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)',
-    icon: '',
+    icon: 'fa-solid fa-cart-shopping',
     url: 'https://www.southernliving.com/grocery-shopping-mistake-that-makes-food-go-bad-faster-12007996',
   },
 ]
@@ -259,7 +260,7 @@ const PODCASTS = [
     host: 'Andrew Huberman',
     tag: 'Science-backed health',
     desc: 'Neuroscience tools for your daily habits — sleep, movement, stress, and focus.',
-    icon: '',
+    icon: 'fa-solid fa-podcast',
     bg: 'linear-gradient(135deg,#1b2a4a,#2a4a7a)',
     suggestedFor: 'Great for your walk tonight',
     url: 'https://www.hubermanlab.com/podcast',
@@ -270,7 +271,7 @@ const PODCASTS = [
     host: 'Dr Rangan Chatterjee',
     tag: 'Lifestyle medicine',
     desc: 'The small changes that make the biggest difference — from a GP who lives this way himself.',
-    icon: '',
+    icon: 'fa-solid fa-podcast',
     bg: 'linear-gradient(135deg,#2f7d5e,#1b4a36)',
     suggestedFor: 'Perfect walking pace to listen',
     url: 'https://drchatterjee.com/podcast/',
@@ -281,7 +282,7 @@ const PODCASTS = [
     host: 'Dan Harris',
     tag: 'Stress & mindfulness',
     desc: 'Practical meditation and stress tools — skeptic-friendly, no woo.',
-    icon: '',
+    icon: 'fa-solid fa-podcast',
     bg: 'linear-gradient(135deg,#7a6a8a,#4a3a5a)',
     suggestedFor: 'For your breathing practice',
     url: 'https://www.tenpercent.com/podcast',
@@ -292,7 +293,7 @@ const PODCASTS = [
     host: 'Peter Attia, MD',
     tag: 'Longevity science',
     desc: 'Deep dives on exercise, sleep, nutrition, and what actually predicts a long healthspan.',
-    icon: '',
+    icon: 'fa-solid fa-podcast',
     bg: 'linear-gradient(135deg,#4a3b32,#8a7565)',
     suggestedFor: 'Longer walks',
     url: 'https://peterattiamd.com/podcast/',
@@ -320,11 +321,35 @@ function openURL(url) {
 }
 
 // ── Article detail ────────────────────────────────────────────────────────
+// Saved-item helpers. The full article rides along so the Favorites list can
+// reopen it without looking it back up.
+function savedIdFor(article) { return `read:${article.id}` }
+function savedItemFor(article) {
+  return {
+    id: savedIdFor(article),
+    title: article.hed,
+    source: article.source,
+    variant: 'save',
+    article,
+  }
+}
+
 function ArticleDetail({ article, onClose }) {
+  const { isMarked, toggle } = useSavedItems()
+  const saved = isMarked(savedIdFor(article))
   return (
     <div className="rd-detail">
       <div className="rd-detail__header" style={{ background: article.bg }}>
         <button className="rd-detail__back" onClick={onClose}>‹ Read</button>
+        <button
+          className={`rd-detail__save${saved ? ' on' : ''}`}
+          onClick={() => toggle(savedItemFor(article))}
+          aria-pressed={saved}
+          aria-label={saved ? 'Remove from favorites' : 'Save for later'}
+        >
+          <i className={saved ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'} aria-hidden="true" />
+          {saved ? 'Saved' : 'Save for later'}
+        </button>
         <div className="rd-detail__header-body">
           <p className="rd-detail__flag">{article.source}</p>
           <h1 className="rd-detail__hed">{article.hed}</h1>
@@ -358,6 +383,10 @@ function ArticleDetail({ article, onClose }) {
 // ── Main component ────────────────────────────────────────────────────────
 export default function ReadPage() {
   const [openArticle, setOpenArticle] = useState(null)
+  const { items, remove } = useSavedItems()
+  const favorites = items
+    .filter(it => it.variant === 'save' && String(it.id).startsWith('read:'))
+    .sort((a, b) => (b.markedAt || 0) - (a.markedAt || 0))
   const habits = readActiveHabits()
   const matchedArticles = getMatchedArticles(habits)
   const feature = matchedArticles[0] || GENERAL_ARTICLES[0]
@@ -375,6 +404,34 @@ export default function ReadPage() {
         <h1 className="rp-header__title">Read</h1>
       </div>
 
+      {/* Favorites — saved from inside a piece of content */}
+      {favorites.length > 0 && (
+        <>
+          <p className="rp-section-label">Favorites</p>
+          <div className="rp-list">
+            {favorites.map(it => (
+              <div key={it.id} className="rp-list-item" onClick={() => it.article && setOpenArticle(it.article)}>
+                <div className="rp-list-item__thumb" style={{ background: it.article?.bg }}>
+                  <i className={it.article?.icon || 'fa-solid fa-bookmark'} aria-hidden="true" />
+                </div>
+                <div className="rp-list-item__body">
+                  <p className="rp-list-item__eye">{it.source}</p>
+                  <h3 className="rp-list-item__hed">{it.title}</h3>
+                  <p className="rp-list-item__meta">{it.article?.readTime}</p>
+                </div>
+                <button
+                  className="rp-fav__remove"
+                  onClick={e => { e.stopPropagation(); remove(it.id) }}
+                  aria-label={`Remove ${it.title} from favorites`}
+                >
+                  <i className="fa-solid fa-xmark" aria-hidden="true" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       {/* Feature — habit-matched */}
       {feature && (
         <>
@@ -383,7 +440,7 @@ export default function ReadPage() {
           </p>
           <div className="rp-feature" onClick={() => setOpenArticle(feature)}>
             <div className="rp-feature__img" style={{ background: feature.bg }}>
-              <span style={{ fontSize: 52 }}>{feature.icon}</span>
+              <span style={{ fontSize: 52 }}><i className={feature.icon} aria-hidden="true" /></span>
               <span className="rp-feature__flag">{feature.source}</span>
               {feature.match && <span className="rp-feature__match">✓ Your habit</span>}
             </div>
@@ -411,7 +468,7 @@ export default function ReadPage() {
         {PODCASTS.map(p => (
           <div key={p.id} className="rp-podcast-card" onClick={() => openURL(p.url)}>
             <div className="rp-podcast-card__img" style={{ background: p.bg }}>
-              <span style={{ fontSize: 32 }}>{p.icon}</span>
+              <span style={{ fontSize: 32 }}><i className={p.icon} aria-hidden="true" /></span>
               <span className="rp-podcast-card__suggested">{p.suggestedFor}</span>
             </div>
             <div className="rp-podcast-card__body">
@@ -431,7 +488,7 @@ export default function ReadPage() {
             {secondaryMatched.map(a => (
               <div key={a.id} className="rp-card" onClick={() => setOpenArticle(a)}>
                 <div className="rp-card__img" style={{ background: a.bg }}>
-                  <span>{a.icon}</span>
+                  <span><i className={a.icon} aria-hidden="true" /></span>
                   <span className="rp-card__flag">{a.source}</span>
                 </div>
                 <div className="rp-card__body">
@@ -451,7 +508,7 @@ export default function ReadPage() {
         {GENERAL_ARTICLES.slice(0, 4).map(a => (
           <div key={a.id} className="rp-card" onClick={() => setOpenArticle(a)}>
             <div className="rp-card__img" style={{ background: a.bg }}>
-              <span>{a.icon}</span>
+              <span><i className={a.icon} aria-hidden="true" /></span>
               <span className="rp-card__flag">{a.source}</span>
             </div>
             <div className="rp-card__body">
@@ -469,7 +526,7 @@ export default function ReadPage() {
         {GENERAL_ARTICLES.slice(2).map(a => (
           <div key={a.id} className="rp-list-item" onClick={() => setOpenArticle(a)}>
             <div className="rp-list-item__thumb" style={{ background: a.bg }}>
-              {a.icon}
+              <i className={a.icon} aria-hidden="true" />
             </div>
             <div className="rp-list-item__body">
               <p className="rp-list-item__eye">{a.source} · {a.eye}</p>

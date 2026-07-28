@@ -1,7 +1,7 @@
 /* ── CollectionPage ───────────────────────────────────────────────────────── */
 .cp-root {
   background: #FFFDF5;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   color: var(--color-ink);
   padding-bottom: 100px;
 }
@@ -13,7 +13,7 @@
   margin-bottom: 24px;
 }
 .cp-header__eye {
-  line-height: 0.95;
+  line-height: 1.2;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .14em;
@@ -22,11 +22,11 @@
   margin: 0 0 4px;
 }
 .cp-header__title {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: 26px;
   letter-spacing: -.015em;
-  line-height: 0.95;
+  line-height: 1.05;
   color: var(--color-ink);
   margin: 0;
 }
@@ -36,7 +36,7 @@
 .cp-section { margin: 0 0 32px; }
 
 .cp-section__label {
-  line-height: 0.95;
+  line-height: 1.2;
   display: block;
   font-size: 11px;
   font-weight: 800;
@@ -59,9 +59,9 @@
   display: flex;
   align-items: stretch;
   background: #fff;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid #00B9E2;
+  border: 1px solid var(--color-gray-10);
   min-height: 80px;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .cp-trial-card__badge {
-  line-height: 0.95;
+  line-height: 1.2;
   flex-shrink: 0;
   align-self: center;
   font-size: 10px;
@@ -123,7 +123,7 @@
   border-radius: 14px;
   padding: 14px 16px;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   text-align: left;
   transition: background .15s;
 }
@@ -136,12 +136,12 @@
 }
 .cp-checkin-nudge__txt { flex: 1; }
 .cp-checkin-nudge__hed {
-  font: 800 14px 'DM Sans', sans-serif;
+  font: 800 14px var(--font-body);
   color: var(--color-ink);
   margin: 0;
 }
 .cp-checkin-nudge__sub {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--color-muted);
   margin: 2px 0 0;
 }
@@ -159,22 +159,22 @@
   margin: 0 0 14px;
 }
 .cp-ci {
-  border: 1px solid #00B9E2;
+  border: 1px solid var(--color-gray-10);
   border-radius: 14px;
   padding: 13px 14px;
 }
 .cp-ci__label {
-  font: 700 15px 'DM Sans', sans-serif;
+  font: 700 15px var(--font-body);
   color: var(--color-ink);
   margin: 0 0 10px;
 }
 .cp-ci__opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .cp-ci__btn {
   background: var(--color-warm-hover);
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   border-radius: 999px;
   padding: 8px 14px;
-  font: 700 13px 'DM Sans', sans-serif;
+  font: 700 13px var(--font-body);
   color: var(--color-ink);
   cursor: pointer;
   transition: all .15s;
@@ -183,7 +183,7 @@
 .cp-ci__btn--keep { background: #E3F8E8; color: #004620; }
 .cp-ci__btn--keep:hover { background: var(--color-teal-light); }
 .cp-ci__done {
-  font: 800 13px 'DM Sans', sans-serif;
+  font: 800 13px var(--font-body);
   color: #004620;
   margin: 0;
 }
@@ -210,10 +210,10 @@
 .cp-pill {
   flex-shrink: 0;
   background: var(--color-warm-hover);
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   border-radius: 999px;
   padding: 7px 14px;
-  font: 700 12.5px 'DM Sans', sans-serif;
+  font: 700 13px var(--font-body);
   color: var(--color-muted);
   cursor: pointer;
   transition: all .15s;
@@ -269,13 +269,13 @@
   border: 2px solid #FFFDF5;
 }
 .cp-badge__label {
-  font: 800 11.5px 'DM Sans', sans-serif;
+  font: 800 12px var(--font-body);
   color: var(--color-ink);
-  line-height: 0.95;
+  line-height: 1.2;
 }
 .cp-badge__cat {
-  line-height: 0.95;
-  font: 800 8.5px 'DM Sans', sans-serif;
+  line-height: 1.2;
+  font: 800 9px var(--font-body);
   letter-spacing: .09em;
   text-transform: uppercase;
 }
@@ -285,12 +285,12 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font: 800 9.5px 'DM Sans', sans-serif;
+  font: 800 10px var(--font-body);
   letter-spacing: .03em;
   border-radius: 999px;
   padding: 3px 8px;
   border: 1px solid transparent;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   cursor: default;
   white-space: nowrap;
 }
@@ -302,7 +302,7 @@
 }
 .cp-wear--off {
   background: none;
-  border: 1px dashed var(--color-chip-border);
+  border: 1px dashed var(--color-gray-10);
   color: var(--color-ink);
   cursor: pointer;
   transition: background .15s, border-color .15s;
@@ -322,13 +322,13 @@
   transition: border-color .15s, background .15s;
 }
 .cp-badge__emblem--add span {
-  font: 300 30px 'DM Sans', sans-serif;
+  font: 300 30px var(--font-body);
   color: var(--color-muted);
   line-height: 1;
 }
 .cp-badge--add:hover .cp-badge__emblem--add { border-color: var(--color-chip-border); background: var(--color-warm-hover); }
 .cp-badge__add-label {
-  font: 800 11.5px 'DM Sans', sans-serif;
+  font: 800 12px var(--font-body);
   color: var(--color-muted);
 }
 .cp-nofilter {
@@ -369,16 +369,16 @@
   margin: 0 auto 14px;
 }
 .cp-sheet__eye {
-  line-height: 0.95;
-  font: 800 11px 'DM Sans', sans-serif;
+  line-height: 1.2;
+  font: 800 11px var(--font-body);
   letter-spacing: .12em;
   text-transform: uppercase;
   color: #1BBC3C;
   margin: 0 0 2px;
 }
 .cp-sheet__title {
-  line-height: 0.95;
-  font-family: 'Poppins', sans-serif;
+  line-height: 1.05;
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: 22px;
   letter-spacing: -.01em;
@@ -393,8 +393,8 @@
   flex: 1;
 }
 .cp-slot-group__label {
-  line-height: 0.95;
-  font: 800 11px 'DM Sans', sans-serif;
+  line-height: 1.2;
+  font: 800 11px var(--font-body);
   letter-spacing: .1em;
   text-transform: uppercase;
   margin: 0 0 8px;
@@ -409,11 +409,11 @@
   align-items: center;
   gap: 12px;
   background: #fff;
-  border: 1.5px dashed var(--color-ghost);
+  border: 1px dashed var(--color-gray-10);
   border-radius: 14px;
   padding: 11px 14px;
   cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   text-align: left;
   transition: all .15s;
 }
@@ -453,7 +453,7 @@
   border: none;
   border-radius: 999px;
   padding: 14px;
-  font: 800 15px 'DM Sans', sans-serif;
+  font: 800 15px var(--font-body);
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -464,7 +464,7 @@
   border: none;
   border-radius: 999px;
   padding: 13px 24px;
-  font: 800 14px 'DM Sans', sans-serif;
+  font: 800 14px var(--font-body);
   cursor: pointer;
   margin-top: 4px;
 }
@@ -480,8 +480,8 @@
 }
 
 .cp-empty__hed {
-  line-height: 0.95;
-  font-family: 'Poppins', sans-serif;
+  line-height: 1.05;
+  font-family: var(--font-display);
   font-weight: 900;
   font-size: 22px;
   letter-spacing: -.01em;
@@ -507,7 +507,7 @@
 
 .cp-empty__pillar {
   background: var(--color-warm-hover);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px;
 }
 

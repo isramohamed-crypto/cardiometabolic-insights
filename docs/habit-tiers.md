@@ -10,7 +10,7 @@ Tiers are about deepening commitment — not switching habits.
 - Slot 2 unlocks when Slot 1 habit reaches T2
 - Slot 3 unlocks when Slot 2 habit reaches T2
 - New slots always receive a T1 habit — you can't skip ahead
-- Tier progression is auto-offered after 2-week trial, but always user's choice
+- Tier progression is auto-offered after the 7-day trial, but always user's choice
 
 ---
 

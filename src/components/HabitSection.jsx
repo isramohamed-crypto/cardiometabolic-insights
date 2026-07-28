@@ -72,9 +72,6 @@ export default function HabitSection({ onOpenSheet }) {
     ? 'rgba(255,255,255,0.2)'
     : 'rgba(255,255,255,0.15)'
 
-  // Emoji shown inside the ring once earned
-  const ringEmoji = isPerfect ? '' : isComeback ? '' : ''
-
   function handleToggle(habitId) {
     const wasDone = completions.includes(habitId)
     const oldDone = completions.filter(id => habits.some(h => h.id === id)).length
@@ -130,7 +127,6 @@ export default function HabitSection({ onOpenSheet }) {
         <ProgressRing pct={ringPct} fillColor={ringFill} trackColor={ringTrack}>
           {dayEarned && (
             <div key={badgeKey} className="habit-ring-badge">
-              <span className="habit-ring-badge__emoji">{ringEmoji}</span>
               {streak > 0 && <span className="habit-ring-badge__streak">{streak}d</span>}
             </div>
           )}

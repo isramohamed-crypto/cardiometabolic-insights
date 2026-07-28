@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import './ExpOnboarding.css'
+import HabitCard from './HabitCard'
+import SaveHeart from './SaveHeart'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
@@ -28,16 +30,16 @@ function cheer(n) {
 
 // ── Gap question — "what you know you should be doing" (no water) ────────────
 const GAP = [
-  { id: 'move',    emoji: '🚶', label: 'Move more' },
-  { id: 'strong',  emoji: '💪', label: 'Get stronger' },
-  { id: 'eat',     emoji: '🥗', label: 'Eat better' },
-  { id: 'sleep',   emoji: '😴', label: 'Sleep better' },
-  { id: 'stress',  emoji: '🧘', label: 'Handle stress' },
-  { id: 'connect', emoji: '👥', label: 'Enjoy more social time' },
-  { id: 'phone',   emoji: '📵', label: 'Less time on my phone' },
-  { id: 'meds',    emoji: '💊', label: 'Take my meds' },
-  { id: 'appt',    emoji: '📞', label: 'Make that appointment' },
-  { id: 'screen',  emoji: '🩺', label: 'Get that screening' },
+  { id: 'move',    icon: 'fa-solid fa-person-walking', label: 'Move more' },
+  { id: 'strong',  icon: 'fa-solid fa-dumbbell', label: 'Get stronger' },
+  { id: 'eat',     icon: 'fa-solid fa-carrot', label: 'Eat better' },
+  { id: 'sleep',   icon: 'fa-solid fa-moon', label: 'Sleep better' },
+  { id: 'stress',  icon: 'fa-solid fa-spa', label: 'Handle stress' },
+  { id: 'connect', icon: 'fa-solid fa-users', label: 'Enjoy more social time' },
+  { id: 'phone',   icon: 'fa-solid fa-mobile-screen-button', label: 'Less time on my phone' },
+  { id: 'meds',    icon: 'fa-solid fa-pills', label: 'Take my meds' },
+  { id: 'appt',    icon: 'fa-solid fa-phone', label: 'Make that appointment' },
+  { id: 'screen',  icon: 'fa-solid fa-stethoscope', label: 'Get that screening' },
 ]
 
 // ── Dimension questions per goal (draft copy — Britt/Mark to refine) ────────
@@ -133,7 +135,14 @@ const HABIT_OPTIONS = {
   ],
 }
 function habitCardsFor(goal) { return HABIT_OPTIONS[goal] || HABIT_OPTIONS.move }
-function photo(goalId) { return `https://picsum.photos/seed/vitalist-${goalId}/900/1200` }
+// Seed by the individual habit, not just the goal, so shuffling rotates the image.
+// Still deterministic: a given habit always gets the same photo.
+function photoSeed(card) {
+  if (typeof card === 'string') return card
+  const key = card.label || card.headline || ''
+  return `${card.goalId}-${key.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`
+}
+function photo(card) { return `https://picsum.photos/seed/vitalist-${photoSeed(card)}/900/1200` }
 
 const MOMENTS = ['With morning coffee', 'At lunch', 'After dinner', 'When the TV goes off', 'A time I pick']
 
@@ -142,9 +151,15 @@ function ArticleView({ card, onClose }) {
   return (
     <div className="eo-article">
       <div className="eo-article__hero" style={{ background: GRAD[card.goalId] }}>
-        <img className="eo-article__photo" src={photo(card.goalId)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-        <div className="eo-article__scrim" />
+        <img className="eo-article__photo" src={photo(card)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <button className="eo-article__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart
+          piece={{ hed: card.article, source: card.source, read: card.read, dek: card.why, body: card.body }}
+          goalId={card.goalId}
+          bg={GRAD[card.goalId]}
+          source={card.source}
+          variant="hero"
+        />
         <div className="eo-article__htxt">
           <span className="eo-article__eye">{card.source} · {card.read || '4 min'} read</span>
           <h1 className="eo-article__hed">{card.article}</h1>
@@ -171,6 +186,7 @@ export default function ExpOnboarding({ onComplete }) {
   const [otherOpen, setOtherOpen] = useState(false)
   const [otherText, setOtherText] = useState('')
   const [habitIdx, setHabitIdx] = useState(0)
+  const [whyOpen, setWhyOpen] = useState(false)
   const [showWhy, setShowWhy]   = useState(false)
   const [readArticle, setReadArticle] = useState(null)
   const [moment, setMoment]     = useState('')
@@ -272,15 +288,11 @@ export default function ExpOnboarding({ onComplete }) {
       <div className="eo-topbar-track"><div className="eo-topbar-fill" style={{ width: flowPct + '%' }} /></div>
     </div>
   )
-  const ShuffleIcon = (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
-  )
 
   // ── Splash ─────────────────────────────────────────────────────────────────
   if (step === 'S_auth') return (
     <div className="eo-root eo-splash">
       <img className="eo-splash__img" src="https://picsum.photos/seed/vitalist-splash/1000/1600" alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-      <div className="eo-splash__scrim" />
       <div className="eo-splash__top">
         <p className="eo-splash__brand">Vitalist</p>
         <p className="eo-splash__by">by People Inc.</p>
@@ -418,10 +430,11 @@ export default function ExpOnboarding({ onComplete }) {
           <div className="eo-chips">
             {GAP.map(g => (
               <span key={g.id} className={`eo-chip${gapGoals.includes(g.id) ? ' on' : ''}`} onClick={() => toggleGap(g.id)}>
-                {g.emoji} {g.label}
+                <i className={g.icon} aria-hidden="true" />
+                {g.label}
               </span>
             ))}
-            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>✏️ Something else</span>
+            <span className={`eo-chip more${otherOpen ? ' on' : ''}`} onClick={() => setOtherOpen(o => !o)}>Something else</span>
           </div>
           {otherOpen && (
             <input className="eo-input" style={{ marginTop: 4 }} value={otherText} onChange={e => setOtherText(e.target.value)} placeholder="What's on your mind?" />
@@ -448,12 +461,12 @@ export default function ExpOnboarding({ onComplete }) {
             const g = GAP.find(x => x.id === id)
             return (
               <div key={id} className={`eo-opt${primary === id ? ' on' : ''}`} onClick={() => setPrimary(id)}>
-                <div className="txt"><b>{g.label}</b></div>
                 <span className={`eo-radio${primary === id ? ' on' : ''}`} />
+                <div className="txt"><b>{g.label}</b></div>
               </div>
             )
           })}
-          <div className="eo-green"><span className="lab">🤝 We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
+          <div className="eo-green"><span className="lab">We'll hold the rest</span><p className="eo-lede" style={{ marginTop: 4 }}>One at a time is the whole point.</p></div>
           <div className="eo-spacer" />
           <button className="eo-btn primary" disabled={!primary} onClick={() => { setDimStep(0); setStep('S_dim') }}>That one →</button>
           {nav(() => setStep('S_gap'), () => { if (!primary) setPrimary(gapGoals[0]); setDimStep(0); setStep('S_dim') })}
@@ -481,8 +494,8 @@ export default function ExpOnboarding({ onComplete }) {
             <h2 className="eo-q">{q.q}</h2>
             {q.options.map((o, oi) => (
               <div key={oi} className={`eo-opt${chosen === oi ? ' on' : ''}`} onClick={() => setDimAns(a => ({ ...a, [dimStep]: oi }))}>
-                <div className="txt"><b>{optLabel(o)}</b>{optSub(o) && <span>{optSub(o)}</span>}</div>
                 <span className={`eo-radio${chosen === oi ? ' on' : ''}`} />
+                <div className="txt"><b>{optLabel(o)}</b>{optSub(o) && <span>{optSub(o)}</span>}</div>
               </div>
             ))}
             <div className="eo-spacer" />
@@ -501,7 +514,6 @@ export default function ExpOnboarding({ onComplete }) {
         {topbar}
         <div className="eo-body" style={{ justifyContent: 'center', gap: 16 }}>
           <p className="eo-eye" style={{ textAlign: 'center' }}>For “{goalLabel}”</p>
-          <div className="eo-wear-icon">📲</div>
           <div>
             <h2 className="eo-q">Let your phone track it for you.</h2>
             <p className="eo-lede" style={{ marginTop: 8 }}>You chose to {goalLower}. Allow steps and sleep and Vitalist confirms it automatically — nothing to log.</p>
@@ -524,29 +536,27 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-eye">A place to start · {CAT_LABEL[card.goalId] || 'For you'}</p>
           <h2 className="eo-q" style={{ fontSize: 20 }}>Here's one small thing to try.</h2>
 
-          <div className="eo-hcard">
-            <div className="eo-hcard__img" style={{ background: GRAD[card.goalId] }}>
-              <img className="eo-hcard__photo" src={photo(card.goalId)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-              <div className="eo-hcard__duotone" style={{ background: GRAD[card.goalId] }} />
-              <span className="eo-hcard__flag">{card.source}</span>
-              <button className="eo-hcard__shuffle" onClick={() => setHabitIdx(i => i + 1)} aria-label="Show me another">{ShuffleIcon}</button>
-              <div className="eo-hcard__hedwrap">
-                <h1 className="eo-hcard__hed">{card.headline} <em>{card.em}</em></h1>
-                <p className="eo-hcard__that">{card.tagline}</p>
-              </div>
-            </div>
-            <div className="eo-hcard__why">
-              <p className="eo-hcard__why-label">Why this works</p>
-              <p className="eo-hcard__why-text">{card.why}</p>
-              {card.body
-                ? <button className="eo-hcard__read" onClick={() => setReadArticle(card)}>{card.source}: {card.article}<span>Read →</span></button>
-                : card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
-            </div>
-          </div>
+          <HabitCard
+            state="unadopted"
+            size="tall"
+            photo={photo(card)}
+            gradient={GRAD[card.goalId]}
+            kicker={`${CAT_LABEL[card.goalId] || 'For you'} · card ${(habitIdx % cards.length) + 1} of ${cards.length}`}
+            title={card.headline}
+            titleEm={card.em}
+            subtitle={card.tagline}
+            why={card.why}
+            whyOpen={whyOpen}
+            onToggleWhy={() => setWhyOpen(o => !o)}
+            source={card.source}
+            article={card.article}
+            onReadArticle={card.body ? () => setReadArticle(card) : undefined}
+            dots={cards.length}
+            dotIndex={habitIdx % cards.length}
+          />
 
-          <button className="eo-shuffle" onClick={() => setHabitIdx(i => i + 1)}>{ShuffleIcon} Show me another</button>
-          <div className="eo-spacer" />
-          <button className="eo-btn primary" onClick={() => setStep('S_moment')}>I'll try it →</button>
+          <button className="eo-shuffle" onClick={() => { setWhyOpen(false); setHabitIdx(i => i + 1) }}>Show me another</button>
+          <button className="eo-btn primary" onClick={() => setStep('S_moment')}>Add this habit</button>
           {nav(() => setStep('S_perm'), null)}
         </div>
       </div>

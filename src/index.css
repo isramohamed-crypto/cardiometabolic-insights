@@ -1,7 +1,11 @@
 /* Vitalist experiment — component CSS is self-contained */
 :root {
-  --font-serif: 'Poppins', sans-serif;
-  --font-sans: 'DM Sans', sans-serif;
+  /* ── Type ─────────────────────────────────────────────────────────────── */
+  --font-display: 'Poppins', sans-serif;   /* headlines, titles, numbers */
+  --font-body:    'DM Sans', sans-serif;   /* everything else */
+  /* Legacy aliases — --font-serif was never a serif */
+  --font-serif: var(--font-display);
+  --font-sans:  var(--font-body);
 
   /* ── Brand colors ─────────────────────────────────────────────────────── */
   --color-leaf:          #1BBC3C;
@@ -28,6 +32,7 @@
   --color-ghost:         #c9bfae;   /* inactive / placeholder */
 
   /* ── Structure ────────────────────────────────────────────────────────── */
+  --color-gray-10:       #E6E3D6;   /* Gray 10 — border on white pills/inputs (unselected) */
   --color-warm-border:   #ece5da;   /* row dividers / card borders */
   --color-warm-hover:    #f6f0e7;   /* button hover backgrounds */
   --color-chip-bg:       #eef2f8;   /* light blue chip/card backgrounds */

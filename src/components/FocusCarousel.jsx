@@ -1,5 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import './FocusCarousel.css'
+import HabitCard from './HabitCard'
+import SaveHeart from './SaveHeart'
 
 const TODAY = new Date().toISOString().slice(0, 10)
 const STORAGE_KEY = `vitalistExp_completions_${TODAY}`
@@ -62,21 +64,13 @@ function readSources() {
 function writeSources(s) {
   try { localStorage.setItem('vitalistExp_sources', JSON.stringify(s)) } catch {}
 }
-const WatchIcon = (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5.5"/><path d="M8.5 3.5 9 8M15.5 3.5 15 8M8.5 20.5 9 16M15.5 20.5 15 16M12 9.5V12l1.8 1"/></svg>
-)
+const WatchIcon = <i className="fa-solid fa-stopwatch" aria-hidden="true" />
 // Reminder / notification set icon
-const BellIcon = (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-)
+const BellIcon = <i className="fa-solid fa-bell" aria-hidden="true" />
 // Step-counter / tracker connected icon (footsteps)
-const StepsIcon = (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 3c1.4 0 2.3 1.4 2.3 3.2 0 1.5-.3 3-.3 4.3 0 1-.7 1.6-1.9 1.6s-2-.6-2.1-1.7c-.1-1.3-.4-2.9-.4-4.4C6.2 4.3 7.1 3 8.5 3zM6.4 14.2c1.3-.2 2.6.5 2.8 1.8.1.7 0 1.4-.1 2-.2.9-1 1.4-1.9 1.3-1-.1-1.7-.7-1.8-1.6-.1-.6-.2-1.3-.1-1.9.1-.8.5-1.5 1.1-1.6zM15.5 5c1.4 0 2.3 1.3 2.3 3 0 1.5-.3 3.1-.4 4.4-.1 1.1-.9 1.7-2.1 1.7s-1.9-.6-1.9-1.6c0-1.3-.3-2.8-.3-4.3C13.2 6.4 14.1 5 15.5 5zM17.6 16.2c.6.1 1 .8 1.1 1.6.1.6 0 1.3-.1 1.9-.1.9-.8 1.5-1.8 1.6-.9.1-1.7-.4-1.9-1.3-.1-.6-.2-1.3-.1-2 .2-1.3 1.5-2 2.7-1.8z"/></svg>
-)
+const StepsIcon = <i className="fa-solid fa-shoe-prints" aria-hidden="true" />
 // AI indicator glyph (sparkles) — no emoji
-const SparkIcon = (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".65"/></svg>
-)
+const SparkIcon = <i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />
 
 function CardWearable({ habit, sources, onConnect }) {
   const w = WEARABLE[habit.goalId]
@@ -254,6 +248,7 @@ function Reader({ content, habit, onClose }) {
         <div className="fc-reader__hero-bg" style={{ background: habit.bg }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart piece={content} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="hero" />
         <div className="fc-reader__hero-txt">
           <span className="fc-reader__eye">{content.eye}</span>
           <h1 className="fc-reader__hed">{content.hed}</h1>
@@ -408,6 +403,7 @@ function PieceReader({ piece, habit, onClose }) {
         <img className="fc-reader__photo" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
         <div className="fc-reader__hero-scrim" />
         <button className="fc-reader__back" onClick={onClose} aria-label="Back">←</button>
+        <SaveHeart piece={piece} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="hero" />
         <div className="fc-reader__hero-txt">
           {piece.tag && <span className="fc-reader__eye">{piece.tag}</span>}
           <h1 className="fc-reader__hed">{piece.hed}</h1>
@@ -525,7 +521,9 @@ function HeadLine({ label }) {
   )
 }
 
-function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
+function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width,
+               onUpdateHabit, onRetireHabit }) {
+  const [flipped, setFlipped] = useState(false)
   const sub     = habitSubText(habit, done, sources)
   const chip    = doneLabel(habit, done, sources)
   const content = CONTENT[habit.goalId]
@@ -536,6 +534,16 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
 
   return (
     <div className="fc-card" style={{ width }}>
+      <div className={`fc-card__flip${flipped ? ' flipped' : ''}`}>
+      <div className="fc-card__face fc-card__face--front">
+      <button
+        className="fc-card__flipbtn"
+        onClick={() => setFlipped(true)}
+        aria-label="Edit habit and see details"
+        title="Edit & details"
+      >
+        <i className="fa-solid fa-sliders" aria-hidden="true" />
+      </button>
       {/* Full-bleed gradient background (fallback under the photo) */}
       <div className="fc-card__bg" style={{ background: habit.bg }} />
 
@@ -558,6 +566,7 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
       {/* Stacked cards over the image — habit + editorial, one connected unit */}
       <div className="fc-card__stack">
         <div className="fc-hcard">
+          <SaveHeart piece={content} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="panel" />
           {habit.source && <p className="fc-hcard__source">{habit.source}</p>}
           <HeadLine label={habit.label} />
           {sub && <p className="fc-card__sub">{sub}</p>}
@@ -575,7 +584,14 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
           <div className="fc-articles">
             <p className="fc-articles__label">{daily ? `Beside your walk · Day ${daily.day}` : 'Supporting content'}</p>
             {articles.map((pc, i) => (
-              <button key={i} className="fc-artcard" onClick={() => onReadPiece && onReadPiece(pc, habit)}>
+              <div
+                key={i}
+                className="fc-artcard"
+                role="button"
+                tabIndex={0}
+                onClick={() => onReadPiece && onReadPiece(pc, habit)}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReadPiece && onReadPiece(pc, habit) } }}
+              >
                 <div className="fc-artcard__img" style={{ background: habit.bg }}>
                   <img src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
                   <div className="fc-artcard__duo" style={{ background: habit.bg }} />
@@ -585,12 +601,127 @@ function Card({ habit, done, onDone, sources, onConnect, onReadPiece, width }) {
                   <span className="fc-artcard__hed">{pc.hed}</span>
                   <span className="fc-artcard__meta">{pc.source}{pc.read ? ` · ${pc.read} read` : ''} <span className="fc-artcard__go">→</span></span>
                 </div>
-              </button>
+                <SaveHeart piece={pc} goalId={habit.goalId} bg={habit.bg} source={habit.source} variant="art" />
+              </div>
             ))}
           </div>
         )}
       </div>
+      </div>
+
+      <div className="fc-card__face fc-card__face--back">
+        <CardBack
+          habit={habit}
+          done={done}
+          sources={sources}
+          onUpdate={onUpdateHabit}
+          onRetire={onRetireHabit}
+          onClose={() => setFlipped(false)}
+        />
+      </div>
+      </div>
     </div>
+  )
+}
+
+// Back of the habit card — edit, why it works, and progress.
+function CardBack({ habit, done, sources, onUpdate, onRetire, onClose }) {
+  const onTrial   = habit.status === 'trial' || habit.status === 'adopted'
+  const content   = CONTENT[habit.goalId]
+  const why       = habit.why || (content && content.body && content.body[0])
+  const wearable  = WEARABLE[habit.goalId]
+  const connected = wearable && sources.includes(wearable.source)
+  const day       = Math.min(dayOf(habit), 7)
+  const tier      = habit.tier || 1
+
+  return (
+    <>
+      <button
+        className="fc-card__flipbtn"
+        onClick={onClose}
+        aria-label="Back to habit"
+        title="Done"
+      >
+        <i className="fa-solid fa-xmark" aria-hidden="true" />
+      </button>
+
+      <div className="fc-back">
+        {/* ── Edit ── */}
+        <div className="fc-back__panel">
+          <p className="fc-back__label">Edit</p>
+
+          <div className="fc-back__row">
+            <span className="fc-back__rowlabel">Time of day</span>
+            <input
+              className="fc-back__time"
+              type="time"
+              value={habit.time || '19:30'}
+              onChange={e => onUpdate(habit.id, { time: e.target.value })}
+            />
+          </div>
+          <p className="fc-back__hint">
+            {habit.anchor ? `${habit.anchor} — ` : ''}this is when your nudge arrives.
+          </p>
+
+          <div className="fc-back__row" style={{ display: 'block' }}>
+            <span className="fc-back__rowlabel">Difficulty</span>
+            <div className="fc-back__seg" style={{ marginTop: 8 }}>
+              {[1, 2, 3].map(n => (
+                <button
+                  key={n}
+                  className={`fc-back__segbtn${tier === n ? ' on' : ''}`}
+                  onClick={() => onUpdate(habit.id, { tier: n })}
+                >
+                  T{n}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {onTrial && (
+            <button
+              className="fc-back__act fc-back__act--promote"
+              onClick={() => onUpdate(habit.id, { status: 'kept' })}
+            >
+              Keep this habit
+            </button>
+          )}
+          <button className="fc-back__act fc-back__act--retire" onClick={() => onRetire(habit.id)}>
+            Retire this habit
+          </button>
+        </div>
+
+        {/* ── Progress ── */}
+        <div className="fc-back__panel">
+          <p className="fc-back__label">Progress</p>
+          {onTrial && (
+            <div className="fc-back__days">
+              {Array.from({ length: 7 }, (_, i) => (
+                <span key={i} className={`fc-back__day${i < day ? ' on' : ''}`}>{i + 1}</span>
+              ))}
+            </div>
+          )}
+          <p className="fc-back__stat"><b>{daysIn(habit)}</b> days done</p>
+          <p className="fc-back__hint">
+            {onTrial ? `Day ${day} of the 7-day trial.` : streakLabel(habit) + '.'}
+            {' '}
+            {connected
+              ? `${wearable.label} is connected — this ticks off automatically.`
+              : 'Marked off by tapping, no tracker connected.'}
+            {done ? ' Done today.' : ''}
+          </p>
+        </div>
+
+        {/* ── Why this works ── */}
+        {why && (
+          <div className="fc-back__panel">
+            <p className="fc-back__label">Why this works</p>
+            <p className="fc-back__why">{why}</p>
+            {habit.source && <p className="fc-back__cite">{habit.source}</p>}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
@@ -710,28 +841,31 @@ function MyHabitsSection({ habits, done, onToggleDone }) {
 
 // Full-bleed habit card (list preview) — tap to open its detail. No check-off here.
 function VHabitCard({ habit, done, onOpen, sources = [] }) {
-  const trial     = habit.status === 'trial' || habit.status === 'adopted'
+  const onTrial   = habit.status === 'trial' || habit.status === 'adopted'
   const day       = Math.min(dayOf(habit), 7)
-  const eyebrow   = done ? 'Done today' : (trial ? `Day ${day} of 7` : streakLabel(habit))
+  const eyebrow   = done ? 'Done today' : (onTrial ? `Day ${day} of 7` : streakLabel(habit))
   const wearable  = WEARABLE[habit.goalId]
   const connected = wearable && sources.includes(wearable.source)
   const when      = `${habit.anchor || 'After dinner'} · 7:30pm`
   return (
-    <button className="fc-vcard" onClick={onOpen}>
-      <img className="fc-vcard__img" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-      <div className="fc-vcard__duo" style={{ background: habit.bg }} />
-      <div className="fc-vcard__scrim" />
-      <span className={`fc-vcard__pill${trial ? '' : ' kept'}`}>{trial ? 'Trial' : 'Kept'}</span>
-      <div className="fc-vcard__ind">
-        <span className="fc-vcard__ind-chip" title="Reminder set" aria-label="Reminder set">{BellIcon}</span>
-        {connected && <span className="fc-vcard__ind-chip on" title={`${wearable.label} connected`} aria-label={`${wearable.label} connected`}>{StepsIcon}</span>}
-      </div>
-      <div className="fc-vcard__content">
-        <span className={`fc-vcard__eyebrow${done ? ' done' : ''}`}>{eyebrow}</span>
-        <p className="fc-vcard__label">{habit.label}</p>
-        <p className="fc-vcard__anchor">{when}</p>
-      </div>
-    </button>
+    <HabitCard
+      state={onTrial ? 'trial' : 'adopted'}
+      size="wide"
+      photo={photoFor(habit)}
+      gradient={habit.bg}
+      brand={habit.source}
+      kicker={onTrial ? 'Trial' : 'Kept'}
+      eyebrow={eyebrow}
+      eyebrowDone={done}
+      title={habit.label}
+      subtitle={when}
+      tier={habit.tier ? `T${habit.tier}` : undefined}
+      daysDone={daysIn(habit)}
+      reminder
+      tracker={connected ? { label: wearable.label } : null}
+      onClick={onOpen}
+      ariaLabel={habit.label}
+    />
   )
 }
 
@@ -812,8 +946,9 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
-  const working     = habits.filter(h => h.status === 'trial' || h.status === 'adopted')
-  const established = habits.filter(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established')
+  const live        = habits.filter(h => h.status !== 'retired')
+  const working     = live.filter(h => h.status === 'trial' || h.status === 'adopted')
+  const established = live.filter(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established')
 
   const connectSource = useCallback((source) => {
     setSources(prev => {
@@ -845,6 +980,18 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
     setHabits(next)
     setFirstRun(false)
     setPostConfirm(habit)
+  }
+
+  function persistHabits(next) {
+    try { localStorage.setItem('vitalistExp_habits', JSON.stringify(next)) } catch (_) {}
+    setHabits(next)
+  }
+  function updateHabit(id, patch) {
+    persistHabits(habits.map(h => (h.id === id ? { ...h, ...patch } : h)))
+  }
+  function retireHabit(id) {
+    updateHabit(id, { status: 'retired' })
+    setOpenHabit(null)
   }
 
   function addNewHabit(opt) {
@@ -929,10 +1076,10 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
 
   const vw          = typeof window !== 'undefined' ? window.innerWidth : 390
   const allHabits   = [...working, ...established]
-  const slotOpen    = habits.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
+  const slotOpen    = live.some(h => h.status === 'kept' || h.status === 'my_habit' || h.status === 'established' || dayOf(h) >= 7)
 
   // Candidate next habits — from the pillars she chose, minus ones she already has
-  const ownedGoals  = new Set(habits.map(h => h.goalId))
+  const ownedGoals  = new Set(live.map(h => h.goalId))
   let   candGoals   = readGoals().filter(g => !ownedGoals.has(g) && NEXT_OPTIONS[g])
   if (candGoals.length === 0) candGoals = ['sleep', 'eat', 'stress'].filter(g => !ownedGoals.has(g))
   const candidates  = candGoals.slice(0, 3).map(g => NEXT_OPTIONS[g]).filter(Boolean)
@@ -984,6 +1131,8 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
             sources={sources}
             onConnect={connectSource}
             onReadPiece={(piece, habit) => setReadPiece({ piece, habit })}
+            onUpdateHabit={updateHabit}
+            onRetireHabit={retireHabit}
           />
         </div>
       )}
@@ -1031,7 +1180,7 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
           onClick={() => setAskHabit(openHabit || allHabits[0])}
         >
           <span className="fc-ai-fab__spark">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.1L19 8.8l-5.3 1.7L12 16l-1.7-5.5L5 8.8l5.3-1.7L12 2z"/><path d="M18.5 13.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9.9-2.6z" opacity=".7"/></svg>
+            {SparkIcon}
           </span>
           <span className="fc-ai-fab__txt">
             <span className="fc-ai-fab__name">Ask Vita</span>
