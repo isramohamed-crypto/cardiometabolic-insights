@@ -398,9 +398,7 @@
   border-radius: 14px;
   padding: 14px 18px;
   font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
+  font: var(--font-btn); cursor: pointer;
   width: 100%;
   text-align: left;
   margin-top: 8px;

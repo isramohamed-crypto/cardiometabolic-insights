@@ -3,6 +3,8 @@
   /* ── Type ─────────────────────────────────────────────────────────────── */
   --font-display: 'Poppins', sans-serif;   /* headlines, titles, numbers */
   --font-body:    'DM Sans', sans-serif;   /* everything else */
+  /* One type spec for every action button, primary or secondary */
+  --font-btn: 800 15px var(--font-body);
   /* Legacy aliases — --font-serif was never a serif */
   --font-serif: var(--font-display);
   --font-sans:  var(--font-body);

@@ -182,7 +182,7 @@ body {
 .cs-quote span { color: var(--color-ink); font-weight: 700; font-style: normal; }
 .cs-q { font-size: 17px; color: var(--color-ink); line-height: 1.5; margin: 0 0 11px; padding-left: 17px; position: relative; }
 .cs-q::before { content: '•'; position: absolute; left: 0; color: var(--color-chip-border); }
-.cs-export { width: 100%; background: var(--color-ink); color: #FFFDF5; border: none; border-radius: 1002px; padding: 18px; font: 800 18px var(--font-body); cursor: pointer; margin-top: 7px; }
+.cs-export { width: 100%; background: var(--color-ink); color: #FFFDF5; border: none; border-radius: 1002px; padding: 18px; font: var(--font-btn); cursor: pointer; margin-top: 7px; }
 .cs-export:hover { background: var(--color-ink); }
 
 /* ── Shared app header (Read / Yours / Me) ───────────────────────────────── */
