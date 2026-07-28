@@ -59,12 +59,35 @@
 /* Reminder / tracker indicators (adopted only) */
 .hcard__ind { display:flex; gap:8px; flex:none }
 .hcard__ind-chip {
+  position:relative;
   width:36px; height:36px; border-radius:50%; font-size:15px;
   background:rgba(0,32,14,.42); border:1px solid rgba(255,255,255,.22); color:#fff;
   -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
   display:flex; align-items:center; justify-content:center;
 }
 .hcard__ind-chip.on { background:var(--color-seaweed); border-color:rgba(143,230,182,.5); color:#eafff4 }
+
+/* Hover label from data-label. Right-aligned and below the chip so it stays
+   inside the card, which is overflow:hidden. */
+.hcard__ind-chip[data-label]::after {
+  content:attr(data-label);
+  position:absolute; top:calc(100% + 8px); right:0;
+  white-space:nowrap; pointer-events:none;
+  background:rgba(0,32,14,.94); color:#fff;
+  font:700 11px var(--font-body); letter-spacing:.02em;
+  padding:6px 10px; border-radius:8px;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  opacity:0; transform:translateY(-4px);
+  transition:opacity .15s, transform .15s;
+}
+.hcard__ind-chip[data-label]:hover::after { opacity:1; transform:translateY(0) }
+@media (prefers-reduced-motion: reduce) {
+  .hcard__ind-chip[data-label]::after { transition:none; transform:none }
+}
+/* Touch devices have no hover — the label would stick after a tap */
+@media (hover: none) {
+  .hcard__ind-chip[data-label]::after { display:none }
+}
 
 /* ── Bottom copy ── */
 .hcard__foot { position:relative; z-index:2; margin-top:auto }

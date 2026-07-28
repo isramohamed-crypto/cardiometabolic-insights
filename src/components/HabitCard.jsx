@@ -90,13 +90,22 @@ export default function HabitCard({
         </div>
         {adopted && (reminder || tracker) && (
           <div className="hcard__ind">
+            {/* data-label drives the styled hover label; role="img" + aria-label
+                is how these read to a screen reader, since they're status
+                glyphs rather than controls. */}
             {reminder && (
-              <span className="hcard__ind-chip" title="Reminder set" aria-label="Reminder set">{BellIcon}</span>
+              <span
+                className="hcard__ind-chip"
+                data-label="Reminder set"
+                role="img" aria-label="Reminder set"
+              >{BellIcon}</span>
             )}
             {tracker && (
-              <span className="hcard__ind-chip on" title={`${tracker.label} connected`} aria-label={`${tracker.label} connected`}>
-                {StepsIcon}
-              </span>
+              <span
+                className="hcard__ind-chip on"
+                data-label={`${tracker.label} connected`}
+                role="img" aria-label={`${tracker.label} connected`}
+              >{StepsIcon}</span>
             )}
           </div>
         )}
