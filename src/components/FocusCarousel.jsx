@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import './FocusCarousel.css'
+import HabitCard from './HabitCard'
 
 const TODAY = new Date().toISOString().slice(0, 10)
 const STORAGE_KEY = `vitalistExp_completions_${TODAY}`
@@ -702,28 +703,31 @@ function MyHabitsSection({ habits, done, onToggleDone }) {
 
 // Full-bleed habit card (list preview) — tap to open its detail. No check-off here.
 function VHabitCard({ habit, done, onOpen, sources = [] }) {
-  const trial     = habit.status === 'trial' || habit.status === 'adopted'
+  const onTrial   = habit.status === 'trial' || habit.status === 'adopted'
   const day       = Math.min(dayOf(habit), 7)
-  const eyebrow   = done ? 'Done today' : (trial ? `Day ${day} of 7` : streakLabel(habit))
+  const eyebrow   = done ? 'Done today' : (onTrial ? `Day ${day} of 7` : streakLabel(habit))
   const wearable  = WEARABLE[habit.goalId]
   const connected = wearable && sources.includes(wearable.source)
   const when      = `${habit.anchor || 'After dinner'} · 7:30pm`
   return (
-    <button className="fc-vcard" onClick={onOpen}>
-      <img className="fc-vcard__img" src={photoFor(habit)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-      <div className="fc-vcard__duo" style={{ background: habit.bg }} />
-      <div className="fc-vcard__scrim" />
-      <span className={`fc-vcard__pill${trial ? '' : ' kept'}`}>{trial ? 'Trial' : 'Kept'}</span>
-      <div className="fc-vcard__ind">
-        <span className="fc-vcard__ind-chip" title="Reminder set" aria-label="Reminder set">{BellIcon}</span>
-        {connected && <span className="fc-vcard__ind-chip on" title={`${wearable.label} connected`} aria-label={`${wearable.label} connected`}>{StepsIcon}</span>}
-      </div>
-      <div className="fc-vcard__content">
-        <span className={`fc-vcard__eyebrow${done ? ' done' : ''}`}>{eyebrow}</span>
-        <p className="fc-vcard__label">{habit.label}</p>
-        <p className="fc-vcard__anchor">{when}</p>
-      </div>
-    </button>
+    <HabitCard
+      state={onTrial ? 'trial' : 'adopted'}
+      size="wide"
+      photo={photoFor(habit)}
+      gradient={habit.bg}
+      brand={habit.source}
+      kicker={onTrial ? 'Trial' : 'Kept'}
+      eyebrow={eyebrow}
+      eyebrowDone={done}
+      title={habit.label}
+      subtitle={when}
+      tier={habit.tier ? `T${habit.tier}` : undefined}
+      daysDone={daysIn(habit)}
+      reminder
+      tracker={connected ? { label: wearable.label } : null}
+      onClick={onOpen}
+      ariaLabel={habit.label}
+    />
   )
 }
 

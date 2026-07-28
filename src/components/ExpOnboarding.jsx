@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './ExpOnboarding.css'
+import HabitCard from './HabitCard'
 
 // ── "Already doing" pillars (Mark's proto) ──────────────────────────────────
 const PILLARS = [
@@ -527,48 +528,24 @@ export default function ExpOnboarding({ onComplete }) {
           <p className="eo-eye">A place to start · {CAT_LABEL[card.goalId] || 'For you'}</p>
           <h2 className="eo-q" style={{ fontSize: 20 }}>Here's one small thing to try.</h2>
 
-          {/* Unadopted: offered during onboarding, still has an "Add this habit" CTA.
-              Shows the pillar kicker, image, title, subtitle and the why-link — no brand flag. */}
-          <div className="eo-hcard eo-hcard--unadopted" style={{ background: GRAD[card.goalId] }}>
-            <img className="eo-hcard__photo" src={photo(card)} alt="" draggable="false" onError={e => { e.currentTarget.style.display = 'none' }} />
-            <div className="eo-hcard__duotone" style={{ background: GRAD[card.goalId] }} />
-            <div className="eo-hcard__veil" />
-
-            <div className="eo-hcard__top">
-              <span className="eo-hcard__flag">{card.source}</span>
-              <span className="eo-hcard__kicker">
-                {CAT_LABEL[card.goalId] || 'For you'} · card {(habitIdx % cards.length) + 1} of {cards.length}
-              </span>
-            </div>
-
-            <div className="eo-hcard__foot">
-              <h1 className="eo-hcard__hed">{card.headline} <em>{card.em}</em></h1>
-              <p className="eo-hcard__dek">{card.tagline}</p>
-              <button
-                className="eo-hcard__whylink"
-                aria-expanded={whyOpen}
-                onClick={() => setWhyOpen(o => !o)}
-              >
-                Why this works
-              </button>
-              {whyOpen && (
-                <div className="eo-hcard__whybody">
-                  <p className="eo-hcard__whytext">{card.why}</p>
-                  {card.body
-                    ? <button className="eo-hcard__read" onClick={() => setReadArticle(card)}>
-                        <span className="eo-hcard__readtxt">{card.source}: {card.article}</span>
-                        <span className="eo-hcard__go">Read →</span>
-                      </button>
-                    : card.article && <p className="eo-hcard__cite">{card.source}: {card.article}</p>}
-                </div>
-              )}
-              <div className="eo-hcard__dots" role="presentation">
-                {cards.map((_, i) => (
-                  <span key={i} className={`eo-hcard__dot${i === habitIdx % cards.length ? ' on' : ''}`} />
-                ))}
-              </div>
-            </div>
-          </div>
+          <HabitCard
+            state="unadopted"
+            size="tall"
+            photo={photo(card)}
+            gradient={GRAD[card.goalId]}
+            kicker={`${CAT_LABEL[card.goalId] || 'For you'} · card ${(habitIdx % cards.length) + 1} of ${cards.length}`}
+            title={card.headline}
+            titleEm={card.em}
+            subtitle={card.tagline}
+            why={card.why}
+            whyOpen={whyOpen}
+            onToggleWhy={() => setWhyOpen(o => !o)}
+            source={card.source}
+            article={card.article}
+            onReadArticle={card.body ? () => setReadArticle(card) : undefined}
+            dots={cards.length}
+            dotIndex={habitIdx % cards.length}
+          />
 
           <button className="eo-shuffle" onClick={() => { setWhyOpen(false); setHabitIdx(i => i + 1) }}>Show me another</button>
           <button className="eo-btn primary" onClick={() => setStep('S_moment')}>Add this habit</button>

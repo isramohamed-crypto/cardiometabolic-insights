@@ -1,6 +1,15 @@
-# Habit Card States (`eo-hcard`)
+# Habit Card States
 
 The states a habit card can be in, and what each one shows.
+
+Implemented by a single component — `src/components/HabitCard.jsx` /
+`HabitCard.css` — used by both onboarding and the Routine list. It replaced the
+two separate cards that used to exist (`.eo-hcard` in onboarding and
+`.fc-vcard` in the Routine list). The visual language is the Figma-derived one
+from `.eo-hcard`.
+
+Size is a variant rather than a state: `--tall` fills the column height
+(onboarding hero), `--wide` is 16/11 (Routine list).
 
 Difficulty levels referenced here are defined in [habit-tiers.md](./habit-tiers.md).
 
@@ -76,11 +85,9 @@ countdown.
 
 ## Open questions
 
-- [ ] **Trial length is inconsistent.** `docs/habit-tiers.md` says tier
-      progression is "auto-offered after 2-week trial", but the code treats a
-      trial as 7 days — `VHabitCard` renders `Day ${day} of 7` with
-      `Math.min(dayOf(habit), 7)`, and `slotOpen` unlocks on `dayOf(h) >= 7`.
-      Pick one.
+- [x] ~~Trial length is inconsistent.~~ **Resolved: a trial is 7 days.** This
+      matches the code (`Day N of 7`, `slotOpen` on `dayOf(h) >= 7`);
+      `habit-tiers.md` has been corrected from "2-week trial".
 - [ ] **The code has six status values for these three states.** Current
       strings: `trial`, `adopted`, `kept`, `my_habit`, `established`,
       `graduated`. They collapse into two buckets — `trial`/`adopted` are
@@ -92,4 +99,11 @@ countdown.
       (as a fallback inside `streakLabel`) and never displayed. `habit-tiers.md`
       also lists "whether tier progression is made visible in UI" as open.
 - [ ] Do the shuffle control and the 3-dot pager belong to the unadopted state
-      only? They're currently rendered on the onboarding card.
+      only? The pager is on the card; the shuffle button sits beside it.
+- [ ] **A third card still exists.** The habit *detail* view uses the separate
+      `Card` component (`.fc-card`, with its own stack of `.fc-hcard` /
+      `.fc-ecard` / `.fc-done-chip` panels). Only the onboarding hero and the
+      Routine list were combined. Folding the detail view in would be the next
+      step if it should share this component.
+- [ ] Editing isn't built yet — no UI sets the time of day, difficulty, or
+      promotes/retires a habit.
