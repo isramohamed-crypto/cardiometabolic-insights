@@ -96,3 +96,21 @@
 .hcard__dots { display:flex; justify-content:center; gap:6px; margin:18px 0 0 }
 .hcard__dot { width:6px; height:6px; border-radius:999px; background:rgba(255,255,255,.45); transition:width .2s, background .2s }
 .hcard__dot.on { width:16px; background:#fff }
+
+/* ── Completion status pill (Routine list) ── */
+.hcard__status {
+  position:absolute; bottom:18px; right:20px; z-index:3;
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 12px 6px 10px; border-radius:999px;
+  font:800 11px var(--font-body); letter-spacing:.06em; text-transform:uppercase;
+  color:#fff; background:rgba(0,32,14,.5); border:1.5px solid rgba(255,255,255,.4);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+}
+.hcard__status.done { color:var(--color-seaweed); background:#8fe6b6; border-color:#8fe6b6 }
+/* Whole-card treatment once logged */
+.hcard--done { outline:2.5px solid #8fe6b6; outline-offset:-2.5px }
+.hcard--done .hcard__veil {
+  background:
+    linear-gradient(0deg, rgba(0,44,20,.94) 0%, rgba(0,44,20,.45) 28%, rgba(0,44,20,0) 48%),
+    linear-gradient(180deg, rgba(0,32,14,.42) 0%, rgba(0,32,14,0) 20%);
+}
