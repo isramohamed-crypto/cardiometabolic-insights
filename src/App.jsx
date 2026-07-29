@@ -266,6 +266,13 @@ export default function App() {
   const [yoursSeen, setYoursSeen]   = useState(() => readYoursSeen())
   const [profile, setProfile]       = useState(() => { try { return localStorage.getItem('vitalistExp_profile') || '' } catch { return '' } })
   const [dataVersion, setDataVersion] = useState(0) // bump to remount pages after a profile swap
+  const [openHabitId, setOpenHabitId] = useState(null) // open a habit's detail on the Routine screen
+
+  // Open a habit's full detail (same view as the Routine feed) from anywhere
+  function openHabitOnRoutine(id) {
+    setOpenHabitId(id)
+    setActivePage('Building')
+  }
 
   // Switch demo profile in place — no reload, no onboarding, stay on current page
   function switchProfile(id) {
@@ -316,9 +323,9 @@ export default function App() {
   return (
     <div className="exp-app">
       <div className="exp-page" key={dataVersion}>
-        {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={openMenu} />}
+        {activePage === 'Building' && <FocusCarousel onNavigate={navigate} onLogoClick={resetOnboarding} onMenu={openMenu} openHabitId={openHabitId} onConsumeOpenHabit={() => setOpenHabitId(null)} />}
         {activePage === 'Read'     && <><AppHeader onMenu={openMenu} /><ReadPage /></>}
-        {activePage === 'Yours'    && <><AppHeader onMenu={openMenu} /><CollectionPage /></>}
+        {activePage === 'Yours'    && <><AppHeader onMenu={openMenu} /><CollectionPage onOpenHabit={openHabitOnRoutine} /></>}
         {activePage === 'Me'       && <><AppHeader onMenu={openMenu} /><MePage onNavigate={navigate} /></>}
       </div>
       <BottomNav activePage={activePage} onNavigate={navigate} badges={{ Yours: yoursBadge }} />

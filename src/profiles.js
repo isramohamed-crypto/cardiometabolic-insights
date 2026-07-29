@@ -27,6 +27,21 @@ const CLAIMS = [
   { id: 'claim_connect_1', goalId: 'connect', label: 'Part of a group, class, or community', bg: 'linear-gradient(155deg,#5a7a8a,#2d4a5a)', status: 'established', addedAt: daysAgo(0) },
 ]
 
+// A fuller established set for the Day-7 demo — 11 habits she already does
+const EST11 = [
+  { id: 'est_eat_1',     goalId: 'eat',     label: 'Cook at home most nights',            bg: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_eat_2',     goalId: 'eat',     label: 'Half-plate vegetables',               bg: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_eat_3',     goalId: 'eat',     label: 'Olive oil or nuts as your go-to fat', bg: 'linear-gradient(155deg,#8a6a5a,#5a3a2a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_move_1',    goalId: 'move',    label: 'Get up and move during long sitting', bg: 'linear-gradient(155deg,#8a7565,#4a3b32)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_move_2',    goalId: 'move',    label: 'Take the stairs',                     bg: 'linear-gradient(155deg,#8a7565,#4a3b32)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_sleep_1',   goalId: 'sleep',   label: 'Screens off before bed',              bg: 'linear-gradient(155deg,#6d7b6a,#3a4436)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_sleep_2',   goalId: 'sleep',   label: 'Consistent wake time',                bg: 'linear-gradient(155deg,#6d7b6a,#3a4436)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_stress_1',  goalId: 'stress',  label: 'Time outdoors most days',             bg: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_stress_2',  goalId: 'stress',  label: 'Journal three lines at night',        bg: 'linear-gradient(155deg,#7a6a8a,#4a3a5a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_connect_1', goalId: 'connect', label: 'Part of a group, class, or community', bg: 'linear-gradient(155deg,#5a7a8a,#2d4a5a)', status: 'established', addedAt: daysAgo(0) },
+  { id: 'est_water_1',   goalId: 'water',   label: 'Glass of water before coffee',        bg: 'linear-gradient(155deg,#5a7a8a,#2d4a5a)', status: 'established', addedAt: daysAgo(0) },
+]
+
 export const PROFILES = {
   // Day 1 — first session, just accepted her habit tonight
   day1: {
@@ -59,7 +74,7 @@ export const PROFILES = {
       walk(daysAgo(8), 'kept', 2, 'Walk for 20 minutes after dinner'),
       sleep(TODAY, 'trial', 1),
     ],
-    collection: CLAIMS,
+    collection: EST11,
     goals: ['move', 'sleep'],
     sources: ['steps', 'sleep'],
     name: 'Beth',

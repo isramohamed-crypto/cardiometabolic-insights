@@ -58,57 +58,63 @@
 .cp-trial-card {
   display: flex;
   align-items: stretch;
+  width: 100%;
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--color-gray-10);
-  min-height: 80px;
+  min-height: 88px;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 6px 16px rgba(27,42,74,.06);
+  transition: border-color .15s, box-shadow .15s, transform .12s;
 }
+.cp-trial-card:hover { border-color: var(--color-chip-border); box-shadow: 0 10px 22px rgba(27,42,74,.1); }
+.cp-trial-card:active { transform: scale(.995); }
 
 .cp-trial-card__img {
-  width: 80px;
+  position: relative;
+  width: 96px;
   flex-shrink: 0;
+  overflow: hidden;
   /* bg applied inline */
 }
+.cp-trial-card__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(.2) brightness(.96); }
 
 .cp-trial-card__body {
   flex: 1;
   min-width: 0;
-  padding: 14px 14px 14px 16px;
+  padding: 14px 8px 14px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
 }
+
+/* Source · Trial — one inline labeling row (matches the Routine cards' vibe) */
+.cp-trial-card__meta { display: flex; align-items: center; gap: 6px; margin: 0 0 1px; }
+.cp-trial-card__src { font: 800 10px var(--font-body); letter-spacing: .06em; color: var(--color-muted); }
+.cp-trial-card__dot { color: var(--color-ghost); }
+.cp-trial-card__trial { font: 800 10px var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--color-leaf); }
 
 .cp-trial-card__label {
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
   color: var(--color-ink);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.25;
 }
+.cp-trial-card__eyebrow { font: 700 12px var(--font-body); color: var(--color-muted); margin: 2px 0 0; }
 
-.cp-trial-card__sub {
-  font-size: 12px;
-  color: var(--color-muted);
-  margin: 0;
-  font-weight: 600;
-}
-
-.cp-trial-card__badge {
-  line-height: 1.2;
+.cp-trial-card__chev {
   flex-shrink: 0;
   align-self: center;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--color-chip-border);
-  border: 1.5px solid var(--color-chip-border);
-  border-radius: 20px;
-  padding: 4px 10px;
-  margin-right: 14px;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--color-ghost);
+  padding-right: 14px;
 }
 
 /* ── 30-day check-in nudge ───────────────────────────────────────────────── */
@@ -280,6 +286,115 @@
   text-transform: uppercase;
 }
 
+/* ── Category view · Crest: shield silhouette with a category-colored rim ──── */
+.cp-badges--crest .cp-badge__emblem {
+  width: 62px; height: 74px;
+  border: none; outline: none; box-shadow: none; border-radius: 0;
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%);
+  filter: drop-shadow(0 4px 8px rgba(27,42,74,.28));
+}
+.cp-badges--crest .cp-badge__emblem::before {
+  content: ''; position: absolute; inset: -3px; z-index: -1;
+  background: var(--cat, var(--color-leaf));
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%);
+}
+.cp-badges--crest .cp-badge__emblem::after {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  clip-path: polygon(50% 0, 94% 8%, 50% 42%, 6% 8%);
+  background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0));
+}
+.cp-badges--crest .cp-badge__seal { bottom: 4px; right: auto; left: 50%; transform: translateX(-50%); }
+.cp-badges--crest .cp-badge__icon { transform: translateY(-4px); }
+.cp-badges--crest .cp-badge__emblem--add { clip-path: none; width: 60px; height: 60px; filter: none; }
+.cp-badges--crest .cp-badge__emblem--add::before { display: none; }
+
+/* ── All view · Crest wall: shields interlock; name shows on hover ─────────── */
+.cp-drag-hint { text-align: center; font: 700 11px var(--font-body); letter-spacing: .04em; color: var(--color-ghost); margin: 2px 20px 0; }
+
+/* Slot grid — crests occupy cells; empty cells are invisible shield-shaped drop
+   targets that reveal while dragging. Tight so there's plenty of room to arrange. */
+.cp-crestscroll { overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cp-crestscroll::-webkit-scrollbar { display: none; }
+.cp-crestgrid { display: grid; grid-template-columns: repeat(8, 64px); width: max-content; margin: 0 auto; gap: 6px 6px; padding: 26px 8px 6px; }
+.cp-crestcell { position: relative; display: flex; align-items: flex-start; justify-content: center; width: 64px; min-height: 76px; }
+.cp-slot-ghost { width: 62px; height: 74px; background: transparent; transition: background .15s;
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%); }
+.cp-crestgrid.dragging .cp-crestcell--empty .cp-slot-ghost { background: rgba(27,42,74,.07); }
+.cp-crestcell--empty.dragover .cp-slot-ghost { background: rgba(27,188,60,.22); }
+.cp-crestcell.dragover:not(.cp-crestcell--empty) .cp-crest__emblem { transform: translateY(-2px) scale(1.08); }
+
+.cp-crest {
+  position: relative; z-index: 1;
+  width: 62px;
+  background: none; border: none; padding: 0;
+  cursor: grab;
+}
+.cp-crest:hover, .cp-crest:focus-visible { z-index: 40; outline: none; }
+.cp-crest.dragging { opacity: .4; cursor: grabbing; }
+/* Tap-to-place: picked-up crest lifts + glows; others dim; empty slots reveal */
+.cp-crest.selected { z-index: 40; }
+.cp-crest.selected .cp-crest__emblem { transform: translateY(-3px) scale(1.08); filter: drop-shadow(0 7px 13px rgba(27,188,60,.5)); }
+.cp-crestgrid.selecting .cp-crest:not(.selected) { opacity: .55; }
+.cp-crestgrid.selecting .cp-crestcell--empty .cp-slot-ghost { background: rgba(27,42,74,.07); }
+.cp-crest__emblem {
+  position: relative;
+  width: 62px; height: 74px;
+  display: flex; align-items: center; justify-content: center;
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%);
+  filter: drop-shadow(0 3px 6px rgba(27,42,74,.32));
+  transition: transform .18s cubic-bezier(.2,1.2,.4,1);
+}
+.cp-crest:hover .cp-crest__emblem,
+.cp-crest:focus-visible .cp-crest__emblem { transform: translateY(-4px) scale(1.06); }
+.cp-crest__emblem::before {
+  content: ''; position: absolute; inset: -2.5px; z-index: -1;
+  background: var(--cat, var(--color-leaf));
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%);
+}
+.cp-crest__emblem::after {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  clip-path: polygon(50% 0, 94% 8%, 50% 42%, 6% 8%);
+  background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0));
+}
+.cp-crest__icon { font-size: 24px; line-height: 1; transform: translateY(-4px); filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+.cp-crest__seal {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #004620; color: #fff; font-size: 10px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #FFFDF5; z-index: 2;
+}
+/* Hover name — floating label above the crest */
+.cp-crest__name {
+  position: absolute; bottom: calc(100% - 8px); left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--color-ink); color: #fff;
+  font: 800 11px var(--font-body); letter-spacing: .01em;
+  padding: 6px 10px; border-radius: 9px; white-space: nowrap;
+  opacity: 0; pointer-events: none; z-index: 20;
+  box-shadow: 0 8px 20px rgba(27,42,74,.28);
+  transition: opacity .15s, transform .15s;
+}
+.cp-crest__name::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--color-ink);
+}
+.cp-crest:hover .cp-crest__name,
+.cp-crest:focus-visible .cp-crest__name { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* Add tile — a gray outlined shield that joins the wall */
+.cp-crest--add { cursor: pointer; }
+.cp-crest--add .cp-crest__emblem--add {
+  clip-path: polygon(50% 100%, 6% 74%, 6% 8%, 50% 0, 94% 8%, 94% 74%);
+  filter: none;
+  background: #fff;
+}
+.cp-crest--add .cp-crest__emblem--add::before { background: var(--color-ghost); }  /* gray rim */
+.cp-crest--add:hover .cp-crest__emblem--add { background: var(--color-warm-hover); }
+.cp-crest--add .cp-crest__emblem--add span { font: 300 30px var(--font-body); color: var(--color-muted); transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) {
+  .cp-crest__emblem, .cp-crest__name { transition: none; }
+}
+
 /* ── Wearable / tracker tag ──────────────────────────────────────────────── */
 .cp-wear {
   display: inline-flex;
@@ -383,6 +498,11 @@
   font-size: 22px;
   letter-spacing: -.01em;
   color: var(--color-ink);
+  margin: 0 0 8px;
+}
+.cp-sheet__note {
+  font: 600 13px/1.45 var(--font-body);
+  color: var(--color-muted);
   margin: 0 0 14px;
 }
 .cp-sheet__scroll {

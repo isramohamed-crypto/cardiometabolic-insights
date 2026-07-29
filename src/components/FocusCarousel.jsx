@@ -993,7 +993,7 @@ function Overview({ habits, done, onSelect, onClose, onToggleDone }) {
   )
 }
 
-export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
+export default function FocusCarousel({ onNavigate, onLogoClick, onMenu, openHabitId, onConsumeOpenHabit }) {
   const name            = readName()
   const returning       = readReturning()
   const [habits, setHabits] = useState(() => readHabits() || [])
@@ -1009,7 +1009,10 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
   const [addFlow, setAddFlow]   = useState(false)
   const [addIdx, setAddIdx]     = useState(0)
   const [addWhy, setAddWhy]     = useState(false)
-  const [openHabit, setOpenHabit] = useState(null)
+  const [openHabit, setOpenHabit] = useState(() => {
+    if (!openHabitId) return null
+    return (readHabits() || []).find(x => x.id === openHabitId) || null
+  })
   const [showHint, setShowHint] = useState(habits.length > 1)
   const [sources, setSources]   = useState(() => readSources())
 
@@ -1097,6 +1100,13 @@ export default function FocusCarousel({ onNavigate, onLogoClick, onMenu }) {
 
   useEffect(() => { writeDone(done) }, [done])
   useEffect(() => { try { localStorage.setItem('vitalistExp_returning', '1') } catch (_) {} }, [])
+  // Open a specific habit's detail when asked (e.g. tapped from the Collection page)
+  useEffect(() => {
+    if (!openHabitId) return
+    const h = (readHabits() || []).find(x => x.id === openHabitId)
+    if (h) setOpenHabit(h)
+    if (onConsumeOpenHabit) onConsumeOpenHabit()
+  }, [openHabitId])
   useEffect(() => {
     if (!showHint) return
     const t = setTimeout(() => setShowHint(false), 3000)
