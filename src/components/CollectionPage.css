@@ -117,6 +117,39 @@
   padding-right: 14px;
 }
 
+/* ── Habit insight — adaptive longevity snippet ──────────────────────────── */
+.cp-insight {
+  position: relative;
+  width: calc(100% - 40px);
+  margin: 0 20px 24px;
+  padding: 15px 42px 16px 17px;
+  border-radius: 16px;
+  background: var(--color-warm-hover);
+  border: 1px solid var(--color-gray-10);
+  border-left: 4px solid var(--cat, var(--color-leaf));
+}
+.cp-insight__x {
+  position: absolute; top: 10px; right: 10px;
+  width: 26px; height: 26px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; color: var(--color-ghost);
+  font-size: 14px; cursor: pointer; transition: background .15s, color .15s;
+}
+.cp-insight__x:hover { background: rgba(0,0,0,.05); color: var(--color-muted); }
+.cp-insight__eye {
+  display: flex; align-items: center; gap: 7px;
+  font: 800 10px var(--font-body); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cat, var(--color-seaweed)); margin: 0 0 8px;
+}
+.cp-insight__eye i { color: var(--color-leaf); }
+.cp-insight__stat {
+  font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 1.35;
+  letter-spacing: -.01em; color: var(--color-ink); margin: 0 0 8px;
+}
+.cp-insight__body {
+  font: 500 13.5px/1.5 var(--font-body); color: var(--color-muted); margin: 0;
+}
+
 /* ── 30-day check-in nudge ───────────────────────────────────────────────── */
 .cp-checkin-nudge {
   display: flex;

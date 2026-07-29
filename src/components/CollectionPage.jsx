@@ -14,6 +14,42 @@ function catFor(goalId) {
   return CATEGORIES.find(c => c.match.includes(goalId)) || { id: 'other', label: 'Other', color: '#8b8b90' }
 }
 
+// ── Longevity insight snippets per category — short, for inspiration ─────────
+// `strong`: shown when they already have habits here. `gap`: shown to inspire
+// when they have none. Not medical advice — framed as general research color.
+const INSIGHTS = {
+  movement: {
+    stat: 'Light activity ~150 min/week is linked to roughly 2.8 more years of life — moderate activity, closer to 4.5.',
+    strong: 'Your movement habits are stacking up — this is the lever with some of the strongest longevity evidence behind it.',
+    gap: 'A brisk 20-minute walk a few times a week already moves the needle. It doesn\'t have to be extreme — just less sitting.',
+  },
+  nutrition: {
+    stat: 'Diets built around vegetables, legumes and whole grains track with longer, healthier years.',
+    strong: 'Your kitchen habits are doing real work — food is one of the most consistent signals in longevity research.',
+    gap: 'One extra serving of vegetables a day is among the simplest, most repeatable bets for long-term health.',
+  },
+  sleep: {
+    stat: 'Seven to nine hours on a consistent schedule is tied to better metabolic and heart health over time.',
+    strong: 'Protecting sleep like this compounds — consistency matters more than any single perfect night.',
+    gap: 'A steady wake time is the single highest-leverage sleep habit. If you start anywhere, start there.',
+  },
+  stress: {
+    stat: 'Chronic stress speeds up cellular aging; brief daily downshifts measurably buffer it.',
+    strong: 'You\'re building real recovery into your days — that softens the wear stress puts on the body.',
+    gap: 'A few slow exhales flip on your body\'s calm-down switch. Ninety seconds genuinely counts.',
+  },
+  connection: {
+    stat: 'Strong social ties rival diet and exercise as predictors of a long life.',
+    strong: 'Your connection habits matter more than most people realize — isolation is a genuine health risk.',
+    gap: 'One regular check-in with someone you care about is a legitimate longevity habit, not a nice-to-have.',
+  },
+  substances: {
+    stat: 'Cutting back on alcohol and tobacco pays back in healthspan faster than almost anything else.',
+    strong: 'Trimming these is some of the highest-return work you can do for your long-term health.',
+    gap: 'Even one dry day a week — or delaying that first cigarette — is a meaningful place to start.',
+  },
+}
+
 // ── Gradient art per goal ───────────────────────────────────────────────────
 const GRAD = {
   move:    'linear-gradient(155deg,#8a7565,#4a3b32)',
@@ -235,6 +271,13 @@ export default function CollectionPage({ onOpenHabit }) {
   const [dragOverIdx, setDragOverIdx] = useState(null)
   const [isDragging, setIsDragging] = useState(false)
   const [selectedId, setSelectedId] = useState(null) // touch: tap to pick up, tap a slot to place
+  const [insightDismissed, setInsightDismissed] = useState(() => {
+    try { return localStorage.getItem('vitalistExp_insightDismissed') === '1' } catch { return false }
+  })
+  function dismissInsight() {
+    setInsightDismissed(true)
+    try { localStorage.setItem('vitalistExp_insightDismissed', '1') } catch {}
+  }
   const dragId = useRef(null)
   const gridScrollRef = useRef(null)
   // Center the horizontal canvas so the crests sit in the middle initially
@@ -331,6 +374,26 @@ export default function CollectionPage({ onOpenHabit }) {
   // Labels already in the collection or active — so the library can show "added"
   const ownedLabels = new Set([...myHabits, ...trialHabits].map(h => h.label))
 
+  // Pick a habit insight to feature: affirm the category they lean into, or
+  // (when viewing all) nudge one they haven't touched yet.
+  const catCounts = {}
+  ;[...myHabits, ...trialHabits].forEach(h => { const c = catFor(h.goalId).id; catCounts[c] = (catCounts[c] || 0) + 1 })
+  let insightCatId, insightFraming
+  if (filter !== 'all') {
+    insightCatId = filter
+    insightFraming = (catCounts[filter] || 0) > 0 ? 'strong' : 'gap'
+  } else {
+    const gaps = CATEGORIES.filter(c => c.id !== 'substances' && INSIGHTS[c.id] && !catCounts[c.id])
+    if (gaps.length) { insightCatId = gaps[0].id; insightFraming = 'gap' }
+    else {
+      const ranked = CATEGORIES.filter(c => INSIGHTS[c.id]).sort((a, b) => (catCounts[b.id] || 0) - (catCounts[a.id] || 0))
+      insightCatId = ranked[0]?.id
+      insightFraming = 'strong'
+    }
+  }
+  const insight = INSIGHTS[insightCatId]
+  const insightCat = CATEGORIES.find(c => c.id === insightCatId)
+
   function addHabit(item) {
     if (ownedLabels.has(item.label)) return
     const next = [...collection, {
@@ -385,6 +448,18 @@ export default function CollectionPage({ onOpenHabit }) {
           </div>
           <span className="cp-checkin-nudge__go">→</span>
         </button>
+      )}
+
+      {/* Habit insight — adaptive longevity snippet (AI, dismissable) */}
+      {insight && insightCat && !insightDismissed && (
+        <div className="cp-insight" style={{ '--cat': insightCat.color }}>
+          <button className="cp-insight__x" onClick={dismissInsight} aria-label="Dismiss insight">
+            <i className="fa-solid fa-xmark" aria-hidden="true" />
+          </button>
+          <p className="cp-insight__eye"><i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" /> Habit insight · {insightCat.label}</p>
+          <p className="cp-insight__stat">{insight.stat}</p>
+          <p className="cp-insight__body">{insightFraming === 'strong' ? insight.strong : insight.gap}</p>
+        </div>
       )}
 
       {/* My Routine — the habits she's actively building (trial) */}
