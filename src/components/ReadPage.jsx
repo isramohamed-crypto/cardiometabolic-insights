@@ -333,6 +333,34 @@ function savedItemFor(article) {
     article,
   }
 }
+function savedItemForPodcast(p) {
+  return {
+    id: `read:${p.id}`,
+    title: p.name,
+    source: p.host,
+    variant: 'save',
+    url: p.url,
+    bg: p.bg,
+    icon: p.icon,
+    isPodcast: true,
+  }
+}
+
+// Reusable heart toggle — favorites any piece of content into the shared list
+function HeartBtn({ item, className = '' }) {
+  const { isMarked, toggle } = useSavedItems()
+  const saved = isMarked(item.id)
+  return (
+    <button
+      className={`rp-heart${saved ? ' on' : ''}${className ? ' ' + className : ''}`}
+      onClick={e => { e.stopPropagation(); toggle(item) }}
+      aria-pressed={saved}
+      aria-label={saved ? 'Remove from favorites' : 'Save to favorites'}
+    >
+      <i className={saved ? 'fa-solid fa-heart' : 'fa-regular fa-heart'} aria-hidden="true" />
+    </button>
+  )
+}
 
 function ArticleDetail({ article, onClose }) {
   const { isMarked, toggle } = useSavedItems()
@@ -347,7 +375,7 @@ function ArticleDetail({ article, onClose }) {
           aria-pressed={saved}
           aria-label={saved ? 'Remove from favorites' : 'Save for later'}
         >
-          <i className={saved ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'} aria-hidden="true" />
+          <i className={saved ? 'fa-solid fa-heart' : 'fa-regular fa-heart'} aria-hidden="true" />
           {saved ? 'Saved' : 'Save for later'}
         </button>
         <div className="rd-detail__header-body">
@@ -410,14 +438,14 @@ export default function ReadPage() {
           <p className="rp-section-label">Favorites</p>
           <div className="rp-list">
             {favorites.map(it => (
-              <div key={it.id} className="rp-list-item" onClick={() => it.article && setOpenArticle(it.article)}>
-                <div className="rp-list-item__thumb" style={{ background: it.article?.bg }}>
-                  <i className={it.article?.icon || 'fa-solid fa-bookmark'} aria-hidden="true" />
+              <div key={it.id} className="rp-list-item" onClick={() => { if (it.article) setOpenArticle(it.article); else if (it.url) openURL(it.url) }}>
+                <div className="rp-list-item__thumb" style={{ background: it.article?.bg || it.bg }}>
+                  <i className={it.article?.icon || it.icon || 'fa-solid fa-heart'} aria-hidden="true" />
                 </div>
                 <div className="rp-list-item__body">
                   <p className="rp-list-item__eye">{it.source}</p>
                   <h3 className="rp-list-item__hed">{it.title}</h3>
-                  <p className="rp-list-item__meta">{it.article?.readTime}</p>
+                  <p className="rp-list-item__meta">{it.article?.readTime || (it.isPodcast ? 'Podcast' : '')}</p>
                 </div>
                 <button
                   className="rp-fav__remove"
@@ -443,6 +471,7 @@ export default function ReadPage() {
               <span style={{ fontSize: 52 }}><i className={feature.icon} aria-hidden="true" /></span>
               <span className="rp-feature__flag">{feature.source}</span>
               {feature.match && <span className="rp-feature__match">✓ Your habit</span>}
+              <HeartBtn item={savedItemFor(feature)} className="rp-heart--corner" />
             </div>
             <div className="rp-feature__body">
               <p className="rp-feature__eye">{feature.eye}</p>
@@ -470,6 +499,7 @@ export default function ReadPage() {
             <div className="rp-podcast-card__img" style={{ background: p.bg }}>
               <span style={{ fontSize: 32 }}><i className={p.icon} aria-hidden="true" /></span>
               <span className="rp-podcast-card__suggested">{p.suggestedFor}</span>
+              <HeartBtn item={savedItemForPodcast(p)} className="rp-heart--corner" />
             </div>
             <div className="rp-podcast-card__body">
               <p className="rp-podcast-card__tag">{p.tag}</p>
@@ -490,6 +520,7 @@ export default function ReadPage() {
                 <div className="rp-card__img" style={{ background: a.bg }}>
                   <span><i className={a.icon} aria-hidden="true" /></span>
                   <span className="rp-card__flag">{a.source}</span>
+                  <HeartBtn item={savedItemFor(a)} className="rp-heart--corner" />
                 </div>
                 <div className="rp-card__body">
                   <p className="rp-card__eye">{a.eye}</p>
@@ -510,6 +541,7 @@ export default function ReadPage() {
             <div className="rp-card__img" style={{ background: a.bg }}>
               <span><i className={a.icon} aria-hidden="true" /></span>
               <span className="rp-card__flag">{a.source}</span>
+              <HeartBtn item={savedItemFor(a)} className="rp-heart--corner" />
             </div>
             <div className="rp-card__body">
               <p className="rp-card__eye">{a.eye}</p>
@@ -533,6 +565,7 @@ export default function ReadPage() {
               <h3 className="rp-list-item__hed">{a.hed}</h3>
               <p className="rp-list-item__meta">{a.readTime}</p>
             </div>
+            <HeartBtn item={savedItemFor(a)} className="rp-heart--trailing" />
           </div>
         ))}
       </div>
