@@ -43,3 +43,9 @@
   font-size: 13px;
   color: rgba(0, 0, 0, 0.5);
 }
+
+.routine-habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

@@ -55,6 +55,26 @@ export const RECOMMENDATIONS_BY_PILLAR = {
           { label: 'Every day' },
         ],
       },
+      {
+        id: 'high-fiber-breakfast',
+        title: 'Add a high-fiber food to breakfast',
+        subtitle: 'One swap or addition — whatever fits what you already eat.',
+        justification:
+          'Most people fall well short on fiber, and breakfast is an easy place to close the gap without overhauling the rest of your day.',
+        tiers: [
+          { label: 'A few mornings a week' },
+          { label: 'Most mornings' },
+          { label: 'Every morning' },
+        ],
+      },
+      {
+        id: 'water-on-waking',
+        title: 'Drink a glass of water on waking',
+        subtitle: 'Before coffee, before your phone — first thing.',
+        justification:
+          'Front-loading water first thing helps with energy and alertness, and it is one of the lowest-effort habits there is to start.',
+        tiers: [{ label: 'Most mornings' }, { label: 'Every morning' }],
+      },
     ],
   },
   moving: {
@@ -88,6 +108,14 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         justification:
           'Stacking it onto waking up — before coffee, before your phone — is what makes a stretch routine actually survive past week one.',
         tiers: [{ label: '2 minutes' }, { label: '5 minutes' }, { label: '10 minutes' }],
+      },
+      {
+        id: 'chair-stands-after-breakfast',
+        title: 'Do a few chair stands',
+        subtitle: 'A quick set of sit-to-stands, whenever you tie it to your morning.',
+        justification:
+          'A little resistance work goes a long way for strength and fall prevention — chair stands are an easy, equipment-free way to start.',
+        tiers: [{ label: '5 stands' }, { label: '10 stands' }, { label: '2 sets of 10' }],
       },
     ],
   },

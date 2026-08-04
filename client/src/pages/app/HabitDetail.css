@@ -1,0 +1,175 @@
+/* HabitDayTracker positions its dots absolutely, relative to the nearest
+   positioned ancestor — without this wrapper it had none, so the dots
+   escaped up to the page and overlapped the header. This contains them in
+   the normal flow instead, right below the subtitle. */
+.habit-detail__tracker {
+  position: relative;
+  height: 63px;
+  margin: 4px 0;
+}
+
+.habit-detail__justification {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.habit-detail__current-moment {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* More breathing room between sections on this screen specifically —
+   scoped here so it doesn't affect onboarding's CustomizeHabit, which
+   shares these same class names. */
+.habit-detail .customize-section {
+  margin-top: 34px;
+}
+
+.habit-detail .customize-section:first-of-type {
+  margin-top: 12px;
+}
+
+.habit-detail .question-screen__options {
+  gap: 12px;
+}
+
+.habit-detail .question-screen__intro {
+  margin-bottom: 20px;
+}
+
+.habit-detail__status-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+}
+
+.habit-detail__status {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 70, 32, 0.08);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  color: var(--color-seaweed);
+}
+
+.habit-detail__meta {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.habit-detail__done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 2px solid var(--color-leaf);
+  border-radius: 999px;
+  height: 52px;
+  margin-bottom: 8px;
+  background: var(--color-coconut);
+  color: var(--color-leaf);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.habit-detail__done--active {
+  background: var(--color-leaf);
+  color: #fff;
+}
+
+.habit-detail__done-check {
+  font-size: 16px;
+}
+
+.habit-detail__chat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: rgba(0, 70, 32, 0.06);
+  color: var(--color-seaweed);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.habit-detail__chat:hover {
+  background: rgba(0, 70, 32, 0.12);
+}
+
+.habit-detail__integrate {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(0, 70, 32, 0.06);
+}
+
+.habit-detail__integrate-desc {
+  margin: 0 0 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.habit-detail__integrate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.habit-detail__skip {
+  margin: 10px 0 0;
+  border: none;
+  background: none;
+  padding: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+}
+
+.habit-detail__skip:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.habit-detail__retire {
+  display: block;
+  margin: 0 auto 14px;
+  border: none;
+  background: none;
+  padding: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  color: #b3261e;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.habit-detail__retire:hover {
+  color: #8c1d17;
+}

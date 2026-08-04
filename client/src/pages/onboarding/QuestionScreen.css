@@ -140,6 +140,9 @@
 }
 
 .question-screen__continue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   border: none;
   border-radius: 999px;
@@ -149,8 +152,10 @@
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 17px;
+  text-decoration: none;
   cursor: pointer;
   transition: opacity 0.15s ease, filter 0.15s ease;
+  box-sizing: border-box;
 }
 
 .question-screen__continue:hover:not(:disabled) {

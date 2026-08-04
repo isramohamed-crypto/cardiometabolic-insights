@@ -1,32 +1,63 @@
-import { useEffect, useState } from 'react'
-import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
+import { useState } from 'react'
+import { useHabits } from '../../habits/HabitsContext.jsx'
+import { OWNERSHIP_STATE } from '../../domain/habit.js'
+import { pickDailyContent } from '../../domain/habitContent.js'
+import RoutineHabitCard from './RoutineHabitCard.jsx'
 import './page.css'
 
-function Routine() {
-  const { answers } = useOnboarding()
-  const [status, setStatus] = useState('checking...')
+const BUILDING_STATES = [
+  OWNERSHIP_STATE.ADOPTED,
+  OWNERSHIP_STATE.OWNED,
+  OWNERSHIP_STATE.READOPTED,
+]
 
-  useEffect(() => {
-    fetch('/api/health')
-      .then((res) => res.json())
-      .then((data) => setStatus(data.status))
-      .catch(() => setStatus('server not running'))
-  }, [])
+function Routine() {
+  const { habits } = useHabits()
+
+  // Picked once per mount — i.e. once per visit to this page — so each
+  // habit's reinforcement content rotates every time the user enters the
+  // Routine tab, rather than staying fixed for the whole session.
+  const [dailyContent] = useState(() => {
+    const map = {}
+    habits.forEach((h) => {
+      map[h.id] = pickDailyContent(h.id, h.startedAt)
+    })
+    return map
+  })
+
+  const tryingOn = habits.filter((h) => h.ownershipState === OWNERSHIP_STATE.TRIALED)
+  const building = habits.filter((h) => BUILDING_STATES.includes(h.ownershipState))
 
   return (
     <div className="page">
-      <p className="page__lead">
-        {answers.name ? `Welcome back, ${answers.name}.` : 'Build healthy habits. Age well.'}
-      </p>
+      {tryingOn.length > 0 && (
+        <section>
+          <h2>Habits I'm trying on</h2>
+          <div className="routine-habit-list">
+            {tryingOn.map((habit) => (
+              <RoutineHabitCard key={habit.id} habit={habit} content={dailyContent[habit.id]} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      <section>
-        <h2>Today</h2>
-        <p>Your daily habit checklist will live here.</p>
-      </section>
+      {building.length > 0 && (
+        <section>
+          <h2>Habits I'm building</h2>
+          <div className="routine-habit-list">
+            {building.map((habit) => (
+              <RoutineHabitCard key={habit.id} habit={habit} content={dailyContent[habit.id]} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      <p style={{ marginTop: '2rem', color: '#999', fontSize: '0.8rem' }}>
-        API status: {status}
-      </p>
+      {habits.length === 0 && (
+        <section>
+          <h2>Today</h2>
+          <p>Pick a habit to start building your routine.</p>
+        </section>
+      )}
     </div>
   )
 }

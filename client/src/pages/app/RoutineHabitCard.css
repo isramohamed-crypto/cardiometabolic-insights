@@ -1,0 +1,88 @@
+.routine-habit-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.routine-habit-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 198px;
+  border-radius: 21px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.routine-habit-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(217, 217, 217, 0) 0%,
+    rgba(58, 110, 82, 0.45) 45%,
+    rgba(0, 70, 32, 0.92) 100%
+  );
+}
+
+.routine-habit-card__content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 21px 24px;
+}
+
+/* Pill sits inside the card here (onboarding keeps it outside/above) —
+   kept close to its default size even though the rest of the card scaled up. */
+.routine-habit-card__content .pill {
+  font-size: 10px;
+  padding: 5px 12px;
+}
+
+.routine-habit-card__content .routine-habit-card__meta {
+  margin-top: -6px;
+}
+
+.routine-habit-card__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.575rem;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.routine-habit-card__meta {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.routine-habit-card__drip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.routine-habit-card__drip-more {
+  margin-left: 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-seaweed);
+  text-decoration: none;
+}
+
+.routine-habit-card__drip-more:hover {
+  text-decoration: underline;
+}

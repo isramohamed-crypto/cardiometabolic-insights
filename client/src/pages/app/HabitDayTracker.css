@@ -1,0 +1,56 @@
+.habit-day-tracker {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  display: flex;
+  gap: 5px;
+}
+
+.habit-day-tracker__day {
+  position: relative;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.habit-day-tracker__letter {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.habit-day-tracker__day--done {
+  background: var(--color-leaf);
+  box-shadow: none;
+}
+
+.habit-day-tracker__day--done .habit-day-tracker__letter {
+  color: #fff;
+}
+
+.habit-day-tracker__day--upcoming {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.habit-day-tracker__day--upcoming .habit-day-tracker__letter {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.habit-day-tracker__today-dot {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}

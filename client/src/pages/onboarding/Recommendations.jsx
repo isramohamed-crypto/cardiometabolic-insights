@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
+import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex } from './recommendedHabits.js'
 import HabitPickCard from './HabitPickCard.jsx'
@@ -24,7 +25,8 @@ const COMPILING_STEPS = [
 // how much and when.
 function Recommendations() {
   const navigate = useNavigate()
-  const { answers, setAnswer } = useOnboarding()
+  const { answers } = useOnboarding()
+  const { addHabit } = useHabits()
   const [stepIndex, setStepIndex] = useState(0)
   const [stage, setStage] = useState('compiling') // 'compiling' | 'pick' | 'customize'
   const [habitIndex, setHabitIndex] = useState(0)
@@ -51,13 +53,13 @@ function Recommendations() {
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
 
   const handleFinalize = ({ tier, moment, remindersOn }) => {
-    // Placeholder: no real habit store/backend yet. Once one exists, this
-    // is where the chosen habit's ownershipState becomes OWNERSHIP_STATE
-    // .TRIALED (tier 1) per domain/habit.js, rather than a plain answer.
-    setAnswer('startingHabit', {
-      pillarId: pillar.id,
-      habitId: habit.id,
+    // addHabit defaults ownershipState to TRIALED (tier one — actively
+    // trying it out), per the state machine in domain/habit.js.
+    addHabit({
+      id: habit.id,
       title: habit.title,
+      subtitle: habit.subtitle,
+      pillarId: pillar.id,
       tier: tier.label,
       moment,
       remindersOn,
