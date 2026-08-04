@@ -1,0 +1,24 @@
+.app-header {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 24px 12px;
+  border-bottom: 1px solid rgba(0, 70, 32, 0.1);
+}
+
+.app-header__wordmark {
+  margin: 0 0 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  color: var(--color-seaweed);
+}
+
+.app-header__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 28px;
+  color: #1a1a1a;
+}

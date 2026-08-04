@@ -1,0 +1,72 @@
+.customize-section {
+  margin-top: 22px;
+}
+
+.customize-section:first-of-type {
+  margin-top: 4px;
+}
+
+.customize-section__title {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  color: #1a1a1a;
+}
+
+.customize-suggested {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(27, 188, 60, 0.12);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--color-leaf);
+}
+
+.question-screen__option--selected .customize-suggested {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.customize-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.customize-toggle__option {
+  flex: 1;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.customize-toggle__option--active {
+  background: var(--color-seaweed);
+  color: #fff;
+}
+
+.customize-reminders {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.customize-reminders__desc {
+  margin: 2px 0 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}

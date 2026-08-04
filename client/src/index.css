@@ -1,0 +1,39 @@
+:root {
+  color-scheme: light;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+
+  /* Health.com design system tokens — see docs/design-system.md */
+  --color-leaf: #1bbc3c;
+  --color-green-apple: #e8ef65;
+  --color-seaweed: #004620;
+
+  --color-mineral-blue: #00b9e2;
+  --color-plum: #b676e7;
+  --color-guava: #ff9cff;
+  --color-watermelon: #ef2673;
+  --color-tangerine: #ff8c2f;
+  --color-blueberry: #0053e2;
+
+  --color-coconut: #fffdf5;
+  --color-light-pink: #ffdced;
+  --color-vanilla: #fcffbc;
+  --color-cornflower: #def9ff;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-coconut);
+  color: #1a1a1a;
+}
+
+h1, h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}

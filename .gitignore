@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.DS_Store
+
+# Raw Figma export, superseded by the compressed hero-photo.jpg used in code
+client/src/assets/onboarding/hero-photo.png
+vite.config.js.timestamp-*

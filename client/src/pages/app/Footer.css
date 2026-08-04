@@ -1,0 +1,30 @@
+.app-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  background: var(--color-coconut);
+  border-top: 1px solid rgba(0, 70, 32, 0.1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.app-footer__tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.app-footer__tab--active {
+  color: var(--color-seaweed);
+  font-weight: 700;
+}
