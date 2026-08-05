@@ -7,15 +7,18 @@ import './HabitTrialPrompt.css'
 // The "week of trying, keep it going?" decision — and the tier-upsell that
 // can follow "Keep it" — used to render as a full card inside HabitDetail's
 // flip card. Moved here, directly under the habit's own card on the
-// Routine tab (see Routine.jsx), so the decision shows up where the habit
-// already lives instead of requiring a tap into the detail screen.
-// HabitDetail itself now only shows a one-line pointer back here (see its
+// Routine tab, then moved once more — the whole thing (question,
+// description, and decision buttons) now nests inside RoutineHabitCard
+// itself instead of sitting in its own card underneath (see
+// RoutineHabitCard.jsx, which renders this component directly and swallows
+// its clicks before they can bubble up to the card's own Link). HabitDetail
+// itself still only shows a one-line pointer back to Routine (see its
 // .habit-detail__trial-hint).
 //
-// upsellPending — "is the tier-upsell that can follow 'Keep it' showing"
-// — lives on the habit object itself (set via updateHabit) rather than as
-// this component's own state. That's deliberate: "Keep it" flips
-// ownershipState to ADOPTED immediately, which moves this habit from
+// Both "which trial state is this habit in" flags — skipTrialWait and
+// upsellPending — live on the habit object itself (set via updateHabit)
+// rather than as this component's own state. That's deliberate: "Keep it"
+// flips ownershipState to ADOPTED immediately, which moves this habit from
 // Routine's "trying on" list into its "building" list on the very next
 // render — a different section, so this component gets torn down and a new
 // instance mounted in the new section. Local state wouldn't have survived
@@ -30,7 +33,7 @@ function HabitTrialPrompt({ habit }) {
 
   const isTrialing = habit.ownershipState === OWNERSHIP_STATE.TRIALED
   const daysSince = daysSinceStart(habit.startedAt)
-  const trialComplete = daysSince >= 7
+  const trialComplete = daysSince >= 7 || habit.skipTrialWait
   const showTrialPrompt = isTrialing && trialComplete
   const showTierUpsell = Boolean(habit.upsellPending)
 

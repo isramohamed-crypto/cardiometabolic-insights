@@ -41,16 +41,21 @@
   padding: var(--space-5);
 }
 
+/* Matches routine-habit-card__title exactly (same tag, same values) —
+   this card and an established habit's Routine card used to diverge here
+   (h2 + a fluid clamp() size tuned for this card's bigger aspect-ratio-3/4
+   frame vs. h3 + a fixed var(--text-h3)), which read as two different
+   heading treatments for what's the same "habit name on a photo" pattern.
+   Fixed size now even though this card has more room to grow into than
+   Routine's compact one — consistency with the established pattern wins
+   over this card's own space. */
 .habit-card__title {
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 700;
-  /* Fluid card headline, same intentional exception as onboarding's hero
-     title — bounds re-expressed in rem off the 18px root to preserve the
-     original physical size (22.4px–27.2px). */
-  font-size: clamp(1.2444rem, 6vw, 1.5111rem);
-  letter-spacing: -0.4px;
-  line-height: 1.15;
+  font-size: var(--text-h3);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
   color: #fff;
 }
 

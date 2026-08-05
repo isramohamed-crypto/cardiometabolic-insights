@@ -170,6 +170,7 @@ const DAY_SCRIPTS = {
         title: 'The Science-Backed Benefits of Passeggiata, Italy’s Beloved Evening Tradition That’s Good for Your Brain and Body',
         url: 'https://www.realsimple.com/what-is-passeggiata-11911501',
         body: 'No pace goal — walk slowly, look around, invite someone along. The point is to enjoy the transition out of your day.',
+        image: "url('/GettyImages-2177586029-520077efb4034740baa49a79d378e4d0.webp')",
       },
       enjoyment: {
         id: 'wa-day7-b',
@@ -243,4 +244,141 @@ export function pickDailyContent(habitId, startedAt) {
   const pool = CONTENT_POOL[habitId]
   if (!pool || pool.length === 0) return null
   return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// Picks a rotating piece for HabitDetail's "Did you know?" section —
+// same random-from-pool idea as pickDailyContent's fallback, but scoped
+// to just the habit's JUSTIFICATION-type pool (the "why this matters"
+// press pieces) rather than any type, since ENABLING/how-to content
+// doesn't belong under a "did you know" heading. Returns null when a
+// habit's pool has no justification piece yet (e.g. it only has an
+// ENABLING entry) — HabitDetail falls back to just the catalog's own
+// static justification text in that case.
+export function pickJustificationContent(habitId) {
+  const pool = (CONTENT_POOL[habitId] || []).filter(
+    (item) => item.type === CONTENT_TYPE.JUSTIFICATION,
+  )
+  if (pool.length === 0) return null
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+// "Something to play/read during the habit itself" — distinct from the
+// day-by-day CONTENT_POOL/DAY_SCRIPTS content above, which is about
+// building the habit; this is a single evergreen companion piece for
+// doing it (a video, a podcast, a playlist), so it doesn't rotate by day.
+// `sectionLabel` is the actual heading HabitDetail renders ("While you
+// walk") — kept here per habit rather than hardcoded in the component so
+// each habit can phrase it for its own action ("While you stretch",
+// "While you breathe", etc.).
+//
+// 'walk-after-meal' (wa-companion-mindful-walk, above) is the one real,
+// sourced entry — pulled from the same behaviors sheet as the rest of this
+// file. The entries below it are placeholders: titles/brands invented in
+// the same People Inc. house style (not sourced from a live fetch, since
+// this content pass didn't have real URLs to pull from), with no `url` so
+// ContentCard/ContentModal fall back to the thumbnail+body view instead of
+// trying to load a real page. Swap each for the real sourced piece — and
+// add a `url` — once one exists.
+export const COMPANION_CONTENT = {
+  'walk-after-meal': {
+    sectionLabel: 'While you walk',
+    content: {
+      id: 'wa-companion-mindful-walk',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Verywell Mind',
+      title: '7-Minute Video Meditation for Mindful Walking',
+      url: 'https://www.verywellmind.com/7-minute-video-meditation-for-mindful-walking-8598399',
+      body: 'A short guided video to bring along — turns today’s walk into a mindful one instead of just a lap around the block.',
+    },
+  },
+  'two-strength-sessions': {
+    sectionLabel: 'While you train',
+    content: {
+      id: 'ts-companion-playlist',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Health',
+      title: 'The Best Workout Playlists for Strength Training, According to Trainers',
+      body: 'A steady beat helps carry you through the last few reps of a set — worth having something queued up before you start.',
+    },
+  },
+  'chair-stands-after-breakfast': {
+    sectionLabel: 'While you stand',
+    content: {
+      id: 'cs-companion-form-check',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Verywell Health',
+      title: 'How To Do a Perfect Sit-to-Stand, Step by Step',
+      body: 'Good form matters more than reps here — a quick refresher on posture and pace before you get going.',
+    },
+  },
+  'morning-stretch': {
+    sectionLabel: 'While you stretch',
+    content: {
+      id: 'ms-companion-follow-along',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Real Simple',
+      title: 'A 5-Minute Morning Stretch Routine You Can Follow Along To',
+      body: 'Something to move through with, rather than count reps against — press play and follow the sequence.',
+    },
+  },
+  'consistent-wake-time': {
+    sectionLabel: 'While you wake up',
+    content: {
+      id: 'wt-companion-podcast',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Real Simple',
+      title: 'The Best Podcasts To Start Your Morning With',
+      body: 'Something calmer than the news feed for the first few minutes after the alarm goes off.',
+    },
+  },
+  'high-fiber-breakfast': {
+    sectionLabel: 'While you eat',
+    content: {
+      id: 'fb-companion-ideas',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'EatingWell',
+      title: '5 High-Fiber Breakfast Ideas That Take Five Minutes',
+      body: 'A few easy additions to rotate in, for mornings when the usual one is out of reach.',
+    },
+  },
+  'water-on-waking': {
+    sectionLabel: 'While it kicks in',
+    content: {
+      id: 'ww-companion-signs',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'EatingWell',
+      title: '9 Silent Signs You’re Not Drinking Enough Water',
+      body: 'Worth a skim if you’re ever tempted to skip this one — most of these show up before thirst does.',
+    },
+  },
+  'five-minute-breathing': {
+    sectionLabel: 'While you breathe',
+    content: {
+      id: 'fbr-companion-guided',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Verywell Mind',
+      title: 'A Guided Breathing Exercise You Can Follow Along To',
+      body: 'Something to pace yourself against on days when counting your own breaths feels like one more task.',
+    },
+  },
+  'evening-journal': {
+    sectionLabel: 'While you write',
+    content: {
+      id: 'ej-companion-prompts',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Verywell Mind',
+      title: '50 Journaling Prompts for Self-Discovery and Reflection',
+      body: 'For the nights a blank page feels harder than it should — a prompt to start from instead.',
+    },
+  },
+  'text-a-friend': {
+    sectionLabel: 'Need an opener?',
+    content: {
+      id: 'tf-companion-openers',
+      type: CONTENT_TYPE.COMPANION,
+      brand: 'Verywell Mind',
+      title: '50 Texts To Send When You Don’t Know What to Say',
+      body: 'Low-stakes lines for the days deciding what to say is the only thing slowing you down.',
+    },
+  },
 }

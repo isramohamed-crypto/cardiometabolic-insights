@@ -6,7 +6,6 @@ import { pickDailyContent } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
-import HabitTrialPrompt from './HabitTrialPrompt.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import './page.css'
 
@@ -38,6 +37,46 @@ function Routine() {
   const activeCount = habits.filter((h) => ACTIVE_STATES.includes(h.ownershipState)).length
   const nextSlotLocked = activeCount >= slotCount
 
+  // Next slot used to be its own section with its own "Next slot" header —
+  // now it just tucks into the end of whichever habit-list section is
+  // already on screen (preferring "Habits I'm trying on", since that's
+  // the trial-stage list this is most often reached from) instead of
+  // announcing itself as a separate thing. Falls back to "Habits I'm
+  // building" when there's nothing currently trialing, and only becomes
+  // its own bare (still headerless) section in the edge case where
+  // neither list is showing but a slot still needs surfacing.
+  const nextSlotContent = nextSlotLocked ? (
+    <div className="locked-slot">
+      <span className="locked-slot__icon" aria-hidden="true">
+        🔒
+      </span>
+      <div>
+        <p className="locked-slot__title">Locked for now</p>
+        <p className="locked-slot__desc">
+          Finish a trial — keep it or make it smaller — and this opens up.
+        </p>
+      </div>
+    </div>
+  ) : (
+    habits.length > 0 && (
+      <button type="button" className="open-slot" onClick={() => setAddingHabit(true)}>
+        <span className="open-slot__icon" aria-hidden="true">
+          +
+        </span>
+        <div>
+          <p className="open-slot__title">Add a habit</p>
+          <p className="open-slot__desc">You've got room for one more.</p>
+        </div>
+      </button>
+    )
+  )
+
+  const nextSlotUnderTryingOn = Boolean(nextSlotContent) && tryingOn.length > 0
+  const nextSlotUnderBuilding =
+    Boolean(nextSlotContent) && !nextSlotUnderTryingOn && building.length > 0
+  const nextSlotStandalone =
+    Boolean(nextSlotContent) && !nextSlotUnderTryingOn && !nextSlotUnderBuilding
+
   // One shared "tonight" pick per active habit, combined into a single
   // section below the habit cards — rather than repeating a content teaser
   // underneath each individual card.
@@ -64,11 +103,9 @@ function Routine() {
           <h2>Habits I'm trying on</h2>
           <div className="routine-habit-list">
             {tryingOn.map((habit) => (
-              <div key={habit.id} className="routine-habit-group">
-                <RoutineHabitCard habit={habit} />
-                <HabitTrialPrompt habit={habit} />
-              </div>
+              <RoutineHabitCard key={habit.id} habit={habit} />
             ))}
+            {nextSlotUnderTryingOn && nextSlotContent}
           </div>
         </section>
       )}
@@ -78,45 +115,17 @@ function Routine() {
           <h2>Habits I'm building</h2>
           <div className="routine-habit-list">
             {building.map((habit) => (
-              <div key={habit.id} className="routine-habit-group">
-                <RoutineHabitCard habit={habit} />
-                <HabitTrialPrompt habit={habit} />
-              </div>
+              <RoutineHabitCard key={habit.id} habit={habit} />
             ))}
+            {nextSlotUnderBuilding && nextSlotContent}
           </div>
         </section>
       )}
 
-      {nextSlotLocked ? (
+      {nextSlotStandalone && (
         <section>
-          <h2>Next slot</h2>
-          <div className="locked-slot">
-            <span className="locked-slot__icon" aria-hidden="true">
-              🔒
-            </span>
-            <div>
-              <p className="locked-slot__title">Locked for now</p>
-              <p className="locked-slot__desc">
-                Finish a trial — keep it or make it smaller — and this opens up.
-              </p>
-            </div>
-          </div>
+          <div className="routine-habit-list">{nextSlotContent}</div>
         </section>
-      ) : (
-        habits.length > 0 && (
-          <section>
-            <h2>Next slot</h2>
-            <button type="button" className="open-slot" onClick={() => setAddingHabit(true)}>
-              <span className="open-slot__icon" aria-hidden="true">
-                +
-              </span>
-              <div>
-                <p className="open-slot__title">Add a habit</p>
-                <p className="open-slot__desc">You've got room for one more.</p>
-              </div>
-            </button>
-          </section>
-        )
       )}
 
       {tonightPicks.length > 0 && (
@@ -127,11 +136,10 @@ function Routine() {
               <ContentCard
                 key={content.id}
                 id={content.id}
-                thumbnail={getHabitVisual(habit.pillarId, habit.id)}
+                thumbnail={content.image || getHabitVisual(habit.pillarId, habit.id)}
                 brand={content.brand}
                 title={content.title}
                 body={content.body}
-                compact
               />
             ))}
           </div>

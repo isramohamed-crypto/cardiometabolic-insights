@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Eczema360 — Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#5D2DE6;--purple-mid:#7445F0;--purple-light:#EDE8FD;--purple-deep:#3A1B99;
+  --sage:#2ED1CB;--sage-light:#E0F9F8;
+  --warm:#F64C22;--warm-light:#FEE9E3;
+  --blue:#1C5FF1;--blue-light:#E4ECFE;
+  --lime:#FDDA3C;--lime-light:#FFFAE6;
+  --bg:#F5F0FE;--surface:#FFFFFF;--surface-2:#F5F0FE;
+  --border:#E4DDF5;--border-light:#EDE8F8;
+  --text:#1A1520;--text-sec:#5A4E72;--text-muted:#9B8BB8;--text-inv:#FFFFFF;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;--radius-full:9999px;
+  --shadow-sm:0 2px 12px rgba(30,50,42,.06);--shadow-md:0 6px 28px rgba(30,50,42,.1);
+  --max-width:480px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);font-size:15px;color:var(--text);background:var(--bg);line-height:1.55;min-height:100dvh;display:flex;flex-direction:column;align-items:center}
+button{cursor:pointer;border:none;background:none;font:inherit}
+::-webkit-scrollbar{display:none}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+@keyframes checkPop{0%{transform:scale(0)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes gentlePulse{0%,100%{opacity:1}50%{opacity:.65}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes confettiBurst{0%{transform:scale(0);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+
+/* ── SHELL ── */
+.shell{width:100%;max-width:var(--max-width);min-height:100dvh;background:var(--bg);position:relative}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;height:60px;background:var(--purple);display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.nav__brand{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.nav__from{font-size:11px;color:rgba(255,255,255,.55);font-weight:400;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.nav__from-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── HERO ── */
+.hero-wrap{background:var(--purple);padding:24px 20px 32px;position:relative;overflow:hidden}
+.hero-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(116,69,240,.6),transparent 60%),radial-gradient(circle at 20% 80%,rgba(46,209,203,.15),transparent 50%);pointer-events:none}
+.hero-wrap>*{position:relative;z-index:1}
+.hero__eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:8px}
+.hero__title{font-size:28px;font-weight:500;letter-spacing:-.03em;color:rgba(255,255,255,.95);line-height:1.2;margin-bottom:8px}
+.hero__title em{font-style:italic;color:var(--sage)}
+.hero__sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6}
+
+/* ── PROGRESS ── */
+.progress-wrap{padding:20px 20px 0}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-label{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase}
+.progress-step{font-size:12px;font-weight:700;color:var(--purple)}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--purple);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── QUESTION CARD ── */
+.q-section{padding:20px 20px 0;animation:fadeUp .4s ease-out}
+.q-card{background:var(--surface);border-radius:var(--radius-lg);padding:24px 20px 28px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)}
+.q-eyebrow{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:10px}
+.q-text{font-size:22px;font-weight:500;letter-spacing:-.02em;color:var(--text);line-height:1.25;margin-bottom:6px}
+.q-sub{font-size:13px;color:var(--text-sec);line-height:1.55;margin-bottom:20px}
+
+/* ── OPTIONS ── */
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--radius-md);border:2px solid transparent;background:var(--surface-2);cursor:pointer;transition:all .18s;text-align:left;width:100%}
+.opt:active{transform:scale(.98)}
+.opt.sel{background:var(--purple-light);border-color:var(--purple)}
+.opt__emoji{font-size:22px;flex-shrink:0;width:32px;text-align:center}
+.opt__body{flex:1;min-width:0}
+.opt__label{font-size:14px;font-weight:600;color:var(--text);margin-bottom:1px}
+.opt__desc{font-size:12px;color:var(--text-muted);line-height:1.4}
+.opt__check{width:24px;height:24px;border-radius:var(--radius-full);border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;color:#fff;font-size:12px;font-weight:700}
+.opt.sel .opt__check{background:var(--purple);border-color:var(--purple);animation:checkPop .3s ease-out}
+
+/* ── NAV BUTTONS ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 32px}
+.nav-back{padding:12px 20px;border-radius:var(--radius-full);font-size:14px;font-weight:600;background:var(--surface);color:var(--text-sec);border:1px solid var(--border);transition:opacity .15s}
+.nav-back:active{opacity:.7}
+.nav-back:disabled{opacity:.3;cursor:default}
+.nav-next{padding:12px 28px;border-radius:var(--radius-full);font-size:14px;font-weight:700;color:var(--text-inv);background:var(--purple);transition:all .2s;box-shadow:0 4px 16px rgba(93,45,230,.3)}
+.nav-next:active{transform:scale(.97)}
+.nav-next:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
+.nav-skip{font-size:12px;color:var(--text-muted);font-weight:500;cursor:pointer;border:none;background:none;padding:12px;text-decoration:underline;text-underline-offset:3px}
+
+/* ── COMPLETION ── */
+.complete-wrap{padding:48px 24px 24px;text-align:center;animation:fadeUp .5s ease-out}
+.complete-icon{width:72px;height:72px;border-radius:var(--radius-full);background:linear-gradient(135deg,var(--purple),var(--purple-mid));display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px;box-shadow:0 8px 28px rgba(93,45,230,.3);animation:confettiBurst .5s ease-out}
+.complete-wrap h2{font-size:26px;font-weight:500;letter-spacing:-.02em;color:var(--text);margin-bottom:8px}
+.complete-wrap p{font-size:14px;color:var(--text-sec);line-height:1.6;margin-bottom:24px}
+
+/* Profile card */
+.profile-card{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border-light);box-shadow:var(--shadow-sm);padding:20px;margin-bottom:24px;text-align:left}
+.profile-card__title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:14px}
+.profile-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-light)}
+.profile-row:last-child{border-bottom:none}
+.profile-row__icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.profile-row__label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.profile-row__value{font-size:14px;color:var(--text);font-weight:500;margin-top:2px}
+
+.cta-main{width:100%;padding:16px;border-radius:var(--radius-full);font-size:15px;font-weight:700;color:var(--text-inv);background:var(--purple);box-shadow:0 4px 20px rgba(93,45,230,.3);transition:all .2s}
+.cta-main:active{transform:scale(.98)}
+
+/* ── FEED PREVIEW ── */
+.feed-preview{animation:fadeUp .5s ease-out .15s both}
+.feed-hdr{padding:20px 20px 8px;display:flex;justify-content:space-between;align-items:center}
+.feed-hdr h2{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.feed-tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--purple);background:var(--purple-light);padding:4px 10px;border-radius:var(--radius-full)}
+.feed-source{padding:4px 20px 12px;font-size:11px;color:var(--text-muted);font-weight:500;display:flex;align-items:center;gap:6px}
+.feed-source__dot{width:8px;height:8px;border-radius:3px;flex-shrink:0}
+
+.feed-card{margin:0 16px 14px;border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border-light);box-shadow:var(--shadow-sm);overflow:hidden;animation:scaleIn .3s ease-out}
+.feed-card__img{height:100px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
+.feed-card__body{padding:16px 18px}
+.feed-card__source{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.feed-card__source-dot{width:16px;height:16px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff}
+.feed-card__source-name{font-size:11px;color:var(--text-muted);font-weight:600}
+.feed-card__tag{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:var(--radius-full);margin-left:auto}
+.feed-card__title{font-size:16px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:4px;letter-spacing:-.01em}
+.feed-card__desc{font-size:13px;color:var(--text-sec);line-height:1.5}
+.feed-card__reason{font-size:11px;color:var(--purple);font-weight:600;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-light);display:flex;align-items:center;gap:5px}
+
+.reset-btn{width:calc(100% - 32px);margin:8px 16px 32px;padding:14px;border-radius:var(--radius-full);font-size:14px;font-weight:600;background:var(--surface);color:var(--text-sec);border:1px solid var(--border);transition:opacity .15s}
+.reset-btn:active{opacity:.7}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--purple);color:#fff;font-size:13px;font-weight:500;padding:10px 20px;border-radius:var(--radius-full);opacity:0;transition:all .25s;z-index:600;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── REGISTRATION LANDING ── */
+@keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+.reg-hero{position:relative;height:280px;overflow:hidden}
+.reg-hero__bg{position:absolute;inset:0;background:var(--purple);overflow:hidden}
+.reg-hero__bg::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(circle at 30% 40%,rgba(46,209,203,.35),transparent 50%),
+  radial-gradient(circle at 75% 25%,rgba(116,69,240,.7),transparent 55%),
+  radial-gradient(circle at 50% 80%,rgba(253,218,60,.12),transparent 45%);z-index:1}
+.reg-hero__bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(26,21,32,.55) 100%);z-index:2}
+.reg-hero__icons{position:absolute;inset:0;z-index:1;overflow:hidden}
+.reg-hero__icon{position:absolute;font-size:42px;opacity:.25;animation:gentleFloat 4s ease-in-out infinite}
+.reg-hero__icon:nth-child(1){top:18%;left:12%;animation-delay:0s}
+.reg-hero__icon:nth-child(2){top:30%;right:15%;animation-delay:.8s;font-size:36px}
+.reg-hero__icon:nth-child(3){top:55%;left:28%;animation-delay:1.6s;font-size:32px}
+.reg-hero__icon:nth-child(4){top:15%;right:35%;animation-delay:.4s;font-size:28px}
+.reg-hero__icon:nth-child(5){top:60%;right:20%;animation-delay:1.2s;font-size:38px}
+.reg-hero__icon:nth-child(6){top:40%;left:55%;animation-delay:2s;font-size:30px}
+.reg-hero__content{position:absolute;bottom:0;left:0;right:0;padding:24px 24px 28px;z-index:3}
+.reg-hero__wordmark{font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.reg-hero__wordmark-sep{font-size:11px;color:rgba(255,255,255,.3);font-weight:300}
+.reg-hero__wordmark-partner{font-size:10px;font-weight:500;letter-spacing:.08em;color:rgba(255,255,255,.5)}
+.reg-hero__headline{font-size:24px;font-weight:500;letter-spacing:-.02em;color:#fff;line-height:1.25}
+.reg-hero__headline em{font-style:italic;color:var(--lime)}
+
+.reg-body{padding:28px 24px 20px;animation:fadeUp .5s ease-out}
+.value-prop{font-size:16px;font-weight:500;color:var(--text);line-height:1.5;text-align:center;margin-bottom:28px;letter-spacing:-.01em}
+.value-prop strong{color:var(--purple);font-weight:600}
+
+.auth-buttons{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.auth-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 20px;border-radius:var(--radius-full);font-size:15px;font-weight:600;letter-spacing:.01em;transition:all .15s;position:relative;overflow:hidden;font-family:var(--font)}
+.auth-btn:active{transform:scale(.98)}
+.auth-btn--email{background:var(--purple);color:var(--text-inv);box-shadow:0 4px 16px rgba(93,45,230,.3)}
+.auth-btn--google{background:var(--surface);color:var(--text);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
+.auth-btn--apple{background:var(--text);color:var(--text-inv);box-shadow:0 4px 16px rgba(26,21,32,.2)}
+.auth-btn__icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+.divider{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.divider__line{flex:1;height:1px;background:var(--border)}
+.divider__text{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+
+.benefits{margin-bottom:28px}
+.benefit{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light)}
+.benefit:last-child{border-bottom:none}
+.benefit__icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.benefit__icon--purple{background:var(--purple-light)}
+.benefit__icon--sage{background:var(--sage-light)}
+.benefit__icon--warm{background:var(--warm-light)}
+.benefit__icon--lime{background:var(--lime-light)}
+.benefit__text{flex:1}
+.benefit__title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:1px}
+.benefit__desc{font-size:12px;color:var(--text-muted);line-height:1.45}
+
+.reg-terms{text-align:center;font-size:11px;color:var(--text-muted);line-height:1.6;padding:0 8px 40px}
+.reg-terms a{color:var(--text-sec);font-weight:500;text-decoration:underline;text-underline-offset:2px}
+
+/* ── EMAIL SHEET ── */
+.sheet-overlay{position:fixed;inset:0;z-index:500;background:rgba(26,21,32,.55);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.sheet-overlay.open{display:flex}
+.sheet{width:100%;max-width:var(--max-width);background:var(--surface);border-radius:var(--radius-xl) var(--radius-xl) 0 0;padding:28px 24px 44px;animation:slideUp .35s cubic-bezier(.32,.72,.37,1.02)}
+.sheet__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sheet__title{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.sheet__sub{font-size:13px;color:var(--text-sec);margin-bottom:20px;line-height:1.5}
+.sheet__close{width:32px;height:32px;border-radius:var(--radius-full);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text-muted);cursor:pointer;border:none;font-family:var(--font)}
+.sheet__close:active{background:var(--border-light)}
+.input-group{margin-bottom:16px}
+.input-label{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block}
+.input-field{width:100%;padding:14px 16px;border-radius:var(--radius-md);border:1.5px solid var(--border);background:var(--surface-2);font-family:var(--font);font-size:15px;color:var(--text);outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none}
+.input-field:focus{border-color:var(--purple);background:var(--surface)}
+.input-field::placeholder{color:var(--text-muted)}
+.sheet-btn{width:100%;padding:16px;border-radius:var(--radius-full);font-size:15px;font-weight:700;color:var(--text-inv);background:var(--purple);box-shadow:0 4px 16px rgba(93,45,230,.3);margin-top:8px;transition:all .15s;font-family:var(--font);cursor:pointer;border:none}
+.sheet-btn:active{transform:scale(.98)}
+.sheet-btn:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none}
+.sheet-terms{text-align:center;font-size:11px;color:var(--text-muted);line-height:1.5;margin-top:16px}
+.sheet-terms a{color:var(--text-sec);font-weight:500;text-decoration:underline;text-underline-offset:2px}
+
+/* Consent checkboxes */
+.consent-group{margin-bottom:20px;display:flex;flex-direction:column;gap:12px}
+.consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.consent-check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface-2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;font-size:11px;color:#fff;font-weight:700}
+.consent-check.on{background:var(--purple);border-color:var(--purple)}
+.consent-text{font-size:12px;color:var(--text-sec);line-height:1.5}
+.consent-text strong{font-weight:600;color:var(--text)}
+
+/* Nav brand as button */
+.nav__brand-btn{background:none;border:none;font:inherit;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;cursor:pointer;padding:0;transition:opacity .15s}
+.nav__brand-btn:active{opacity:.65}
+</style>
+</head>
+<body>
+
+<div class="shell" id="shell"></div>
+
+<!-- EMAIL SHEET -->
+<div class="sheet-overlay" id="emailSheet" onclick="if(event.target===this)closeEmailSheet()">
+  <div class="sheet">
+    <div class="sheet__header">
+      <div class="sheet__title">Create your account</div>
+      <button class="sheet__close" onclick="closeEmailSheet()">✕</button>
+    </div>
+    <p class="sheet__sub">A few details and you're in. Takes less than a minute.</p>
+
+    <div class="input-group">
+      <label class="input-label">Your first name</label>
+      <input class="input-field" type="text" placeholder="What should we call you?" id="nameInput" oninput="validateRegForm()" autocomplete="given-name">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Email address</label>
+      <input class="input-field" type="email" placeholder="you@email.com" id="emailInput" oninput="validateRegForm()" autocomplete="email">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Create a password</label>
+      <input class="input-field" type="password" placeholder="At least 8 characters" id="passInput" oninput="validateRegForm()" autocomplete="new-password">
+    </div>
+
+    <div class="consent-group">
+      <div class="consent-row" onclick="toggleConsent('hipaa')">
+        <div class="consent-check on" id="check-hipaa">✓</div>
+        <div class="consent-text"><strong>I agree to the HIPAA authorization</strong> for processing my health data to personalize my experience.</div>
+      </div>
+      <div class="consent-row" onclick="toggleConsent('comms')">
+        <div class="consent-check" id="check-comms"></div>
+        <div class="consent-text">Send me personalized tips, content updates, and weekly skin summaries via email.</div>
+      </div>
+    </div>
+
+    <button class="sheet-btn" id="createBtn" disabled onclick="completeRegistration()">Create my account →</button>
+    <p class="sheet-terms">Your data is encrypted and HIPAA-compliant. We never sell your information. <a href="#">Privacy Policy</a></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// HEALTH.COM ONBOARDING — Eczema360 Design System
+// ═══════════════════════════════════════════════
+
+const brand = {
+  name: 'Health.com',
+  color: '#1C5FF1',
+  letter: 'H',
+  welcome: {
+    eyebrow: 'Welcome to Eczema360',
+    headline: 'Better skin <em>starts here.</em>',
+    sub: 'Coming from Health.com, you\u2019re already thinking about wellness. Let\u2019s personalize your eczema companion \u2014 three quick questions.'
+  }
+};
+
+const q1 = {
+  eyebrow: 'Question 1',
+  text: 'What would make the biggest difference for you right now?',
+  sub: 'Pick the one thing that matters most today.',
+  options: [
+    {id:'routine', icon:'\uD83E\uDDF4', label:'A skincare routine that actually works', desc:'Personalized product guidance and daily routines'},
+    {id:'triggers', icon:'\uD83D\uDD0D', label:'Knowing my triggers', desc:'Food, stress, weather, and product tracking'},
+    {id:'sleep', icon:'\uD83D\uDE34', label:'Better sleep', desc:'Nighttime itch management and sleep strategies'},
+    {id:'stress', icon:'\uD83E\uDDD8', label:'Less stress on my skin', desc:'Stress-flare connection and calming techniques'},
+    {id:'confidence', icon:'\u2728', label:'Feeling confident in my skin', desc:'Managing visibility, self-image, and social situations'}
+  ]
+};
+
+const q2 = {
+  eyebrow: 'Question 2',
+  text: 'Who are you managing this for?',
+  sub: 'This changes the content, voice, and guidance we show you.',
+  options: [
+    {id:'myself', icon:'\uD83D\uDE4B', label:'Myself', desc:'I\u2019m managing my own eczema'},
+    {id:'child', icon:'\uD83D\uDC76', label:'My child', desc:'I\u2019m a parent or caregiver for a child with eczema'},
+    {id:'other', icon:'\uD83D\uDC65', label:'Someone else', desc:'A partner, family member, or someone I care for'}
+  ]
+};
+
+// Q3 options adapt based on Q2 answer
+function getQ3Options() {
+  const base = [
+    {id:'pre_dx', icon:'\uD83D\uDD0D', label:'I have a skin issue but I\u2019m not sure what it is yet', desc:'Haven\u2019t been diagnosed \u2014 still figuring out what\u2019s going on'},
+    {id:'dx_otc', icon:'\uD83E\uDDF4', label:'Diagnosed \u2014 using creams or over-the-counter treatments', desc:'Managing with moisturizers, OTC hydrocortisone, or home remedies'},
+    {id:'rx_searching', icon:'\uD83D\uDC8A', label:'On prescription treatment but still figuring out what works', desc:'Trying topical Rx or other prescriptions \u2014 not yet stable'},
+    {id:'biologic', icon:'\uD83D\uDC89', label:'On or starting a biologic (like Dupixent)', desc:'New to biologics or already on one \u2014 need adherence and HCP support'},
+    {id:'veteran', icon:'\u2728', label:'Been managing this a long time \u2014 I know my routine', desc:'Experienced and self-directed \u2014 looking for optimization, not basics'}
+  ];
+
+  if (ans.q2 === 'child') {
+    // Replace pre_dx with child-specific framing, add pediatric option
+    return [
+      {id:'child_unsure', icon:'\uD83D\uDD0D', label:'My child has a skin issue but we don\u2019t have a diagnosis yet', desc:'Still figuring out if it\u2019s eczema, seeing the pediatrician or waiting for a referral'},
+      {id:'child_otc', icon:'\uD83E\uDDF4', label:'Diagnosed \u2014 managing with creams and OTC treatments', desc:'Moisturizers, gentle products, maybe OTC hydrocortisone'},
+      {id:'child_rx', icon:'\uD83D\uDC8A', label:'On prescription treatment \u2014 working with a dermatologist', desc:'Prescription topicals or other Rx \u2014 adjusting to find the right approach'},
+      {id:'child_biologic', icon:'\uD83D\uDC89', label:'On or starting a biologic', desc:'Advanced treatment for moderate-to-severe eczema'},
+      {id:'child_veteran', icon:'\u2728', label:'We\u2019ve been managing this for a while', desc:'Experienced caregiver \u2014 want better strategies, not the basics'}
+    ];
+  }
+
+  if (ans.q2 === 'other') {
+    return [
+      {id:'other_unsure', icon:'\uD83D\uDD0D', label:'They have a skin issue but aren\u2019t sure what it is', desc:'Supporting someone who hasn\u2019t been diagnosed yet'},
+      {id:'other_otc', icon:'\uD83E\uDDF4', label:'They\u2019re managing with OTC products', desc:'Moisturizers and over-the-counter treatments'},
+      {id:'other_rx', icon:'\uD83D\uDC8A', label:'They\u2019re on prescription treatment', desc:'Topical Rx or other prescriptions'},
+      {id:'other_biologic', icon:'\uD83D\uDC89', label:'They\u2019re on or starting a biologic', desc:'Advanced treatment like Dupixent'},
+      {id:'other_veteran', icon:'\u2728', label:'They\u2019ve been managing this for a while', desc:'Looking for ways to better support them'}
+    ];
+  }
+
+  return base;
+}
+
+const q3Base = {
+  eyebrow: 'Question 3',
+  text: 'Which of these sounds most like you right now?',
+  sub: 'No wrong answer \u2014 this helps us show you relevant guidance from day one.'
+};
+
+// Feed content mapped to Q1 + Q3 signals
+const feedContent = {
+  routine: [
+    {emoji:'\uD83E\uDDF4',bg:'linear-gradient(135deg,#E0F9F8,#EDE8FD)',source:'Health.com',sourceColor:'#1C5FF1',tag:'Routine',tagBg:'var(--sage-light)',tagColor:'#2ED1CB',title:'The 3-step eczema skincare routine derms actually recommend',desc:'Cleanse, treat, seal \u2014 in the right order with the right products.',reason:'You want a routine that works'},
+    {emoji:'\uD83D\uDED2',bg:'linear-gradient(135deg,var(--lime-light),#EDE8FD)',source:'Byrdie',sourceColor:'#1A1520',tag:'Products',tagBg:'var(--lime-light)',tagColor:'#9A6232',title:'The 2026 eczema-friendly product guide',desc:'Fragrance-free, ceramide-rich picks at every price point.',reason:'Products matched to sensitive skin'}
+  ],
+  triggers: [
+    {emoji:'\uD83D\uDD2C',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Triggers',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Eczema triggers you might be missing',desc:'Hard water, humidity drops, and histamine-rich foods hide in plain sight.',reason:'Understanding your triggers is your priority'},
+    {emoji:'\uD83D\uDCCA',bg:'linear-gradient(135deg,var(--warm-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Tracking',tagBg:'var(--warm-light)',tagColor:'var(--warm)',title:'Your first week of trigger tracking: what to log',desc:'Skin score, suspected triggers, sleep, and stress \u2014 four signals that reveal your pattern.',reason:'Tracking is how you find your triggers'}
+  ],
+  sleep: [
+    {emoji:'\uD83C\uDF19',bg:'linear-gradient(135deg,#EDE8FD,var(--surface))',source:'Verywell Health',sourceColor:'#006B5F',tag:'Sleep',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'Why eczema always gets worse at night',desc:'Cortisol drops at midnight \u2014 your skin\u2019s defenses are lowest when you need them most.',reason:'Sleep is what you struggle with most'},
+    {emoji:'\uD83D\uDECF\uFE0F',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Headspace',sourceColor:'#F47D31',tag:'Practice',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Sleepcast for eczema nights',desc:'Guided wind-down designed for people whose skin keeps them awake.',reason:'Better sleep = better skin'}
+  ],
+  stress: [
+    {emoji:'\uD83E\uDDE0',bg:'linear-gradient(135deg,#EDE8FD,var(--surface))',source:'Verywell Mind',sourceColor:'#7B61FF',tag:'Stress-Skin',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'The stress-to-flare lag: what\u2019s happening in your body',desc:'Cortisol, mast cells, and the 48-hour delay you can learn to predict.',reason:'Stress is making your skin worse'},
+    {emoji:'\uD83E\uDDD8',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Headspace',sourceColor:'#F47D31',tag:'Practice',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'3-minute stress reset for skin flares',desc:'A breathing exercise designed to lower the cortisol that feeds inflammation.',reason:'Interrupt the stress-flare cycle'}
+  ],
+  confidence: [
+    {emoji:'\u2728',bg:'linear-gradient(135deg,var(--warm-light),#EDE8FD)',source:'Byrdie',sourceColor:'#1A1520',tag:'Confidence',tagBg:'var(--warm-light)',tagColor:'var(--warm)',title:'Visible eczema and confidence: real strategies that help',desc:'Event prep, workplace tips, and what to say when someone asks.',reason:'You want to feel confident in your skin'},
+    {emoji:'\uD83D\uDCAC',bg:'linear-gradient(135deg,#EDE8FD,var(--surface))',source:'Verywell Mind',sourceColor:'#7B61FF',tag:'Emotional',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'The emotional weight of eczema \u2014 and how to lighten it',desc:'Peer stories, coping strategies, and professional support options.',reason:'Skin confidence is about more than skin'}
+  ]
+};
+
+// Stage-specific bonus cards injected based on Q3
+const stageCards = {
+  pre_dx: {emoji:'\uD83E\uDE7A',bg:'linear-gradient(135deg,var(--blue-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Assessment',tagBg:'var(--blue-light)',tagColor:'var(--blue)',title:'Is it eczema? How to tell \u2014 and what to do next',desc:'A guided self-assessment to help you prepare for a doctor visit.',reason:'You\u2019re still figuring out what\u2019s going on'},
+  child_unsure: {emoji:'\uD83D\uDC76',bg:'linear-gradient(135deg,var(--warm-light),#EDE8FD)',source:'Verywell Family',sourceColor:'#E85555',tag:'Pediatric',tagBg:'var(--warm-light)',tagColor:'var(--warm)',title:'Your child\u2019s skin: when to see a dermatologist vs. the pediatrician',desc:'What to watch for, how referrals work, and what to bring to the appointment.',reason:'You\u2019re navigating a new diagnosis for your child'},
+  dx_otc: {emoji:'\uD83E\uDDF4',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Health.com',sourceColor:'#1C5FF1',tag:'Self-Care',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'When OTC isn\u2019t enough: signs it\u2019s time to talk to a derm',desc:'The line between self-management and needing prescription help.',reason:'You\u2019re managing with OTC \u2014 we\u2019ll help you know when to escalate'},
+  child_otc: {emoji:'\uD83E\uDDF4',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Verywell Family',sourceColor:'#E85555',tag:'Pediatric',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Building a gentle skincare routine for your child',desc:'Age-appropriate products, bath tips, and making it a positive experience.',reason:'Personalized for caregivers managing with OTC products'},
+  rx_searching: {emoji:'\uD83D\uDC8A',bg:'linear-gradient(135deg,var(--purple-light),var(--surface))',source:'Verywell Health',sourceColor:'#006B5F',tag:'Treatment',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'Topical Rx not working? What to track before your next appointment',desc:'The data your derm needs to adjust your plan or consider alternatives.',reason:'You\u2019re on Rx but still searching for the right fit'},
+  child_rx: {emoji:'\uD83D\uDC8A',bg:'linear-gradient(135deg,var(--purple-light),var(--surface))',source:'Verywell Family',sourceColor:'#E85555',tag:'Treatment',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'Working with your child\u2019s dermatologist: what to ask and track',desc:'Preparing for follow-ups and knowing when treatment needs to change.',reason:'Helping your child get the most from their treatment plan'},
+  biologic: {emoji:'\uD83D\uDC89',bg:'linear-gradient(135deg,var(--sage-light),var(--purple-light))',source:'Verywell Health',sourceColor:'#006B5F',tag:'Biologics',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Starting a biologic: what to expect in the first 16 weeks',desc:'Timeline, side effects, what\u2019s normal, and when to call your doctor.',reason:'You\u2019re on or starting a biologic'},
+  child_biologic: {emoji:'\uD83D\uDC89',bg:'linear-gradient(135deg,var(--sage-light),var(--purple-light))',source:'Verywell Family',sourceColor:'#E85555',tag:'Biologics',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Your child and biologics: a parent\u2019s guide to the first months',desc:'What the injection routine looks like, what to watch for, and how to support them.',reason:'Supporting your child through biologic treatment'},
+  veteran: {emoji:'\uD83D\uDCCA',bg:'linear-gradient(135deg,var(--lime-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Advanced',tagBg:'var(--lime-light)',tagColor:'#9A6232',title:'Beyond the basics: pattern intelligence for experienced patients',desc:'Stress-flare lag prediction, trigger correlation, and optimization strategies.',reason:'You\u2019re experienced \u2014 we\u2019ll skip the 101'},
+  child_veteran: {emoji:'\uD83D\uDCCA',bg:'linear-gradient(135deg,var(--lime-light),#EDE8FD)',source:'Verywell Family',sourceColor:'#E85555',tag:'Advanced',tagBg:'var(--lime-light)',tagColor:'#9A6232',title:'Long-term caregiver strategies: seasonal patterns, school plans, and advocacy',desc:'You know the basics \u2014 here\u2019s what experienced caregivers focus on.',reason:'You\u2019re an experienced caregiver \u2014 we\u2019ll match that'},
+  other_unsure: {emoji:'\uD83D\uDC65',bg:'linear-gradient(135deg,var(--blue-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Support',tagBg:'var(--blue-light)',tagColor:'var(--blue)',title:'Supporting someone with a skin condition they can\u2019t explain',desc:'How to help without overstepping, and when to encourage a doctor visit.',reason:'You\u2019re supporting someone who\u2019s still figuring things out'},
+  other_otc: {emoji:'\uD83D\uDC65',bg:'linear-gradient(135deg,var(--sage-light),#EDE8FD)',source:'Verywell Health',sourceColor:'#006B5F',tag:'Support',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'How to support someone managing eczema day to day',desc:'Practical help, emotional support, and what not to say.',reason:'Supporting someone managing with OTC treatments'},
+  other_rx: {emoji:'\uD83D\uDC65',bg:'linear-gradient(135deg,var(--purple-light),var(--surface))',source:'Verywell Health',sourceColor:'#006B5F',tag:'Support',tagBg:'var(--purple-light)',tagColor:'var(--purple)',title:'When someone you love is struggling with treatment',desc:'Understanding their frustration and how to help without fixing.',reason:'Supporting someone navigating prescription treatment'},
+  other_biologic: {emoji:'\uD83D\uDC65',bg:'linear-gradient(135deg,var(--sage-light),var(--purple-light))',source:'Verywell Health',sourceColor:'#006B5F',tag:'Support',tagBg:'var(--sage-light)',tagColor:'var(--sage)',title:'Biologics from the supporter\u2019s perspective',desc:'What the treatment involves, how to help with adherence, and what to expect.',reason:'Supporting someone on biologic treatment'},
+  other_veteran: {emoji:'\uD83D\uDC65',bg:'linear-gradient(135deg,var(--lime-light),#EDE8FD)',source:'Verywell Mind',sourceColor:'#7B61FF',tag:'Wellbeing',tagBg:'var(--lime-light)',tagColor:'#9A6232',title:'Caregiver fatigue is real \u2014 even when they\u2019re managing well',desc:'Taking care of yourself while supporting someone long-term.',reason:'Long-term support takes a toll \u2014 we see that'}
+};
+
+// State
+let step = 0; // 0=Q1, 1=Q2, 2=Q3, 3=complete, 4=feed
+let ans = { q1: null, q2: null, q3: null };
+let regMode = false; // true = show registration landing
+let regData = { name: '' };
+const consents = { hipaa: true, comms: false };
+
+function render() {
+  const shell = document.getElementById('shell');
+  let html = '';
+
+  // Registration landing — no sticky nav, wordmark lives in hero
+  if (regMode) {
+    shell.innerHTML = renderLanding();
+    return;
+  }
+
+  // Nav
+  html += `<div class="nav">
+    <button class="nav__brand-btn" onclick="showLanding()" title="Back to sign-up">Eczema360</button>
+    <span class="nav__from"><span class="nav__from-dot" style="background:${brand.color}"></span>From ${brand.name}</span>
+  </div>`;
+
+  if (step <= 2) {
+    // Hero (only on Q1)
+    if (step === 0) {
+      const firstName = regData.name ? regData.name.split(' ')[0] : '';
+      const personalHeadline = firstName
+        ? `${firstName}, let's <em>personalize</em> your care.`
+        : brand.welcome.headline;
+      const personalSub = firstName
+        ? `We have a few quick questions to tailor your feed, tracking, and guidance around what matters most to you.`
+        : brand.welcome.sub;
+      html += `<div class="hero-wrap">
+        <p class="hero__eyebrow">${brand.welcome.eyebrow}</p>
+        <h1 class="hero__title">${personalHeadline}</h1>
+        <p class="hero__sub">${personalSub}</p>
+      </div>`;
+    }
+
+    // Progress
+    const pct = ((step + 1) / 3) * 100;
+    html += `<div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Getting to know you</span>
+        <span class="progress-step">${step + 1} of 3</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+
+    // Question
+    if (step === 0) html += renderQuestion(q1, 'q1');
+    else if (step === 1) html += renderQuestion(q2, 'q2');
+    else {
+      const q3Dynamic = { ...q3Base, options: getQ3Options() };
+      html += renderQuestion(q3Dynamic, 'q3');
+    }
+
+  } else if (step === 3) {
+    html += renderCompletion();
+  } else {
+    html += renderFeed();
+  }
+
+  shell.innerHTML = html;
+}
+
+function renderQuestion(qData, key) {
+  const opts = qData.options.map(o => {
+    const sel = ans[key] === o.id;
+    return `<button class="opt${sel?' sel':''}" onclick="selectSingle('${key}','${o.id}')">
+      <span class="opt__emoji">${o.icon}</span>
+      <div class="opt__body">
+        <div class="opt__label">${o.label}</div>
+        <div class="opt__desc">${o.desc}</div>
+      </div>
+      <div class="opt__check">${sel?'\u2713':''}</div>
+    </button>`;
+  }).join('');
+
+  const canNext = !!ans[key];
+  const isFirst = step === 0;
+  const isLast = step === 2;
+
+  return `<div class="q-section">
+    <div class="q-card">
+      <div class="q-eyebrow">${qData.eyebrow}</div>
+      <div class="q-text">${qData.text}</div>
+      <div class="q-sub">${qData.sub}</div>
+      <div class="opts">${opts}</div>
+    </div>
+  </div>
+  <div class="nav-row">
+    ${isFirst
+      ? `<button class="nav-skip" onclick="skipToFeed()">Skip for now</button>`
+      : `<button class="nav-back" onclick="prevStep()">\u2190 Back</button>`}
+    <button class="nav-next" ${!canNext?'disabled':''} onclick="${isLast ? 'completeOnboarding()' : 'nextStep()'}">${isLast ? 'See my feed \u2192' : 'Continue \u2192'}</button>
+  </div>`;
+}
+
+function renderCompletion() {
+  const q1Label = q1.options.find(o => o.id === ans.q1)?.label || '';
+  const q2Label = q2.options.find(o => o.id === ans.q2)?.label || '';
+  const q3Opts = getQ3Options();
+  const q3Label = q3Opts.find(o => o.id === ans.q3)?.label || '';
+
+  // Determine role label
+  const roleMap = {myself: 'Managing for myself', child: 'Managing for my child', other: 'Supporting someone else'};
+  const roleLabel = roleMap[ans.q2] || q2Label;
+
+  const firstName = regData.name ? regData.name.split(' ')[0] : '';
+  const completionTitle = firstName ? `You're all set, ${firstName}.` : 'Your companion is ready.';
+
+  return `<div class="complete-wrap">
+    <div class="complete-icon">\u2713</div>
+    <h2>${completionTitle}</h2>
+    <p>We\u2019ll personalize your daily feed around what matters to you. You can always update these in settings.</p>
+    <div class="profile-card">
+      <div class="profile-card__title">Your profile</div>
+      <div class="profile-row">
+        <span class="profile-row__icon">\uD83C\uDFAF</span>
+        <div><div class="profile-row__label">Primary focus</div><div class="profile-row__value">${q1Label}</div></div>
+      </div>
+      <div class="profile-row">
+        <span class="profile-row__icon">\uD83D\uDC64</span>
+        <div><div class="profile-row__label">Managing for</div><div class="profile-row__value">${roleLabel}</div></div>
+      </div>
+      <div class="profile-row">
+        <span class="profile-row__icon">\uD83D\uDCCD</span>
+        <div><div class="profile-row__label">Current stage</div><div class="profile-row__value">${q3Label}</div></div>
+      </div>
+      <div class="profile-row">
+        <span class="profile-row__icon">\uD83D\uDCF0</span>
+        <div><div class="profile-row__label">Content source</div><div class="profile-row__value">${brand.name} + clinical library</div></div>
+      </div>
+    </div>
+    <button class="cta-main" onclick="showFeed()">Show me my feed \u2192</button>
+  </div>`;
+}
+
+function renderFeed() {
+  const cards = getFeedCards();
+  let html = `<div class="feed-preview">
+    <div class="feed-hdr"><h2>Your Daily Feed</h2><span class="feed-tag">Personalized</span></div>
+    <div class="feed-source"><span class="feed-source__dot" style="background:${brand.color}"></span>Personalized from ${brand.name} + clinical intelligence</div>`;
+
+  cards.forEach(c => {
+    html += `<div class="feed-card">
+      <div class="feed-card__img" style="background:${c.bg}"><span>${c.emoji}</span></div>
+      <div class="feed-card__body">
+        <div class="feed-card__source">
+          <div class="feed-card__source-dot" style="background:${c.sourceColor}">${c.source.charAt(0)}</div>
+          <span class="feed-card__source-name">${c.source}</span>
+          <span class="feed-card__tag" style="background:${c.tagBg};color:${c.tagColor}">${c.tag}</span>
+        </div>
+        <div class="feed-card__title">${c.title}</div>
+        <div class="feed-card__desc">${c.desc}</div>
+        <div class="feed-card__reason">\u2728 ${c.reason}</div>
+      </div>
+    </div>`;
+  });
+
+  html += `<button class="reset-btn" onclick="resetOnboarding()">\u2190 Start over</button></div>`;
+  return html;
+}
+
+// ── Interactions ──
+function selectSingle(key, id) {
+  ans[key] = id;
+  // If Q2 changes, reset Q3 since options are conditional
+  if (key === 'q2') ans.q3 = null;
+  render();
+}
+
+function nextStep() {
+  if (step === 0 && !ans.q1) return;
+  if (step === 1 && !ans.q2) return;
+  step++;
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function prevStep() { step = Math.max(0, step - 1); render(); }
+
+function completeOnboarding() {
+  if (!ans.q3) return;
+  step = 3;
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showFeed() {
+  step = 4;
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function skipToFeed() {
+  ans.q1 = 'routine';
+  ans.q2 = 'myself';
+  ans.q3 = 'dx_otc';
+  step = 4;
+  render();
+}
+
+function resetOnboarding() {
+  step = 0;
+  ans = { q1: null, q2: null, q3: null };
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function getFeedCards() {
+  // Primary: 2 cards from Q1 intent
+  const primary = feedContent[ans.q1] || feedContent.routine;
+  // Bonus: 1 card from Q3 clinical stage
+  const bonus = ans.q3 && stageCards[ans.q3] ? [stageCards[ans.q3]] : [];
+  return [...primary, ...bonus].slice(0, 4);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Registration ──
+function showLanding() {
+  regMode = true;
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function renderLanding() {
+  return `
+  <div class="reg-hero">
+    <div class="reg-hero__bg">
+      <div class="reg-hero__icons">
+        <span class="reg-hero__icon">🧴</span>
+        <span class="reg-hero__icon">🌙</span>
+        <span class="reg-hero__icon">🧘</span>
+        <span class="reg-hero__icon">✨</span>
+        <span class="reg-hero__icon">📊</span>
+        <span class="reg-hero__icon">💊</span>
+      </div>
+    </div>
+    <div class="reg-hero__content">
+      <div class="reg-hero__wordmark">
+        Eczema360
+        <span class="reg-hero__wordmark-sep">|</span>
+        <span class="reg-hero__wordmark-partner">People Inc.</span>
+      </div>
+      <h1 class="reg-hero__headline"><em>Finally —</em> a place that gets eczema like you live it.</h1>
+    </div>
+  </div>
+  <div class="reg-body">
+    <p class="value-prop">Personalized guidance, daily tracking, and <strong>trusted content</strong> — all in one place.</p>
+
+    <div class="auth-buttons">
+      <button class="auth-btn auth-btn--email" onclick="openEmailSheet()">
+        <span class="auth-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+        </span>
+        Continue with Email
+      </button>
+      <button class="auth-btn auth-btn--google" onclick="socialSignIn()">
+        <span class="auth-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.97 10.97 0 001 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </span>
+        Continue with Google
+      </button>
+      <button class="auth-btn auth-btn--apple" onclick="socialSignIn()">
+        <span class="auth-btn__icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        </span>
+        Continue with Apple
+      </button>
+    </div>
+
+    <div class="divider">
+      <div class="divider__line"></div>
+      <span class="divider__text">What you get</span>
+      <div class="divider__line"></div>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit__icon benefit__icon--purple">📊</div>
+        <div class="benefit__text">
+          <div class="benefit__title">Personalized daily feed</div>
+          <div class="benefit__desc">Content matched to your triggers, treatment stage, and lifestyle</div>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit__icon benefit__icon--sage">📋</div>
+        <div class="benefit__text">
+          <div class="benefit__title">Symptom &amp; trigger tracking</div>
+          <div class="benefit__desc">Log skin, sleep, and stress — with wearable auto-sync</div>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit__icon benefit__icon--warm">🧠</div>
+        <div class="benefit__text">
+          <div class="benefit__title">AI-powered insights</div>
+          <div class="benefit__desc">Pattern detection that helps you predict flares before they happen</div>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit__icon benefit__icon--lime">💬</div>
+        <div class="benefit__text">
+          <div class="benefit__title">Doctor-ready discussion guides</div>
+          <div class="benefit__desc">Walk into your next appointment with data your derm can use</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="reg-terms">By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Your data is protected under HIPAA. We will never sell your information.</p>
+  </div>`;
+}
+
+function openEmailSheet() {
+  document.getElementById('emailSheet').classList.add('open');
+  setTimeout(() => document.getElementById('nameInput').focus(), 350);
+}
+
+function closeEmailSheet() {
+  document.getElementById('emailSheet').classList.remove('open');
+}
+
+function toggleConsent(key) {
+  consents[key] = !consents[key];
+  const el = document.getElementById('check-' + key);
+  el.classList.toggle('on', consents[key]);
+  el.textContent = consents[key] ? '✓' : '';
+  validateRegForm();
+}
+
+function validateRegForm() {
+  const name = (document.getElementById('nameInput')?.value || '').trim();
+  const email = (document.getElementById('emailInput')?.value || '').trim();
+  const pass = document.getElementById('passInput')?.value || '';
+  const valid = name.length >= 2 && email.includes('@') && email.includes('.') && pass.length >= 8 && consents.hipaa;
+  const btn = document.getElementById('createBtn');
+  if (btn) btn.disabled = !valid;
+}
+
+function completeRegistration() {
+  const name = (document.getElementById('nameInput')?.value || '').trim();
+  const email = (document.getElementById('emailInput')?.value || '').trim();
+  if (!name || !email) return;
+  regData.name = name;
+  closeEmailSheet();
+  regMode = false;
+  step = 0;
+  ans = { q1: null, q2: null, q3: null };
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  const firstName = name.split(' ')[0];
+  setTimeout(() => showToast(`Welcome, ${firstName}! Let's personalize your experience.`), 300);
+}
+
+function socialSignIn() {
+  // Simulates social sign-in — skips form, goes straight to onboarding
+  regData.name = '';
+  closeEmailSheet();
+  regMode = false;
+  step = 0;
+  ans = { q1: null, q2: null, q3: null };
+  render();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  setTimeout(() => showToast('Signed in — let\'s personalize your experience.'), 300);
+}
+
+// Init — start on registration landing
+regMode = true;
+render();
+</script>
+</body>
+</html>

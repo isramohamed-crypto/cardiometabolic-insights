@@ -58,7 +58,7 @@ function HabitPickCard({
         <div className="habit-card__scrim" />
 
         <div className="habit-card__content">
-          <h2 className="habit-card__title">{habit.title}</h2>
+          <h3 className="habit-card__title">{habit.title}</h3>
 
           <p className="habit-card__subtitle">{habit.subtitle}</p>
 

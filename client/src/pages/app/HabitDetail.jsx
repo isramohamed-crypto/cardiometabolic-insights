@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { RECOMMENDATIONS_BY_PILLAR, STACK_PRESETS, getHabitVisual } from '../onboarding/recommendedHabits.js'
-import { CONTENT_POOL, daysSinceStart } from '../../domain/habitContent.js'
+import { daysSinceStart, pickJustificationContent, COMPANION_CONTENT } from '../../domain/habitContent.js'
 import { getPillarLabel } from '../../domain/pillars.js'
 import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
 import { formatTime } from '../../domain/time.js'
@@ -45,15 +45,19 @@ function detailedTitle(catalogTitle, tier, moment) {
 }
 
 // View mode for a habit already in the user's routine — reached by
-// tapping a RoutineHabitCard. Renders as a full-page card that flips open
-// over a dark backdrop (see flip-card-scene/flip-card in HabitDetail.css)
-// rather than a plain full-bleed page, with the habit's own photo (or its
-// pillar's gradient fallback — same getHabitVisual asset every other card
-// uses) as the card's header instead of a plain text one. Shows the 7-day
-// tracker, trial status, a manual "mark today done" check-in, and
-// supporting content specific to this habit. Editing tier/moment/
-// reminders lives separately at HabitEdit (/habit/:habitId/edit) — this
-// screen just links to it.
+// tapping a RoutineHabitCard on the Routine tab. A plain full-bleed
+// subscreen (same question-screen shell as HabitEdit/HabitChat, outside
+// AppLayout's tab bar) rather than an overlay/tray — it used to render as
+// a flip-open card floating over a dimmed Routine backdrop, but that read
+// as a modal rather than a real screen of its own, so it's a normal page
+// now, just reached the same way (tap a habit, land here; Back/Close both
+// return to /routine). Uses the habit's own photo (or its pillar's
+// gradient fallback — same getHabitVisual asset every other card uses) as
+// a hero banner instead of a plain text header. Shows the 7-day tracker,
+// trial status, a manual "mark today done" check-in, and supporting
+// content specific to this habit. Editing tier/moment/reminders lives
+// separately at HabitEdit (/habit/:habitId/edit) — this screen just links
+// to it.
 function HabitDetail() {
   const { habitId } = useParams()
   const navigate = useNavigate()
@@ -70,6 +74,14 @@ function HabitDetail() {
   // just linking over to a blank composer.
   const [chatDraft, setChatDraft] = useState('')
 
+  // Picked once per mount (per visit to the card) — the "Did you know?"
+  // section's rotating real-world piece, alongside the catalog's own
+  // static justification text below it. Called before the not-found
+  // early-return like the other hooks above; safe even if habitId
+  // doesn't resolve to a real habit, since pickJustificationContent just
+  // returns null for an empty/missing pool.
+  const [justificationPick] = useState(() => pickJustificationContent(habitId))
+
   const habit = habits.find((h) => h.id === habitId)
   const catalogHabit = habit
     ? RECOMMENDATIONS_BY_PILLAR[habit.pillarId]?.habits.find((h) => h.id === habit.id)
@@ -84,20 +96,18 @@ function HabitDetail() {
 
   if (!habit || !catalogHabit) {
     return (
-      <div className="flip-card-scene">
-        <main className="question-screen flip-card">
-          <div className="question-screen__body">
-            <p className="question-screen__intro">This habit couldn’t be found.</p>
-            <button
-              type="button"
-              className="question-screen__back"
-              onClick={() => navigate('/routine')}
-            >
-              <span aria-hidden="true">←</span> Back to Routine
-            </button>
-          </div>
-        </main>
-      </div>
+      <main className="question-screen">
+        <div className="question-screen__body">
+          <p className="question-screen__intro">This habit couldn’t be found.</p>
+          <button
+            type="button"
+            className="question-screen__back"
+            onClick={() => navigate('/routine')}
+          >
+            <span aria-hidden="true">←</span> Back to Routine
+          </button>
+        </div>
+      </main>
     )
   }
 
@@ -118,7 +128,7 @@ function HabitDetail() {
 
   const statusLabel = STATUS_LABEL[habit.ownershipState] || habit.ownershipState
 
-  const contentItems = CONTENT_POOL[habit.id] || []
+  const companion = COMPANION_CONTENT[habit.id]
   const gradient = getHabitVisual(habit.pillarId, habit.id)
 
   const tiers = catalogHabit.tiers || []
@@ -139,9 +149,8 @@ function HabitDetail() {
   }
 
   return (
-    <div className="flip-card-scene">
-      <main className="question-screen habit-detail flip-card">
-        <div className="habit-detail__hero" style={{ backgroundImage: gradient }}>
+    <main className="question-screen habit-detail">
+      <div className="habit-detail__hero" style={{ backgroundImage: gradient }}>
           <div className="habit-detail__hero-scrim" />
           <button
             type="button"
@@ -160,8 +169,21 @@ function HabitDetail() {
         </div>
 
         <div className="question-screen__body">
-          <div className="habit-detail__tracker">
-            <HabitDayTracker startedAt={habit.startedAt} log={habit.log} variant="light" />
+          <div className="habit-detail__tracker-row">
+            <div className="habit-detail__tracker">
+              <HabitDayTracker startedAt={habit.startedAt} log={habit.log} variant="light" />
+            </div>
+            <button
+              type="button"
+              className={`habit-detail__done${doneToday ? ' habit-detail__done--active' : ''}`}
+              onClick={() => toggleTodayDone(habit.id)}
+              aria-pressed={doneToday}
+            >
+              <span className="habit-detail__done-check" aria-hidden="true">
+                {doneToday ? '✓' : ''}
+              </span>
+              {doneToday ? 'Done today' : 'Mark done'}
+            </button>
           </div>
 
           <div className="habit-detail__status-row">
@@ -275,27 +297,45 @@ function HabitDetail() {
             </Link>
           )}
 
-          {catalogHabit.justification && (
+          {/* "Where the habit currently is" ends above this line (tracker,
+              trial status, customize, trial-decision hints). Below here is
+              habit-specific reading/media rather than status/controls. */}
+
+          {(catalogHabit.justification || justificationPick) && (
             <section className="customize-section">
-              <h2 className="customize-section__title">Why this works</h2>
-              <p className="habit-detail__justification">{catalogHabit.justification}</p>
+              <h2 className="customize-section__title">Did you know?</h2>
+              {catalogHabit.justification && (
+                <p className="habit-detail__justification">{catalogHabit.justification}</p>
+              )}
+              {justificationPick && (
+                <div className="routine-habit-list">
+                  <ContentCard
+                    id={justificationPick.id}
+                    thumbnail={gradient}
+                    brand={justificationPick.brand}
+                    title={justificationPick.title}
+                    body={justificationPick.body}
+                    url={justificationPick.url}
+                    compact
+                  />
+                </div>
+              )}
             </section>
           )}
 
-          {contentItems.length > 0 && (
+          {companion && (
             <section className="customize-section">
-              <h2 className="customize-section__title">More on this habit</h2>
+              <h2 className="customize-section__title">{companion.sectionLabel}</h2>
               <div className="routine-habit-list">
-                {contentItems.map((item) => (
-                  <ContentCard
-                    key={item.id}
-                    id={item.id}
-                    thumbnail={gradient}
-                    brand={item.brand}
-                    title={item.title}
-                    body={item.body}
-                  />
-                ))}
+                <ContentCard
+                  id={companion.content.id}
+                  thumbnail={gradient}
+                  brand={companion.content.brand}
+                  title={companion.content.title}
+                  body={companion.content.body}
+                  url={companion.content.url}
+                  compact
+                />
               </div>
             </section>
           )}
@@ -308,18 +348,6 @@ function HabitDetail() {
             onClick={() => navigate('/routine')}
           >
             <span aria-hidden="true">←</span> Back
-          </button>
-
-          <button
-            type="button"
-            className={`habit-detail__done${doneToday ? ' habit-detail__done--active' : ''}`}
-            onClick={() => toggleTodayDone(habit.id)}
-            aria-pressed={doneToday}
-          >
-            <span className="habit-detail__done-check" aria-hidden="true">
-              {doneToday ? '✓' : ''}
-            </span>
-            {doneToday ? 'Marked done for today' : 'Mark today as done'}
           </button>
         </div>
 
@@ -339,8 +367,7 @@ function HabitDetail() {
             Send
           </button>
         </form>
-      </main>
-    </div>
+    </main>
   )
 }
 

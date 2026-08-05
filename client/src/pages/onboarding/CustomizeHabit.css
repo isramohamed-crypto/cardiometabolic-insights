@@ -6,11 +6,20 @@
   margin-top: var(--space-1);
 }
 
+/* Eyebrow treatment, not a heading — matches .page h2's Figma eyebrow
+   style (DM Sans, small, uppercase, letter-spaced, muted rather than
+   seaweed) for the exact same reason: these are section labels ("How
+   much", "Why this works"...) one level below whatever page-level eyebrow
+   sits above them, not their own headline, so they shouldn't compete with
+   it or with the actual heading font. */
 .customize-section__title {
   margin: 0 0 var(--space-2);
-  font-family: var(--font-heading);
-  font-size: var(--text-base);
-  color: #1a1a1a;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .customize-suggested {

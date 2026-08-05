@@ -6,15 +6,23 @@
   width: 100%;
 }
 
+/* No fixed/min height on the card itself anymore — it's sized entirely by
+   routine-habit-card__content below, which is real in-flow content now
+   instead of an absolutely-positioned overlay. background-size: cover
+   fills whatever height that content ends up needing. text-decoration:
+   none because this renders as an <a> (see RoutineHabitCard.jsx's Link) —
+   without it, the browser's default anchor underline shows through on
+   every piece of text inside (title, meta, and now the trial prompt's
+   title/description too), not just on something meant to look tappable. */
 .routine-habit-card {
   position: relative;
   display: block;
   width: 100%;
-  height: 198px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background-size: cover;
   background-position: center;
+  text-decoration: none;
 }
 
 .routine-habit-card__scrim {
@@ -28,15 +36,38 @@
   );
 }
 
+/* Used to be position: absolute; inset: 0 — a fixed overlay stretched to
+   match the card's own (then-fixed) height. Needed to become real in-flow
+   content instead once a trial prompt (see routine-habit-card__trial-prompt
+   below) could add enough text/buttons to need more than the classic
+   198px a bare title+meta card needs: an absolutely-positioned element's
+   height is dictated by its parent, not the other way around, so it could
+   never have grown the card to fit. min-height (not height) plus
+   border-box keeps the original 198px-tall look for a bare card — padding
+   included, same as inset: 0 against a 198px parent used to give — while
+   letting it grow past that floor when there's more to show.
+
+   padding-top is a hard reservation for HabitDayTracker (top: var(--space-4),
+   27px-tall dots — see HabitDayTracker.css), not just the usual space-5
+   the other three sides use. justify-content: flex-end used to be enough
+   on its own to keep the Pill clear of the tracker, back when a bare
+   card's content was shorter than the 198px floor — the leftover slack
+   above it did the job. Once the trial prompt could make content tall
+   enough to fill the box with no slack left, the Pill (first child) ended
+   up flush against the top padding — right where the tracker already
+   was. A fixed reservation guarantees the gap regardless of how tall the
+   rest of the content gets. */
 .routine-habit-card__content {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 1;
+  min-height: 198px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-2);
-  padding: var(--space-5) var(--space-6);
+  padding: calc(var(--space-4) + 27px + var(--space-3)) var(--space-6) var(--space-5)
+    var(--space-6);
 }
 
 /* Pill sits inside the card here (onboarding keeps it outside/above) —
@@ -74,14 +105,11 @@
   width: 100%;
 }
 
-/* Sized below .page h2 (text-base) on purpose — this is a secondary,
-   in-context link under a single habit's content, not another section
-   label, so it shouldn't compete with the headings above it. */
 .routine-habit-card__drip-more {
   margin-left: 2px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-caption);
+  font-size: var(--text-h5);
   color: var(--color-seaweed);
   text-decoration: none;
 }

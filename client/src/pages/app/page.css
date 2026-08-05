@@ -130,17 +130,6 @@
   background: var(--color-leaf);
 }
 
-/* Groups a habit's card with its own HabitTrialPrompt (when one applies —
-   see HabitTrialPrompt.jsx) as a single unit, so the prompt sits snug
-   against its habit rather than getting the same gap the list uses between
-   different habits. */
-.routine-habit-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  width: 100%;
-}
-
 /* Shared "locked slot" placeholder — used on both Routine (teasing the
    next slot once the current one(s) fill up) and Collection (same idea,
    framed as part of the full roster). */

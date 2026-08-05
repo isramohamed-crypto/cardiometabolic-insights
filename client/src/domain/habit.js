@@ -79,19 +79,20 @@ export const LOG_METHOD = {
  */
 
 // --- Content ------------------------------------------------------------------
-// Active (non pre-existing) habits carry up to 3 kinds of content, each
+// Active (non pre-existing) habits carry up to 4 kinds of content, each
 // attributed to a People Inc. publisher (Health, Verywell Mind, etc.) — the
 // same brand family shown in the onboarding landing page ticker.
 export const CONTENT_TYPE = {
   JUSTIFICATION: 'justification', // why this habit matters
   ENABLING: 'enabling', // supporting/how-to content
   REINFORCEMENT_DRIP: 'reinforcement_drip', // one surfaced per day, from a pool
+  COMPANION: 'companion', // something to play/read during the habit itself (see HabitDetail's "While you ___")
 }
 
 /**
  * @typedef {Object} ContentItem
  * @property {string} id
- * @property {'justification'|'enabling'|'reinforcement_drip'} type
+ * @property {'justification'|'enabling'|'reinforcement_drip'|'companion'} type
  * @property {string} brand - attributed publisher, e.g. "Health", "Verywell Mind"
  * @property {string} title
  * @property {string} [url]

@@ -1,26 +1,29 @@
-/* Same sage-tint "quiet card" treatment as habit-detail__integrate/
-   habit-detail__customize used, just self-contained here instead of
-   sharing HabitDetail's/onboarding's CSS — this renders on Routine now,
-   directly under the habit's own card (see Routine.jsx). */
+/* Used to be its own sage-tint "quiet card" sitting on the page background,
+   underneath the habit's card — now the whole thing (title, description,
+   and the actual decision buttons) renders inside RoutineHabitCard itself,
+   directly on its photo (see RoutineHabitCard.jsx). No background/padding
+   of its own anymore — it just adds a little breathing room above itself
+   and reads straight off the photo, same as the title/meta lines above it.
+   Text colors below are all light rather than the old dark-on-sage
+   treatment for the same reason; the two buttons with their own opaque
+   backgrounds (primary, secondary) didn't need to change. */
 .habit-trial-prompt {
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: rgba(0, 70, 32, 0.06);
+  margin-top: var(--space-2);
 }
 
 .habit-trial-prompt__title {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-heading);
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-base);
-  color: #1a1a1a;
+  color: #fff;
 }
 
 .habit-trial-prompt__desc {
   margin: 0 0 var(--space-3);
   font-family: var(--font-body);
   font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .habit-trial-prompt__actions {
@@ -63,6 +66,8 @@
   cursor: pointer;
 }
 
+/* Was dark-on-sage (rgba(0, 0, 0, 0.5)) — needs to read against the photo
+   now, same light treatment as habit-trial-prompt__desc above. */
 .habit-trial-prompt__link {
   margin: var(--space-1) 0 0;
   border: none;
@@ -71,12 +76,12 @@
   font-family: var(--font-body);
   font-weight: 500;
   font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: underline;
   cursor: pointer;
   align-self: center;
 }
 
 .habit-trial-prompt__link:hover {
-  color: rgba(0, 0, 0, 0.75);
+  color: #fff;
 }
