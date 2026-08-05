@@ -113,16 +113,16 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     habits: [
       {
         id: 'walk-after-meal',
-        title: 'Short walk after meals',
-        subtitle: 'Timing and length are up to you.',
+        title: 'Daily walk',
+        subtitle: 'A walk every day — timing and length are up to you.',
         image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
         justification:
-          'A short walk after eating helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
+          'A short walk — especially after eating — helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
         evidence:
           'Blood sugar tends to spike in the hour or so after eating — light movement in that window is one of the simplest ways to blunt that rise.',
         expectation:
-          'No pace goal, no step count — just a few minutes of moving after you eat. It should feel closer to a stroll than exercise.',
-        tiers: [{ label: '5 minutes' }, { label: '15 minutes' }, { label: '30 minutes' }],
+          'No pace goal, no step count — just a few minutes of moving. It should feel closer to a stroll than exercise.',
+        tiers: [{ label: '10 minutes' }, { label: '20 minutes' }, { label: '30 minutes' }],
       },
       {
         id: 'two-strength-sessions',
@@ -158,6 +158,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'chair-stands-after-breakfast',
         title: 'Do a few chair stands',
         subtitle: 'A quick set of sit-to-stands, whenever you tie it to your morning.',
+        image: "url('/house-interior.jpg')",
         justification:
           'A little resistance work goes a long way for strength and fall prevention — chair stands are an easy, equipment-free way to start.',
         evidence:
@@ -347,6 +348,7 @@ export const STACK_PRESETS = [
   'After breakfast',
   'After lunch',
   'After dinner',
+  'In the evening',
   'First thing in the morning',
   'Before bed',
 ]

@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .add-habit-flow__close {
@@ -14,7 +14,7 @@
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.06);
-  font-size: 20px;
+  font-size: var(--text-h5);
   line-height: 1;
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
@@ -25,7 +25,7 @@
   padding-right: 32px;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: var(--text-h4);
   line-height: 1.25;
   color: #1a1a1a;
 }

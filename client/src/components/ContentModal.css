@@ -14,21 +14,21 @@
   max-width: 560px;
   max-height: 85vh;
   overflow-y: auto;
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--color-coconut);
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .content-modal__close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: var(--space-4);
+  right: var(--space-4);
   width: 32px;
   height: 32px;
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.06);
-  font-size: 20px;
+  font-size: var(--text-h5);
   line-height: 1;
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
@@ -37,40 +37,40 @@
 .content-modal__thumb {
   width: 100%;
   height: 160px;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background-size: cover;
   background-position: center;
-  margin-bottom: 18px;
+  margin-bottom: var(--space-4);
 }
 
 .content-modal__body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .content-modal__brand {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--text-caption);
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--color-seaweed);
 }
 
 .content-modal__title {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: var(--text-h4);
   line-height: 1.3;
   color: #1a1a1a;
 }
 
 .content-modal__text {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-small);
   line-height: 1.55;
   color: rgba(0, 0, 0, 0.65);
 }
@@ -78,15 +78,15 @@
 .content-modal__save {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   align-self: flex-start;
   border: none;
-  border-radius: 999px;
-  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-5);
   background: rgba(0, 0, 0, 0.06);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -98,6 +98,6 @@
 }
 
 .content-modal__heart {
-  font-size: 18px;
+  font-size: var(--text-h5);
   line-height: 1;
 }

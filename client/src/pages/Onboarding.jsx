@@ -4,6 +4,7 @@ import logoPeople from '../assets/onboarding/logo-people.svg'
 import logoHealth from '../assets/onboarding/logo-health.svg'
 import logoEatingWell from '../assets/onboarding/logo-eatingwell.svg'
 import logoVerywellHealth from '../assets/onboarding/logo-verywellhealth.svg'
+import DemoProfileMenu from '../demo/DemoProfileMenu.jsx'
 import './Onboarding.css'
 
 // Publishers featured in the Figma masthead ticker. The first four have
@@ -37,6 +38,7 @@ function Onboarding() {
     <main className="onboarding">
       <div className="onboarding__scrim" />
       <img src={heroPhoto} alt="" className="onboarding__photo" />
+      <DemoProfileMenu />
 
       <div className="onboarding__content">
         <div className="onboarding-ticker">

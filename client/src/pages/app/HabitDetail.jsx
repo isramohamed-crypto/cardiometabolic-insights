@@ -83,7 +83,14 @@ function HabitDetail() {
   const isTrialing = habit.ownershipState === OWNERSHIP_STATE.TRIALED
   const daysSince = daysSinceStart(habit.startedAt)
   const trialComplete = daysSince >= 7 || skipWait
-  const showTrialDecision = isTrialing && trialComplete
+  // The keep/smaller/let-go prompt only makes sense while still trialing.
+  // The upsell that can follow "Keep it" is a different story: handleKeepIt
+  // graduates the habit to ADOPTED right away (so isTrialing flips false)
+  // before this re-renders, so the upsell has to be gated on decisionStage
+  // alone — it only ever reaches 'upsell' via handleKeepIt in this same
+  // mounted instance, so there's no risk of it showing on a stale visit.
+  const showTrialPrompt = isTrialing && trialComplete && decisionStage === 'prompt'
+  const showTierUpsell = decisionStage === 'upsell'
 
   // Skipping the trial is the user asserting this is already an
   // established habit, not a new one still being tried on — the status
@@ -269,7 +276,7 @@ function HabitDetail() {
           <span aria-hidden="true">💬</span> Ask about this habit
         </Link>
 
-        {showTrialDecision && decisionStage === 'prompt' && (
+        {showTrialPrompt && (
           <section className="habit-detail__integrate">
             <h2 className="customize-section__title">A week of trying. Keep it going?</h2>
             <p className="habit-detail__integrate-desc">
@@ -299,7 +306,7 @@ function HabitDetail() {
           </section>
         )}
 
-        {showTrialDecision && decisionStage === 'upsell' && (
+        {showTierUpsell && (
           <section className="habit-detail__integrate">
             <h2 className="customize-section__title">
               "{habit.tier}" is working. Want to make it {tiers[currentTierIndex + 1]?.label}?

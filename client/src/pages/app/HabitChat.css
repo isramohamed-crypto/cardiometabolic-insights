@@ -5,35 +5,37 @@
   background: var(--color-coconut);
 }
 
+/* Sits on the page's own coconut background now (see .habit-chat), same
+   light style as AppHeader — no colored band, dark text instead of white.
+   Padding is unchanged from the old dark-header chrome. */
 .habit-chat__header {
   position: relative;
-  background: var(--color-seaweed);
-  padding: 20px 28px 24px;
+  padding: var(--space-5) var(--space-6) var(--space-6);
 }
 
 .habit-chat__close {
   position: absolute;
-  top: 16px;
-  right: 20px;
+  top: var(--space-4);
+  right: var(--space-5);
   width: 32px;
   height: 32px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  font-size: 20px;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+  font-size: var(--text-h5);
   line-height: 1;
   cursor: pointer;
 }
 
 .habit-chat__eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 var(--space-1);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--text-caption);
   letter-spacing: 1.68px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-seaweed);
 }
 
 .habit-chat__title {
@@ -41,8 +43,8 @@
   padding-right: 40px;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.5rem;
-  color: #fff;
+  font-size: var(--text-h4);
+  color: #1a1a1a;
 }
 
 .habit-chat__messages {
@@ -50,16 +52,16 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px 20px 12px;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-3);
 }
 
 .habit-chat__bubble {
   max-width: 82%;
-  padding: 12px 16px;
-  border-radius: 16px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.45;
 }
 
@@ -81,17 +83,17 @@
 .habit-chat__message-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: flex-start;
 }
 
 .habit-chat__card {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   align-self: flex-start;
   max-width: 82%;
-  padding: 12px;
-  border-radius: 14px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
@@ -100,7 +102,7 @@
   flex-shrink: 0;
   width: 56px;
   height: 56px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   background-size: cover;
   background-position: center;
 }
@@ -108,14 +110,14 @@
 .habit-chat__card-body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .habit-chat__card-brand {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 11px;
+  font-size: var(--text-caption);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.45);
@@ -124,15 +126,15 @@
 .habit-chat__card-title {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--text-small);
   line-height: 1.3;
   color: rgba(0, 0, 0, 0.85);
 }
 
 .habit-chat__card-actions {
   display: flex;
-  gap: 14px;
-  margin-top: 6px;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
 }
 
 .habit-chat__card-action {
@@ -141,7 +143,7 @@
   padding: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--text-caption);
   color: var(--color-seaweed);
   text-decoration: none;
   cursor: pointer;
@@ -150,18 +152,18 @@
 .habit-chat__suggestions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   align-self: flex-start;
 }
 
 .habit-chat__suggestion {
   border: 1.5px solid var(--color-leaf);
-  border-radius: 999px;
-  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
   background: var(--color-coconut);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: var(--color-seaweed);
   cursor: pointer;
 }
@@ -172,9 +174,9 @@
 
 .habit-chat__composer {
   display: flex;
-  gap: 10px;
-  padding: 12px 20px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, 0px));
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   background: var(--color-coconut);
 }
@@ -182,12 +184,12 @@
 .habit-chat__input {
   flex: 1;
   border: none;
-  border-radius: 999px;
-  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-base);
   color: rgba(0, 0, 0, 0.9);
 }
 
@@ -198,13 +200,13 @@
 
 .habit-chat__send {
   border: none;
-  border-radius: 999px;
-  padding: 0 22px;
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-5);
   background: var(--color-seaweed);
   color: #fff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-small);
   cursor: pointer;
 }
 
@@ -214,13 +216,13 @@
 }
 
 .habit-chat__intro {
-  margin: 40px 20px 12px;
+  margin: var(--space-10) var(--space-5) var(--space-3);
   font-family: var(--font-body);
   color: rgba(0, 0, 0, 0.6);
 }
 
 .habit-chat__back {
-  margin: 0 20px;
+  margin: 0 var(--space-5);
   border: none;
   background: none;
   font-family: var(--font-body);

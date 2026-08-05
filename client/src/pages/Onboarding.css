@@ -40,7 +40,7 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: 20px 24px 40px;
+  padding: var(--space-5) var(--space-6) var(--space-10);
 }
 
 /* Masthead ticker */
@@ -48,7 +48,7 @@
 .onboarding-ticker {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .onboarding-ticker__label {
@@ -56,7 +56,7 @@
   text-align: center;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 9.5px;
+  font-size: var(--text-caption);
   letter-spacing: 1.6px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.6);
@@ -84,7 +84,7 @@
 .onboarding-ticker__row {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
   width: max-content;
   animation: onboarding-ticker-scroll 28s linear infinite;
 }
@@ -109,7 +109,7 @@
   flex-shrink: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--text-caption);
   color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
 }
@@ -131,16 +131,20 @@
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(2.75rem, 9vw, 3.375rem);
+  /* Fluid hero headline — intentionally outside the fixed 9-step type
+     scale (nothing else in the app needs to scale with viewport width
+     like this). Bounds are re-expressed in rem off the new 18px root
+     so the physical size (44px–54px) matches what it was before. */
+  font-size: clamp(2.4444rem, 9vw, 3rem);
   letter-spacing: -1.4px;
   color: #fff;
 }
 
 .onboarding__subtitle {
-  margin: 8px 0 0;
+  margin: var(--space-2) 0 0;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.1rem, 4vw, 1.35rem);
+  font-size: clamp(0.9778rem, 4vw, 1.2rem);
   letter-spacing: -0.3px;
   line-height: 1.3;
   color: #fff;
@@ -152,16 +156,16 @@
 }
 
 .onboarding__cta {
-  margin-top: 22px;
+  margin-top: var(--space-5);
   width: 100%;
   border: none;
-  border-radius: 999px;
-  padding: 16px 22px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-4) var(--space-5);
   background: #00301a;
   color: var(--color-coconut);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   cursor: pointer;
   transition: filter 0.15s ease;
 }

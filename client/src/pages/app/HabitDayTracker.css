@@ -1,10 +1,10 @@
 .habit-day-tracker {
   position: absolute;
-  top: 18px;
-  left: 18px;
+  top: var(--space-4);
+  left: var(--space-4);
   z-index: 2;
   display: flex;
-  gap: 5px;
+  gap: var(--space-1);
 }
 
 .habit-day-tracker__day {
@@ -22,7 +22,7 @@
 .habit-day-tracker__letter {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(255, 255, 255, 0.85);
 }
 

@@ -2,11 +2,19 @@
    only covers what's unique to the recap screen. */
 
 .summary .question-screen__header {
-  padding-bottom: 20px;
+  padding-bottom: var(--space-5);
 }
 
-.summary__headline {
-  margin-top: 4px;
+/* Overrides question-screen__headline's shared display:flex/column
+   layout (which forces every direct <span> child onto its own fixed
+   line) — this headline's content is variable-length (a count word plus
+   "thing"/"things"), so it needs to flow and wrap like normal text
+   instead of always breaking into a rigid number of lines. Written as a
+   compound selector so it wins over .question-screen__headline
+   regardless of CSS import order. */
+.question-screen__headline.summary__headline {
+  display: block;
+  margin-top: var(--space-1);
 }
 
 .summary__highlight {
@@ -22,32 +30,32 @@
 .summary__intro {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.55;
   color: rgba(0, 0, 0, 0.6);
 }
 
 .summary__divider {
-  margin: 20px 0;
+  margin: var(--space-5) 0;
   border-top: 1px solid rgba(0, 70, 32, 0.15);
 }
 
 .summary__rows {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--space-4);
 }
 
 .summary__row {
   display: grid;
   grid-template-columns: 78px 1fr;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .summary__row-label {
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 11px;
+  font-size: var(--text-caption);
   letter-spacing: 1.32px;
   text-transform: uppercase;
   color: var(--color-seaweed);
@@ -56,16 +64,16 @@
 
 .summary__row-value {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.45;
   color: rgba(0, 0, 0, 0.85);
 }
 
 .summary__caption {
-  margin: 12px 0 0;
+  margin: var(--space-3) 0 0;
   text-align: center;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--text-caption);
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.45);
 }

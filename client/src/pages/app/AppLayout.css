@@ -10,5 +10,5 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: 20px 24px 32px;
+  padding: var(--space-5) var(--space-6) var(--space-8);
 }

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
   width: 100%;
 }
 
@@ -11,7 +11,7 @@
   width: 100%;
   aspect-ratio: 3 / 4;
   max-height: 60vh;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background-size: cover;
   background-position: center;
@@ -37,15 +37,18 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 20px;
+  gap: var(--space-3);
+  padding: var(--space-5);
 }
 
 .habit-card__title {
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.4rem, 6vw, 1.7rem);
+  /* Fluid card headline, same intentional exception as onboarding's hero
+     title — bounds re-expressed in rem off the 18px root to preserve the
+     original physical size (22.4px–27.2px). */
+  font-size: clamp(1.2444rem, 6vw, 1.5111rem);
   letter-spacing: -0.4px;
   line-height: 1.15;
   color: #fff;
@@ -54,20 +57,20 @@
 .habit-card__subtitle {
   margin: -4px 0 0;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.88);
 }
 
 .habit-card__why {
   align-self: center;
-  margin: 4px 0 0;
+  margin: var(--space-1) 0 0;
   border: none;
   background: none;
   padding: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(255, 255, 255, 0.85);
   text-decoration: underline;
   cursor: pointer;
@@ -76,13 +79,13 @@
 .habit-card__add {
   width: 100%;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   height: 48px;
   background: var(--color-leaf);
   color: #fdfcf6;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   cursor: pointer;
   transition: filter 0.15s ease;
 }
@@ -94,13 +97,13 @@
 .habit-card__another {
   width: 100%;
   border: 2px solid var(--color-leaf);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   height: 48px;
   background: var(--color-coconut);
   color: var(--color-leaf);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -112,7 +115,7 @@
 .habit-card__dots {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .habit-card__dot {
@@ -120,7 +123,7 @@
   height: 6px;
   padding: 0;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(27, 188, 60, 0.35);
   cursor: pointer;
   transition: width 0.15s ease, background-color 0.15s ease;

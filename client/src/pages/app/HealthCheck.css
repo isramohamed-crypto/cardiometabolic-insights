@@ -2,7 +2,7 @@
   min-height: 100dvh;
   background: var(--color-coconut);
   color: #1a1a1a;
-  padding: 24px 24px 32px;
+  padding: var(--space-6) var(--space-6) var(--space-8);
   display: flex;
   flex-direction: column;
 }
@@ -11,7 +11,7 @@
   background: linear-gradient(180deg, rgba(0, 70, 32, 0.55) 0%, rgba(0, 20, 10, 0.85) 100%);
   color: #fff;
   justify-content: flex-end;
-  padding-bottom: 40px;
+  padding-bottom: var(--space-10);
 }
 
 .health-check__hero-content {
@@ -20,28 +20,28 @@
 }
 
 .health-check__eyebrow {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--text-caption);
   letter-spacing: 1.68px;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
 }
 
 .health-check__hero-title {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-3);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.9rem;
+  font-size: var(--text-h3);
   line-height: 1.25;
   color: #fff;
 }
 
 .health-check__hero-body {
-  margin: 0 0 22px;
+  margin: 0 0 var(--space-5);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -51,10 +51,10 @@
 }
 
 .health-check__step-label {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 12px;
+  font-size: var(--text-caption);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.45);
@@ -63,9 +63,9 @@
 
 .health-check__progress {
   height: 4px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(0, 70, 32, 0.15);
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
   overflow: hidden;
 }
 
@@ -76,25 +76,25 @@
 }
 
 .health-check__followup-label {
-  margin: 0 0 6px;
+  margin: 0 0 var(--space-1);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.45);
 }
 
 .health-check__title {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.6rem;
+  font-size: var(--text-h3);
   line-height: 1.25;
   color: #1a1a1a;
 }
 
 .health-check__body {
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-5);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.6);
 }
@@ -102,18 +102,18 @@
 .health-check__pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .health-check__pill {
   border: 2px solid transparent;
-  border-radius: 999px;
-  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
   background: rgba(0, 0, 0, 0.05);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
 }
@@ -133,18 +133,18 @@
 .health-check__options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .health-check__option {
   border: 2px solid transparent;
-  border-radius: 14px;
-  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
   background: rgba(0, 0, 0, 0.05);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 15px;
+  font-size: var(--text-base);
   color: rgba(0, 0, 0, 0.85);
   text-align: left;
   cursor: pointer;
@@ -156,9 +156,9 @@
 }
 
 .health-check__footnote {
-  margin: 0 0 24px;
+  margin: 0 0 var(--space-6);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   line-height: 1.4;
   color: rgba(0, 0, 0, 0.45);
 }
@@ -166,13 +166,13 @@
 .health-check__cta {
   width: 100%;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   height: 56px;
   background: var(--color-seaweed);
   color: #fff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 16px;
+  font-size: var(--text-base);
   cursor: pointer;
   margin-top: auto;
 }
@@ -185,12 +185,12 @@
 
 .health-check__link {
   display: block;
-  margin: 12px auto 0;
+  margin: var(--space-3) auto 0;
   border: none;
   background: none;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
   text-decoration: underline;
   cursor: pointer;
@@ -201,39 +201,39 @@
 }
 
 .health-check__disclaimer {
-  margin: 18px 0 0;
+  margin: var(--space-4) 0 0;
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--text-caption);
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.55);
 }
 
 .health-check__changes {
   list-style: none;
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-5);
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .health-check__changes li {
-  padding: 16px;
-  border-radius: 14px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
   background: rgba(0, 0, 0, 0.04);
 }
 
 .health-check__change-title {
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   color: #1a1a1a;
 }
 
 .health-check__change-desc {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.55);
 }

@@ -1,3 +1,11 @@
+html {
+  /* Base unit for the whole app: 1rem = 18px. Every type/space/radius
+     token below is expressed in rem off this root, so the whole visual
+     system scales together (including with browser zoom/accessibility
+     text-size settings) instead of drifting file-by-file. */
+  font-size: 18px;
+}
+
 :root {
   color-scheme: light;
   font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
@@ -21,6 +29,43 @@
 
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Type scale — matches docs/design-system.md's Figma-sourced sizes
+     (Poppins Display/H1-H5, DM Sans Base/Small/Caption), expressed as
+     rem off the 18px root so "1rem" and "Large body" are the same
+     thing. Every font-size in the app should be one of these nine
+     values — nothing in between. */
+  --text-display: 4rem;       /* 72px — Poppins Display */
+  --text-h1: 2.6667rem;       /* 48px — Poppins H1 */
+  --text-h2: 2rem;            /* 36px — Poppins H2 */
+  --text-h3: 1.5556rem;       /* 28px — Poppins H3 */
+  --text-h4: 1.2222rem;       /* 22px — Poppins H4 */
+  --text-h5: 1rem;            /* 18px — Poppins H5 / DM Sans "Large" body */
+  --text-base: 0.8889rem;     /* 16px — DM Sans Base body (the default) */
+  --text-small: 0.7778rem;    /* 14px — DM Sans Small / Label Large */
+  --text-caption: 0.6667rem;  /* 12px — DM Sans Caption / Label Base */
+
+  /* Spacing scale — for margin/padding/gap (layout rhythm). Component
+     dimensions like button heights or thumbnail sizes are deliberately
+     left as fixed px, not snapped to this — this scale is for the
+     space around and between things, not the things themselves. */
+  --space-1: 0.2222rem;   /* 4px */
+  --space-2: 0.4444rem;   /* 8px */
+  --space-3: 0.6667rem;   /* 12px */
+  --space-4: 0.8889rem;   /* 16px */
+  --space-5: 1.1111rem;   /* 20px */
+  --space-6: 1.3333rem;   /* 24px */
+  --space-8: 1.7778rem;   /* 32px */
+  --space-10: 2.2222rem;  /* 40px */
+
+  /* Radius scale — three steps plus the pill. Small controls/chips/
+     thumbnails use sm, cards and sheets use md, large hero/photo
+     cards use lg. Circular elements (avatars, icon buttons) stay on
+     50%, not this scale. */
+  --radius-sm: 0.6667rem;  /* 12px */
+  --radius-md: 0.8889rem;  /* 16px */
+  --radius-lg: 1.2222rem;  /* 22px */
+  --radius-pill: 999px;
 }
 
 * {
@@ -31,6 +76,7 @@ body {
   margin: 0;
   background: var(--color-coconut);
   color: #1a1a1a;
+  font-size: var(--text-base);
 }
 
 h1, h2 {

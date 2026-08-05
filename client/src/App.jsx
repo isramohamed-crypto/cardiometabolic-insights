@@ -21,6 +21,7 @@ import HealthCheck from './pages/app/HealthCheck.jsx'
 import { OnboardingProvider } from './onboarding/OnboardingContext.jsx'
 import { HabitsProvider } from './habits/HabitsContext.jsx'
 import { FavoritesProvider } from './content/FavoritesContext.jsx'
+import DemoSeeder from './demo/DemoSeeder.jsx'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <OnboardingProvider>
         <HabitsProvider>
           <FavoritesProvider>
+            <DemoSeeder />
             <Routes>
               <Route path="/" element={<Onboarding />} />
               <Route path="/onboarding/name" element={<NameInput />} />

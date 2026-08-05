@@ -1,27 +1,27 @@
 .customize-section {
-  margin-top: 22px;
+  margin-top: var(--space-5);
 }
 
 .customize-section:first-of-type {
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .customize-section__title {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: var(--text-base);
   color: #1a1a1a;
 }
 
 .customize-suggested {
   flex-shrink: 0;
   margin-left: auto;
-  padding: 3px 8px;
-  border-radius: 999px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
   background: rgba(27, 188, 60, 0.12);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 10px;
+  font-size: var(--text-caption);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--color-leaf);
@@ -34,19 +34,19 @@
 
 .customize-toggle {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .customize-toggle__option {
   flex: 1;
   border: none;
-  border-radius: 999px;
-  padding: 10px 12px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
   background: rgba(0, 0, 0, 0.05);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -61,12 +61,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .customize-reminders__desc {
-  margin: 2px 0 0;
+  margin: var(--space-1) 0 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
 }

@@ -4,18 +4,27 @@
 }
 
 .page__lead {
-  margin: 0 0 20px;
+  margin: 0 0 var(--space-5);
   color: rgba(0, 0, 0, 0.6);
 }
 
 .page section {
-  margin-top: 24px;
+  margin-top: var(--space-6);
 }
 
+/* Section label, not a heading — matches the Figma eyebrow treatment
+   (DM Sans, small, uppercase, letter-spaced) rather than a Poppins
+   headline. Muted/near-black rather than the seaweed green used for the
+   page-level eyebrow in AppHeader, so the hierarchy reads: page title >
+   page eyebrow > these section labels > card content. */
 .page h2 {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+  margin: 0 0 var(--space-2);
 }
 
 .page__list {
@@ -24,30 +33,30 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .page__list li {
-  padding: 14px 16px;
-  border-radius: 13px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 .page__list-title {
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
   font-weight: 500;
 }
 
 .page__list-meta {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
 }
 
 .routine-habit-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 /* Shared "locked slot" placeholder — used on both Routine (teasing the
@@ -56,30 +65,30 @@
 .locked-slot {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 18px 16px;
-  border-radius: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
   border: 1.5px dashed rgba(0, 0, 0, 0.18);
   background: rgba(0, 0, 0, 0.03);
 }
 
 .locked-slot__icon {
-  font-size: 22px;
+  font-size: var(--text-h4);
   opacity: 0.55;
 }
 
 .locked-slot__title {
-  margin: 0 0 2px;
+  margin: 0 0 var(--space-1);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   color: rgba(0, 0, 0, 0.6);
 }
 
 .locked-slot__desc {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.45);
 }
 
@@ -89,10 +98,10 @@
 .open-slot {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
   width: 100%;
-  padding: 18px 16px;
-  border-radius: 16px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
   border: 1.5px dashed var(--color-leaf);
   background: rgba(27, 188, 60, 0.06);
   text-align: left;
@@ -106,21 +115,21 @@
 }
 
 .open-slot__icon {
-  font-size: 22px;
+  font-size: var(--text-h4);
   color: var(--color-leaf);
 }
 
 .open-slot__title {
-  margin: 0 0 2px;
+  margin: 0 0 var(--space-1);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   color: var(--color-seaweed);
 }
 
 .open-slot__desc {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
 }

@@ -40,11 +40,13 @@ function Summary() {
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Your foundation</p>
         {totalCount > 0 ? (
+          // Variable-length content (the count word and "thing"/"things")
+          // means this can't use the shared one-span-per-line layout other
+          // question-screen headlines rely on for a fixed two-line break —
+          // it needs to flow and wrap naturally like a normal sentence.
           <h1 className="question-screen__headline summary__headline">
-            <span>You're already</span>
-            <span>
-              doing <span className="summary__highlight">{numberToWord(totalCount)}</span>
-            </span>
+            You're already doing{' '}
+            <span className="summary__highlight">{numberToWord(totalCount)}</span>{' '}
             <span className="summary__highlight">
               {totalCount === 1 ? 'thing.' : 'things.'}
             </span>
@@ -55,8 +57,7 @@ function Summary() {
           // totalCount lands at zero. Lead with encouragement, not a blank
           // slate.
           <h1 className="question-screen__headline summary__headline">
-            <span>You're already</span>
-            <span className="summary__highlight">making progress.</span>
+            You're already <span className="summary__highlight">making progress.</span>
           </h1>
         )}
       </div>

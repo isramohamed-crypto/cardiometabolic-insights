@@ -7,7 +7,7 @@
    the moment line below it, and the done button with the chat link — so
    each pair is wrapped in its own small-gap container below. */
 .habit-detail .question-screen__body {
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .habit-detail .question-screen__intro {
@@ -31,15 +31,15 @@
 .habit-detail__justification {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.5;
   color: rgba(0, 0, 0, 0.65);
 }
 
 .habit-detail__current-moment {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -52,14 +52,14 @@
 }
 
 .habit-detail .question-screen__options {
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .habit-detail__status-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
 .habit-detail__customize-toggle {
@@ -68,35 +68,35 @@
   justify-content: space-between;
   width: 100%;
   border: 2px solid rgba(0, 70, 32, 0.15);
-  border-radius: 13px;
-  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
   background: var(--color-coconut);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
 
 .habit-detail__customize-chevron {
-  font-size: 12px;
+  font-size: var(--text-caption);
   color: rgba(0, 0, 0, 0.4);
 }
 
 .habit-detail__customize-body {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 16px;
+  gap: var(--space-5);
+  margin-top: var(--space-4);
 }
 
 .habit-detail__status {
-  padding: 6px 14px;
-  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
   background: rgba(0, 70, 32, 0.08);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 12px;
+  font-size: var(--text-caption);
   letter-spacing: 0.3px;
   color: var(--color-seaweed);
 }
@@ -104,17 +104,17 @@
 .habit-detail__tiers {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .habit-detail__tier {
   border: 2px solid rgba(0, 70, 32, 0.15);
-  border-radius: 999px;
-  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
   background: var(--color-coconut);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
 }
@@ -133,16 +133,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   height: 56px;
   background: var(--color-leaf);
   color: #fff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 16px;
+  font-size: var(--text-base);
   cursor: pointer;
   transition: filter 0.15s ease, background-color 0.15s ease;
 }
@@ -156,22 +156,22 @@
 }
 
 .habit-detail__done-check {
-  font-size: 16px;
+  font-size: var(--text-base);
 }
 
 .habit-detail__chat {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   height: 52px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(0, 70, 32, 0.06);
   color: var(--color-seaweed);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -182,45 +182,45 @@
 }
 
 .habit-detail__integrate {
-  padding: 18px;
-  border-radius: 16px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
   background: rgba(0, 70, 32, 0.06);
 }
 
 .habit-detail__integrate-desc {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-3);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.6);
 }
 
 .habit-detail__integrate-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .habit-detail__integrate-secondary {
   width: 100%;
   border: 2px solid var(--color-leaf);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   height: 52px;
   background: var(--color-coconut);
   color: var(--color-leaf);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--text-base);
   cursor: pointer;
 }
 
 .habit-detail__integrate-link {
-  margin: 4px 0 0;
+  margin: var(--space-1) 0 0;
   border: none;
   background: none;
-  padding: 4px;
+  padding: var(--space-1);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
   text-decoration: underline;
   cursor: pointer;
@@ -235,10 +235,10 @@
   margin: 0;
   border: none;
   background: none;
-  padding: 4px;
+  padding: var(--space-1);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.45);
   text-decoration: underline;
   cursor: pointer;
@@ -252,10 +252,10 @@
   margin: 0;
   border: none;
   background: none;
-  padding: 4px;
+  padding: var(--space-1);
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 13px;
+  font-size: var(--text-small);
   color: #b3261e;
   text-decoration: underline;
   cursor: pointer;

@@ -68,6 +68,15 @@ export function HabitsProvider({ children }) {
     )
   }
 
+  // Replaces the whole habit list (and, optionally, slotCount) in one
+  // shot — used by the demo seeder (see src/demo) to drop in a persona's
+  // habits pre-populated at whatever maturity level it represents,
+  // bypassing the real add-a-habit flow entirely.
+  const seedHabits = (nextHabits, nextSlotCount) => {
+    setHabits(nextHabits)
+    if (typeof nextSlotCount === 'number') setSlotCount(nextSlotCount)
+  }
+
   return (
     <HabitsContext.Provider
       value={{
@@ -78,6 +87,7 @@ export function HabitsProvider({ children }) {
         toggleTodayDone,
         slotCount,
         unlockSlot,
+        seedHabits,
       }}
     >
       {children}

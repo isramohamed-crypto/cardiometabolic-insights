@@ -10,8 +10,15 @@ export function OnboardingProvider({ children }) {
     setAnswers((prev) => ({ ...prev, [stepId]: value }))
   }
 
+  // Replaces the whole answers object in one shot — used by the demo
+  // seeder (see src/demo) to drop in a persona's onboarding answers
+  // without walking through the real onboarding screens.
+  const loadAnswers = (nextAnswers) => {
+    setAnswers(nextAnswers)
+  }
+
   return (
-    <OnboardingContext.Provider value={{ answers, setAnswer }}>
+    <OnboardingContext.Provider value={{ answers, setAnswer, loadAnswers }}>
       {children}
     </OnboardingContext.Provider>
   )

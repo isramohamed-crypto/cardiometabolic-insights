@@ -9,7 +9,7 @@ const ONBOARDING_COPY = {
   eating: {
     headlineLines: ['What\'s already', 'working with eating?'],
     options: [
-      { id: 'more-veggies', label: 'Eating more vegetables' },
+      { id: 'more-veggies', label: 'Eating fruit or vegetables every day' },
       { id: 'cooking-at-home', label: 'Cooking at home' },
       { id: 'meal-prepping', label: 'Meal prepping' },
       { id: 'drinking-water', label: 'Drinking enough water' },
@@ -23,7 +23,7 @@ const ONBOARDING_COPY = {
       { id: 'daily-walks', label: 'Daily walks' },
       { id: 'strength-training', label: 'Strength training' },
       { id: 'stretching-yoga', label: 'Stretching or yoga' },
-      { id: 'taking-stairs', label: 'Taking the stairs' },
+      { id: 'taking-stairs', label: 'Taking the stairs when I can' },
       { id: 'recreational-sports', label: 'Recreational sports' },
       { id: 'moving-at-work', label: 'Standing or moving during work' },
     ],
@@ -36,6 +36,7 @@ const ONBOARDING_COPY = {
       { id: 'wind-down-routine', label: 'A wind-down routine' },
       { id: 'limiting-screens', label: 'Limiting screens before bed' },
       { id: 'sleep-environment', label: 'A comfortable sleep environment' },
+      { id: 'cool-dark-room', label: 'A cool, dark room for sleep' },
     ],
   },
   stress: {
@@ -46,6 +47,7 @@ const ONBOARDING_COPY = {
       { id: 'time-in-nature', label: 'Time in nature' },
       { id: 'taking-breaks', label: 'Taking breaks during the day' },
       { id: 'talking-it-out', label: 'Talking it out with someone' },
+      { id: 'clears-your-head', label: 'Something that clears your head — music, a walk, quiet' },
     ],
   },
   social: {
