@@ -24,6 +24,12 @@
   background: rgba(0, 32, 14, 0.45);
 }
 
+/* White rather than the coconut cream used elsewhere — this tray is
+   showing real content (the habit's why-this-one copy), not just app
+   chrome, so it gets the same "content on an overlay is white" treatment
+   as the full-screen article reader (see ContentModal.css). The shadow
+   was already here (box-shadow below) marking the card's lift off the
+   dimmed backdrop. */
 .why-tray {
   position: absolute;
   left: 0;
@@ -38,7 +44,7 @@
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom, 0));
-  background: var(--color-coconut);
+  background: #fff;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: 0px -12px 34px rgba(0, 32, 14, 0.25);
   transform: translateY(100%);
@@ -75,7 +81,7 @@
   border: 2px solid var(--color-leaf);
   border-radius: var(--radius-pill);
   height: 48px;
-  background: var(--color-coconut);
+  background: #fff;
   color: var(--color-leaf);
   font-family: var(--font-body);
   font-weight: 700;

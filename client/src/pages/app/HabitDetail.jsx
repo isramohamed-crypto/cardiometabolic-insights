@@ -107,24 +107,16 @@ function HabitDetail() {
 
   const isTrialing = habit.ownershipState === OWNERSHIP_STATE.TRIALED
   const daysSince = daysSinceStart(habit.startedAt)
-  // skipTrialWait/upsellPending live on the habit itself (see updateHabit
-  // calls below and HabitTrialPrompt, which owns the actual decision UI
-  // now — this page only needs to know whether one applies, to show its
-  // one-line pointer over to Routine). Storing them on the habit rather
-  // than as local state here means they read the same on both screens.
-  const trialComplete = daysSince >= 7 || habit.skipTrialWait
+  // upsellPending lives on the habit itself (see updateHabit calls below
+  // and HabitTrialPrompt, which owns the actual decision UI now — this
+  // page only needs to know whether one applies, to show its one-line
+  // pointer over to Routine). Storing it on the habit rather than as
+  // local state here means it reads the same on both screens.
+  const trialComplete = daysSince >= 7
   const showTrialPrompt = isTrialing && trialComplete
   const showTierUpsell = Boolean(habit.upsellPending)
 
-  // Skipping the trial is the user asserting this is already an
-  // established habit, not a new one still being tried on — the status
-  // pill (and its day count) should reflect that immediately rather than
-  // still reading "Trying it out" while the keep/smaller/let-go prompt
-  // is showing.
-  const statusLabel =
-    isTrialing && habit.skipTrialWait
-      ? 'Established habit'
-      : STATUS_LABEL[habit.ownershipState] || habit.ownershipState
+  const statusLabel = STATUS_LABEL[habit.ownershipState] || habit.ownershipState
 
   const contentItems = CONTENT_POOL[habit.id] || []
   const gradient = getHabitVisual(habit.pillarId, habit.id)
@@ -175,17 +167,8 @@ function HabitDetail() {
           <div className="habit-detail__status-row">
             <span className="habit-detail__status">
               {statusLabel}
-              {isTrialing && !habit.skipTrialWait && ` — day ${Math.min(daysSince + 1, 7)} of 7`}
+              {isTrialing && ` — day ${Math.min(daysSince + 1, 7)} of 7`}
             </span>
-            {isTrialing && !trialComplete && (
-              <button
-                type="button"
-                className="habit-detail__skip"
-                onClick={() => updateHabit(habit.id, { skipTrialWait: true })}
-              >
-                Skip the 7-day trial
-              </button>
-            )}
             <button type="button" className="habit-detail__retire" onClick={handleRetire}>
               Retire this habit
             </button>

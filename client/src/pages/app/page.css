@@ -1,4 +1,5 @@
 .page {
+  position: relative;
   font-family: var(--font-body);
   color: #1a1a1a;
 }
@@ -6,6 +7,22 @@
 .page__lead {
   margin: 0 0 var(--space-5);
   color: rgba(0, 0, 0, 0.6);
+}
+
+/* Pairs page__lead with an inline action (currently just Me's demo
+   profile kebab) on the same row instead of stacking them — the row
+   carries the bottom margin instead of the lead paragraph so there's no
+   doubled-up gap before the next section. */
+.page__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.page__title-row .page__lead {
+  margin-bottom: 0;
 }
 
 .page section {

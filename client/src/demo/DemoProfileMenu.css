@@ -5,6 +5,17 @@
   z-index: 5;
 }
 
+/* Sits in normal flow next to other content (e.g. Me's title row)
+   instead of floating over a corner — stays a positioned element (just
+   relative instead of absolute) so the dropdown panel below still
+   anchors to the trigger rather than to the page. */
+.demo-profile-menu--inline {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: auto;
+}
+
 .demo-profile-menu__trigger {
   display: flex;
   align-items: center;

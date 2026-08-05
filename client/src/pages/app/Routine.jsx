@@ -131,6 +131,7 @@ function Routine() {
                 brand={content.brand}
                 title={content.title}
                 body={content.body}
+                compact
               />
             ))}
           </div>

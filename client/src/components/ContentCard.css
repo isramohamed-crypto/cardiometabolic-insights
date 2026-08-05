@@ -65,7 +65,7 @@
 
 .content-card__title {
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 400;
   font-size: var(--text-h5);
   line-height: 1.35;
   color: rgba(0, 0, 0, 0.85);

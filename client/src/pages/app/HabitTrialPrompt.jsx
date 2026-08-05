@@ -12,10 +12,10 @@ import './HabitTrialPrompt.css'
 // HabitDetail itself now only shows a one-line pointer back here (see its
 // .habit-detail__trial-hint).
 //
-// Both "which trial state is this habit in" flags — skipTrialWait and
-// upsellPending — live on the habit object itself (set via updateHabit)
-// rather than as this component's own state. That's deliberate: "Keep it"
-// flips ownershipState to ADOPTED immediately, which moves this habit from
+// upsellPending — "is the tier-upsell that can follow 'Keep it' showing"
+// — lives on the habit object itself (set via updateHabit) rather than as
+// this component's own state. That's deliberate: "Keep it" flips
+// ownershipState to ADOPTED immediately, which moves this habit from
 // Routine's "trying on" list into its "building" list on the very next
 // render — a different section, so this component gets torn down and a new
 // instance mounted in the new section. Local state wouldn't have survived
@@ -30,7 +30,7 @@ function HabitTrialPrompt({ habit }) {
 
   const isTrialing = habit.ownershipState === OWNERSHIP_STATE.TRIALED
   const daysSince = daysSinceStart(habit.startedAt)
-  const trialComplete = daysSince >= 7 || habit.skipTrialWait
+  const trialComplete = daysSince >= 7
   const showTrialPrompt = isTrialing && trialComplete
   const showTierUpsell = Boolean(habit.upsellPending)
 

@@ -23,13 +23,15 @@
   overflow: hidden;
 }
 
+/* Just Back + the save heart, pinned to opposite ends — brand/title used
+   to squeeze in between here (forcing the title to truncate); they now
+   get their own row below instead (content-modal__bar-title). */
 .content-modal__bar {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  justify-content: space-between;
   flex-shrink: 0;
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   background: #fff;
 }
 
@@ -52,11 +54,16 @@
   color: rgba(0, 0, 0, 0.85);
 }
 
+/* Own row beneath the bar, not squeezed between Back and the heart
+   anymore — full width, so the title can wrap instead of truncating. */
 .content-modal__bar-title {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  flex: 1;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  padding: 0 var(--space-5) var(--space-4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
 }
 
 .content-modal__brand {
@@ -72,10 +79,8 @@
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-small);
+  line-height: 1.35;
   color: #1a1a1a;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .content-modal__save {

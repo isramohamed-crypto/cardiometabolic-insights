@@ -1,4 +1,19 @@
 .add-habit-flow {
+  /* This flow borrows .question-screen__option/__continue/__input (and,
+     via CustomizeHabit's `embedded` mode, its moment-picker + Save button
+     too) without wrapping in .question-screen itself — that class is
+     where --question-accent normally comes from, and pulling in the rest
+     of what .question-screen sets (min-height: 100dvh, its own flex
+     column, a coconut background) would break sitting inline inside
+     Routine/Collection's page body. Redeclaring just the variable here
+     keeps every borrowed class working without any of that. Its absence
+     was the actual bug behind "clicking an option does nothing" — the
+     selected state and Continue/Save buttons both read var(--question-accent)
+     for their background, which resolved to nothing, so a "selected"
+     option rendered as white text on no background: invisible, not gone.
+  */
+  --question-accent: var(--color-seaweed);
+
   position: relative;
   display: flex;
   flex-direction: column;

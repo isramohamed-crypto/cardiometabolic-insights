@@ -58,17 +58,40 @@ function dateKey(date) {
 // Reuses the real "walk-after-meal" catalog entry (id kept as-is so it
 // keeps its existing 7-day content script — see domain/habitContent.js —
 // even though the on-screen copy has been generalized to a plain daily
-// walk rather than meal-specific).
-function walkingHabit({ startedAt, log }) {
+// walk rather than meal-specific). `tier`/`ownershipState` are overridable
+// so later profiles (e.g. "3 weeks in") can start this habit further along
+// — already adopted, escalated past its trial tier — without duplicating
+// the rest of its shape.
+function walkingHabit({ startedAt, log, tier = '10 minutes', ownershipState = OWNERSHIP_STATE.TRIALED }) {
   return {
     id: 'walk-after-meal',
     title: 'Daily walk',
     subtitle: 'A walk every day — timing and length are up to you.',
     pillarId: 'moving',
-    tier: '10 minutes',
+    tier,
     moment: 'In the evening',
     remindersOn: false,
-    ownershipState: OWNERSHIP_STATE.TRIALED,
+    ownershipState,
+    startedAt: startedAt.toISOString(),
+    log,
+  }
+}
+
+// --- The second habit, once one's been adopted --------------------------
+// Reuses the "consistent-wake-time" catalog entry — the other habit with a
+// full 7-day content script (see domain/habitContent.js), so a persona
+// this far along still has real day-by-day content behind it rather than
+// falling back to the generic rotating pool.
+function wakeTimeHabit({ startedAt, log, tier = 'Within an hour, most days', ownershipState = OWNERSHIP_STATE.TRIALED }) {
+  return {
+    id: 'consistent-wake-time',
+    title: 'Consistent wake-up time',
+    subtitle: 'Even on weekends — it’s the anchor your sleep needs.',
+    pillarId: 'sleep',
+    tier,
+    moment: '6:30 AM',
+    remindersOn: false,
+    ownershipState,
     startedAt: startedAt.toISOString(),
     log,
   }
@@ -116,6 +139,46 @@ export const DEMO_PROFILES = {
         answers: { ...FOUNDATION_ANSWERS },
         habits: [walkingHabit({ startedAt, log })],
         slotCount: 1,
+      }
+    },
+  },
+
+  '3-weeks-in': {
+    label: '3 weeks in',
+    description:
+      'The evening walk graduated its trial and escalated to 20 minutes; a second habit (consistent wake-up time) has been adopted too. Slot 3 is open — add another or stay at 2.',
+    build() {
+      // Walking started 3 weeks ago — logged done every day since except
+      // one early slip (day 2), visible in its own first-week tracker.
+      const walkStartedAt = daysAgo(21)
+      const walkLog = buildLog(walkStartedAt, 21, [1])
+
+      // The wake-time habit came later — its own ~10-day trial, adopted
+      // after one missed day, done every day since (through yesterday).
+      const wakeStartedAt = daysAgo(10)
+      const wakeLog = buildLog(wakeStartedAt, 10, [3])
+
+      return {
+        answers: { ...FOUNDATION_ANSWERS },
+        habits: [
+          walkingHabit({
+            startedAt: walkStartedAt,
+            log: walkLog,
+            tier: '20 minutes',
+            ownershipState: OWNERSHIP_STATE.ADOPTED,
+          }),
+          wakeTimeHabit({
+            startedAt: wakeStartedAt,
+            log: wakeLog,
+            tier: 'Same time, most days',
+            ownershipState: OWNERSHIP_STATE.ADOPTED,
+          }),
+        ],
+        // 2 habits adopted, room for a 3rd — Routine/Collection's "Next
+        // slot" renders as an open (not locked) "Add a habit" CTA whenever
+        // active habits are fewer than slotCount, which is exactly the
+        // "offered a 3rd, or stay at 2" choice this persona should see.
+        slotCount: 3,
       }
     },
   },

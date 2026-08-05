@@ -19,9 +19,35 @@ import './AddHabitFlow.css'
 // FocusAreas question), so this opens by asking which one to focus on this
 // time; and there's no "compiling" loading beat or connect/create-account/
 // all-set sequence afterward — those are first-run-only.
+
+// Sentinel id for the "not sure? recommend one for me" option appended to
+// the pillar list below — selectable and highlightable just like a real
+// pillar, but resolved to an actual pillar id (see recommendPillar) only
+// once Continue is pressed, so the rest of the flow never has to know this
+// option exists.
+const RECOMMEND_ID = 'recommend'
+
+// Simple, demo-appropriate heuristic: recommend whichever pillar has the
+// fewest habits already going, so a "recommend one for me" tap nudges
+// toward filling a gap rather than piling onto an area that's already
+// covered. Ties keep PILLARS_CANONICAL's order.
+function recommendPillar(habits) {
+  const counts = {}
+  PILLARS_CANONICAL.forEach((p) => {
+    counts[p.id] = 0
+  })
+  habits.forEach((h) => {
+    if (counts[h.pillarId] != null) counts[h.pillarId] += 1
+  })
+  return PILLARS_CANONICAL.reduce(
+    (fewest, p) => (counts[p.id] < counts[fewest.id] ? p : fewest),
+    PILLARS_CANONICAL[0],
+  )
+}
+
 function AddHabitFlow({ onClose }) {
   const { answers } = useOnboarding()
-  const { addHabit } = useHabits()
+  const { habits: allHabits, addHabit } = useHabits()
   const [stage, setStage] = useState('choosePillar') // 'choosePillar' | 'pick' | 'customize'
   const [pillarId, setPillarId] = useState(null)
   const [habitIndex, setHabitIndex] = useState(0)
@@ -35,6 +61,13 @@ function AddHabitFlow({ onClose }) {
 
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
+
+  const handleChoosePillarContinue = () => {
+    if (pillarId === RECOMMEND_ID) {
+      setPillarId(recommendPillar(allHabits).id)
+    }
+    setStage('pick')
+  }
 
   const handleFinalize = ({ moment, remindersOn }) => {
     const startingTierIndex = suggestTierIndex(pillar.id, answers, habit.tiers.length)
@@ -78,12 +111,21 @@ function AddHabitFlow({ onClose }) {
                 <span>{p.label}</span>
               </button>
             ))}
+            <button
+              type="button"
+              className={`question-screen__option${pillarId === RECOMMEND_ID ? ' question-screen__option--selected' : ''}`}
+              aria-pressed={pillarId === RECOMMEND_ID}
+              onClick={() => setPillarId(RECOMMEND_ID)}
+            >
+              <span aria-hidden="true">✨</span>
+              <span>Not sure? Recommend one for me</span>
+            </button>
           </div>
           <button
             type="button"
             className="question-screen__continue"
             disabled={!pillarId}
-            onClick={() => setStage('pick')}
+            onClick={handleChoosePillarContinue}
           >
             Continue
           </button>

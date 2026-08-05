@@ -8,13 +8,15 @@ import './ContentModal.css'
 // shows through above it, rounded top corners, and a drop shadow marking
 // where the card lifts off the backdrop — white background since this is
 // the one place actual content (the article, not just app chrome) fills
-// the overlay. When the content carries a real source url (every "More
-// reading" article does; a handful of older CONTENT_POOL/day-script
-// entries that predate real links don't yet), the actual article loads in
-// an iframe below a slim header bar, so the reader gets the real page —
-// hero image, full text, byline — instead of Vitalist's own condensed
-// teaser. Content without a url falls back to the old thumbnail + body
-// summary view so nothing renders blank.
+// the overlay. The top row is just Back + the save heart, at opposite
+// ends — brand/title get their own full-width row underneath rather than
+// squeezing in between, so the title doesn't have to truncate. When the
+// content carries a real source url (every "More reading" article does; a
+// handful of older CONTENT_POOL/day-script entries that predate real
+// links don't yet), the actual article loads in an iframe below that, so
+// the reader gets the real page — hero image, full text, byline — instead
+// of Vitalist's own condensed teaser. Content without a url falls back to
+// the old thumbnail + body summary view so nothing renders blank.
 //
 // Some publishers set X-Frame-Options/CSP that refuse to be framed —
 // there's no reliable way to detect that from this side once it happens
@@ -35,11 +37,6 @@ function ContentModal({ content, onClose }) {
             <span aria-hidden="true">←</span> Back
           </button>
 
-          <div className="content-modal__bar-title">
-            {content.brand && <span className="content-modal__brand">{content.brand}</span>}
-            <span className="content-modal__title">{content.title}</span>
-          </div>
-
           <button
             type="button"
             className={`content-modal__save${saved ? ' content-modal__save--active' : ''}`}
@@ -49,6 +46,11 @@ function ContentModal({ content, onClose }) {
           >
             {saved ? '♥' : '♡'}
           </button>
+        </div>
+
+        <div className="content-modal__bar-title">
+          {content.brand && <span className="content-modal__brand">{content.brand}</span>}
+          <span className="content-modal__title">{content.title}</span>
         </div>
 
         {content.url ? (

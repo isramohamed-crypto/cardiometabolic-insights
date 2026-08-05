@@ -420,23 +420,6 @@
   background: rgba(0, 70, 32, 0.12);
 }
 
-.habit-detail__skip {
-  margin: 0;
-  border: none;
-  background: none;
-  padding: var(--space-1);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.45);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.habit-detail__skip:hover {
-  color: rgba(0, 0, 0, 0.7);
-}
-
 .habit-detail__retire {
   margin: 0;
   border: none;
