@@ -23,3 +23,15 @@
   line-height: 1.2;
   color: #1a1a1a;
 }
+
+/* Collection-only second line — see CollectionHeaderCopy in Header.jsx. */
+.app-header__title-accent {
+  color: var(--color-leaf);
+}
+
+.app-header__subtitle {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.55);
+}

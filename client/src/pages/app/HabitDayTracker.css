@@ -54,3 +54,41 @@
   border-radius: 50%;
   background: #fff;
 }
+
+/* Light-background variant — same states, recolored so "not done" and
+   "upcoming" (which default to near-white, meant for a dark photo card)
+   stay visible on a plain light background instead. Two classes on this
+   selector (0,2,0) beats the plain --done/--upcoming modifiers (0,1,0),
+   so it would otherwise win over "done" too even though it only means to
+   recolor the base/not-done look — hence the explicit --done re-assert
+   below, to give the green fill back its precedence under this variant. */
+.habit-day-tracker--light .habit-day-tracker__day {
+  background: rgba(0, 70, 32, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 70, 32, 0.2);
+}
+
+.habit-day-tracker--light .habit-day-tracker__letter {
+  color: rgba(0, 70, 32, 0.6);
+}
+
+.habit-day-tracker--light .habit-day-tracker__day--done {
+  background: var(--color-leaf);
+  box-shadow: none;
+}
+
+.habit-day-tracker--light .habit-day-tracker__day--done .habit-day-tracker__letter {
+  color: #fff;
+}
+
+.habit-day-tracker--light .habit-day-tracker__day--upcoming {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.habit-day-tracker--light .habit-day-tracker__day--upcoming .habit-day-tracker__letter {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.habit-day-tracker--light .habit-day-tracker__today-dot {
+  background: var(--color-seaweed);
+}

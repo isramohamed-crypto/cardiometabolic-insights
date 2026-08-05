@@ -17,7 +17,14 @@ function toDateKey(date) {
 // done / not done from the habit's log. Days after today show as
 // "upcoming" rather than missed — they haven't happened yet. Today also
 // gets a secondary dot, on top of its own done/not-done state.
-function HabitDayTracker({ startedAt, log = [] }) {
+//
+// Default styling (white dots/text at low opacity) assumes it's sitting
+// over a dark photo card, like RoutineHabitCard/Collection. Pass
+// variant="light" when it's on a plain light background instead (e.g.
+// HabitDetail's coconut card body) — otherwise the not-done/upcoming
+// states render white-on-white and disappear. "Done" days stay green
+// either way since that already has contrast on both.
+function HabitDayTracker({ startedAt, log = [], variant }) {
   const start = startOfDay(startedAt || new Date())
   const today = startOfDay(new Date())
 
@@ -34,8 +41,15 @@ function HabitDayTracker({ startedAt, log = [] }) {
     return { dateKey, isFuture, isToday, done, letter: DAY_LETTERS[date.getDay()] }
   })
 
+  const trackerClassName = [
+    'habit-day-tracker',
+    variant === 'light' && 'habit-day-tracker--light',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className="habit-day-tracker" role="list" aria-label="7-day habit tracker">
+    <div className={trackerClassName} role="list" aria-label="7-day habit tracker">
       {days.map((day) => {
         const statusLabel = day.isFuture ? 'upcoming' : day.done ? 'done' : 'not done'
         return (

@@ -6,6 +6,7 @@ import { pickDailyContent } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
+import HabitTrialPrompt from './HabitTrialPrompt.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import './page.css'
 
@@ -63,7 +64,10 @@ function Routine() {
           <h2>Habits I'm trying on</h2>
           <div className="routine-habit-list">
             {tryingOn.map((habit) => (
-              <RoutineHabitCard key={habit.id} habit={habit} />
+              <div key={habit.id} className="routine-habit-group">
+                <RoutineHabitCard habit={habit} />
+                <HabitTrialPrompt habit={habit} />
+              </div>
             ))}
           </div>
         </section>
@@ -74,7 +78,10 @@ function Routine() {
           <h2>Habits I'm building</h2>
           <div className="routine-habit-list">
             {building.map((habit) => (
-              <RoutineHabitCard key={habit.id} habit={habit} />
+              <div key={habit.id} className="routine-habit-group">
+                <RoutineHabitCard habit={habit} />
+                <HabitTrialPrompt habit={habit} />
+              </div>
             ))}
           </div>
         </section>

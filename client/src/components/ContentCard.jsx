@@ -7,11 +7,12 @@ import './ContentCard.css'
 // pipeline exists — currently a gradient placeholder like everywhere else
 // in the app) next to a brand + title. Shared by the Routine page's daily
 // content teaser and the Read tab so both look identical. Tapping the card
-// opens ContentModal, where it can be saved to Favorites; the heart in the
-// corner is the same binary toggle but inline, so saving doesn't require
-// opening the modal first. `id` must be stable and globally unique across
-// everywhere a piece of content is rendered.
-function ContentCard({ id, thumbnail, brand, title, body }) {
+// opens ContentModal full-screen (an iframe onto the real article when
+// there's a url, not a bottom tray anymore), where it can also be saved to
+// Favorites; the heart in the corner is the same binary toggle but inline,
+// so saving doesn't require opening the reader first. `id` must be stable
+// and globally unique across everywhere a piece of content is rendered.
+function ContentCard({ id, thumbnail, brand, title, body, url }) {
   const [open, setOpen] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
   const saved = isFavorite(id)
@@ -30,7 +31,7 @@ function ContentCard({ id, thumbnail, brand, title, body }) {
         <button
           type="button"
           className={`content-card__heart${saved ? ' content-card__heart--active' : ''}`}
-          onClick={() => toggleFavorite({ id, thumbnail, brand, title, body })}
+          onClick={() => toggleFavorite({ id, thumbnail, brand, title, body, url })}
           aria-pressed={saved}
           aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
         >
@@ -40,7 +41,7 @@ function ContentCard({ id, thumbnail, brand, title, body }) {
 
       {open && (
         <ContentModal
-          content={{ id, thumbnail, brand, title, body }}
+          content={{ id, thumbnail, brand, title, body, url }}
           onClose={() => setOpen(false)}
         />
       )}

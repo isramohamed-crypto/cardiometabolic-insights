@@ -99,6 +99,17 @@
   text-align: center;
 }
 
+/* Compact variant — opt-in via an extra class, for contexts where the
+   standard option row (sized for a full onboarding screen) is too tall,
+   e.g. nested inside a small card like habit detail's customize
+   accordion. Padding and font both scale down together rather than just
+   shrinking padding around full-size text. */
+.question-screen__options--compact .question-screen__option {
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-small);
+}
+
 .question-screen__input {
   width: 100%;
   border: none;
@@ -110,6 +121,14 @@
   font-weight: 500;
   font-size: var(--text-base);
   color: rgba(0, 0, 0, 0.9);
+}
+
+/* Same compact treatment for the time input, so it matches the options
+   list it's an alternative to (see AddHabitFlow/HabitDetail's "When"
+   toggle between "Stack with a routine" and "Set a specific time"). */
+.question-screen__input--compact {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-small);
 }
 
 .question-screen__input::placeholder {

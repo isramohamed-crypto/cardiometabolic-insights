@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate, useParams, Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useFavorites } from '../../content/FavoritesContext.jsx'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
@@ -114,6 +114,7 @@ function ChatCard({ card }) {
 function HabitChat() {
   const { habitId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const { habits } = useHabits()
 
   const habit = habits.find((h) => h.id === habitId)
@@ -133,17 +134,6 @@ function HabitChat() {
   ])
   const [draft, setDraft] = useState('')
 
-  if (!habit || !catalogHabit) {
-    return (
-      <main className="habit-chat">
-        <p className="habit-chat__intro">This habit couldn’t be found.</p>
-        <button type="button" className="habit-chat__back" onClick={() => navigate('/routine')}>
-          <span aria-hidden="true">←</span> Back to Routine
-        </button>
-      </main>
-    )
-  }
-
   const sendMessage = (text) => {
     if (!text.trim()) return
     setDraft('')
@@ -158,6 +148,32 @@ function HabitChat() {
   const handleSend = (e) => {
     e.preventDefault()
     sendMessage(draft)
+  }
+
+  // HabitDetail's own composer hands off whatever was typed there via
+  // navigation state instead of just linking over to a blank chat — send it
+  // as the first user turn on arrival. Guarded with a ref (not state) so
+  // this fires exactly once even though sendMessage/habit are recreated
+  // every render, and cleared from history state after so refreshing or
+  // coming back later doesn't resend it.
+  const sentInitialMessage = useRef(false)
+  useEffect(() => {
+    const initialMessage = location.state?.initialMessage
+    if (!initialMessage || sentInitialMessage.current || !habit || !catalogHabit) return
+    sentInitialMessage.current = true
+    sendMessage(initialMessage)
+    navigate(location.pathname, { replace: true, state: {} })
+  }, [location, habit, catalogHabit, navigate])
+
+  if (!habit || !catalogHabit) {
+    return (
+      <main className="habit-chat">
+        <p className="habit-chat__intro">This habit couldn’t be found.</p>
+        <button type="button" className="habit-chat__back" onClick={() => navigate('/routine')}>
+          <span aria-hidden="true">←</span> Back to Routine
+        </button>
+      </main>
+    )
   }
 
   return (

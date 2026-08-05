@@ -27,6 +27,15 @@
   margin: 0 0 var(--space-2);
 }
 
+/* Count badge next to a section heading — e.g. Collection's "Already
+   yours 6" (see Collection.jsx). Not uppercase/letter-spaced like the
+   heading it sits in, so the number reads as a number, not a label. */
+.page__count {
+  text-transform: none;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.35);
+}
+
 .page__list {
   list-style: none;
   margin: 0;
@@ -57,6 +66,62 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+}
+
+/* Collection's merged "Already yours" list — foundation habits (brought
+   with you at onboarding) and graduated trial habits (built this month),
+   both reshaped into the same {title, subtitle} row shape (see
+   Collection.jsx) so they render as one continuous list instead of two,
+   matching the reference mockup rather than the bigger image cards
+   routine-habit-list uses elsewhere. */
+.already-yours-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.already-yours-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 70, 32, 0.05);
+}
+
+.already-yours-row__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #1a1a1a;
+}
+
+.already-yours-row__subtitle {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.already-yours-row__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-leaf);
+}
+
+/* Groups a habit's card with its own HabitTrialPrompt (when one applies —
+   see HabitTrialPrompt.jsx) as a single unit, so the prompt sits snug
+   against its habit rather than getting the same gap the list uses between
+   different habits. */
+.routine-habit-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
 }
 
 /* Shared "locked slot" placeholder — used on both Routine (teasing the

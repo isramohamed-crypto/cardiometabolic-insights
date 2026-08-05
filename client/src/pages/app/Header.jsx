@@ -1,8 +1,21 @@
 import { useLocation } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
-import { LOG_STATUS } from '../../domain/habit.js'
+import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
+import { PILLARS, NONE_OPTION } from '../onboarding/pillars.js'
 import './Header.css'
+
+const OWNED_STATES = [OWNERSHIP_STATE.ADOPTED, OWNERSHIP_STATE.OWNED, OWNERSHIP_STATE.READOPTED]
+
+// How many "brought with you" foundation habits are marked — same count
+// Collection's merged "Already yours" list uses, so this header's subtitle
+// and that list never disagree.
+function countFoundationHabits(habitsWorking) {
+  return PILLARS.reduce((total, pillar) => {
+    const ids = (habitsWorking[pillar.id] || []).filter((id) => id !== NONE_OPTION.id)
+    return total + ids.length
+  }, 0)
+}
 
 // Per-tab H1 phrase. Routine's is dynamic (see computeStreak below) once
 // there's a streak to talk about; this is just the cold-start fallback.
@@ -47,10 +60,45 @@ function computeStreak(habits) {
   return streak
 }
 
+// Collection gets its own eyebrow/title/subtitle instead of the usual
+// greeting — see the reference mockup this was built from. Kept here
+// rather than duplicated in Collection.jsx since Header already owns
+// every other route's eyebrow+title, and the subtitle's counts need to
+// match Collection's merged "Already yours" list exactly.
+function CollectionHeaderCopy({ answers, habits }) {
+  const foundationCount = countFoundationHabits(answers.habitsWorking || {})
+  const builtCount = habits.filter((h) => OWNED_STATES.includes(h.ownershipState)).length
+
+  const subtitle =
+    builtCount > 0
+      ? `${foundationCount} you brought with you, ${builtCount} you built this month.`
+      : `${foundationCount} you brought with you.`
+
+  return (
+    <>
+      <p className="app-header__eyebrow">Your Collection</p>
+      <h1 className="app-header__title">
+        Everything that's
+        <br />
+        <span className="app-header__title-accent">already yours.</span>
+      </h1>
+      <p className="app-header__subtitle">{subtitle}</p>
+    </>
+  )
+}
+
 function Header() {
   const { pathname } = useLocation()
   const { answers } = useOnboarding()
   const { habits } = useHabits()
+
+  if (pathname === '/collection') {
+    return (
+      <header className="app-header">
+        <CollectionHeaderCopy answers={answers} habits={habits} />
+      </header>
+    )
+  }
 
   const greeting = answers.name ? `Welcome back, ${answers.name}` : 'Welcome'
 

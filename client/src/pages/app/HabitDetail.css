@@ -1,3 +1,140 @@
+/* --- Full-page card that flips open -------------------------------------
+   The page renders inside a dark scene (flip-card-scene) instead of
+   full-bleed against the body background, with the card itself
+   (flip-card) inset from the top/sides so it visibly floats, rounded on
+   top only (bottom stays flush with the viewport, like a sheet), and
+   plays a 3D flip-open animation on mount, hinged at the top edge. */
+.flip-card-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  padding: var(--space-4) var(--space-3) 0;
+  background: var(--color-seaweed);
+  perspective: 1800px;
+  overflow: hidden;
+}
+
+.flip-card {
+  flex: 1;
+  /* .question-screen sets min-height: 100dvh for the plain full-bleed
+     pages that share it — here the card's height should come from
+     flex: 1 against the padded scene instead, so it fits inside the
+     inset rather than overflowing past it. */
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.35);
+  transform-origin: top center;
+  animation: flip-card-open 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The card clips its own contents to get rounded corners on the hero
+   photo below — so the body needs its own scroll region instead of the
+   whole card/page scrolling. Making a flex column both height-bounded and
+   scrollable brings flexbox's default shrink behavior into play: children
+   start shrinking to fit before the container gives up and scrolls. Most
+   children have real text pinning their minimum size, but
+   habit-detail__tracker's only content is an absolutely-positioned child
+   (see HabitDayTracker.css) that doesn't count toward it — so it was the
+   one item with nothing stopping it from shrinking all the way to 0,
+   dragging its dots up to overlap the row below. flex-shrink: 0 across
+   the board keeps every section at its natural height and lets the
+   container do the scrolling instead, which is what "its own scroll
+   region" was supposed to mean. */
+.flip-card .question-screen__body {
+  overflow-y: auto;
+}
+
+.flip-card .question-screen__body > * {
+  flex-shrink: 0;
+}
+
+@keyframes flip-card-open {
+  0% {
+    transform: rotateX(-100deg);
+    opacity: 0;
+  }
+  60% {
+    transform: rotateX(6deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card {
+    animation: none;
+  }
+}
+
+/* --- Photo header ---------------------------------------------------------
+   Replaces the plain text question-screen__header for this page only —
+   the habit's own image (or its pillar's gradient fallback — the same
+   getHabitVisual asset RoutineHabitCard/ContentCard already use) sits
+   behind the pillar label and title instead of a solid background. */
+.habit-detail__hero {
+  position: relative;
+  flex-shrink: 0;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.habit-detail__hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.habit-detail__hero-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-5) var(--space-6);
+}
+
+/* Dark-translucent to read against the photo, same treatment as the demo
+   profile menu's kebab trigger — a plain light close-X (like
+   AddHabitFlow's) would disappear against a busy image. */
+.habit-detail__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: var(--text-h5);
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+}
+
+.habit-detail__hero-eyebrow {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.habit-detail__hero-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  color: #fff;
+}
+
 /* This screen's body gets its own consistent vertical rhythm via `gap`
    instead of a pile of one-off margins on each child (which is how the
    shared question-screen__body normally spaces things, since it has no
@@ -21,11 +158,24 @@
 /* HabitDayTracker positions its dots absolutely, relative to the nearest
    positioned ancestor — without this wrapper it had none, so the dots
    escaped up to the page and overlapped the header. This contains them in
-   the normal flow instead, right below the subtitle. */
+   the normal flow instead, right below the hero.
+   HabitDayTracker's own top/left offset (HabitDayTracker.css) is tuned
+   for the dark variant, where it floats over the top-left corner of a
+   photo card — inherited here even though this tracker just sits in the
+   body's normal flow, leaving 16px of dead space above the dots on top of
+   the body's own padding/gap, plus a chunk of leftover height below.
+   Zeroing the offset and sizing the wrapper to the dots' actual footprint
+   (27px circles + the 13px the "today" dot pokes below them) removes that
+   dead space so the body's own gap is the only spacing above and below. */
 .habit-detail__tracker {
   position: relative;
-  height: 63px;
+  height: 40px;
   margin: 0;
+}
+
+.habit-detail__tracker .habit-day-tracker {
+  top: 0;
+  left: 0;
 }
 
 .habit-detail__justification {
@@ -55,6 +205,26 @@
   gap: var(--space-3);
 }
 
+/* customize-toggle__option is shared with onboarding's CustomizeHabit —
+   scoped here so only this page's "Stack with a routine / Set a specific
+   time" switch picks up the habit-detail__tier treatment (same border,
+   radius, weight, and leaf-green selected state as the "How much" chips
+   right above it), instead of the plain gray/seaweed pill it uses there. */
+.habit-detail .customize-toggle__option {
+  border: 2px solid rgba(0, 70, 32, 0.15);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-coconut);
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.habit-detail .customize-toggle__option--active {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+}
+
 .habit-detail__status-row {
   display: flex;
   flex-wrap: wrap;
@@ -62,15 +232,26 @@
   gap: var(--space-2);
 }
 
+/* Was an outlined card sitting on the coconut background — now a filled
+   sage-tinted card instead, using the same rgba(0, 70, 32, 0.06) tint
+   already established on .habit-detail__integrate below for this page's
+   other "quiet card" moments, rather than introducing a new one-off color.
+   Toggle and body both drop their own backgrounds so the tint reads as one
+   continuous fill rather than two flat coconut panels sitting inside it. */
+.habit-detail__customize {
+  border-radius: var(--radius-sm);
+  background: rgba(0, 70, 32, 0.06);
+  overflow: hidden;
+}
+
 .habit-detail__customize-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border: 2px solid rgba(0, 70, 32, 0.15);
-  border-radius: var(--radius-sm);
+  border: none;
   padding: var(--space-3) var(--space-4);
-  background: var(--color-coconut);
+  background: none;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-small);
@@ -87,7 +268,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  margin-top: var(--space-4);
+  padding: var(--space-4);
+  margin-top: 0;
+  border-top: 1px solid rgba(0, 70, 32, 0.15);
+  background: none;
 }
 
 .habit-detail__status {
@@ -159,76 +343,81 @@
   font-size: var(--text-base);
 }
 
-.habit-detail__chat {
+/* Pinned below the scrollable body (a flex sibling of question-screen__body
+   inside .flip-card, not part of it) so the ask-a-question input stays put
+   regardless of scroll position — same idea as HabitChat's own composer
+   bar, which this borrows its look from, just swapped from full-screen
+   chat chrome to sitting at the foot of this card. */
+.habit-detail__composer {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-coconut);
+}
+
+.habit-detail__composer-input {
+  flex: 1;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(0, 70, 32, 0.06);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.habit-detail__composer-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.habit-detail__composer-input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-seaweed);
+}
+
+.habit-detail__composer-send {
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-5);
+  background: var(--color-seaweed);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  cursor: pointer;
+}
+
+.habit-detail__composer-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* The full "keep it going?" / tier-upsell card that used to live here
+   (habit-detail__integrate*) moved to the Routine tab, directly under this
+   habit's own card — see HabitTrialPrompt.jsx/.css. This is what's left on
+   the flip card: a single-line pointer over to it, same sage tint as
+   everywhere else on this page that isn't a hard border. */
+.habit-detail__trial-hint {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2);
-  width: 100%;
-  height: 52px;
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-pill);
   background: rgba(0, 70, 32, 0.06);
   color: var(--color-seaweed);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-base);
+  font-size: var(--text-small);
   text-decoration: none;
-  cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
-.habit-detail__chat:hover {
+.habit-detail__trial-hint:hover {
   background: rgba(0, 70, 32, 0.12);
-}
-
-.habit-detail__integrate {
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: rgba(0, 70, 32, 0.06);
-}
-
-.habit-detail__integrate-desc {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.habit-detail__integrate-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.habit-detail__integrate-secondary {
-  width: 100%;
-  border: 2px solid var(--color-leaf);
-  border-radius: var(--radius-pill);
-  height: 52px;
-  background: var(--color-coconut);
-  color: var(--color-leaf);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-base);
-  cursor: pointer;
-}
-
-.habit-detail__integrate-link {
-  margin: var(--space-1) 0 0;
-  border: none;
-  background: none;
-  padding: var(--space-1);
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.5);
-  text-decoration: underline;
-  cursor: pointer;
-  align-self: center;
-}
-
-.habit-detail__integrate-link:hover {
-  color: rgba(0, 0, 0, 0.75);
 }
 
 .habit-detail__skip {

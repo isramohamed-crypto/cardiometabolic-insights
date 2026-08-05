@@ -95,32 +95,89 @@ export const CONTENT_POOL = {
 const DAY_SCRIPTS = {
   'walk-after-meal': [
     {
-      reinforcement: 'The hardest part may be starting — you don’t need to feel motivated before you begin.',
-      supportive: { id: 'wa-day1', brand: null, title: '8 Benefits of Walking Every Day' },
+      // Job: reduce self-judgment when the habit still feels effortful.
+      reinforcement: 'The hardest part may be starting. After a meal, staying where you are often feels easier — you don’t need to feel motivated before you begin. Starting slowly is enough.',
+      supportive: {
+        id: 'wa-day1',
+        brand: 'Verywell Health',
+        title: '8 Benefits of Walking Every Day',
+        url: 'https://www.verywellhealth.com/benefits-of-walking-every-day-11719538',
+        body: 'Walking daily benefits your body, mind, and emotions — and may even help extend your life.',
+      },
     },
     {
-      reinforcement: 'This doesn’t need to feel like exercise. No pace target, no step goal — just a little movement after a meal.',
-      supportive: { id: 'wa-day2', brand: 'RealSimple', title: 'Stay in Today' },
+      // Job: keep the small habit from turning into another demanding fitness task.
+      reinforcement: 'This doesn’t need to feel like exercise. No pace target, no step goal, no need to work up a sweat — the habit is simply adding a little movement after a meal.',
+      supportive: {
+        id: 'wa-day2',
+        brand: 'Real Simple',
+        title: 'Too Cold Outside? Here Are 6 Easy Ways to Stay Active Without Leaving Home',
+        url: 'https://www.realsimple.com/ways-to-stay-active-at-home-11897354',
+        body: 'Stay in today: walk from room to room for ten minutes. Have stairs? Add one easy trip up and down every few minutes.',
+      },
+      // Second pairing for the day — pickDailyContent only surfaces
+      // `supportive`, but this is here for whenever the UI can show more
+      // than one piece per day.
+      enjoyment: {
+        id: 'wa-day2-b',
+        brand: 'Verywell Mind',
+        title: '7-Minute Video Meditation for Mindful Walking',
+        url: 'https://www.verywellmind.com/7-minute-video-meditation-for-mindful-walking-8598399',
+        body: 'A short guided meditation for turning today’s walk into a mindful one.',
+      },
     },
     {
       reinforcement: 'You’re still finding your easiest version of this — the next few walks can help you discover the one you’ll actually return to.',
       supportive: { id: 'wa-day3', brand: 'Verywell Mind', title: 'Take a Guided Walk' },
     },
     {
-      reinforcement: 'Notice what the walk changes for you today, without grading the experience.',
+      // Job: help the user develop a personally meaningful reason to
+      // continue without promising an outcome.
+      // NOTE: left this day's supportive link as-is — the replacement
+      // pasted in for day 4 pointed to the same walking-shoes article
+      // that's linked for day 7 below, alongside an "EatingWell" sleep/
+      // blood-sugar description that doesn't match it. Flagged for Esther
+      // to confirm the intended link before swapping this one out.
+      reinforcement: 'Notice what the walk changes for you today. You may feel more awake, less full, mentally clearer — or no obvious difference at all. Pay attention without grading the experience.',
       supportive: { id: 'wa-day4', brand: 'EatingWell', title: 'Walking After Dinner Improves Sleep, Too' },
     },
     {
-      reinforcement: 'Your route may be familiar — the day isn’t. A short walk can reveal something you didn’t notice yesterday.',
-      supportive: { id: 'wa-day5', brand: 'Parents', title: 'Try High, Low, Buffalo' },
+      // Job: make the habit itself feel more rewarding.
+      reinforcement: 'Your route may be familiar — the day isn’t. The light, weather, sounds, people, plants, and animals around you keep changing. A short walk can reveal something you didn’t notice yesterday.',
+      supportive: {
+        id: 'wa-day5',
+        brand: 'Parents',
+        title: 'How To Have a Conversation With Your Kids About School',
+        url: 'https://www.parents.com/questions-to-ask-kids-about-school-8657109',
+        body: 'Try “High, Low, Buffalo” — take turns sharing one high point, one low point, and one strange or funny moment from today.',
+      },
     },
     {
-      reinforcement: 'Keep the part that made today easier — a familiar route, shoes by the door, someone to walk with.',
-      supportive: { id: 'wa-day6', brand: 'Health', title: 'Wear a Comfortable Walking Shoe' }, // Enjoyment fallback — Supportive cell was blank for day 6
+      // Job: help the user recognize and preserve conditions that support
+      // the habit. No linked piece this round — the walking-shoe
+      // recommendation that used to fill this slot (as an Enjoyment
+      // fallback) moved to day 7, where it was paired more clearly.
+      reinforcement: 'Keep the part that made today easier — a familiar route, shoes already by the door, someone to walk with, a meal that leaves you enough time. When something lowers the effort, it’s worth repeating.',
+      supportive: null,
     },
     {
-      reinforcement: 'You’re making movement part of an ordinary day. Each time you return to it, it becomes more recognizably yours.',
-      supportive: { id: 'wa-day7', brand: 'RealSimple', title: 'No Pace Goal' },
+      // Job: connect repeated action to self-concept without assigning
+      // the user an identity they haven't earned.
+      reinforcement: 'You’re making movement part of an ordinary day. This is not a major fitness program or a test of discipline — it’s a small way of caring for yourself after a meal, and each time you return to it, it becomes more recognizably yours.',
+      supportive: {
+        id: 'wa-day7',
+        brand: 'Real Simple',
+        title: 'The Science-Backed Benefits of Passeggiata, Italy’s Beloved Evening Tradition That’s Good for Your Brain and Body',
+        url: 'https://www.realsimple.com/what-is-passeggiata-11911501',
+        body: 'No pace goal — walk slowly, look around, invite someone along. The point is to enjoy the transition out of your day.',
+      },
+      enjoyment: {
+        id: 'wa-day7-b',
+        brand: 'Health',
+        title: 'The 10 Best Walking Shoes of 2026, According to Podiatrists and Testing',
+        url: 'https://www.health.com/style/comfortable-walking-shoes',
+        body: 'A comfortable walking shoe can make a huge difference in how your body feels at the end of the day.',
+      },
     },
   ],
   'consistent-wake-time': [

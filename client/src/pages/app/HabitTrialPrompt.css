@@ -1,0 +1,82 @@
+/* Same sage-tint "quiet card" treatment as habit-detail__integrate/
+   habit-detail__customize used, just self-contained here instead of
+   sharing HabitDetail's/onboarding's CSS — this renders on Routine now,
+   directly under the habit's own card (see Routine.jsx). */
+.habit-trial-prompt {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(0, 70, 32, 0.06);
+}
+
+.habit-trial-prompt__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #1a1a1a;
+}
+
+.habit-trial-prompt__desc {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.habit-trial-prompt__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.habit-trial-prompt__primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-pill);
+  height: 52px;
+  background: var(--color-seaweed);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.habit-trial-prompt__primary:hover {
+  filter: brightness(1.08);
+}
+
+.habit-trial-prompt__secondary {
+  width: 100%;
+  border: 2px solid var(--color-leaf);
+  border-radius: var(--radius-pill);
+  height: 52px;
+  background: var(--color-coconut);
+  color: var(--color-leaf);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.habit-trial-prompt__link {
+  margin: var(--space-1) 0 0;
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+}
+
+.habit-trial-prompt__link:hover {
+  color: rgba(0, 0, 0, 0.75);
+}

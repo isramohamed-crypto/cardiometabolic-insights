@@ -6,9 +6,10 @@ import { CONTENT_POOL } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import './page.css'
 
-// Same fallback gradient used for habits without a specific photo — the
-// flat "More reading" articles below aren't tied to one habit/pillar, so
-// there's no single gradient to borrow the way a habit-grouped section can.
+// Same fallback gradient used for habits without a specific photo — kept
+// as a last resort for "More reading" articles that come back from
+// /api/content without their own `image` (every current entry has one —
+// see the generated abstract-*.svg thumbnails in content.js/main.py).
 const FALLBACK_THUMB = 'linear-gradient(160deg, #00B9E2 0%, #063a52 100%)'
 
 function Read() {
@@ -46,6 +47,7 @@ function Read() {
                 brand={item.brand}
                 title={item.title}
                 body={item.body}
+                url={item.url}
               />
             ))}
           </div>
@@ -66,6 +68,7 @@ function Read() {
                   brand={item.brand}
                   title={item.title}
                   body={item.body}
+                  url={item.url}
                 />
               ))}
             </div>
@@ -81,9 +84,10 @@ function Read() {
               <ContentCard
                 key={article.id}
                 id={`article-${article.id}`}
-                thumbnail={FALLBACK_THUMB}
+                thumbnail={article.image ? `url('${article.image}')` : FALLBACK_THUMB}
                 brand={article.source}
                 title={article.title}
+                url={article.url}
               />
             ))}
           </div>

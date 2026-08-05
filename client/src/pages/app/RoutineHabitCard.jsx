@@ -11,10 +11,11 @@ import './RoutineHabitCard.css'
 // picker. The pillar Pill sits inside the card, directly above the habit
 // name, and the top-left corner carries a 7-day tracker (HabitDayTracker)
 // anchored to when the habit was adopted. The card links to the
-// full-screen HabitDetail view (edit tier/moment). Each habit's daily
-// content teaser used to render nested under its own card here — that's
-// now combined into Routine's single "New for you tonight" section
-// instead, so this card is just the habit itself.
+// full-screen HabitDetail view (edit tier/moment). This is just the habit
+// itself — Routine.jsx wraps it together with its own daily content pick
+// (the "drip") in a routine-habit-card-wrap, so each habit's reading sits
+// directly under that habit's card instead of pooling into one combined
+// section further down the page.
 function RoutineHabitCard({ habit }) {
   const gradient = getHabitVisual(habit.pillarId, habit.id)
   const meta = [habit.tier, habit.moment].filter(Boolean).join(' · ')

@@ -74,11 +74,14 @@
   width: 100%;
 }
 
+/* Sized below .page h2 (text-base) on purpose — this is a secondary,
+   in-context link under a single habit's content, not another section
+   label, so it shouldn't compete with the headings above it. */
 .routine-habit-card__drip-more {
   margin-left: 2px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-h5);
+  font-size: var(--text-caption);
   color: var(--color-seaweed);
   text-decoration: none;
 }
