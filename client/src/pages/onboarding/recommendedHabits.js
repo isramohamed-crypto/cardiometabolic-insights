@@ -10,10 +10,19 @@ import { NONE_OPTION } from './pillars.js'
 // customize step after they pick a habit: how much (tier) and when
 // (a stacked moment or an exact time).
 //
-// Each habit's `image` is a CSS gradient stand-in, not a real photo — no
-// photography asset pipeline exists yet. Swap `image` for a real photo URL
-// per habit once that's sourced; nothing else about the card needs to
-// change.
+// Each habit falls back to its pillar's `gradient` for a card background —
+// a stand-in for a real photo, since no photography asset pipeline exists
+// yet. A few habits (currently the 3 initial movement ones) have a real
+// `image` instead, sourced from the same People Inc. articles referenced in
+// domain/habitContent.js and copied into client/public/. Use getHabitVisual
+// below rather than reading `.gradient` directly, so every card/thumbnail
+// picks up a habit's own image automatically once one exists.
+//
+// `justification` / `evidence` / `expectation` back the three pages of
+// WhyThisMattersTray's mini-carousel (why this one / the evidence / what to
+// expect) — original copy in Vitalist's voice, not sourced from a
+// particular study or study database; swap for cited research once that
+// pipeline exists.
 export const RECOMMENDATIONS_BY_PILLAR = {
   eating: {
     categoryLabel: 'Nutrition',
@@ -23,8 +32,13 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'extra-veg-dinner',
         title: 'Add a serving of vegetables',
         subtitle: 'Bulk up a meal a day with extra veggies — how often is up to you.',
+        image: "url('/myrecipes-hero.webp')",
         justification:
           'Most of us fall short on vegetables at meals we already sit down for. Adding more crowds out less balanced choices without it feeling like a diet.',
+        evidence:
+          'Most adults eat less than half the recommended amount of vegetables in a day — the gap usually isn’t a missing meal, it’s a missing serving.',
+        expectation:
+          'The first few times, it’ll feel like a deliberate add-on. By week two it’s usually just what’s on the plate.',
         tiers: [
           { label: 'Add it to 1 meal a day' },
           { label: 'Add it to 2 meals a day' },
@@ -37,6 +51,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Pack it before you’re hungry and rushed.',
         justification:
           'Decisions made in advance, when you’re not hungry, tend to be better ones. Packing lunch ahead removes the moment most plans fall apart.',
+        evidence:
+          'Meals decided in the moment, especially a hungry one, lean toward whatever’s fastest — planning ahead removes that pressure entirely.',
+        expectation:
+          'Expect the first attempt to feel like one more chore at the end of the day. Once it’s routine, it saves you the scramble every morning.',
         tiers: [
           { label: 'A couple nights a week' },
           { label: 'Most weeknights' },
@@ -49,6 +67,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Not all of them — just a few, at whatever pace feels doable.',
         justification:
           'Small, sustainable swaps beat strict rules. Trading a snack keeps the change realistic enough to actually stick.',
+        evidence:
+          'Swaps outlast bans. A one-for-one trade doesn’t leave a gap to fill, which is usually where stricter rules break down.',
+        expectation:
+          'Some days you’ll reach for the old snack anyway — that’s fine, the swap just needs to be your default, not your only option.',
         tiers: [
           { label: 'A few times a week' },
           { label: 'Most days' },
@@ -61,6 +83,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'One swap or addition — whatever fits what you already eat.',
         justification:
           'Most people fall well short on fiber, and breakfast is an easy place to close the gap without overhauling the rest of your day.',
+        evidence:
+          'Fiber intake tends to lag most at breakfast specifically — a single addition there closes more of the daily gap than a similar change later in the day.',
+        expectation:
+          'One addition, most mornings — not a whole new breakfast. Give it a week before judging whether it’s sticking.',
         tiers: [
           { label: 'A few mornings a week' },
           { label: 'Most mornings' },
@@ -73,6 +99,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Before coffee, before your phone — first thing.',
         justification:
           'Front-loading water first thing helps with energy and alertness, and it is one of the lowest-effort habits there is to start.',
+        evidence:
+          'Hours without water overnight leave most people mildly under-hydrated by morning — a glass first thing is a quick, low-effort correction.',
+        expectation:
+          'This one tends to stick fast — it takes ten seconds and doesn’t compete with anything else in your morning.',
         tiers: [{ label: 'Most mornings' }, { label: 'Every morning' }],
       },
     ],
@@ -85,16 +115,26 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'walk-after-meal',
         title: 'Short walk after meals',
         subtitle: 'Timing and length are up to you.',
+        image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
         justification:
           'A short walk after eating helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
+        evidence:
+          'Blood sugar tends to spike in the hour or so after eating — light movement in that window is one of the simplest ways to blunt that rise.',
+        expectation:
+          'No pace goal, no step count — just a few minutes of moving after you eat. It should feel closer to a stroll than exercise.',
         tiers: [{ label: '5 minutes' }, { label: '15 minutes' }, { label: '30 minutes' }],
       },
       {
         id: 'two-strength-sessions',
         title: 'Strength training',
         subtitle: 'A couple of sessions a week, at whatever length works for you.',
+        image: "url('/VWH-GettyImages-2212443785-1756a837a6f84c688c1b14bcd702f31a.webp')",
         justification:
           'You don’t need an hour or a gym. A little strength training goes a long way for everyday energy and mobility.',
+        evidence:
+          'Even a modest, consistent amount of strength work each week is associated with meaningfully better long-term outcomes than none at all.',
+        expectation:
+          'The first sessions might feel awkward if it’s new — that’s normal. Consistency matters far more than intensity here.',
         tiers: [
           { label: '1 session a week' },
           { label: '2 sessions a week' },
@@ -105,8 +145,13 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'morning-stretch',
         title: 'Morning stretch',
         subtitle: 'Right when you wake up, before anything else.',
+        image: "url('/Health-GettyImages-1419987706-99ff80a2f9554d898eb74ee0d5f46963.webp')",
         justification:
           'Stacking it onto waking up — before coffee, before your phone — is what makes a stretch routine actually survive past week one.',
+        evidence:
+          'Habits anchored to a fixed, unavoidable moment in the day (like waking up) get skipped far less often than ones that depend on finding free time.',
+        expectation:
+          'A couple minutes, first thing, before anything else grabs your attention. It should feel more like a reflex than a workout.',
         tiers: [{ label: '2 minutes' }, { label: '5 minutes' }, { label: '10 minutes' }],
       },
       {
@@ -115,6 +160,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'A quick set of sit-to-stands, whenever you tie it to your morning.',
         justification:
           'A little resistance work goes a long way for strength and fall prevention — chair stands are an easy, equipment-free way to start.',
+        evidence:
+          'Lower-body strength is one of the strongest predictors of staying independent later in life — sit-to-stands train exactly that movement.',
+        expectation:
+          'A quick set, no equipment. You’ll likely feel it in your legs the next day at first — that fades within a week or two.',
         tiers: [{ label: '5 stands' }, { label: '10 stands' }, { label: '2 sets of 10' }],
       },
     ],
@@ -129,6 +178,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Even on weekends — it’s the anchor your sleep needs.',
         justification:
           'Your body clock responds far more to a consistent wake time than a consistent bedtime. Anchoring one end of the night makes the rest fall into place.',
+        evidence:
+          'Sleep researchers generally point to wake time, not bedtime, as the stronger anchor for your body clock — it’s the signal your body uses to set everything else.',
+        expectation:
+          'The first few mornings may feel like fighting your alarm. Give it a week or two — bedtime tends to fall into line on its own.',
         tiers: [
           { label: 'Within an hour, most days' },
           { label: 'Same time, most days' },
@@ -141,6 +194,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Swap screens for something calmer before bed.',
         justification:
           'It’s less about blue light and more about what scrolling does to a winding-down mind. Any other low-stimulation activity works just as well.',
+        evidence:
+          'The bigger issue is usually mental — an engaging feed keeps your mind alert right when it needs to start slowing down.',
+        expectation:
+          'The urge to check your phone will still show up for a while. Having something else ready — a book, low music — makes it easier to skip.',
         tiers: [{ label: '15 minutes' }, { label: '30 minutes' }, { label: '60 minutes' }],
       },
       {
@@ -149,6 +206,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Small environment changes, big effect on sleep quality.',
         justification:
           'Temperature and light are two of the strongest signals your brain uses to time sleep. A few small changes can outperform a lot of willpower.',
+        evidence:
+          'A cooler room and a darker room are two of the most consistently cited environmental factors for falling and staying asleep.',
+        expectation:
+          'This is a one-time setup, not a daily task — once the room is right, there’s nothing left to remember to do.',
         tiers: [
           { label: 'One change' },
           { label: 'A couple changes' },
@@ -165,8 +226,13 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'five-minute-breathing',
         title: 'Breathing exercise',
         subtitle: 'Same time each day, so it becomes automatic.',
+        image: "url('/Large-D14-c2932545e122447c991f1ae89aa54cca.webp')",
         justification:
           'Slow, deliberate breathing is one of the few things that measurably calms your nervous system in real time.',
+        evidence:
+          'Slowing your breathing rate is one of the few stress-response changes you can trigger on command, rather than waiting for it to pass on its own.',
+        expectation:
+          'The first sessions might feel like nothing’s happening. The calming effect tends to show up faster once it’s a familiar routine, not a new task.',
         tiers: [{ label: '2 minutes' }, { label: '5 minutes' }, { label: '10 minutes' }],
       },
       {
@@ -175,6 +241,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Away from a screen, wherever that is for you.',
         justification:
           'Stepping outside — light, air, a change of scenery — interrupts a stress spiral more reliably than trying to think your way out of it.',
+        evidence:
+          'A change of environment is often more effective at breaking a stress spiral than trying to reason your way out of it in the same spot.',
+        expectation:
+          'Doesn’t need to be long or far — a few minutes outside, away from the screen that had you stressed, is the whole point.',
         tiers: [{ label: '5 minutes' }, { label: '10 minutes' }, { label: '20 minutes' }],
       },
       {
@@ -183,6 +253,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Not a diary — just a few lines.',
         justification:
           'Naming a few things from the day, good or bad, gives your brain permission to stop replaying it.',
+        evidence:
+          'Writing something down tends to close it out mentally in a way that just thinking about it doesn’t — it moves it out of the loop in your head.',
+        expectation:
+          'A few lines, most nights — not a journaling practice. Some nights there won’t be much to say, and that’s fine.',
         tiers: [
           { label: '1–2 lines' },
           { label: 'A few lines' },
@@ -201,6 +275,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'No agenda — just a hello.',
         justification:
           'Connection compounds. A short, low-effort check-in keeps a relationship warm without needing to plan a whole hangout.',
+        evidence:
+          'Regular, low-effort contact tends to sustain relationships just as well as occasional big gestures — frequency matters more than size.',
+        expectation:
+          'A quick message, no reply required same-day. It should take less time than deciding what to say.',
         tiers: [{ label: 'Weekly' }, { label: 'A few times a week' }, { label: 'Daily' }],
       },
       {
@@ -209,6 +287,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'Put it on the calendar, not just the to-do list.',
         justification:
           'Intentions to "catch up sometime" rarely happen. Scheduling it, even loosely, is what turns it into something real.',
+        evidence:
+          '"Sometime" is one of the least reliable plans there is — a specific time on a calendar shows up far more often than a good intention does.',
+        expectation:
+          'The scheduling itself is the habit — the call or visit will follow naturally once it has a slot.',
         tiers: [
           { label: 'Monthly' },
           { label: 'Every couple weeks' },
@@ -221,10 +303,27 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         subtitle: 'A class, a league, a club — anything recurring.',
         justification:
           'Recurring group activities build social connection on autopilot, without needing to organize something new every time.',
+        evidence:
+          'A standing commitment removes the need to plan anything new each time — the connection happens as a side effect of just showing up.',
+        expectation:
+          'The first session or two might feel like showing up somewhere new. That fades once it’s a regular fixture on your week.',
         tiers: [{ label: 'One-time' }, { label: 'Monthly' }, { label: 'Weekly' }],
       },
     ],
   },
+}
+
+// The CSS `background-image` value to use for a given habit's card/
+// thumbnail — its own `image` (a real photo) when it has one, falling back
+// to its pillar's placeholder `gradient` otherwise. Every card/thumbnail
+// that shows a habit should read through this instead of reaching for
+// `.gradient` directly, so real photos show up automatically as more
+// habits get one.
+export function getHabitVisual(pillarId, habitId) {
+  const pillar = RECOMMENDATIONS_BY_PILLAR[pillarId]
+  if (!pillar) return null
+  const habit = pillar.habits.find((h) => h.id === habitId)
+  return habit?.image || pillar.gradient
 }
 
 // Suggests a starting tier (index into a habit's `tiers` array) based on how

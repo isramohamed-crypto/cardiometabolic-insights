@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
-import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex } from './recommendedHabits.js'
+import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex, getHabitVisual } from './recommendedHabits.js'
 import HabitPickCard from './HabitPickCard.jsx'
 import WhyThisMattersTray from './WhyThisMattersTray.jsx'
 import CustomizeHabit from './CustomizeHabit.jsx'
@@ -22,7 +22,11 @@ const COMPILING_STEPS = [
 // starter habit for the user's chosen pillar (card + tray adapted from
 // Figma nodes 1185:4175 and 1214:4722), then a customize step — habits
 // stay generic (see recommendedHabits.js), so this is where the user sets
-// how much and when.
+// how much and when. Onboarding-only — adding a habit later from
+// Routine/Collection uses AddHabitFlow instead (same underlying pick/
+// customize pieces, but embedded in the app's own chrome instead of this
+// screen's, and without the "compiling" beat or the connect/create-account/
+// all-set sequence that follows a first habit).
 function Recommendations() {
   const navigate = useNavigate()
   const { answers } = useOnboarding()
@@ -35,9 +39,10 @@ function Recommendations() {
   const focusPillarId = answers.focusPillars?.[0]
   const pillar =
     PILLARS_CANONICAL.find((p) => p.id === focusPillarId) || PILLARS_CANONICAL[0]
-  const { categoryLabel, gradient, habits } =
+  const { categoryLabel, habits } =
     RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating
   const habit = habits[habitIndex]
+  const gradient = getHabitVisual(pillar.id, habit.id)
 
   useEffect(() => {
     if (stage !== 'compiling') return
@@ -52,19 +57,22 @@ function Recommendations() {
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
 
-  const handleFinalize = ({ tier, moment, remindersOn }) => {
-    // addHabit defaults ownershipState to TRIALED (tier one — actively
-    // trying it out), per the state machine in domain/habit.js.
+  const handleFinalize = ({ moment, remindersOn }) => {
+    // addHabit defaults ownershipState to TRIALED — actively trying it out
+    // — per the state machine in domain/habit.js. Tier isn't asked about
+    // here at all — it starts at the suggested tier and can be changed
+    // afterward from the habit's own page once it's adopted.
+    const startingTierIndex = suggestTierIndex(pillar.id, answers, habit.tiers.length)
     addHabit({
       id: habit.id,
       title: habit.title,
       subtitle: habit.subtitle,
       pillarId: pillar.id,
-      tier: tier.label,
+      tier: habit.tiers[startingTierIndex].label,
       moment,
       remindersOn,
     })
-    navigate('/routine')
+    navigate('/connect')
   }
 
   if (stage === 'compiling') {
@@ -103,12 +111,7 @@ function Recommendations() {
 
   if (stage === 'customize') {
     return (
-      <CustomizeHabit
-        habit={habit}
-        suggestedTierIndex={suggestTierIndex(pillar.id, answers, habit.tiers.length)}
-        onBack={() => setStage('pick')}
-        onSave={handleFinalize}
-      />
+      <CustomizeHabit habit={habit} onBack={() => setStage('pick')} onSave={handleFinalize} />
     )
   }
 

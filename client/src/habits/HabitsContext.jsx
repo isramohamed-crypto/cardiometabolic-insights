@@ -14,6 +14,13 @@ const HabitsContext = createContext(null)
 export function HabitsProvider({ children }) {
   const [habits, setHabits] = useState([])
 
+  // How many habits can be active at once. Starts at 1 — a fresh habit
+  // graduating out of its trial (kept or downsized, not let go) unlocks
+  // the next slot. Locked-slot placeholders on Routine/Collection read
+  // this directly.
+  const [slotCount, setSlotCount] = useState(1)
+  const unlockSlot = () => setSlotCount((n) => n + 1)
+
   // New habits always enter at TRIALED (tier one — actively trying it out),
   // per the ownership state machine in domain/habit.js. `startedAt` anchors
   // the 7-day tracker on the Routine card (HabitDayTracker); `log` holds
@@ -63,7 +70,15 @@ export function HabitsProvider({ children }) {
 
   return (
     <HabitsContext.Provider
-      value={{ habits, addHabit, updateHabitState, updateHabit, toggleTodayDone }}
+      value={{
+        habits,
+        addHabit,
+        updateHabitState,
+        updateHabit,
+        toggleTodayDone,
+        slotCount,
+        unlockSlot,
+      }}
     >
       {children}
     </HabitsContext.Provider>

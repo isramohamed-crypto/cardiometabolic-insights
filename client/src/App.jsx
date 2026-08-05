@@ -6,6 +6,9 @@ import Summary from './pages/onboarding/Summary.jsx'
 import HealthConditions from './pages/onboarding/HealthConditions.jsx'
 import FocusAreas from './pages/onboarding/FocusAreas.jsx'
 import Recommendations from './pages/onboarding/Recommendations.jsx'
+import ConnectSteps from './pages/onboarding/ConnectSteps.jsx'
+import CreateAccount from './pages/onboarding/CreateAccount.jsx'
+import AllSet from './pages/onboarding/AllSet.jsx'
 import AppLayout from './pages/app/AppLayout.jsx'
 import Routine from './pages/app/Routine.jsx'
 import Read from './pages/app/Read.jsx'
@@ -14,6 +17,7 @@ import Me from './pages/app/Me.jsx'
 import HabitDetail from './pages/app/HabitDetail.jsx'
 import HabitEdit from './pages/app/HabitEdit.jsx'
 import HabitChat from './pages/app/HabitChat.jsx'
+import HealthCheck from './pages/app/HealthCheck.jsx'
 import { OnboardingProvider } from './onboarding/OnboardingContext.jsx'
 import { HabitsProvider } from './habits/HabitsContext.jsx'
 import { FavoritesProvider } from './content/FavoritesContext.jsx'
@@ -32,9 +36,13 @@ function App() {
               <Route path="/onboarding/health-conditions" element={<HealthConditions />} />
               <Route path="/onboarding/focus" element={<FocusAreas />} />
               <Route path="/onboarding/recommendations" element={<Recommendations />} />
+              <Route path="/connect" element={<ConnectSteps />} />
+              <Route path="/create-account" element={<CreateAccount />} />
+              <Route path="/all-set" element={<AllSet />} />
               <Route path="/habit/:habitId" element={<HabitDetail />} />
               <Route path="/habit/:habitId/edit" element={<HabitEdit />} />
               <Route path="/habit/:habitId/chat" element={<HabitChat />} />
+              <Route path="/health-check" element={<HealthCheck />} />
 
               <Route element={<AppLayout />}>
                 <Route path="/routine" element={<Routine />} />

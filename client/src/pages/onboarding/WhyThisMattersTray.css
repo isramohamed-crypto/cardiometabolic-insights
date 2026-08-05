@@ -109,4 +109,44 @@
   font-size: 15px;
   line-height: 1.5;
   color: #61705f;
+  min-height: 66px;
+}
+
+.why-tray__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  margin-top: -4px;
+}
+
+.why-tray__page-arrow {
+  border: none;
+  background: none;
+  padding: 4px 8px;
+  font-size: 16px;
+  color: var(--color-seaweed);
+  cursor: pointer;
+}
+
+.why-tray__page-arrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.why-tray__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.why-tray__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 70, 32, 0.2);
+}
+
+.why-tray__dot--active {
+  background: var(--color-seaweed);
 }

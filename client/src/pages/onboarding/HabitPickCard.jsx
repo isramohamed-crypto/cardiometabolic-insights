@@ -12,6 +12,11 @@ const SWIPE_THRESHOLD = 50
  *
  * `habit.image` is currently always a CSS gradient placeholder (see
  * recommendedHabits.js) standing in for a real background photo.
+ *
+ * Tier isn't chosen here — a habit starts at its suggested tier
+ * automatically (see Recommendations.jsx), and can be changed afterward
+ * from the habit's own page (/habit/:habitId) once it's actually in the
+ * user's routine.
  */
 function HabitPickCard({
   habit,

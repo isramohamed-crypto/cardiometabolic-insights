@@ -24,17 +24,48 @@ import { CONTENT_TYPE } from './habit.js'
 // the UI surfaces it yet — flag to product/design before wiring it in.
 export const CONTENT_POOL = {
   'walk-after-meal': [
-    { id: 'wa-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'EatingWell', title: 'The Simple Nighttime Habit That May Balance Blood Sugar' },
+    {
+      id: 'wa-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'EatingWell',
+      title: 'The Simple Nighttime Habit That May Balance Blood Sugar',
+      // Condensed from EatingWell's full piece (same title) in Vitalist's
+      // own words — not a verbatim excerpt.
+      body: 'Blood sugar tends to climb after a meal, and a short walk gets your muscles pulling that glucose out of your bloodstream for fuel — which also improves how sensitive your cells are to insulin over time. That combination tends to mean steadier numbers overnight and fewer sleep disruptions from a spike before bed. Pairing the walk with an earlier, higher-fiber dinner tends to amplify the effect; if mornings stay high despite it, that\'s worth flagging to your doctor.',
+    },
     { id: 'wa-2', type: CONTENT_TYPE.ENABLING, brand: 'EatingWell', title: '6 Benefits of Walking After Meals' },
   ],
   'two-strength-sessions': [
-    { id: 'ts-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Health', title: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer' },
+    {
+      id: 'ts-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Health',
+      title: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer',
+      body: 'A large, decades-long study found that 90 to 120 minutes of strength training a week — about one to three short sessions — was linked to meaningfully lower risk of dying from any cause, and specifically from cardiovascular and neurological disease, with benefits leveling off past that point. Pairing it with regular aerobic activity, like a walk, compounds the benefit further.',
+    },
   ],
   'chair-stands-after-breakfast': [
-    { id: 'cs-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Health', title: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer' },
+    {
+      id: 'cs-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Health',
+      title: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer',
+      // Same underlying research as ts-1, told through what it means for a
+      // move this small: chair stands are an easy way to bank some of that
+      // weekly strength-training time without a gym or equipment.
+      body: 'A large, decades-long study found that 90 to 120 minutes of strength training a week — about one to three short sessions — was linked to meaningfully lower risk of dying from any cause, and specifically from cardiovascular and neurological disease. Chair stands are a simple, equipment-free way to bank some of those minutes: they build the same lower-body strength that keeps you steady on stairs and getting up off the floor. Pairing it with regular aerobic activity, like a walk, compounds the benefit further.',
+    },
   ],
   'morning-stretch': [
-    { id: 'ms-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Health', title: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging' },
+    {
+      id: 'ms-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Health',
+      title: 'I Went to My First Stretch Session, and It Changed How I Think About Healthy Aging',
+      // Condensed from Health's full piece (same title) in Vitalist's own
+      // words — not a verbatim excerpt.
+      body: 'Stretching the hips, glutes, and spine is what keeps everyday moves like tying a shoe, getting out of the car, or getting up from a chair easy as you age — mobility tends to go unnoticed until it starts slipping. Beyond flexibility, regular stretching has some evidence behind it for lower blood pressure, better blood sugar, eased tension and anxiety, and improved sleep. A few minutes a day focused on those areas does more for long-term independence than most people expect from something this low-effort.',
+    },
   ],
   'consistent-wake-time': [
     { id: 'wt-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Health', title: 'First Step to Better Sleep: Wake Up at the Same Time Every Day' },

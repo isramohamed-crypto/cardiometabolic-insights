@@ -28,6 +28,8 @@ function ContentModal({ content, onClose }) {
           {content.brand && <span className="content-modal__brand">{content.brand}</span>}
           <h2 className="content-modal__title">{content.title}</h2>
 
+          {content.body && <p className="content-modal__text">{content.body}</p>}
+
           <button
             type="button"
             className={`content-modal__save${saved ? ' content-modal__save--active' : ''}`}

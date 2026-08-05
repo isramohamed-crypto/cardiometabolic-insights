@@ -1,0 +1,4 @@
+/* Unused — the locked-slot placeholder styles moved to the shared
+   .locked-slot rules in page.css so Routine can reuse them too. Left in
+   place rather than deleted (sandbox file-deletion restriction); safe to
+   remove by hand later. */

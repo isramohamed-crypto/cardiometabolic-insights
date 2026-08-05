@@ -3,18 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { RECOMMENDATIONS_BY_PILLAR, STACK_PRESETS } from '../onboarding/recommendedHabits.js'
 import { getPillarLabel } from '../../domain/pillars.js'
+import { formatTime } from '../../domain/time.js'
 import Toggle from '../../components/Toggle.jsx'
 import '../onboarding/QuestionScreen.css'
 import '../onboarding/CustomizeHabit.css'
 import './HabitDetail.css'
-
-function formatTime(value) {
-  if (!value) return ''
-  const [hours, minutes] = value.split(':').map(Number)
-  const period = hours >= 12 ? 'PM' : 'AM'
-  const hour12 = hours % 12 || 12
-  return `${hour12}:${String(minutes).padStart(2, '0')} ${period}`
-}
 
 // Edit mode for a habit already in the routine — tier, moment, and
 // reminders only. Reached from HabitDetail's "Edit habit" link; reuses the

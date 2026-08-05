@@ -1,3 +1,23 @@
+/* This screen's body gets its own consistent vertical rhythm via `gap`
+   instead of a pile of one-off margins on each child (which is how the
+   shared question-screen__body normally spaces things, since it has no
+   gap of its own — onboarding's screens tune spacing per-element instead).
+   Two pairs of elements are meant to read as a single tight-knit group
+   rather than getting the full gap between them — status+skip/retire with
+   the moment line below it, and the done button with the chat link — so
+   each pair is wrapped in its own small-gap container below. */
+.habit-detail .question-screen__body {
+  gap: 20px;
+}
+
+.habit-detail .question-screen__intro {
+  margin-bottom: 0;
+}
+
+.habit-detail .question-screen__back {
+  margin-bottom: 0;
+}
+
 /* HabitDayTracker positions its dots absolutely, relative to the nearest
    positioned ancestor — without this wrapper it had none, so the dots
    escaped up to the page and overlapped the header. This contains them in
@@ -5,7 +25,7 @@
 .habit-detail__tracker {
   position: relative;
   height: 63px;
-  margin: 4px 0;
+  margin: 0;
 }
 
 .habit-detail__justification {
@@ -23,23 +43,16 @@
   color: rgba(0, 0, 0, 0.5);
 }
 
-/* More breathing room between sections on this screen specifically —
-   scoped here so it doesn't affect onboarding's CustomizeHabit, which
-   shares these same class names. */
+/* customize-section's spacing to its neighbors now comes from the body's
+   gap, not its own margin — scoped here so it doesn't affect onboarding's
+   CustomizeHabit, which shares these same class names but doesn't use a
+   gap-based body. */
 .habit-detail .customize-section {
-  margin-top: 34px;
-}
-
-.habit-detail .customize-section:first-of-type {
-  margin-top: 12px;
+  margin-top: 0;
 }
 
 .habit-detail .question-screen__options {
   gap: 12px;
-}
-
-.habit-detail .question-screen__intro {
-  margin-bottom: 20px;
 }
 
 .habit-detail__status-row {
@@ -47,7 +60,34 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin: 4px 0 16px;
+}
+
+.habit-detail__customize-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 2px solid rgba(0, 70, 32, 0.15);
+  border-radius: 13px;
+  padding: 14px 18px;
+  background: var(--color-coconut);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.habit-detail__customize-chevron {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.habit-detail__customize-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 16px;
 }
 
 .habit-detail__status {
@@ -61,34 +101,58 @@
   color: var(--color-seaweed);
 }
 
-.habit-detail__meta {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.5);
+.habit-detail__tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
+.habit-detail__tier {
+  border: 2px solid rgba(0, 70, 32, 0.15);
+  border-radius: 999px;
+  padding: 9px 16px;
+  background: var(--color-coconut);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+
+.habit-detail__tier--selected {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+}
+
+/* The primary CTA on the page — placed at the bottom next to Back
+   (where question-screen__continue used to live) rather than up near the
+   tracker, and styled solid and full-height to match that same weight
+   rather than the lighter outlined treatment it had before. */
 .habit-detail__done {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  border: 2px solid var(--color-leaf);
+  border: none;
   border-radius: 999px;
-  height: 52px;
-  margin-bottom: 8px;
-  background: var(--color-coconut);
-  color: var(--color-leaf);
+  height: 56px;
+  background: var(--color-leaf);
+  color: #fff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+}
+
+.habit-detail__done:hover {
+  filter: brightness(1.08);
 }
 
 .habit-detail__done--active {
-  background: var(--color-leaf);
-  color: #fff;
+  background: var(--color-seaweed);
 }
 
 .habit-detail__done-check {
@@ -102,7 +166,6 @@
   gap: 8px;
   width: 100%;
   height: 52px;
-  margin-bottom: 20px;
   border-radius: 999px;
   background: rgba(0, 70, 32, 0.06);
   color: var(--color-seaweed);
@@ -119,7 +182,6 @@
 }
 
 .habit-detail__integrate {
-  margin-top: 24px;
   padding: 18px;
   border-radius: 16px;
   background: rgba(0, 70, 32, 0.06);
@@ -135,11 +197,42 @@
 .habit-detail__integrate-actions {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.habit-detail__integrate-secondary {
+  width: 100%;
+  border: 2px solid var(--color-leaf);
+  border-radius: 999px;
+  height: 52px;
+  background: var(--color-coconut);
+  color: var(--color-leaf);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.habit-detail__integrate-link {
+  margin: 4px 0 0;
+  border: none;
+  background: none;
+  padding: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+}
+
+.habit-detail__integrate-link:hover {
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .habit-detail__skip {
-  margin: 10px 0 0;
+  margin: 0;
   border: none;
   background: none;
   padding: 4px;
@@ -149,7 +242,6 @@
   color: rgba(0, 0, 0, 0.45);
   text-decoration: underline;
   cursor: pointer;
-  align-self: center;
 }
 
 .habit-detail__skip:hover {
@@ -157,14 +249,13 @@
 }
 
 .habit-detail__retire {
-  display: block;
-  margin: 0 auto 14px;
+  margin: 0;
   border: none;
   background: none;
   padding: 4px;
   font-family: var(--font-body);
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   color: #b3261e;
   text-decoration: underline;
   cursor: pointer;

@@ -49,3 +49,78 @@
   flex-direction: column;
   gap: 14px;
 }
+
+/* Shared "locked slot" placeholder — used on both Routine (teasing the
+   next slot once the current one(s) fill up) and Collection (same idea,
+   framed as part of the full roster). */
+.locked-slot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+  border-radius: 16px;
+  border: 1.5px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.locked-slot__icon {
+  font-size: 22px;
+  opacity: 0.55;
+}
+
+.locked-slot__title {
+  margin: 0 0 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.locked-slot__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* The unlocked counterpart to .locked-slot — shown instead once a slot is
+   actually free (e.g. right after retiring a habit), and clickable
+   straight into the habit picker rather than just informational. */
+.open-slot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 16px;
+  border-radius: 16px;
+  border: 1.5px dashed var(--color-leaf);
+  background: rgba(27, 188, 60, 0.06);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.open-slot:hover {
+  background: rgba(27, 188, 60, 0.12);
+}
+
+.open-slot__icon {
+  font-size: 22px;
+  color: var(--color-leaf);
+}
+
+.open-slot__title {
+  margin: 0 0 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-seaweed);
+}
+
+.open-slot__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+}
