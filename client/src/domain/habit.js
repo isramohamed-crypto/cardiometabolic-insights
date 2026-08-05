@@ -134,6 +134,20 @@ export const GRAIN = {
  * @property {boolean} coachAccess - whether a coach has visibility/access to this habit (meaning open — confirm intent)
  * @property {ContentItem[]} content - empty for pre-existing habits
  * @property {HabitLogEntry[]} [log]
+ * @property {TierHistoryEntry[]} [tierHistory]
+ */
+
+/**
+ * One entry per time a habit's tier actually changed (see HabitsContext's
+ * addHabit/updateHabit) — the timestamped trail that lets the Me tab's
+ * "how it's actually going" progress card plot a real before/after (e.g.
+ * "10 → 20 minutes") instead of only ever knowing the current tier. The
+ * first entry is written at adoption with the starting tier; a new one is
+ * appended only when `tier` actually changes, so a habit that's never been
+ * escalated just has the one entry (and therefore no real trend to draw).
+ * @typedef {Object} TierHistoryEntry
+ * @property {string} tier
+ * @property {string} at - ISO timestamp
  */
 
 export const HABIT_SHAPE_NOTES = `

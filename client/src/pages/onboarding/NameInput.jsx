@@ -5,7 +5,8 @@ import './QuestionScreen.css'
 
 // First onboarding step — collects the user's name before the habit
 // questions. Reuses the same header/body/CTA chrome as QuestionScreen.jsx,
-// swapping the option list for a text input.
+// swapping the option list for a text input. Leads into SexAtBirth next,
+// not straight into the habit questions anymore.
 function NameInput() {
   const navigate = useNavigate()
   const { setAnswer } = useOnboarding()
@@ -16,11 +17,11 @@ function NameInput() {
   const handleContinue = () => {
     if (!canContinue) return
     setAnswer('name', name.trim())
-    navigate('/onboarding/habits/eating')
+    navigate('/onboarding/sex')
   }
 
   const handleSkip = () => {
-    navigate('/onboarding/habits/eating')
+    navigate('/onboarding/sex')
   }
 
   return (

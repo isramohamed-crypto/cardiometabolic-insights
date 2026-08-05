@@ -46,7 +46,13 @@
   gap: var(--space-4);
 }
 
-.summary__row {
+/* One of these per pillar that has at least one selected item — the
+   pillar label sits in the left column once, same as a group heading,
+   while summary__row-values stacks every selected item under it as its
+   own line (see below) instead of joining them into one comma/dot-
+   separated line. Renamed from the old singular "summary__row" now that
+   it's a label + a list of rows, not one row itself. */
+.summary__row-group {
   display: grid;
   grid-template-columns: 78px 1fr;
   gap: var(--space-3);
@@ -60,6 +66,16 @@
   text-transform: uppercase;
   color: var(--color-seaweed);
   padding-top: 3px;
+}
+
+/* Tighter gap than summary__rows uses between different pillars — these
+   are all the same category, so they should read as one cluster rather
+   than getting the same breathing room as the boundary between two
+   different pillars. */
+.summary__row-values {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .summary__row-value {

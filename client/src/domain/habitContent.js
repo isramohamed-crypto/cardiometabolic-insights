@@ -271,24 +271,37 @@ export function pickJustificationContent(habitId) {
 // each habit can phrase it for its own action ("While you stretch",
 // "While you breathe", etc.).
 //
-// 'walk-after-meal' (wa-companion-mindful-walk, above) is the one real,
+// 'walk-after-meal' (wa-companion-goals-podcast, above) is the one real,
 // sourced entry — pulled from the same behaviors sheet as the rest of this
-// file. The entries below it are placeholders: titles/brands invented in
-// the same People Inc. house style (not sourced from a live fetch, since
-// this content pass didn't have real URLs to pull from), with no `url` so
-// ContentCard/ContentModal fall back to the thumbnail+body view instead of
-// trying to load a real page. Swap each for the real sourced piece — and
-// add a `url` — once one exists.
+// file. Its `url` is the Megaphone playlist embed
+// (playlist.megaphone.fm/?e=...), not the verywellmind.com article page —
+// the article page itself would likely refuse to load in ContentModal's
+// iframe (publisher X-Frame-Options/CSP, same issue called out in
+// ContentModal's comment), but Megaphone's own playlist embed URL is
+// purpose-built to be framed, so tapping the card actually plays the
+// episode instead of bouncing to the fallback link. Its `image` is the
+// real Verywell Mind Podcast cover art already sitting in client/public —
+// same `url('/path.webp')`-wrapped format DAY_SCRIPTS' wa-day7.supportive
+// uses above, so every consumer (HabitDetail, Routine, Read) can just do
+// `thumbnail={item.image || gradient}` without caring which content
+// source the item came from. The entries below it are placeholders:
+// titles/brands invented in the same People Inc. house style (not sourced
+// from a live fetch, since this content pass didn't have real URLs to
+// pull from), with no `url` or `image` so ContentCard/ContentModal fall
+// back to the habit's flat gradient + thumbnail/body view instead of
+// trying to load a real page or photo. Swap each for the real sourced
+// piece — and add a `url`/`image` — once one exists.
 export const COMPANION_CONTENT = {
   'walk-after-meal': {
     sectionLabel: 'While you walk',
     content: {
-      id: 'wa-companion-mindful-walk',
+      id: 'wa-companion-goals-podcast',
       type: CONTENT_TYPE.COMPANION,
       brand: 'Verywell Mind',
-      title: '7-Minute Video Meditation for Mindful Walking',
-      url: 'https://www.verywellmind.com/7-minute-video-meditation-for-mindful-walking-8598399',
-      body: 'A short guided video to bring along — turns today’s walk into a mindful one instead of just a lap around the block.',
+      title: '130 - Friday Fix: 3 Mistakes to Avoid When Creating Goals for Yourself',
+      url: 'https://playlist.megaphone.fm/?e=MERE7757124575&artwork=false&light=true',
+      body: 'Goals are a great way to stick to habits — listen for the 3 mistakes to avoid when creating them, right from your walk.',
+      image: "url('/primary-643d863793a04e78bdb81c2aa012bc55.webp')",
     },
   },
   'two-strength-sessions': {

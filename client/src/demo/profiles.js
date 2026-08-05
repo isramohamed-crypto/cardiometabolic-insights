@@ -62,7 +62,18 @@ function dateKey(date) {
 // so later profiles (e.g. "3 weeks in") can start this habit further along
 // — already adopted, escalated past its trial tier — without duplicating
 // the rest of its shape.
-function walkingHabit({ startedAt, log, tier = '10 minutes', ownershipState = OWNERSHIP_STATE.TRIALED }) {
+// `tierHistory` defaults to a single entry at the habit's own start (no
+// escalation yet) — pass one explicitly (see '3-weeks-in' below) for a
+// persona whose tier actually changed partway through, so the Me tab's
+// progress card has a real "before → after" to plot instead of a flat,
+// single-point non-trend.
+function walkingHabit({
+  startedAt,
+  log,
+  tier = '10 minutes',
+  ownershipState = OWNERSHIP_STATE.TRIALED,
+  tierHistory,
+}) {
   return {
     id: 'walk-after-meal',
     title: 'Daily walk',
@@ -74,6 +85,7 @@ function walkingHabit({ startedAt, log, tier = '10 minutes', ownershipState = OW
     ownershipState,
     startedAt: startedAt.toISOString(),
     log,
+    tierHistory: tierHistory || [{ tier, at: startedAt.toISOString() }],
   }
 }
 
@@ -82,7 +94,13 @@ function walkingHabit({ startedAt, log, tier = '10 minutes', ownershipState = OW
 // full 7-day content script (see domain/habitContent.js), so a persona
 // this far along still has real day-by-day content behind it rather than
 // falling back to the generic rotating pool.
-function wakeTimeHabit({ startedAt, log, tier = 'Within an hour, most days', ownershipState = OWNERSHIP_STATE.TRIALED }) {
+function wakeTimeHabit({
+  startedAt,
+  log,
+  tier = 'Within an hour, most days',
+  ownershipState = OWNERSHIP_STATE.TRIALED,
+  tierHistory,
+}) {
   return {
     id: 'consistent-wake-time',
     title: 'Consistent wake-up time',
@@ -94,6 +112,7 @@ function wakeTimeHabit({ startedAt, log, tier = 'Within an hour, most days', own
     ownershipState,
     startedAt: startedAt.toISOString(),
     log,
+    tierHistory: tierHistory || [{ tier, at: startedAt.toISOString() }],
   }
 }
 
@@ -152,6 +171,14 @@ export const DEMO_PROFILES = {
       // one early slip (day 2), visible in its own first-week tracker.
       const walkStartedAt = daysAgo(21)
       const walkLog = buildLog(walkStartedAt, 21, [1])
+      // Escalated 10 → 20 minutes right when the trial ended (day 7, i.e.
+      // 14 days ago) — a real two-point tierHistory, so the Me tab's
+      // progress card has an actual escalation to plot instead of a flat
+      // single-tier line.
+      const walkTierHistory = [
+        { tier: '10 minutes', at: walkStartedAt.toISOString() },
+        { tier: '20 minutes', at: daysAgo(14).toISOString() },
+      ]
 
       // The wake-time habit came later — its own ~10-day trial, adopted
       // after one missed day, done every day since (through yesterday).
@@ -166,6 +193,7 @@ export const DEMO_PROFILES = {
             log: walkLog,
             tier: '20 minutes',
             ownershipState: OWNERSHIP_STATE.ADOPTED,
+            tierHistory: walkTierHistory,
           }),
           wakeTimeHabit({
             startedAt: wakeStartedAt,

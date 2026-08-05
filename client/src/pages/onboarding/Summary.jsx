@@ -77,9 +77,19 @@ function Summary() {
               {pillarSummaries
                 .filter(({ labels }) => labels.length > 0)
                 .map(({ pillar, labels }) => (
-                  <div className="summary__row" key={pillar.id}>
+                  <div className="summary__row-group" key={pillar.id}>
                     <span className="summary__row-label">{pillar.label}</span>
-                    <span className="summary__row-value">{labels.join(' · ')}</span>
+                    {/* Each selected item gets its own line now instead of
+                        being joined with " · " into one row — the pillar
+                        label sits once per group (not repeated per item),
+                        same as a group heading over a short list. */}
+                    <div className="summary__row-values">
+                      {labels.map((label) => (
+                        <span className="summary__row-value" key={label}>
+                          {label}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 ))}
             </div>

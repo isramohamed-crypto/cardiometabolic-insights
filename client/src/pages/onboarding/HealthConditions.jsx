@@ -4,8 +4,8 @@ import QuestionScreen from './QuestionScreen.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 
 // First of the post-summary questions — optional health context, not part
-// of "The list" pillar sequence. Followed by FocusAreas.jsx (the final
-// onboarding question) before landing on /routine.
+// of "Existing habits" pillar sequence. Followed by FocusAreas.jsx (the
+// final onboarding question) before landing on /routine.
 const PREFER_NOT_TO_SAY = { id: 'prefer-not-to-say', label: 'Prefer not to say' }
 
 const CONDITIONS = [

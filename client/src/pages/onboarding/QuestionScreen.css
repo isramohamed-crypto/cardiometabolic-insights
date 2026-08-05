@@ -28,6 +28,27 @@
   color: var(--color-seaweed);
 }
 
+/* Only rendered on the pillar questions (step/totalSteps passed in) —
+   replaces the old "· step of totalSteps" text that used to sit inline
+   in the eyebrow. One flex segment per pillar, evenly filling the row
+   regardless of totalSteps, so this doesn't need per-count tuning. */
+.question-screen__progress {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-4);
+}
+
+.question-screen__progress-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 70, 32, 0.12);
+}
+
+.question-screen__progress-dot--filled {
+  background: var(--color-seaweed);
+}
+
 .question-screen__headline {
   margin: 0;
   display: flex;

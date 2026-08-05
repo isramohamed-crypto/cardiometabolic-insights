@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import ContentCard from '../../components/ContentCard.jsx'
 import { useFavorites } from '../../content/FavoritesContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
-import { CONTENT_POOL } from '../../domain/habitContent.js'
+import { CONTENT_POOL, COMPANION_CONTENT } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import './page.css'
 
@@ -26,10 +26,18 @@ function Read() {
 
   // Group by the user's own habits first — each habit's CONTENT_POOL
   // entries under its own heading — so reading feels tied to what they're
-  // actually working on, rather than one long undifferentiated list.
+  // actually working on, rather than one long undifferentiated list. Also
+  // folds in that habit's COMPANION_CONTENT piece (the "While you walk"
+  // evergreen item HabitDetail shows) — anything shown in habit details
+  // should be findable from here too, not just by opening that one habit.
   const habitGroups = habits
-    .map((habit) => ({ habit, items: CONTENT_POOL[habit.id] }))
-    .filter((group) => group.items && group.items.length > 0)
+    .map((habit) => {
+      const pool = CONTENT_POOL[habit.id] || []
+      const companion = COMPANION_CONTENT[habit.id]
+      const items = companion ? [...pool, companion.content] : pool
+      return { habit, items }
+    })
+    .filter((group) => group.items.length > 0)
 
   return (
     <div className="page">
@@ -64,7 +72,11 @@ function Read() {
                 <ContentCard
                   key={item.id}
                   id={item.id}
-                  thumbnail={gradient}
+                  // Prefer the item's own real photo (currently only the
+                  // walk-after-meal companion podcast has one) over the
+                  // habit's flat gradient — same `item.image || gradient`
+                  // precedence Routine.jsx already uses for its daily pick.
+                  thumbnail={item.image || gradient}
                   brand={item.brand}
                   title={item.title}
                   body={item.body}

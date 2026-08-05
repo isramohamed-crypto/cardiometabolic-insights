@@ -1,0 +1,13 @@
+/* This is the last real choice before Recommendations — it should read as
+   more of an event than an ordinary "Continue," so its CTA is deliberately
+   bigger and brighter than every other onboarding screen's. Scoped to
+   .focus-areas (see QuestionScreen's className prop) so this doesn't leak
+   into any other screen's Continue button, which stays exactly as it was. */
+.focus-areas .question-screen__continue {
+  height: 68px;
+  background: var(--color-green-apple);
+  color: #06210f;
+  font-weight: 700;
+  font-size: var(--text-h4);
+  box-shadow: 0 8px 28px rgba(232, 239, 101, 0.6);
+}

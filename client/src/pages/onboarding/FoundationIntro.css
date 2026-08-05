@@ -1,0 +1,18 @@
+/* Reuses question-screen's chrome; this file only covers what's unique to
+   this cover-page screen. */
+
+/* Overrides question-screen__headline's shared display:flex/column
+   layout (which forces every direct <span> child onto its own fixed
+   line) — this headline should flow and wrap like normal text instead of
+   always breaking into a rigid number of lines. Same fix Summary.jsx
+   uses for its own variable-length headline, just scoped to this screen's
+   own class rather than reusing summary__headline, since the two screens
+   aren't otherwise related. Written as a compound selector so it wins
+   over .question-screen__headline regardless of CSS import order. */
+.question-screen__headline.foundation-intro__headline {
+  display: block;
+}
+
+.foundation-intro__highlight {
+  color: var(--color-green-apple);
+}

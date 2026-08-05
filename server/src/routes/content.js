@@ -25,6 +25,14 @@ const router = Router()
 // sage = social (58-61), smoke = substance-free (62-72), slate =
 // medical/aging-in-place (73-83). Swap in the real hero image per
 // article whenever that becomes available.
+//
+// id 84 breaks that pattern on purpose: it's the same "Too Cold Outside?"
+// piece already used as the walk-after-meal day-2 supportive link in
+// habitContent.js (DAY_SCRIPTS), so its URL is real (not slug-inferred)
+// and its image is the actual hero photo already sitting in
+// client/public (athomeexercise-*.webp) rather than an abstract-*.svg
+// placeholder. Surfaced here too so it also shows up in the Read tab's
+// "More reading" list, not just buried in one habit's 7-day script.
 const sampleContent = [
   { id: 1, title: "Fiber Isn't Just for Your Gut It Also Supports Brain Health", source: 'Verywell Health', url: 'https://www.verywellhealth.com/fiber-isnt-just-for-your-gut-it-also-supports-brain-health-12005891', image: '/abstract-clay.svg' },
   { id: 2, title: 'How to Eat Healthy', source: 'Verywell Health', url: 'https://www.verywellhealth.com/how-to-eat-healthy-11987013', image: '/abstract-clay.svg' },
@@ -109,6 +117,7 @@ const sampleContent = [
   { id: 81, title: 'Home Design for Aging in Place', source: 'Better Homes & Gardens', url: 'https://www.bhg.com/home-design-for-aging-in-place-11735782', image: '/abstract-slate.svg' },
   { id: 82, title: 'Prevent Fall Risk in Older Adults (USPSTF Guidelines)', source: 'Verywell Health', url: 'https://www.verywellhealth.com/prevent-fall-risk-in-older-adults-uspstf-8670719', image: '/abstract-slate.svg' },
   { id: 83, title: 'How to Pick the Right Shower Lighting Ideas', source: 'The Spruce', url: 'https://www.thespruce.com/how-to-pick-the-right-shower-lighting-ideas-5214890', image: '/abstract-slate.svg' },
+  { id: 84, title: 'Too Cold Outside? Here Are 6 Easy Ways to Stay Active Without Leaving Home', source: 'Real Simple', url: 'https://www.realsimple.com/ways-to-stay-active-at-home-11897354', image: '/athomeexercise-8c66be2605b9466e99b20d830a93ae5b.webp' },
 ]
 
 router.get('/', (req, res) => {

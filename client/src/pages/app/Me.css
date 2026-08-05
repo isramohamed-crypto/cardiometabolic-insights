@@ -1,0 +1,79 @@
+/* "How it's actually going" — the section built from the concept mockup.
+   Sits below the existing profile title row rather than replacing it, so
+   Me keeps its established "{name}'s profile." lead line. */
+.progress-section {
+  margin-top: var(--space-6);
+}
+
+.progress-section__title {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  color: #1a1a1a;
+}
+
+.progress-section__accent {
+  color: var(--color-seaweed);
+}
+
+.progress-section > .progress-card,
+.progress-section > .doctor-summary-card {
+  margin-top: var(--space-4);
+}
+
+.doctor-summary-card {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.doctor-summary-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.doctor-summary-card__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  color: #1a1a1a;
+}
+
+.doctor-summary-card__body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* Empty-state copy reuses HabitProgressCard's dashed card shell (see
+   .progress-card--getting-started) but has no grid to sit above, so these
+   two lines get their own spacing rather than the card's usual
+   header/grid/caption rhythm. */
+.progress-card__empty-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  color: #1a1a1a;
+}
+
+.progress-card__empty-body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.progress-card__empty-body a {
+  color: var(--color-seaweed);
+  font-weight: 700;
+  text-decoration: none;
+}

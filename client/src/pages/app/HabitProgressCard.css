@@ -1,0 +1,154 @@
+/* Solid white card on the coconut page background — same inset-outline
+   treatment as page.css's other cards (.page__list li, .locked-slot) rather
+   than a drop shadow, to match this app's existing card language instead of
+   inventing a new one for this one screen. */
+.progress-card {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* The "not enough history yet" state — dashed border instead of a solid
+   outline (same visual vocabulary as .locked-slot's "not available yet"
+   treatment) so it reads as provisional at a glance, before anyone reads
+   the caption. */
+.progress-card--getting-started {
+  box-shadow: none;
+  border: 1.5px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.progress-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* Two classes deep (rather than relying on the bare .progress-card__habit-
+   title selector) so this beats page.css's ".page h2" rule — that rule's
+   small-caps eyebrow treatment is meant for section labels like "WEEK 1"
+   here, not this card's own sentence-case headline, but a class+type
+   selector otherwise out-specifies a single class on its own. */
+.progress-card__header .progress-card__habit-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  text-transform: none;
+  letter-spacing: normal;
+  color: #1a1a1a;
+}
+
+.progress-card__range {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* One grid for the day-letter header row and every week row beneath it —
+   sharing a single grid (rather than nesting a flex row per week) is what
+   keeps every week's dots aligned under the same letter column. First
+   column is the week label / header spacer; the remaining 7 are the days. */
+.progress-card__grid {
+  display: grid;
+  grid-template-columns: 4.2rem repeat(7, 1fr);
+  align-items: center;
+  row-gap: var(--space-3);
+}
+
+.progress-card__grid-spacer {
+  grid-column: 1;
+}
+
+.progress-card__day-letter {
+  justify-self: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.progress-card__week-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.progress-card__dot {
+  position: relative;
+  justify-self: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 70, 32, 0.1);
+}
+
+.progress-card__dot--done {
+  background: var(--color-leaf);
+}
+
+.progress-card__dot--upcoming {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.12);
+}
+
+.progress-card__dot--today::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-seaweed);
+}
+
+.progress-card__trend {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.progress-card__trend-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.progress-card__trend-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.progress-card__trend-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  color: var(--color-seaweed);
+}
+
+.progress-card__sparkline {
+  display: block;
+  width: 100%;
+  height: 40px;
+}
+
+.progress-card__caption {
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.5);
+}

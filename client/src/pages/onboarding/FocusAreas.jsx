@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import QuestionScreen from './QuestionScreen.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
+import './FocusAreas.css'
 
 // Final onboarding question — which single pillar (category) the user
 // wants to focus on first. Single-select on purpose: staying focused on
 // one area builds momentum, and more can be added later. Options come
 // straight from the canonical pillar list so this stays in sync with
-// domain/pillars.js automatically.
+// domain/pillars.js automatically. The "focus-areas" className is just an
+// anchor for FocusAreas.css to scope a bigger/brighter Continue button to
+// this one screen — see that file for why.
 function FocusAreas() {
   const navigate = useNavigate()
   const { setAnswer } = useOnboarding()
@@ -36,6 +39,7 @@ function FocusAreas() {
       onBack={handleBack}
       continueLabel="See my plan"
       multiSelect={false}
+      className="focus-areas"
     />
   )
 }

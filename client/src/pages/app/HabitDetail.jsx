@@ -55,18 +55,22 @@ function detailedTitle(catalogTitle, tier, moment) {
 // gradient fallback — same getHabitVisual asset every other card uses) as
 // a hero banner instead of a plain text header. Shows the 7-day tracker,
 // trial status, a manual "mark today done" check-in, and supporting
-// content specific to this habit. Editing tier/moment/reminders lives
-// separately at HabitEdit (/habit/:habitId/edit) — this screen just links
-// to it.
+// content specific to this habit. Editing tier/moment/reminders (and
+// retiring the habit) lives behind the "Edit" action next to the status
+// pill — opens as its own overlay modal rather than a separate route or an
+// inline disclosure. (There's a standalone HabitEdit page/route left over
+// from before that consolidation — nothing links to it anymore.)
 function HabitDetail() {
   const { habitId } = useParams()
   const navigate = useNavigate()
   const { habits, updateHabitState, updateHabit, toggleTodayDone } = useHabits()
 
-  // The tier and "when" editors are tucked behind a single disclosure so
-  // the default view stays focused on today's check-in — tapping it open
-  // reveals both editable sections together.
-  const [customizeOpen, setCustomizeOpen] = useState(false)
+  // Tier/moment editing and retiring the habit all live behind this one
+  // "Edit" action now — tapping it opens them together as an overlay
+  // modal (same "card over a dimmed scene" language as ContentModal),
+  // rather than expanding inline in the page or living as separate
+  // always-visible controls.
+  const [editOpen, setEditOpen] = useState(false)
 
   // The old "Ask about this habit" link is now a real text input pinned to
   // the bottom of the card — whatever's typed here travels with the
@@ -191,26 +195,130 @@ function HabitDetail() {
               {statusLabel}
               {isTrialing && ` — day ${Math.min(daysSince + 1, 7)} of 7`}
             </span>
-            <button type="button" className="habit-detail__retire" onClick={handleRetire}>
-              Retire this habit
+            <button
+              type="button"
+              className="habit-detail__edit-trigger"
+              onClick={() => setEditOpen(true)}
+            >
+              Edit
             </button>
           </div>
 
-          <div className="habit-detail__customize">
-            <button
-              type="button"
-              className="habit-detail__customize-toggle"
-              aria-expanded={customizeOpen}
-              onClick={() => setCustomizeOpen((open) => !open)}
-            >
-              Customize this habit
-              <span className="habit-detail__customize-chevron" aria-hidden="true">
-                {customizeOpen ? '▴' : '▾'}
-              </span>
-            </button>
+          {/* The actual keep/smaller/let-go decision (and the tier-upsell
+              that can follow "Keep it") now lives on the Routine tab, right
+              under this habit's own card — see HabitTrialPrompt.jsx. This
+              is just a one-line pointer over to it, not the decision UI
+              itself. */}
+          {showTrialPrompt && (
+            <Link to="/routine" className="habit-detail__trial-hint">
+              A week of trying. Head to Routine to decide what's next →
+            </Link>
+          )}
 
-            {customizeOpen && (
-              <div className="habit-detail__customize-body">
+          {showTierUpsell && (
+            <Link to="/routine" className="habit-detail__trial-hint">
+              "{habit.tier}" is working — head to Routine to bump it up →
+            </Link>
+          )}
+
+          {/* "Where the habit currently is" ends above this line (tracker,
+              trial status, customize, trial-decision hints). Below here is
+              habit-specific reading/media rather than status/controls. */}
+
+          {(catalogHabit.justification || justificationPick) && (
+            <section className="customize-section">
+              <h2 className="customize-section__title">Did you know?</h2>
+              {catalogHabit.justification && (
+                <p className="habit-detail__justification">{catalogHabit.justification}</p>
+              )}
+              {justificationPick && (
+                <div className="routine-habit-list">
+                  <ContentCard
+                    id={justificationPick.id}
+                    thumbnail={justificationPick.image || gradient}
+                    brand={justificationPick.brand}
+                    title={justificationPick.title}
+                    body={justificationPick.body}
+                    url={justificationPick.url}
+                    compact
+                  />
+                </div>
+              )}
+            </section>
+          )}
+
+          {companion && (
+            <section className="customize-section">
+              <h2 className="customize-section__title">{companion.sectionLabel}</h2>
+              <div className="routine-habit-list">
+                {/* Prefer the piece's own real photo (e.g. the walk-after-
+                    meal podcast's cover art) over the habit's flat
+                    gradient when one's set — same `item.image || gradient`
+                    precedence Routine.jsx already uses for its daily pick,
+                    so a real image shows up here too instead of only on
+                    Routine. */}
+                <ContentCard
+                  id={companion.content.id}
+                  thumbnail={companion.content.image || gradient}
+                  brand={companion.content.brand}
+                  title={companion.content.title}
+                  body={companion.content.body}
+                  url={companion.content.url}
+                  compact
+                />
+              </div>
+            </section>
+          )}
+
+          <div className="question-screen__spacer" />
+
+          <button
+            type="button"
+            className="question-screen__back"
+            onClick={() => navigate('/routine')}
+          >
+            <span aria-hidden="true">←</span> Back
+          </button>
+        </div>
+
+        <form className="habit-detail__composer" onSubmit={handleAskSubmit}>
+          <input
+            type="text"
+            className="habit-detail__composer-input"
+            placeholder="Ask about this habit…"
+            value={chatDraft}
+            onChange={(e) => setChatDraft(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="habit-detail__composer-send"
+            disabled={!chatDraft.trim()}
+          >
+            Send
+          </button>
+        </form>
+
+        {/* "Edit" overlay — tiers, when-editor, and retiring the habit all
+            live together here now, instead of retire sitting as its own
+            always-visible action and customize as a separate inline
+            disclosure. Same scene/card structure as ContentModal (a dark
+            backdrop inset from the top, with a white card floating on top
+            of it) rather than a new pattern of its own. */}
+        {editOpen && (
+          <div className="habit-edit-modal-scene">
+            <div className="habit-edit-modal">
+              <div className="habit-edit-modal__bar">
+                <button
+                  type="button"
+                  className="habit-edit-modal__close"
+                  onClick={() => setEditOpen(false)}
+                >
+                  <span aria-hidden="true">←</span> Back
+                </button>
+                <span className="habit-edit-modal__title">Edit habit</span>
+              </div>
+
+              <div className="habit-edit-modal__body">
                 {tiers.length > 1 && (
                   <section className="customize-section">
                     <h2 className="customize-section__title">How much</h2>
@@ -276,97 +384,23 @@ function HabitDetail() {
                     />
                   )}
                 </section>
+
+                {/* Retiring used to be its own always-visible action next
+                    to the status pill — folded in here instead, same
+                    destructive red/underline treatment it always had,
+                    just relocated to live with the rest of this habit's
+                    editable settings. */}
+                <button
+                  type="button"
+                  className="habit-edit-modal__retire"
+                  onClick={handleRetire}
+                >
+                  Retire this habit
+                </button>
               </div>
-            )}
+            </div>
           </div>
-
-          {/* The actual keep/smaller/let-go decision (and the tier-upsell
-              that can follow "Keep it") now lives on the Routine tab, right
-              under this habit's own card — see HabitTrialPrompt.jsx. This
-              is just a one-line pointer over to it, not the decision UI
-              itself. */}
-          {showTrialPrompt && (
-            <Link to="/routine" className="habit-detail__trial-hint">
-              A week of trying. Head to Routine to decide what's next →
-            </Link>
-          )}
-
-          {showTierUpsell && (
-            <Link to="/routine" className="habit-detail__trial-hint">
-              "{habit.tier}" is working — head to Routine to bump it up →
-            </Link>
-          )}
-
-          {/* "Where the habit currently is" ends above this line (tracker,
-              trial status, customize, trial-decision hints). Below here is
-              habit-specific reading/media rather than status/controls. */}
-
-          {(catalogHabit.justification || justificationPick) && (
-            <section className="customize-section">
-              <h2 className="customize-section__title">Did you know?</h2>
-              {catalogHabit.justification && (
-                <p className="habit-detail__justification">{catalogHabit.justification}</p>
-              )}
-              {justificationPick && (
-                <div className="routine-habit-list">
-                  <ContentCard
-                    id={justificationPick.id}
-                    thumbnail={gradient}
-                    brand={justificationPick.brand}
-                    title={justificationPick.title}
-                    body={justificationPick.body}
-                    url={justificationPick.url}
-                    compact
-                  />
-                </div>
-              )}
-            </section>
-          )}
-
-          {companion && (
-            <section className="customize-section">
-              <h2 className="customize-section__title">{companion.sectionLabel}</h2>
-              <div className="routine-habit-list">
-                <ContentCard
-                  id={companion.content.id}
-                  thumbnail={gradient}
-                  brand={companion.content.brand}
-                  title={companion.content.title}
-                  body={companion.content.body}
-                  url={companion.content.url}
-                  compact
-                />
-              </div>
-            </section>
-          )}
-
-          <div className="question-screen__spacer" />
-
-          <button
-            type="button"
-            className="question-screen__back"
-            onClick={() => navigate('/routine')}
-          >
-            <span aria-hidden="true">←</span> Back
-          </button>
-        </div>
-
-        <form className="habit-detail__composer" onSubmit={handleAskSubmit}>
-          <input
-            type="text"
-            className="habit-detail__composer-input"
-            placeholder="Ask about this habit…"
-            value={chatDraft}
-            onChange={(e) => setChatDraft(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="habit-detail__composer-send"
-            disabled={!chatDraft.trim()}
-          >
-            Send
-          </button>
-        </form>
+        )}
     </main>
   )
 }

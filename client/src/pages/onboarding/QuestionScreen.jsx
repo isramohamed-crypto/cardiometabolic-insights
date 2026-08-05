@@ -10,7 +10,14 @@ import './QuestionScreen.css'
  *
  * Visual style (color, type, etc.) is intentionally uniform across every
  * onboarding screen for now — see --question-accent in QuestionScreen.css.
- * Don't vary it per-screen until real branding direction is given.
+ * Don't vary it per-screen until real branding direction is given. The one
+ * escape hatch is `className`, which adds an extra class onto the root
+ * <main> so a single screen can scope its own override (e.g. a bigger,
+ * brighter Continue button) via a compound selector like
+ * `.focus-areas .question-screen__continue`, the same pattern
+ * HabitDetail/Summary already use elsewhere — without that, per-screen
+ * tweaks would either leak into every other screen or need a whole
+ * one-off component.
  */
 function QuestionScreen({
   eyebrow,
@@ -26,16 +33,39 @@ function QuestionScreen({
   continueLabel = 'Continue',
   requireSelection = true,
   multiSelect = true,
+  className,
 }) {
   const canContinue = !requireSelection || selected.length > 0
 
   return (
-    <main className="question-screen">
+    <main className={`question-screen${className ? ` ${className}` : ''}`}>
       <div className="question-screen__header">
-        <p className="question-screen__eyebrow">
-          {eyebrow}
-          {step && totalSteps ? ` · ${step} of ${totalSteps}` : null}
-        </p>
+        <p className="question-screen__eyebrow">{eyebrow}</p>
+
+        {/* Only the pillar questions (PillarQuestion) pass step/totalSteps
+            — everything else renders no bar, same as the "· step of
+            totalSteps" text this replaced. Dots up to (not including) the
+            current step read as "completed"; the current step itself is
+            included too, so the first pillar screen shows one filled dot
+            rather than none. */}
+        {step && totalSteps ? (
+          <div
+            className="question-screen__progress"
+            role="progressbar"
+            aria-valuenow={step}
+            aria-valuemin={1}
+            aria-valuemax={totalSteps}
+            aria-label={`Step ${step} of ${totalSteps}`}
+          >
+            {Array.from({ length: totalSteps }).map((_, i) => (
+              <span
+                key={i}
+                className={`question-screen__progress-dot${i < step ? ' question-screen__progress-dot--filled' : ''}`}
+              />
+            ))}
+          </div>
+        ) : null}
+
         <h1 className="question-screen__headline">
           {headlineLines.map((line) => (
             <span className="question-screen__headline-line" key={line}>

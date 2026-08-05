@@ -25,13 +25,20 @@ export function HabitsProvider({ children }) {
   // per the ownership state machine in domain/habit.js. `startedAt` anchors
   // the 7-day tracker on the Routine card (HabitDayTracker); `log` holds
   // HabitLogEntry rows once daily check-in exists — empty until then.
+  // `tierHistory` opens with the starting tier (see domain/habit.js's
+  // TierHistoryEntry) so the Me tab's progress card has a real first data
+  // point to trend from later — only set here when the caller hasn't
+  // already supplied one of its own (the demo profiles do, to backdate a
+  // persona's escalation instead of pinning it to "now").
   const addHabit = (habit) => {
+    const startedAt = new Date().toISOString()
     setHabits((prev) => [
       ...prev,
       {
         ownershipState: OWNERSHIP_STATE.TRIALED,
-        startedAt: new Date().toISOString(),
+        startedAt,
         log: [],
+        tierHistory: habit.tier ? [{ tier: habit.tier, at: startedAt }] : [],
         ...habit,
       },
     ])
@@ -44,9 +51,21 @@ export function HabitsProvider({ children }) {
   }
 
   // Generic patch for editing an existing habit — e.g. tier, moment, or
-  // remindersOn from the full-screen habit detail view.
+  // remindersOn from the full-screen habit detail view. When the patch
+  // actually changes `tier` (an escalation/downsize, not just re-saving the
+  // same value), append it to tierHistory with "now" as the timestamp —
+  // the same trail addHabit starts, kept going every time it moves.
   const updateHabit = (id, patch) => {
-    setHabits((prev) => prev.map((h) => (h.id === id ? { ...h, ...patch } : h)))
+    setHabits((prev) =>
+      prev.map((h) => {
+        if (h.id !== id) return h
+        const next = { ...h, ...patch }
+        if (patch.tier && patch.tier !== h.tier) {
+          next.tierHistory = [...(h.tierHistory || []), { tier: patch.tier, at: new Date().toISOString() }]
+        }
+        return next
+      }),
+    )
   }
 
   // Manual daily check-in — toggles a DONE HabitLogEntry for today on/off.

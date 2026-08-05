@@ -210,48 +210,6 @@
   gap: var(--space-2);
 }
 
-/* Was an outlined card sitting on the coconut background — now a filled
-   sage-tinted card instead, using the same rgba(0, 70, 32, 0.06) tint
-   already established on .habit-detail__integrate below for this page's
-   other "quiet card" moments, rather than introducing a new one-off color.
-   Toggle and body both drop their own backgrounds so the tint reads as one
-   continuous fill rather than two flat coconut panels sitting inside it. */
-.habit-detail__customize {
-  border-radius: var(--radius-sm);
-  background: rgba(0, 70, 32, 0.06);
-  overflow: hidden;
-}
-
-.habit-detail__customize-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  border: none;
-  padding: var(--space-3) var(--space-4);
-  background: none;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-}
-
-.habit-detail__customize-chevron {
-  font-size: var(--text-caption);
-  color: rgba(0, 0, 0, 0.4);
-}
-
-.habit-detail__customize-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-4);
-  margin-top: 0;
-  border-top: 1px solid rgba(0, 70, 32, 0.15);
-  background: none;
-}
-
 .habit-detail__status {
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
@@ -396,7 +354,107 @@
   background: rgba(0, 70, 32, 0.12);
 }
 
-.habit-detail__retire {
+/* Sits where "Retire this habit" used to, next to the status pill — but
+   this is the neutral "open the Edit overlay" trigger now, not a
+   destructive action itself, so it gets the page's seaweed link treatment
+   rather than retire's red. */
+.habit-detail__edit-trigger {
+  margin: 0;
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: var(--color-seaweed);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.habit-detail__edit-trigger:hover {
+  opacity: 0.75;
+}
+
+/* --- Edit overlay -----------------------------------------------------
+   Tiers, the when-editor, and retiring the habit all live together here
+   now (opened via habit-detail__edit-trigger above) instead of retire
+   sitting as its own always-visible action and the rest expanding inline
+   in the page. Structure mirrors ContentModal exactly — scene is the dark
+   backdrop inset from the top, card is the white sheet that floats on top
+   of it, rounded on top and lifted off with a drop shadow — reusing that
+   pattern rather than inventing a new one for this second overlay. */
+.habit-edit-modal-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  padding: var(--space-4) var(--space-3) 0;
+  background: var(--color-seaweed);
+}
+
+.habit-edit-modal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.habit-edit-modal__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.habit-edit-modal__close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.habit-edit-modal__close:hover {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.habit-edit-modal__title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: #1a1a1a;
+}
+
+.habit-edit-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+}
+
+/* Same destructive red/underline treatment habit-detail__retire always
+   had — just relocated into this overlay instead of sitting next to the
+   status pill. align-self: flex-start keeps it from stretching full-width
+   like the sections above it, since it reads as a standalone action, not
+   another editable section. */
+.habit-edit-modal__retire {
+  align-self: flex-start;
   margin: 0;
   border: none;
   background: none;
@@ -409,6 +467,6 @@
   cursor: pointer;
 }
 
-.habit-detail__retire:hover {
+.habit-edit-modal__retire:hover {
   color: #8c1d17;
 }

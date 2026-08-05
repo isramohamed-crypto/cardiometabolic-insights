@@ -65,15 +65,24 @@ function PillarQuestion() {
     })
 
     const prev = PILLARS[index - 1]
-    navigate(prev ? `/onboarding/habits/${prev.id}` : '/onboarding/name')
+    navigate(prev ? `/onboarding/habits/${prev.id}` : '/onboarding/habits-intro')
   }
 
-  const body = isFirst && name ? `Hi ${name} — ${BODY_COPY.toLowerCase()}` : BODY_COPY
+  // Only the join word right after the em dash gets lowercased, so "Hi
+  // {name} — everyone has..." still reads as one flowing sentence — full
+  // BODY_COPY.toLowerCase() was lowercasing the whole string, which broke
+  // sentence case on the second sentence too ("pick what's..." instead of
+  // "Pick what's..."). Only ever hit on the eating screen in practice
+  // (pillars.js index 0 = isFirst), since that's the only pillar visited
+  // with a name already on hand.
+  const body = isFirst && name
+    ? `Hi ${name} — ${BODY_COPY.charAt(0).toLowerCase()}${BODY_COPY.slice(1)}`
+    : BODY_COPY
 
   return (
     <QuestionScreen
       key={pillar.id}
-      eyebrow="The list"
+      eyebrow="Existing habits"
       step={index + 1}
       totalSteps={PILLARS.length}
       headlineLines={pillar.headlineLines}
