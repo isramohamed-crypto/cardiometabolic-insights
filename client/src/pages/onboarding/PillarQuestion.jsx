@@ -35,11 +35,11 @@ function PillarQuestion() {
   const toggleOption = (id) => {
     setSelected((prev) => {
       if (id === NONE_OPTION.id) {
-        // Selecting "still figuring this out" clears everything else;
-        // clicking it again just deselects it.
+        // Selecting "Skip" clears everything else; clicking it again just
+        // deselects it.
         return prev.includes(id) ? [] : [id]
       }
-      // Picking a real option overrides "still figuring this out".
+      // Picking a real option overrides "Skip".
       const withoutNone = prev.filter((item) => item !== NONE_OPTION.id)
       return withoutNone.includes(id)
         ? withoutNone.filter((item) => item !== id)

@@ -52,8 +52,8 @@ function Summary() {
             </span>
           </h1>
         ) : (
-          // Every pillar was answered "still figuring this out" — the
-          // Continue button requires a selection, so this is the only way
+          // Every pillar was answered "Skip" — the Continue button
+          // requires a selection, so this is the only way
           // totalCount lands at zero. Lead with encouragement, not a blank
           // slate.
           <h1 className="question-screen__headline summary__headline">

@@ -80,7 +80,7 @@ export const BODY_COPY = "Everyone has habits that stick. Pick what's already on
 
 // Polite escape hatch appended to the bottom of every pillar's option list,
 // for when none of the real options apply yet.
-export const NONE_OPTION = { id: 'none', label: 'Still figuring this out' }
+export const NONE_OPTION = { id: 'none', label: 'Skip' }
 
 export function getPillarIndex(pillarId) {
   return PILLARS.findIndex((p) => p.id === pillarId)
