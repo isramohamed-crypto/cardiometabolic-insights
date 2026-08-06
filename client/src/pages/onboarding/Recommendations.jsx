@@ -78,7 +78,7 @@ function Recommendations() {
         <div className="question-screen__header">
           <p className="question-screen__eyebrow">One moment</p>
           <h1 className="question-screen__headline">
-            <span>Putting together</span>
+            <span>Putting together</span>{' '}
             <span>your plan…</span>
           </h1>
         </div>
@@ -122,7 +122,7 @@ function Recommendations() {
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Your plan</p>
         <h1 className="question-screen__headline">
-          <span>Pick a habit</span>
+          <span>Pick a habit</span>{' '}
           <span>to start with</span>
         </h1>
       </div>

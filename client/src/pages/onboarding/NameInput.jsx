@@ -29,7 +29,7 @@ function NameInput() {
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Welcome</p>
         <h1 className="question-screen__headline">
-          <span className="question-screen__headline-line">What should we</span>
+          <span className="question-screen__headline-line">What should we</span>{' '}
           <span className="question-screen__headline-line">call you?</span>
         </h1>
       </div>

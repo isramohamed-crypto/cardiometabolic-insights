@@ -67,8 +67,14 @@ function QuestionScreen({
         ) : null}
 
         <h1 className="question-screen__headline">
-          {headlineLines.map((line) => (
+          {/* A real leading space (as its own text child, not CSS generated
+              content) on every line but the first — renders as a normal
+              word-space when both lines fit on one row, and collapses away
+              cleanly at a wrap point when they don't. See
+              QuestionScreen.css's note on .question-screen__headline-line. */}
+          {headlineLines.map((line, i) => (
             <span className="question-screen__headline-line" key={line}>
+              {i > 0 ? ' ' : ''}
               {line}
             </span>
           ))}

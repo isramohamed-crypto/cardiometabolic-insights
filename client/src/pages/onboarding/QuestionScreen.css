@@ -77,19 +77,17 @@
 
 /* Each headlineLines entry renders as its own <span> (see
    QuestionScreen.jsx, plus the screens that hand-roll the same two-span
-   markup directly: Recommendations.jsx, CustomizeHabit.jsx,
-   NameInput.jsx). Now that the parent flows as normal block text instead
-   of stacking flex children, these need to be inline (not a forced block
-   row) — and since adjacent inline elements with no text node between
-   them render with no space, a generated space after every line but the
-   last keeps a real, wrappable space between them, same as if the source
-   strings had been joined with `' '` and rendered as one text node. */
+   markup directly: Recommendations.jsx, NameInput.jsx). Now that the
+   parent flows as normal block text instead of stacking flex children,
+   these need to be inline (not a forced block row) rather than a
+   generated ::after space — the actual space between lines is a real
+   text character in the markup itself (see those files), which is the
+   only reliably-collapsible-the-right-way way to get one: it renders
+   normally mid-line whenever both lines fit on one row, and collapses
+   away cleanly at a wrap point when they don't, exactly like the space
+   between any two ordinary words. */
 .question-screen__headline-line {
   display: inline;
-}
-
-.question-screen__headline-line:not(:last-child)::after {
-  content: ' ';
 }
 
 .question-screen__body {
