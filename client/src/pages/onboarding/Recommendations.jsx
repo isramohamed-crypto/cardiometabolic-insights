@@ -57,18 +57,15 @@ function Recommendations() {
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
 
-  const handleFinalize = ({ moment, remindersOn }) => {
+  const handleFinalize = ({ tier, moment, remindersOn }) => {
     // addHabit defaults ownershipState to TRIALED — actively trying it out
-    // — per the state machine in domain/habit.js. Tier isn't asked about
-    // here at all — it starts at the suggested tier and can be changed
-    // afterward from the habit's own page once it's adopted.
-    const startingTierIndex = suggestTierIndex(pillar.id, answers, habit.tiers.length)
+    // — per the state machine in domain/habit.js.
     addHabit({
       id: habit.id,
       title: habit.title,
       subtitle: habit.subtitle,
       pillarId: pillar.id,
-      tier: habit.tiers[startingTierIndex].label,
+      tier: tier.label,
       moment,
       remindersOn,
     })
@@ -111,7 +108,12 @@ function Recommendations() {
 
   if (stage === 'customize') {
     return (
-      <CustomizeHabit habit={habit} onBack={() => setStage('pick')} onSave={handleFinalize} />
+      <CustomizeHabit
+        habit={habit}
+        suggestedTierIndex={suggestTierIndex(pillar.id, answers, habit.tiers.length)}
+        onBack={() => setStage('pick')}
+        onSave={handleFinalize}
+      />
     )
   }
 

@@ -92,14 +92,13 @@ function AddHabitFlow({ onClose }) {
     setStage('pick')
   }
 
-  const handleFinalize = ({ moment, remindersOn }) => {
-    const startingTierIndex = suggestTierIndex(pillar.id, answers, habit.tiers.length)
+  const handleFinalize = ({ tier, moment, remindersOn }) => {
     addHabit({
       id: habit.id,
       title: habit.title,
       subtitle: habit.subtitle,
       pillarId: pillar.id,
-      tier: habit.tiers[startingTierIndex].label,
+      tier: tier.label,
       moment,
       remindersOn,
     })
@@ -210,6 +209,7 @@ function AddHabitFlow({ onClose }) {
       {stage === 'customize' && (
         <CustomizeHabit
           habit={habit}
+          suggestedTierIndex={suggestTierIndex(pillar.id, answers, habit.tiers.length)}
           embedded
           onBack={() => setStage('pick')}
           onSave={handleFinalize}

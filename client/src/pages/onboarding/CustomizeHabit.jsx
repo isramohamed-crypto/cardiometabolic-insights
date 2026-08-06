@@ -6,17 +6,17 @@ import './QuestionScreen.css'
 import './CustomizeHabit.css'
 
 // Shown after "Add this habit" — the habit itself stays generic (see
-// recommendedHabits.js). Tier isn't asked about here (or anywhere in
-// onboarding) — it starts at a suggested default and only becomes
-// adjustable later, from the habit's own page once it's in the routine.
-// This step just gathers when they'll do it (stacked onto an existing
-// moment, or an exact time) and whether to get reminded.
+// recommendedHabits.js), so this is where the user's discretion comes in:
+// how much to start with (tier — defaulting to suggestedTierIndex, but
+// changeable here), when they'll do it (stacked onto an existing moment,
+// or an exact time), and whether to get reminded.
 //
 // `embedded` skips the standalone page chrome (the `<main>` + colored
 // header) and returns just the body content instead — used by
 // AddHabitFlow, which sits inside Routine/Collection's own page body
 // rather than being a full-screen step of its own.
-function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
+function CustomizeHabit({ habit, suggestedTierIndex = 0, onBack, onSave, embedded = false }) {
+  const [tierIndex, setTierIndex] = useState(suggestedTierIndex)
   const [momentMode, setMomentMode] = useState('preset')
   const [momentPreset, setMomentPreset] = useState(null)
   const [momentTime, setMomentTime] = useState('')
@@ -42,6 +42,7 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
 
   const handleSave = () => {
     onSave({
+      tier: habit.tiers[tierIndex],
       moment: momentMode === 'preset' ? momentPreset : formatTime(momentTime),
       remindersOn,
     })
@@ -52,6 +53,26 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
       <p className="question-screen__intro">
         The habit stays the same — how much and when is up to you.
       </p>
+
+      <section className="customize-section">
+        <h2 className="customize-section__title">How much to start?</h2>
+        <div className="question-screen__options">
+          {habit.tiers.map((tier, i) => (
+            <button
+              key={tier.label}
+              type="button"
+              className={`question-screen__option${i === tierIndex ? ' question-screen__option--selected' : ''}`}
+              aria-pressed={i === tierIndex}
+              onClick={() => setTierIndex(i)}
+            >
+              <span>{tier.label}</span>
+              {i === suggestedTierIndex && (
+                <span className="customize-suggested">Suggested</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <section className="customize-section">
         <h2 className="customize-section__title">When will you do it?</h2>
