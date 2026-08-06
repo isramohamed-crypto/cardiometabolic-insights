@@ -42,8 +42,23 @@ export const CONTENT_POOL = {
       // Condensed from EatingWell's full piece (same title) in Vitalist's
       // own words — not a verbatim excerpt.
       body: 'Blood sugar tends to climb after a meal, and a short walk gets your muscles pulling that glucose out of your bloodstream for fuel — which also improves how sensitive your cells are to insulin over time. That combination tends to mean steadier numbers overnight and fewer sleep disruptions from a spike before bed. Pairing the walk with an earlier, higher-fiber dinner tends to amplify the effect; if mornings stay high despite it, that\'s worth flagging to your doctor.',
+      // Longer version for ContentModal — same "own words" rule as body
+      // above, just more of it. Sourced from the content inventory sheet's
+      // "Additional notes" pass.
+      fullBody: 'Morning blood sugar spikes don\'t always start in the morning — they\'re often set up by what happened at dinner the night before, whether that\'s a big meal, going low on fiber, or skipping activity afterward. A short walk right after eating gives your muscles somewhere to put that glucose: as they contract, they pull sugar out of your bloodstream for fuel, insulin or not, which is part of why post-meal walks show up again and again in blood-sugar research. The effect seems biggest when the walk starts soon after the last bite rather than an hour later. It compounds well with a few other evening habits — a higher-fiber dinner, eating a bit earlier so you\'re not still digesting at bedtime, and a full night\'s sleep, since poor sleep on its own can push blood sugar up. Elevated blood sugar before bed can also mean more trips to the bathroom overnight, so the walk may pay off in better sleep too, not just better numbers. If mornings stay high despite all of this, it\'s worth mentioning to your doctor — persistent overnight highs can also point to medication timing or the body\'s natural early-morning hormone surge, both worth ruling out.',
+      url: 'https://www.eatingwell.com/nighttime-habit-for-better-blood-sugar-11861157',
+      image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
     },
-    { id: 'wa-2', type: CONTENT_TYPE.ENABLING, brand: 'EatingWell', title: '6 Benefits of Walking After Meals' },
+    {
+      id: 'wa-2',
+      type: CONTENT_TYPE.ENABLING,
+      brand: 'EatingWell',
+      title: '6 Benefits of Walking After Meals',
+      body: 'A post-meal walk does more than pass the time after dinner — even 15 to 30 minutes has been linked to lower blood sugar, easier digestion, and a mood boost, especially paired with something you enjoy, like a podcast or a dog who needs the walk as much as you do.',
+      fullBody: 'Six separate benefits show up across the research on walking after a meal, and none of them require a long walk. Blood sugar responds fastest — a walk soon after eating blunts the glucose spike that follows a carb-heavy meal, more so than a walk taken before eating. Digestion follows close behind: a short 10 to 15 minute stroll has been linked to less bloating, gas, and constipation, since movement helps food move through the gut. Walking also increases circulation as blood gets redirected to working muscles, and over time it\'s associated with meaningfully lower blood pressure — even in people whose hypertension hasn\'t responded well to other treatment. It supports weight management too, not through the walk alone but through the small, repeatable calorie deficit it creates, and it reliably lifts mood by way of the same serotonin and endorphin release any movement triggers. The easiest way to make it stick is habit-stacking: attach the walk to something you already do after dinner — clearing the table, taking out the dog, loading the dishwasher — so it doesn\'t need its own decision each night.',
+      url: 'https://www.eatingwell.com/benefits-of-walking-after-meals-11777687',
+      image: "url('/6-Benefits-of-Walking-After-Meals-56d10054dc50491ea3e81c2208ed0815.webp')",
+    },
   ],
   'two-strength-sessions': [
     {
@@ -52,6 +67,9 @@ export const CONTENT_POOL = {
       brand: 'Verywell Health',
       title: 'Research Shows a Certain Amount of Strength Training Every Week Can Help You Live Longer',
       body: 'A large, decades-long study found that 90 to 120 minutes of strength training a week — about one to three short sessions — was linked to meaningfully lower risk of dying from any cause, and specifically from cardiovascular and neurological disease, with benefits leveling off past that point. Pairing it with regular aerobic activity, like a walk, compounds the benefit further.',
+      fullBody: 'The study behind this held up for nearly 30 years and followed about 147,000 adults, tracking how much strength training they did against how they eventually died. People who strength-trained 90 to 120 minutes a week — roughly one to three short sessions — had a 13% lower risk of death from any cause, a 19% lower risk of cardiovascular death, and a 27% lower risk of dying from neurological disease, compared to people who did little or none. Past 120 minutes a week, the researchers didn\'t find additional benefit — the gains leveled off rather than continuing to climb, which is good news if a bigger weekly commitment isn\'t realistic right now. The contribution here wasn\'t just confirming that strength training helps, which prior research already showed — it was pinning down roughly how much matters, and showing the benefit held decades out. It\'s also not a substitute for cardio: the two work on different systems, with aerobic exercise mainly supporting heart and metabolic health and strength training preserving muscle, bone density, and the kind of functional strength that prevents falls later in life. Combining a couple of strength sessions with regular walking or other aerobic movement outperforms either one alone.',
+      url: 'https://www.verywellhealth.com/strength-training-longevity-12000925',
+      image: "url('/VWH-GettyImages-2212443785-1756a837a6f84c688c1b14bcd702f31a.webp')",
     },
   ],
   'chair-stands-after-breakfast': [
@@ -64,6 +82,12 @@ export const CONTENT_POOL = {
       // move this small: chair stands are an easy way to bank some of that
       // weekly strength-training time without a gym or equipment.
       body: 'A large, decades-long study found that 90 to 120 minutes of strength training a week — about one to three short sessions — was linked to meaningfully lower risk of dying from any cause, and specifically from cardiovascular and neurological disease. Chair stands are a simple, equipment-free way to bank some of those minutes: they build the same lower-body strength that keeps you steady on stairs and getting up off the floor. Pairing it with regular aerobic activity, like a walk, compounds the benefit further.',
+      // Same research as ts-1's fullBody, told through the sitting-rising
+      // test angle instead, since that's the piece actually sourced for
+      // this habit (per the content inventory sheet).
+      fullBody: 'The sitting-rising test is a quick way to check where your strength, balance, and mobility stand without any equipment: barefoot on a non-slip surface, lower yourself to the floor using as little support as possible, then stand back up the same way. You start with five points for sitting and five for rising, losing a point each time you use a hand or knee for support and a half point for wobbling. A 2025 study followed 4,282 adults aged 46 to 75 for a median of 12 years and found the score tracked closely with survival — people who scored a perfect 10 had a 3.7% death rate over the follow-up period, compared to 11% for a score of eight and a 42% higher risk for the lowest-scoring group. Researchers didn\'t pin down exactly why the test predicts longevity so well, but it captures several things that quietly decline with age — leg strength, balance, and flexibility — all at once. The test itself isn\'t the fix, though: if your score is lower than you\'d like, chair stands are one of the more direct ways to rebuild the leg strength and sit-to-stand coordination the test is measuring, without needing a gym or any equipment. Anyone with a physical disability, or who is pregnant or elderly, should check with a doctor before trying the full floor version.',
+      url: 'https://www.health.com/this-fitness-test-could-predict-your-longevity-11758686',
+      image: "url('/MoMoProductions-1821169611-0ff05f9430e046a386a5a4fd54568dd5.webp')",
     },
   ],
   'morning-stretch': [
@@ -75,25 +99,79 @@ export const CONTENT_POOL = {
       // Condensed from Health's full piece (same title) in Vitalist's own
       // words — not a verbatim excerpt.
       body: 'Stretching the hips, glutes, and spine is what keeps everyday moves like tying a shoe, getting out of the car, or getting up from a chair easy as you age — mobility tends to go unnoticed until it starts slipping. Beyond flexibility, regular stretching has some evidence behind it for lower blood pressure, better blood sugar, eased tension and anxiety, and improved sleep. A few minutes a day focused on those areas does more for long-term independence than most people expect from something this low-effort.',
+      fullBody: 'Stretching tends to get treated as something you do before a workout, if at all — but the aging-focused case for it is less about flexibility for its own sake and more about which daily movements it protects. Strong, mobile hips and glutes are what make walking up stairs, getting in and out of a car, and standing up from a chair feel automatic instead of effortful; a mobile spine is behind everything from bending down to pick something up to just standing upright comfortably. Both tend to tighten gradually enough that most people don\'t notice until a task that used to be easy suddenly isn\'t. Beyond mobility, regular stretching has real evidence behind it for a handful of other things: measurably lower blood pressure in people with moderately elevated readings (in some studies, more effective than walking), modest gains in muscle strength and power, better sleep for people with insomnia, and reduced tension and anxiety. None of it requires a formal session — a few focused minutes on hips, ankles/calves, and the spine most mornings covers the areas that matter most for staying independent later, and any stretching now beats none, even if it\'s not the deep, assisted kind a studio session offers.',
+      url: 'https://www.health.com/stretching-for-longevity-12006815',
+      image: "url('/Health-GettyImages-1419987706-99ff80a2f9554d898eb74ee0d5f46963.webp')",
     },
   ],
   'consistent-wake-time': [
-    { id: 'wt-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Health', title: 'First Step to Better Sleep: Wake Up at the Same Time Every Day' },
+    {
+      id: 'wt-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Health',
+      title: 'First Step to Better Sleep: Wake Up at the Same Time Every Day',
+      body: 'Waking at the same time every day — weekends included — reinforces your body\'s natural sleep-wake cycle, and tends to make falling asleep easier too, since it keeps your sleep drive building on a predictable schedule. A little morning sunlight and skipping the snooze button both help it stick.',
+      fullBody: 'A fixed wake time works less like a rule and more like an anchor for the rest of your circadian rhythm — your body uses it as the reference point for when to release cortisol, when to feel sleepy, and when to feel alert. Sleeping in, even by a couple of hours on a weekend, functions like pushing bedtime later that same night, which is part of why an inconsistent wake time so often shows up as trouble falling asleep on Sunday. Getting 15 to 30 minutes of natural light shortly after waking reinforces the same rhythm from the other direction, helping the body distinguish "day" from "night" more clearly, which in turn supports feeling sleepy at the right time that evening. The habit is deceptively simple to describe and genuinely hard to keep — the biggest point of failure is hitting snooze, which is why picking a wake time you can actually sustain, rather than the most virtuous-sounding one, matters more than picking an early one. People who keep a consistent wake time tend to report easier mornings, fewer naps, better focus, and fewer sleep disruptions overall. If getting up consistently still doesn\'t translate into feeling rested, or if trouble waking persists despite doing everything right, it\'s worth ruling out an underlying sleep disorder like insomnia or sleep apnea with a sleep specialist rather than assuming it\'s a discipline problem.',
+      url: 'https://www.verywellhealth.com/30-days-to-better-sleep-3973920',
+      image: "url('/30-days-to-better-sleep-3973920_v21-3c0ce2cc1f8149c58242946ac704fa8d.webp')",
+    },
   ],
   'high-fiber-breakfast': [
-    { id: 'fb-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Allrecipes', title: "You're Probably Not Getting Enough Fiber — Here's Why It Matters and How to Fix It" },
+    {
+      id: 'fb-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Allrecipes',
+      title: "You're Probably Not Getting Enough Fiber — Here's Why It Matters and How to Fix It",
+      body: 'Fewer than 5% of Americans get the recommended 25 to 30 grams of fiber a day — most people focus on protein instead, when fiber is the more common gap. It supports digestion, blood sugar, and fullness, and a single breakfast swap (oats, chia, a whole-grain toast) is an easy place to start.',
+      fullBody: 'Protein deficiency is nearly unheard of in the U.S., but fiber is a different story — fewer than 5% of Americans hit the recommended 25 to 30 grams a day, and the shortfall is worse on restrictive diets like keto or gluten-free, where whole grains and a wide variety of produce tend to drop out first. Fiber comes in two forms that do different jobs: soluble fiber (oats, chia, legumes, most fruit) dissolves into a gel-like substance that slows digestion and helps you feel full longer; insoluble fiber (nuts, seeds, and the skins of fruits and vegetables) adds bulk that keeps things moving through the digestive tract. Most people should get roughly three-quarters of their fiber from insoluble sources and a quarter from soluble, though individual needs vary. Beyond digestion, adequate fiber is linked to a lower risk of cardiovascular disease, type 2 diabetes, and colorectal cancer, and it plays a role in blood sugar regulation by slowing how fast glucose gets absorbed. Food sources are the better route — a supplement makes it easier to overdo it, which can crowd out mineral absorption — but if breakfast is the hardest meal to add fiber to, something as small as leaving the skin on fruit, adding a spoonful of chia or flax, or swapping in a whole-grain option covers a meaningful share of the day\'s target. Going slowly matters too: a sudden jump in fiber intake before your gut bacteria adjust is the most common reason for bloating and gas.',
+      url: 'https://www.allrecipes.com/article/how-to-get-enough-fiber/',
+      image: "url('/GettyImages-98896874-2000-b66cfc74cb034f0c9c7e47c93f39a89f.webp')",
+    },
   ],
   'water-on-waking': [
-    { id: 'ww-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'EatingWell', title: 'The Benefits of Front-Loading Your Water Intake, According to Dietitians' },
+    {
+      id: 'ww-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'EatingWell',
+      title: 'The Benefits of Front-Loading Your Water Intake, According to Dietitians',
+      body: 'Sleep is one of the longest stretches you go without drinking anything, so a glass of water first thing helps rehydrate before you\'ve even had coffee. Front-loading your water intake earlier in the day has also been linked to better focus, digestion, and even modest support for weight management.',
+      fullBody: 'Water makes up roughly 60% of the body, and overnight is one of the few long stretches most people go without any — breathing and sweating alone cause some fluid loss even during a still night\'s sleep. That\'s part of why a glass of water on waking tends to help with more than just thirst: one study found that rehydrating after a fast improved visual attention, the kind of focus that helps filter out distractions, and mild dehydration on its own is enough to cause fatigue and brain fog. Drinking water before a meal — about two cups — has also been shown to reduce how much is eaten at that meal by lowering perceived hunger, part of the case for getting ahead of your water intake earlier rather than trying to catch up at night. There\'s a sleep angle too, just in the other direction: drinking most of your fluids earlier in the day means less need to drink close to bedtime, which means fewer bathroom trips disrupting sleep. Needs vary by body weight, activity level, and climate — a common starting point is roughly half your body weight in ounces per day, adjusted up for exercise or heat — and overdoing it matters as much as underdoing it, since drinking far more than needed can dilute sodium levels. Keeping a glass by the bed the night before removes the only real friction in this habit: having to get up and get one.',
+      url: 'https://www.eatingwell.com/front-loading-your-water-intake-11791775',
+      image: "url('/RDs-Reveal-Whether-Drinking-Water-Earlier-in-the-Day-Matters--b91c3b8a51594e8facdde85360cae4ca.webp')",
+    },
   ],
   'five-minute-breathing': [
-    { id: 'fbr-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Mind', title: 'The Benefits of Deep Breathing' },
+    {
+      id: 'fbr-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Mind',
+      title: 'The Benefits of Deep Breathing',
+      body: 'Slow, deep breathing activates the parasympathetic nervous system — the body\'s "rest and digest" mode — which is part of why it reliably eases anxiety and stress in the moment, not just over time. It\'s also linked to better focus and better sleep, and costs nothing to try.',
+      fullBody: 'Most breathing happens without any thought behind it, but there\'s a real difference between that automatic shallow breathing and a slower, deliberate deep breath — the kind that engages the diaphragm rather than just the muscles between your ribs. Deep breathing activates the parasympathetic nervous system, often called the "rest and digest" system, and along the way it stimulates the vagus nerve, which influences mood, digestion, and heart rate. Research connects the practice to reduced anxiety and depression, better sleep, and faster recovery after exercise or exertion. Two simple techniques cover most of what it takes to start: diaphragmatic breathing, where a hand on the belly should rise more than a hand on the chest as you inhale through the nose and slowly exhale; and 4-7-8 breathing, where you inhale for a count of four, hold for seven, and exhale for eight, repeated three to five times. The biggest practical tip is timing — practicing when you\'re calm builds the skill before you actually need it in a stressful moment, rather than trying to learn a new technique for the first time while already anxious. If a session ever leaves you lightheaded, that\'s a sign to stop; the feeling should pass quickly, and it\'s worth mentioning to a doctor if it doesn\'t.',
+      url: 'https://www.verywellmind.com/the-benefits-of-deep-breathing-5208001',
+      image: "url('/the-benefits-of-deep-breathing-5208001-Final-50074d86472d45bbb8d54261c774a4e8.webp')",
+    },
   ],
   'evening-journal': [
     { id: 'ej-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Mind', title: 'Want to Relieve Stress ASAP? Write in a Gratitude Journal' },
   ],
   'text-a-friend': [
     { id: 'tf-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Mind', title: 'How Social Isolation Can Damage Your Mental Health' },
+  ],
+  // First sourced piece for this habit — previously had nothing (see the
+  // content inventory sheet's "NO SOURCED CONTENT YET" flag). No fullBody
+  // yet since the sheet's Additional notes cell for this row is still
+  // blank; add one once there's more than the teaser to work with.
+  'extra-veg-dinner': [
+    {
+      id: 'ev-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Allrecipes',
+      title: '5 Easy Steps to Eat More Healthfully in 2022',
+      body: 'A handful of small, doable shifts — more plants, less added sugar, a bit more movement — tend to do more for how you feel than one big diet overhaul, and working an extra serving of vegetables into a meal is one of the easiest to start with.',
+      url: 'https://www.allrecipes.com/article/5-easy-steps-to-eat-more-healthfully/',
+      image: "url('/eatmoreveg.webp')",
+    },
   ],
 }
 
@@ -380,8 +458,16 @@ export const COMPANION_CONTENT = {
       id: 'fbr-companion-guided',
       type: CONTENT_TYPE.COMPANION,
       brand: 'Verywell Mind',
-      title: 'A Guided Breathing Exercise You Can Follow Along To',
-      body: 'Something to pace yourself against on days when counting your own breaths feels like one more task.',
+      title: 'How The 4-7-8 Breathing Technique Can Help Relieve Stress and Anxiety',
+      body: 'Dr. Weil demonstrates the 4-7-8 technique step by step — worth following along the first few times you try it.',
+      fullBody: 'Dr. Weil\'s 4-7-8 technique follows a simple four-step breath, repeated four times in a row. Sit somewhere quiet and comfortable, and rest the tip of your tongue against the ridge just behind your upper front teeth — it stays there through the whole exercise. Start by exhaling completely through your mouth around your tongue, letting out an audible whoosh. Close your mouth and inhale quietly through your nose for a count of four. Hold that breath for a count of seven. Then exhale again through your mouth for a count of eight, fully emptying your lungs, keeping the same whoosh sound as the first breath. That\'s one cycle — repeat for four total, and consider building to a regular practice of twice a day.',
+      // Real YouTube watch-page URLs generally refuse to be framed
+      // (X-Frame-Options), same issue ContentModal's comment calls out for
+      // article pages — so this uses YouTube's own /embed/ path instead of
+      // the /watch page the content sheet linked, same substitution
+      // wa-companion-goals-podcast makes with Megaphone's playlist embed
+      // below.
+      url: 'https://www.youtube.com/embed/p8fjYPC-k2k',
     },
   },
   'evening-journal': {
