@@ -3,8 +3,10 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
+import { WHY_CAROUSEL_CONTENT } from '../onboarding/whyCarouselContent.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
+import WhyCarousel from '../onboarding/WhyCarousel.jsx'
 import CustomizeHabit from '../onboarding/CustomizeHabit.jsx'
 import '../onboarding/QuestionScreen.css'
 import './AddHabitFlow.css'
@@ -75,6 +77,10 @@ function AddHabitFlow({ onClose }) {
   const habits = pillarHabits.filter((h) => !activeHabitIds.has(h.id))
   const habit = habits[habitIndex]
   const gradient = habit ? getHabitVisual(pillar.id, habit.id) : null
+  // See Recommendations.jsx's identical check — habits with real sourced
+  // "why this one" content get the richer WhyCarousel instead of the
+  // generic WhyThisMattersTray.
+  const carouselContent = habit ? WHY_CAROUSEL_CONTENT[habit.id] : null
 
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
@@ -187,20 +193,36 @@ function AddHabitFlow({ onClose }) {
             onWhyThisOne={() => setTrayOpen(true)}
           />
 
-          <WhyThisMattersTray
-            open={trayOpen}
-            habit={habit}
-            gradient={gradient}
-            onClose={() => setTrayOpen(false)}
-            onAdd={() => {
-              setTrayOpen(false)
-              setStage('customize')
-            }}
-            onAnother={() => {
-              handleNext()
-              setTrayOpen(false)
-            }}
-          />
+          {carouselContent ? (
+            <WhyCarousel
+              open={trayOpen}
+              content={carouselContent}
+              onClose={() => setTrayOpen(false)}
+              onAdd={() => {
+                setTrayOpen(false)
+                setStage('customize')
+              }}
+              onAnother={() => {
+                handleNext()
+                setTrayOpen(false)
+              }}
+            />
+          ) : (
+            <WhyThisMattersTray
+              open={trayOpen}
+              habit={habit}
+              gradient={gradient}
+              onClose={() => setTrayOpen(false)}
+              onAdd={() => {
+                setTrayOpen(false)
+                setStage('customize')
+              }}
+              onAnother={() => {
+                handleNext()
+                setTrayOpen(false)
+              }}
+            />
+          )}
         </>
       )}
 

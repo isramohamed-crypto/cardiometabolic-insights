@@ -1,0 +1,205 @@
+/* Full-screen, not a bottom tray — sits above everything (including
+   AppLayout's Header/Footer, same as WhyThisMattersTray's overlay), but
+   fills the whole viewport with the cream page background instead of a
+   dimmed backdrop + floating card, since every screen here is a full
+   "page" of real content rather than a supplementary sheet. */
+.why-carousel-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.why-carousel-scene--open {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.why-carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-5) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom, 0));
+  background: var(--color-coconut);
+  overflow-y: auto;
+}
+
+/* Not part of the reference layout, which has no visible way to dismiss
+   mid-sequence — added since this is a real overlay over app chrome, not
+   a standalone screen; without it there'd be no way back except finishing
+   every page. Same small corner-circle treatment as AddHabitFlow's own
+   close button. */
+.why-carousel__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: var(--text-h5);
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.why-carousel__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 40px; /* keep clear of __close above */
+}
+
+.why-carousel__brand,
+.why-carousel__count {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-caption);
+  letter-spacing: 1.68px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.why-carousel__dots {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: var(--space-4) 0 var(--space-5);
+}
+
+.why-carousel__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 70, 32, 0.2);
+  transition: width 0.15s ease, background-color 0.15s ease;
+}
+
+.why-carousel__dot--active {
+  width: 16px;
+  background: var(--color-seaweed);
+}
+
+.why-carousel__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.why-carousel__image {
+  width: 100%;
+  aspect-ratio: 16 / 7.5;
+  border-radius: var(--radius-md);
+  background-size: cover;
+  background-position: center;
+  margin: 0 0 var(--space-5);
+}
+
+.why-carousel__heading {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  color: var(--color-seaweed);
+}
+
+.why-carousel__text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.why-carousel__highlight {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.05);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+
+.why-carousel__byline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-6);
+}
+
+.why-carousel__avatar {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.why-carousel__byline-name {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.why-carousel__byline-meta {
+  margin: 2px 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.why-carousel__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+}
+
+.why-carousel__cta {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-pill);
+  height: 56px;
+  background: var(--color-seaweed);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.why-carousel__cta:hover {
+  filter: brightness(1.08);
+}
+
+.why-carousel__another {
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.45);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.why-carousel__another:hover {
+  color: rgba(0, 0, 0, 0.7);
+}

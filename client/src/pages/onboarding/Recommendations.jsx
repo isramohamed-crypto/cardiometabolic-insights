@@ -4,8 +4,10 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from './recommendedHabits.js'
+import { WHY_CAROUSEL_CONTENT } from './whyCarouselContent.js'
 import HabitPickCard from './HabitPickCard.jsx'
 import WhyThisMattersTray from './WhyThisMattersTray.jsx'
+import WhyCarousel from './WhyCarousel.jsx'
 import CustomizeHabit from './CustomizeHabit.jsx'
 import './QuestionScreen.css'
 import './Recommendations.css'
@@ -43,6 +45,10 @@ function Recommendations() {
     RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating
   const habit = habits[habitIndex]
   const gradient = getHabitVisual(pillar.id, habit.id)
+  // Habits with real sourced "why this one" content (currently just
+  // walk-after-meal) get the richer full-screen WhyCarousel instead of
+  // the generic WhyThisMattersTray — see whyCarouselContent.js.
+  const carouselContent = WHY_CAROUSEL_CONTENT[habit.id]
 
   useEffect(() => {
     if (stage !== 'compiling') return
@@ -145,20 +151,36 @@ function Recommendations() {
         />
       </div>
 
-      <WhyThisMattersTray
-        open={trayOpen}
-        habit={habit}
-        gradient={gradient}
-        onClose={() => setTrayOpen(false)}
-        onAdd={() => {
-          setTrayOpen(false)
-          setStage('customize')
-        }}
-        onAnother={() => {
-          handleNext()
-          setTrayOpen(false)
-        }}
-      />
+      {carouselContent ? (
+        <WhyCarousel
+          open={trayOpen}
+          content={carouselContent}
+          onClose={() => setTrayOpen(false)}
+          onAdd={() => {
+            setTrayOpen(false)
+            setStage('customize')
+          }}
+          onAnother={() => {
+            handleNext()
+            setTrayOpen(false)
+          }}
+        />
+      ) : (
+        <WhyThisMattersTray
+          open={trayOpen}
+          habit={habit}
+          gradient={gradient}
+          onClose={() => setTrayOpen(false)}
+          onAdd={() => {
+            setTrayOpen(false)
+            setStage('customize')
+          }}
+          onAnother={() => {
+            handleNext()
+            setTrayOpen(false)
+          }}
+        />
+      )}
     </main>
   )
 }
