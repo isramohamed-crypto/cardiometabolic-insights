@@ -51,8 +51,19 @@
 
 .question-screen__headline {
   margin: 0;
-  display: flex;
-  flex-direction: column;
+  /* Was display:flex/flex-direction:column, forcing every direct <span>
+     child (one per headlineLines entry) onto its own fixed line — fine
+     for copy written to be exactly 2 short lines, but on real content
+     that varies in length (a habit title, a pillar name like "movement"
+     or "connection") the second line still wraps on its own inside its
+     fixed row when it doesn't fit a narrow viewport, producing an
+     unintended 3rd broken line instead of the clean 2 (see e.g.
+     PillarQuestion's "moving"/"social" screens). Summary.css and
+     FoundationIntro.css already had to override this same rule for their
+     own variable-length headlines — this makes their fix the shared
+     default instead of a per-screen opt-out. Block layout lets the whole
+     headline flow and wrap like normal text, adapting to any width. */
+  display: block;
   font-family: var(--font-heading);
   font-weight: 700;
   /* Fluid hero headline, same intentional exception noted in
@@ -62,6 +73,23 @@
   font-size: clamp(var(--text-h3), 7vw, 1.8889rem);
   line-height: 1.2;
   color: #1a1a1a;
+}
+
+/* Each headlineLines entry renders as its own <span> (see
+   QuestionScreen.jsx, plus the screens that hand-roll the same two-span
+   markup directly: Recommendations.jsx, CustomizeHabit.jsx,
+   NameInput.jsx). Now that the parent flows as normal block text instead
+   of stacking flex children, these need to be inline (not a forced block
+   row) — and since adjacent inline elements with no text node between
+   them render with no space, a generated space after every line but the
+   last keeps a real, wrappable space between them, same as if the source
+   strings had been joined with `' '` and rendered as one text node. */
+.question-screen__headline-line {
+  display: inline;
+}
+
+.question-screen__headline-line:not(:last-child)::after {
+  content: ' ';
 }
 
 .question-screen__body {

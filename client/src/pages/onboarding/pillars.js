@@ -3,6 +3,15 @@
 // combined list. Ids/labels come from the canonical list in domain/pillars.js
 // — this file only adds the onboarding-specific copy (headline + options)
 // on top of each one.
+//
+// headlineLines' second line generally follows a "working with X?" pattern,
+// but 'moving' and 'social' break from it on purpose — "working with
+// movement?" and "working with connection?" are long enough that on common
+// phone widths (~360-390px) they wrap onto a 3rd line instead of the clean
+// 2 every other pillar gets (line 1 alone already fills a whole line at
+// this headline's font size, so there's no room left on it to absorb the
+// overflow from a long line 2). "working out?" / "staying connected?" are
+// short enough to reliably fit as one line instead.
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 
 const ONBOARDING_COPY = {
@@ -18,7 +27,7 @@ const ONBOARDING_COPY = {
     ],
   },
   moving: {
-    headlineLines: ['What\'s already', 'working with movement?'],
+    headlineLines: ['What\'s already', 'working out?'],
     options: [
       { id: 'daily-walks', label: 'Daily walks' },
       { id: 'strength-training', label: 'Strength training' },
@@ -51,7 +60,7 @@ const ONBOARDING_COPY = {
     ],
   },
   social: {
-    headlineLines: ['What\'s already', 'working with connection?'],
+    headlineLines: ['What\'s already', 'staying connected?'],
     options: [
       { id: 'time-with-friends', label: 'Regular time with friends or family' },
       { id: 'community-groups', label: 'Community or group activities' },
