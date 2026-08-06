@@ -55,6 +55,7 @@ function Read() {
                 brand={item.brand}
                 title={item.title}
                 body={item.body}
+                fullBody={item.fullBody}
                 url={item.url}
               />
             ))}
@@ -80,6 +81,7 @@ function Read() {
                   brand={item.brand}
                   title={item.title}
                   body={item.body}
+                  fullBody={item.fullBody}
                   url={item.url}
                 />
               ))}

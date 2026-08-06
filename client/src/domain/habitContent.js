@@ -22,6 +22,16 @@ import { CONTENT_TYPE } from './habit.js'
 // unbranded first-person coaching copy in Vitalist's own voice (distinct
 // from these branded press pieces). It's captured here too, but nothing in
 // the UI surfaces it yet — flag to product/design before wiring it in.
+//
+// Any content item below (CONTENT_POOL, DAY_SCRIPTS' supportive/enjoyment
+// entries, or COMPANION_CONTENT) can carry an optional `fullBody` alongside
+// its short `body` teaser — the longer version of the copy, for once one's
+// been written. `body` is always what shows on the card itself; `fullBody`
+// is what ContentModal shows when the card's tapped, in place of an iframe
+// — with `url` (if also set) rendered as a "Read the full article" link
+// out to the source, rather than trying to embed it. Items with only
+// `body` keep today's behavior unchanged (iframe if there's a `url`, the
+// short teaser as a fallback if not) — see ContentModal.jsx.
 export const CONTENT_POOL = {
   'walk-after-meal': [
     {

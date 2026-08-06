@@ -140,6 +140,8 @@ function Routine() {
                 brand={content.brand}
                 title={content.title}
                 body={content.body}
+                fullBody={content.fullBody}
+                url={content.url}
               />
             ))}
           </div>

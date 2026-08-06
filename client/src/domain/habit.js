@@ -95,6 +95,10 @@ export const CONTENT_TYPE = {
  * @property {'justification'|'enabling'|'reinforcement_drip'|'companion'} type
  * @property {string} brand - attributed publisher, e.g. "Health", "Verywell Mind"
  * @property {string} title
+ * @property {string} [body] - short teaser copy, shown on the card itself
+ * @property {string} [fullBody] - longer reading copy, shown in ContentModal in place
+ *   of an iframe when present (see ContentModal.jsx) — `url`, if also set, renders as
+ *   a "Read the full article" link-out rather than being embedded.
  * @property {string} [url]
  */
 

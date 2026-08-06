@@ -239,6 +239,7 @@ function HabitDetail() {
                     brand={justificationPick.brand}
                     title={justificationPick.title}
                     body={justificationPick.body}
+                    fullBody={justificationPick.fullBody}
                     url={justificationPick.url}
                     compact
                   />
@@ -263,6 +264,7 @@ function HabitDetail() {
                   brand={companion.content.brand}
                   title={companion.content.title}
                   body={companion.content.body}
+                  fullBody={companion.content.fullBody}
                   url={companion.content.url}
                   compact
                 />

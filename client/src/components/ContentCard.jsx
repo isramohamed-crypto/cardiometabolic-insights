@@ -14,7 +14,11 @@ import './ContentCard.css'
 // saved to Favorites; the heart doubles as an inline toggle so saving
 // doesn't require opening the reader first. `id` must be stable and
 // globally unique across everywhere a piece of content is rendered.
-function ContentCard({ id, thumbnail, brand, title, body, url, compact }) {
+// `body` is the short teaser shown on the card itself; pass `fullBody` too
+// once a longer version of the copy exists — ContentModal shows that
+// instead of iframing, with `url` (if set) as a "Read the full article"
+// link-out rather than an embed (see ContentModal.jsx).
+function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact }) {
   const [open, setOpen] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
   const saved = isFavorite(id)
@@ -33,7 +37,7 @@ function ContentCard({ id, thumbnail, brand, title, body, url, compact }) {
         <button
           type="button"
           className={`content-card__heart${saved ? ' content-card__heart--active' : ''}`}
-          onClick={() => toggleFavorite({ id, thumbnail, brand, title, body, url })}
+          onClick={() => toggleFavorite({ id, thumbnail, brand, title, body, fullBody, url })}
           aria-pressed={saved}
           aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
         >
@@ -43,7 +47,7 @@ function ContentCard({ id, thumbnail, brand, title, body, url, compact }) {
 
       {open && (
         <ContentModal
-          content={{ id, thumbnail, brand, title, body, url }}
+          content={{ id, thumbnail, brand, title, body, fullBody, url }}
           onClose={() => setOpen(false)}
         />
       )}
