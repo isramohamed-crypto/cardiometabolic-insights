@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { getPillarLabel } from '../../domain/pillars.js'
 import { PILLARS, NONE_OPTION } from '../onboarding/pillars.js'
+import { getHabitVisual } from '../onboarding/recommendedHabits.js'
+import Pill from '../../components/Pill.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import './page.css'
@@ -12,9 +15,14 @@ const OWNED_STATES = [OWNERSHIP_STATE.ADOPTED, OWNERSHIP_STATE.OWNED, OWNERSHIP_
 
 // The "brought with you" habits used to live on their own on the Me tab
 // (just pillar -> option labels, straight from onboarding's answers) —
-// moved here and reshaped into the same {title, subtitle, key} row shape
-// as the graduated habits below, so both sources can render through one
-// list (see AlreadyYoursRow).
+// moved here and reshaped into the same {title, subtitle, pillarId, key}
+// shape as the graduated habits below, so both sources can render through
+// one list (see AlreadyYoursCard). No catalog habitId of its own (these
+// were never actually "added" through the picker, just checked off at
+// onboarding) — passing pillarId alone into getHabitVisual and letting the
+// habitId argument miss is deliberate, not an oversight: it falls back to
+// the pillar's flat gradient exactly the way it already would for any
+// catalog habit that hasn't got a real photo yet.
 function foundationRows(habitsWorking) {
   return PILLARS.flatMap((pillar) => {
     const ids = (habitsWorking[pillar.id] || []).filter((id) => id !== NONE_OPTION.id)
@@ -24,6 +32,7 @@ function foundationRows(habitsWorking) {
         key: `foundation-${pillar.id}-${option.id}`,
         title: option.label,
         subtitle: pillar.label,
+        pillarId: pillar.id,
       }))
   })
 }
@@ -33,20 +42,35 @@ function graduatedRows(habits) {
     .filter((h) => OWNED_STATES.includes(h.ownershipState))
     .map((habit) => ({
       key: habit.id,
+      id: habit.id,
       title: habit.title,
       subtitle: getPillarLabel(habit.pillarId),
+      pillarId: habit.pillarId,
+      to: `/habit/${habit.id}`,
     }))
 }
 
-function AlreadyYoursRow({ title, subtitle }) {
+// Same image-card visual language as RoutineHabitCard (the "working on
+// it"/Routine cards just above) — a pillar Pill and the title over a photo
+// or gradient — but without that card's day tracker or trial-prompt: this
+// is a roster overview, not the day-to-day working view, and a foundation
+// habit has neither a start date to anchor a tracker to nor a real detail
+// page to link into. Graduated habits get a real catalog photo when one
+// exists and link through to HabitDetail, same as they already do from
+// Routine; foundation habits render the identical card shape statically,
+// with the pillar's flat gradient standing in for a photo.
+function AlreadyYoursCard({ title, subtitle, pillarId, id, to }) {
+  const gradient = getHabitVisual(pillarId, id)
+  const Wrapper = to ? Link : 'div'
+
   return (
-    <div className="already-yours-row">
-      <div className="already-yours-row__text">
-        <p className="already-yours-row__title">{title}</p>
-        <p className="already-yours-row__subtitle">{subtitle}</p>
+    <Wrapper to={to} className="already-yours-card" style={{ backgroundImage: gradient }}>
+      <div className="already-yours-card__scrim" />
+      <div className="already-yours-card__content">
+        <Pill label={subtitle} />
+        <h3 className="already-yours-card__title">{title}</h3>
       </div>
-      <span className="already-yours-row__dot" aria-hidden="true" />
-    </div>
+    </Wrapper>
   )
 }
 
@@ -139,9 +163,7 @@ function Collection() {
             Already yours <span className="page__count">{alreadyYours.length}</span>
           </h2>
           <div className="already-yours-list">
-            {alreadyYours.map((row) => (
-              <AlreadyYoursRow key={row.key} title={row.title} subtitle={row.subtitle} />
-            ))}
+            {alreadyYours.map(({ key, ...row }) => <AlreadyYoursCard key={key} {...row} />)}
           </div>
         </section>
       )}

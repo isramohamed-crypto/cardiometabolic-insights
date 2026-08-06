@@ -87,47 +87,68 @@
 
 /* Collection's merged "Already yours" list — foundation habits (brought
    with you at onboarding) and graduated trial habits (built this month),
-   both reshaped into the same {title, subtitle} row shape (see
-   Collection.jsx) so they render as one continuous list instead of two,
-   matching the reference mockup rather than the bigger image cards
-   routine-habit-list uses elsewhere. */
+   both reshaped into the same {title, subtitle, pillarId} card shape (see
+   Collection.jsx's AlreadyYoursCard) so they render as one continuous list
+   instead of two. Used to be a plain text row with a leaf-colored dot,
+   matching an earlier reference mockup; now matches the bigger image
+   cards routine-habit-list uses for "Working on it" instead, just
+   shorter — no day tracker or trial-prompt to reserve room for here. */
 .already-yours-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-}
-
-.already-yours-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-sm);
-  background: rgba(0, 70, 32, 0.05);
 }
 
-.already-yours-row__title {
+.already-yours-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+}
+
+.already-yours-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(217, 217, 217, 0) 0%,
+    rgba(58, 110, 82, 0.45) 45%,
+    rgba(0, 70, 32, 0.92) 100%
+  );
+}
+
+/* Shorter floor than routine-habit-card's 198px (--space-4 + 27px + --space-3
+   there is a hard reservation for that card's day tracker) — this card
+   never shows one, so its padding is the plain, even four-sides kind. */
+.already-yours-card__content {
+  position: relative;
+  z-index: 1;
+  min-height: 128px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+.already-yours-card__content .pill {
+  font-size: var(--text-caption);
+  padding: var(--space-1) var(--space-3);
+}
+
+.already-yours-card__title {
   margin: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-weight: 700;
-  font-size: var(--text-base);
-  color: #1a1a1a;
-}
-
-.already-yours-row__subtitle {
-  margin: var(--space-1) 0 0;
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.already-yours-row__dot {
-  flex-shrink: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--color-leaf);
+  font-size: var(--text-h4);
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+  color: #fff;
 }
 
 /* Shared "locked slot" placeholder — used on both Routine (teasing the
