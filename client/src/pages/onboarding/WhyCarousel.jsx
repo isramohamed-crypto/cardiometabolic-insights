@@ -28,6 +28,12 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
   const { brand, footer, screens } = content
   const screen = screens[page]
   const isLast = page === screens.length - 1
+  // A page count/dots row only means something once there's more than one
+  // page to move through — habits with just a teaser and nothing further
+  // (see buildWhyCarouselFromContentPool's 1-page case in
+  // whyCarouselContent.js) would otherwise show a static "1 of 1" and a
+  // single dot that never does anything.
+  const hasMultiplePages = screens.length > 1
 
   return (
     <div className={`why-carousel-scene${open ? ' why-carousel-scene--open' : ''}`}>
@@ -43,19 +49,23 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
 
         <div className="why-carousel__top">
           <span className="why-carousel__brand">{brand}</span>
-          <span className="why-carousel__count">
-            {page + 1} of {screens.length}
-          </span>
+          {hasMultiplePages && (
+            <span className="why-carousel__count">
+              {page + 1} of {screens.length}
+            </span>
+          )}
         </div>
 
-        <div className="why-carousel__dots" aria-hidden="true">
-          {screens.map((_, i) => (
-            <span
-              key={i}
-              className={`why-carousel__dot${i === page ? ' why-carousel__dot--active' : ''}`}
-            />
-          ))}
-        </div>
+        {hasMultiplePages && (
+          <div className="why-carousel__dots" aria-hidden="true">
+            {screens.map((_, i) => (
+              <span
+                key={i}
+                className={`why-carousel__dot${i === page ? ' why-carousel__dot--active' : ''}`}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="why-carousel__body">
           {screen.image && (

@@ -3,7 +3,8 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
-import { WHY_CAROUSEL_CONTENT } from '../onboarding/whyCarouselContent.js'
+import { getWhyCarouselContent } from '../onboarding/whyCarouselContent.js'
+import { CONTENT_POOL } from '../../domain/habitContent.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
 import WhyCarousel from '../onboarding/WhyCarousel.jsx'
@@ -78,9 +79,9 @@ function AddHabitFlow({ onClose }) {
   const habit = habits[habitIndex]
   const gradient = habit ? getHabitVisual(pillar.id, habit.id) : null
   // See Recommendations.jsx's identical check — habits with real sourced
-  // "why this one" content get the richer WhyCarousel instead of the
-  // generic WhyThisMattersTray.
-  const carouselContent = habit ? WHY_CAROUSEL_CONTENT[habit.id] : null
+  // content (hand-authored or built from CONTENT_POOL) get the richer
+  // WhyCarousel instead of the generic WhyThisMattersTray.
+  const carouselContent = habit ? getWhyCarouselContent(habit.id, CONTENT_POOL) : null
 
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)

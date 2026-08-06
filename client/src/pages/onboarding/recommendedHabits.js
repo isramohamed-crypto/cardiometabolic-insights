@@ -12,11 +12,15 @@ import { NONE_OPTION } from './pillars.js'
 //
 // Each habit falls back to its pillar's `gradient` for a card background —
 // a stand-in for a real photo, since no photography asset pipeline exists
-// yet. A few habits (currently the 3 initial movement ones) have a real
-// `image` instead, sourced from the same People Inc. articles referenced in
-// domain/habitContent.js and copied into client/public/. Use getHabitVisual
-// below rather than reading `.gradient` directly, so every card/thumbnail
-// picks up a habit's own image automatically once one exists.
+// yet. Most habits now have a real `image` instead, reusing the same
+// People Inc. article photo their own domain/habitContent.js CONTENT_POOL
+// entry already sources (copied into client/public/) — one real photo per
+// habit rather than a separate photography pipeline. Only habits with
+// nothing sourced yet at all (text-a-friend, plan-a-call,
+// join-group-activity) still fall back to the plain gradient. Use
+// getHabitVisual below rather than reading `.gradient` directly, so every
+// card/thumbnail picks up a habit's own image automatically once one
+// exists.
 //
 // `justification` / `evidence` / `expectation` back the three pages of
 // WhyThisMattersTray's mini-carousel (why this one / the evidence / what to
@@ -68,6 +72,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'swap-snack-fruit',
         title: 'Swap a snack for fruit',
         subtitle: 'Not all of them — just a few, at whatever pace feels doable.',
+        // Reuses this habit's own sourced content photo (see ss-1 in
+        // domain/habitContent.js) as its catalog hero, same as
+        // extra-veg-dinner/prep-lunch-tonight above.
+        image: "url('/Simply-Recipes-Zucchini-Fritters-LEAD-2-59a39677d51a475c90ee6a881f73af45.webp')",
         justification:
           'Small, sustainable swaps beat strict rules. Trading a snack keeps the change realistic enough to actually stick.',
         evidence:
@@ -84,6 +92,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'high-fiber-breakfast',
         title: 'Add a high-fiber food to breakfast',
         subtitle: 'One swap or addition — whatever fits what you already eat.',
+        // Reuses this habit's own sourced content photo (see hf-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/GettyImages-98896874-2000-b66cfc74cb034f0c9c7e47c93f39a89f.webp')",
         justification:
           'Most people fall well short on fiber, and breakfast is an easy place to close the gap without overhauling the rest of your day.',
         evidence:
@@ -100,6 +111,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'water-on-waking',
         title: 'Drink a glass of water on waking',
         subtitle: 'Before coffee, before your phone — first thing.',
+        // Reuses this habit's own sourced content photo (see wow-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/RDs-Reveal-Whether-Drinking-Water-Earlier-in-the-Day-Matters--b91c3b8a51594e8facdde85360cae4ca.webp')",
         justification:
           'Front-loading water first thing helps with energy and alertness, and it is one of the lowest-effort habits there is to start.',
         evidence:
@@ -180,6 +194,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'consistent-wake-time',
         title: 'Consistent wake-up time',
         subtitle: 'Even on weekends — it’s the anchor your sleep needs.',
+        // Reuses this habit's own sourced content photo (see the day-1
+        // script asset in domain/habitContent.js) as its catalog hero.
+        image: "url('/30-days-to-better-sleep-3973920_v21-3c0ce2cc1f8149c58242946ac704fa8d.webp')",
         justification:
           'Your body clock responds far more to a consistent wake time than a consistent bedtime. Anchoring one end of the night makes the rest fall into place.',
         evidence:
@@ -196,6 +213,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'no-screens-before-bed',
         title: 'Screen-free wind-down',
         subtitle: 'Swap screens for something calmer before bed.',
+        // Reuses this habit's own sourced content photo (see ns-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/Parents-Sleep-Package-1-182005bddc24436db64bd202615637d0.webp')",
         justification:
           'It’s less about blue light and more about what scrolling does to a winding-down mind. Any other low-stimulation activity works just as well.',
         evidence:
@@ -208,6 +228,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'cool-dark-room',
         title: 'A cooler, darker room',
         subtitle: 'Small environment changes, big effect on sleep quality.',
+        // Reuses this habit's own sourced content photo (see cd-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/blackout.jpeg')",
         justification:
           'Temperature and light are two of the strongest signals your brain uses to time sleep. A few small changes can outperform a lot of willpower.',
         evidence:
@@ -243,6 +266,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'outdoor-break',
         title: 'Outdoor break',
         subtitle: 'Away from a screen, wherever that is for you.',
+        // Reuses this habit's own sourced content photo (see ob-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/VWH-GettyImages-2180466138-b3e669618a084939b352a9ac417bfaa3.webp')",
         justification:
           'Stepping outside — light, air, a change of scenery — interrupts a stress spiral more reliably than trying to think your way out of it.',
         evidence:
@@ -255,6 +281,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         id: 'evening-journal',
         title: 'Evening journal',
         subtitle: 'Not a diary — just a few lines.',
+        // Reuses this habit's own sourced content photo (see ej-1 in
+        // domain/habitContent.js) as its catalog hero.
+        image: "url('/GettyImages-1063024656-480380748f1f4c2baa262b9d69507351.webp')",
         justification:
           'Naming a few things from the day, good or bad, gives your brain permission to stop replaying it.',
         evidence:

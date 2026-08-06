@@ -4,7 +4,8 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from './recommendedHabits.js'
-import { WHY_CAROUSEL_CONTENT } from './whyCarouselContent.js'
+import { getWhyCarouselContent } from './whyCarouselContent.js'
+import { CONTENT_POOL } from '../../domain/habitContent.js'
 import HabitPickCard from './HabitPickCard.jsx'
 import WhyThisMattersTray from './WhyThisMattersTray.jsx'
 import WhyCarousel from './WhyCarousel.jsx'
@@ -89,10 +90,11 @@ function Recommendations() {
     RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating
   const habit = habits[habitIndex]
   const gradient = getHabitVisual(pillar.id, habit.id)
-  // Habits with real sourced "why this one" content (currently just
-  // walk-after-meal) get the richer full-screen WhyCarousel instead of
-  // the generic WhyThisMattersTray — see whyCarouselContent.js.
-  const carouselContent = WHY_CAROUSEL_CONTENT[habit.id]
+  // Habits with real sourced content (either a hand-authored carousel, or
+  // one built on the fly from CONTENT_POOL) get the richer full-screen
+  // WhyCarousel instead of the generic WhyThisMattersTray — see
+  // whyCarouselContent.js.
+  const carouselContent = getWhyCarouselContent(habit.id, CONTENT_POOL)
 
   useEffect(() => {
     if (stage !== 'compiling') return

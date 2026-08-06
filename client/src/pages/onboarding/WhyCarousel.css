@@ -53,6 +53,11 @@
   align-items: center;
   justify-content: space-between;
   padding-right: 40px; /* keep clear of __close above */
+  /* Also carries the gap before the body on single-page carousels, where
+     .why-carousel__dots isn't rendered at all (see WhyCarousel.jsx) — the
+     dots row's own top margin below still applies on top of this when
+     dots ARE present, same total spacing as before this got added. */
+  margin-bottom: var(--space-4);
 }
 
 .why-carousel__brand,
