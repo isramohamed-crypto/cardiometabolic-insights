@@ -77,7 +77,7 @@ function walkingHabit({
   return {
     id: 'walk-after-meal',
     title: 'Daily walk',
-    subtitle: 'A walk every day — timing and length are up to you.',
+    subtitle: 'A 10 minute walk every evening.',
     pillarId: 'moving',
     tier,
     moment: 'In the evening',

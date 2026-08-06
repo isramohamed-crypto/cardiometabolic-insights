@@ -114,7 +114,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
       {
         id: 'walk-after-meal',
         title: 'Daily walk',
-        subtitle: 'A walk every day — timing and length are up to you.',
+        subtitle: 'A 10 minute walk every evening.',
         image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
         justification:
           'A short walk — especially after eating — helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
