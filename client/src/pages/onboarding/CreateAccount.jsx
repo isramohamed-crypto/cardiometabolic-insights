@@ -23,7 +23,7 @@ function CreateAccount() {
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Save your progress</p>
         <h1 className="question-screen__headline">
-          <span>Create an account</span>
+          <span>Create an account</span>{' '}
           <span>so it's here next time.</span>
         </h1>
       </div>
@@ -36,7 +36,7 @@ function CreateAccount() {
 
         <input
           type="email"
-          className="question-screen__input"
+          className="question-screen__input question-screen__input--masked"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

@@ -178,6 +178,18 @@
   font-size: var(--text-small);
 }
 
+/* Obscures typed characters like a password field, without actually
+   switching the input to type="password" — CreateAccount's email field
+   uses this so what's typed isn't shown plainly on screen, while keeping
+   type="email" for real email keyboards/validation/autofill instead of
+   borrowing password's semantics for a field that isn't one. Webkit/Blink
+   only (Chrome, Safari, Edge) — Firefox has no equivalent property, so
+   there the email field just reads as plain text again, same as before
+   this existed. */
+.question-screen__input--masked {
+  -webkit-text-security: disc;
+}
+
 .question-screen__input::placeholder {
   color: rgba(0, 0, 0, 0.35);
 }
@@ -197,8 +209,8 @@
   align-self: center;
   align-items: center;
   gap: var(--space-1);
-  margin: var(--space-4, 20px) 0 var(--space-3);
-  padding: var(--space-1, 6px) 0;
+  margin: 0 0 var(--space-3);
+  padding: 0;
   border: none;
   background: none;
   font-family: var(--font-body);

@@ -31,7 +31,7 @@ function ConnectSteps() {
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">One more thing</p>
         <h1 className="question-screen__headline">
-          <span>Want habits to</span>
+          <span>Want habits to</span>{' '}
           <span>track themselves?</span>
         </h1>
       </div>
