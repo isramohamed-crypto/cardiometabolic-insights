@@ -41,6 +41,28 @@
   color: #fff;
 }
 
+/* Tiers above the easiest one, shown on the initial "how much to start?"
+   picker but not yet earned — same row treatment as a normal option, just
+   dimmed and non-interactive, with .customize-locked standing in for
+   .customize-suggested's pill. Unlocking happens later, one tier at a
+   time, through HabitTrialPrompt's post-trial upsell — never here. */
+.question-screen__option--locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.customize-locked {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.45);
+}
+
 .customize-toggle {
   display: flex;
   gap: var(--space-2);

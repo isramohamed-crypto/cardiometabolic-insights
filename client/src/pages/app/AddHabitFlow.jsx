@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react'
-import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
-import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex, getHabitVisual } from '../onboarding/recommendedHabits.js'
+import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
 import CustomizeHabit from '../onboarding/CustomizeHabit.jsx'
@@ -47,7 +46,6 @@ function recommendPillar(habits) {
 }
 
 function AddHabitFlow({ onClose }) {
-  const { answers } = useOnboarding()
   const { habits: allHabits, addHabit } = useHabits()
   const [stage, setStage] = useState('choosePillar') // 'choosePillar' | 'pick' | 'customize'
   const [pillarId, setPillarId] = useState(null)
@@ -209,7 +207,6 @@ function AddHabitFlow({ onClose }) {
       {stage === 'customize' && (
         <CustomizeHabit
           habit={habit}
-          suggestedTierIndex={suggestTierIndex(pillar.id, answers, habit.tiers.length)}
           embedded
           onBack={() => setStage('pick')}
           onSave={handleFinalize}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
-import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex, getHabitVisual } from './recommendedHabits.js'
+import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from './recommendedHabits.js'
 import HabitPickCard from './HabitPickCard.jsx'
 import WhyThisMattersTray from './WhyThisMattersTray.jsx'
 import CustomizeHabit from './CustomizeHabit.jsx'
@@ -110,7 +110,6 @@ function Recommendations() {
     return (
       <CustomizeHabit
         habit={habit}
-        suggestedTierIndex={suggestTierIndex(pillar.id, answers, habit.tiers.length)}
         onBack={() => setStage('pick')}
         onSave={handleFinalize}
       />

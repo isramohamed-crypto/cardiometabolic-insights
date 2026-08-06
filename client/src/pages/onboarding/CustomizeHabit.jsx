@@ -7,16 +7,20 @@ import './CustomizeHabit.css'
 
 // Shown after "Add this habit" — the habit itself stays generic (see
 // recommendedHabits.js), so this is where the user's discretion comes in:
-// how much to start with (tier — defaulting to suggestedTierIndex, but
-// changeable here), when they'll do it (stacked onto an existing moment,
-// or an exact time), and whether to get reminded.
+// when they'll do it (stacked onto an existing moment, or an exact time),
+// and whether to get reminded. How much to start with is no longer a
+// choice made here — every habit starts at its easiest tier (tiers[0]),
+// and every tier above that is shown but locked, since there's no trial
+// history yet to justify starting anywhere else. Tiers unlock one at a
+// time from the trial-graduation upsell instead (see HabitTrialPrompt's
+// "Keep it" -> upsellPending flow), which already gates escalation on
+// actually having tried the easiest version first.
 //
 // `embedded` skips the standalone page chrome (the `<main>` + colored
 // header) and returns just the body content instead — used by
 // AddHabitFlow, which sits inside Routine/Collection's own page body
 // rather than being a full-screen step of its own.
-function CustomizeHabit({ habit, suggestedTierIndex = 0, onBack, onSave, embedded = false }) {
-  const [tierIndex, setTierIndex] = useState(suggestedTierIndex)
+function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
   const [momentMode, setMomentMode] = useState('preset')
   const [momentPreset, setMomentPreset] = useState(null)
   const [momentTime, setMomentTime] = useState('')
@@ -42,7 +46,7 @@ function CustomizeHabit({ habit, suggestedTierIndex = 0, onBack, onSave, embedde
 
   const handleSave = () => {
     onSave({
-      tier: habit.tiers[tierIndex],
+      tier: habit.tiers[0],
       moment: momentMode === 'preset' ? momentPreset : formatTime(momentTime),
       remindersOn,
     })
@@ -51,26 +55,34 @@ function CustomizeHabit({ habit, suggestedTierIndex = 0, onBack, onSave, embedde
   const body = (
     <div className="question-screen__body">
       <p className="question-screen__intro">
-        The habit stays the same — how much and when is up to you.
+        The habit stays the same — when you'll do it is up to you. Bigger
+        tiers unlock once you've made it through the trial at this one.
       </p>
 
       <section className="customize-section">
         <h2 className="customize-section__title">How much to start?</h2>
         <div className="question-screen__options">
-          {habit.tiers.map((tier, i) => (
-            <button
-              key={tier.label}
-              type="button"
-              className={`question-screen__option${i === tierIndex ? ' question-screen__option--selected' : ''}`}
-              aria-pressed={i === tierIndex}
-              onClick={() => setTierIndex(i)}
-            >
-              <span>{tier.label}</span>
-              {i === suggestedTierIndex && (
-                <span className="customize-suggested">Suggested</span>
-              )}
-            </button>
-          ))}
+          {habit.tiers.map((tier, i) => {
+            const isEasiest = i === 0
+            return (
+              <button
+                key={tier.label}
+                type="button"
+                className={`question-screen__option${isEasiest ? ' question-screen__option--selected' : ' question-screen__option--locked'}`}
+                aria-pressed={isEasiest}
+                disabled={!isEasiest}
+              >
+                <span>{tier.label}</span>
+                {isEasiest ? (
+                  <span className="customize-suggested">Suggested</span>
+                ) : (
+                  <span className="customize-locked">
+                    <span aria-hidden="true">🔒</span> Unlocks after trial
+                  </span>
+                )}
+              </button>
+            )
+          })}
         </div>
       </section>
 
