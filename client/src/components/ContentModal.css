@@ -116,6 +116,23 @@
   text-decoration: underline;
 }
 
+/* The link out to the source (or, lacking a real url, the publisher's
+   homepage — see BRAND_HOMEPAGES in ContentModal.jsx) is always the
+   primary way out of the reader now, not just a "didn't load" backstop —
+   bolder and in the brand green rather than muted gray, and shown at the
+   bottom of every branch (fullBody, iframe, and plain-teaser). */
+.content-modal__fallback-link--primary {
+  display: inline-flex;
+  margin-top: var(--space-4);
+  border-top: none;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: rgba(0, 70, 32, 0.08);
+  font-weight: 700;
+  color: var(--color-seaweed);
+  text-decoration: none;
+}
+
 /* Shown instead of the iframe when content has no real source url yet
    (older CONTENT_POOL/day-script entries) — same thumbnail + summary
    layout the old bottom-tray modal used. */
