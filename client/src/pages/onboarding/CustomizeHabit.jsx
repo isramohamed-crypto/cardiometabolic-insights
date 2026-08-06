@@ -146,6 +146,15 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
 
       <div className="question-screen__spacer" />
 
+      {/* Embedded (AddHabitFlow) keeps Back down here, inline with Save —
+          that flow has its own top-right × close button already, and
+          isn't the onboarding case the top-left placement below is for. */}
+      {embedded && (
+        <button type="button" className="question-screen__back" onClick={onBack}>
+          <span aria-hidden="true">←</span> Back
+        </button>
+      )}
+
       <button
         type="button"
         className="question-screen__continue"
@@ -154,10 +163,6 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
       >
         Save my habit
       </button>
-
-      <button type="button" className="question-screen__back" onClick={onBack}>
-        <span aria-hidden="true">←</span> Back
-      </button>
     </div>
   )
 
@@ -165,6 +170,14 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
 
   return (
     <main className="question-screen">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={onBack}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Make it yours</p>
         <h1 className="question-screen__headline">

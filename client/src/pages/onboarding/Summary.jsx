@@ -37,6 +37,14 @@ function Summary() {
 
   return (
     <main className="question-screen summary">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={handleBack}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Your foundation</p>
         {totalCount > 0 ? (
@@ -100,10 +108,6 @@ function Summary() {
 
         <button type="button" className="question-screen__continue" onClick={handleContinue}>
           {totalCount > 0 ? "Now let's build on it →" : "Let's get started"}
-        </button>
-
-        <button type="button" className="question-screen__back" onClick={handleBack}>
-          <span aria-hidden="true">←</span> Back
         </button>
         <p className="summary__caption">
           These {numberToWord(PILLARS.length)} areas make up your health foundation.

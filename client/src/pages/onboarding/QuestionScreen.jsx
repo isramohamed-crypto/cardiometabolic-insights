@@ -39,6 +39,16 @@ function QuestionScreen({
 
   return (
     <main className={`question-screen${className ? ` ${className}` : ''}`}>
+      {onBack && (
+        <button
+          type="button"
+          className="question-screen__back question-screen__back--top"
+          onClick={onBack}
+        >
+          <span aria-hidden="true">←</span> Back
+        </button>
+      )}
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">{eyebrow}</p>
 
@@ -116,12 +126,6 @@ function QuestionScreen({
         >
           {continueLabel}
         </button>
-
-        {onBack && (
-          <button type="button" className="question-screen__back" onClick={onBack}>
-            <span aria-hidden="true">←</span> Back
-          </button>
-        )}
       </div>
     </main>
   )

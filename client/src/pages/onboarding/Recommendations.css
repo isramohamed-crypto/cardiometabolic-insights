@@ -1,3 +1,60 @@
+/* Wraps the whole "compiling" screen's header + step list — faded out as
+   a unit once every step is done and the confetti's had its moment (see
+   Recommendations.jsx's compilingExiting state), instead of the old hard
+   cut straight to the pick screen. */
+.recommendations__compiling {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+.recommendations__compiling--exiting {
+  opacity: 0;
+}
+
+/* Shared rise-and-fade entrance for the eyebrow/headline, same idea as
+   AllSet's .all-set__in cascade — just scoped to this file since it's
+   only two elements here, not worth pulling into a shared module yet. */
+@keyframes recommendations-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recommendations__rise-in {
+  opacity: 0;
+  animation: recommendations-rise-in 0.4s ease forwards;
+}
+
+.recommendations__rise-in--1 {
+  animation-delay: 0.08s;
+}
+
+/* Crossfade-ish handoff into the pick screen — the compiling screen fades
+   itself out (above), and this fades the pick screen in on mount, so the
+   transition reads as one continuous beat instead of a hard swap. */
+@keyframes recommendations-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.recommendations__pick-enter {
+  animation: recommendations-fade-in 0.4s ease both;
+}
+
 .recommendations__steps {
   list-style: none;
   margin: 0;
@@ -15,6 +72,12 @@
   font-size: var(--text-base);
   color: rgba(0, 0, 0, 0.35);
   transition: color 0.2s ease;
+  /* Cascades in with a per-row stagger (--stagger, set inline per item)
+     instead of every row just appearing at once with the rest of the
+     screen. */
+  opacity: 0;
+  animation: recommendations-rise-in 0.35s ease forwards;
+  animation-delay: var(--stagger, 0ms);
 }
 
 .recommendations__step--active {
@@ -27,6 +90,7 @@
 }
 
 .recommendations__step-check {
+  position: relative;
   flex-shrink: 0;
   width: 20px;
   height: 20px;
@@ -44,4 +108,109 @@
 .recommendations__step--done .recommendations__step-check {
   background: var(--question-accent);
   box-shadow: none;
+  /* Replays every time a step freshly picks up --done (the class is only
+     added once the browser sees it as new, so this doesn't loop). */
+  animation: recommendations-check-pop 0.3s ease;
+}
+
+@keyframes recommendations-check-pop {
+  0% {
+    transform: scale(0.5);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* A small pulsing ring around the currently-active step's check-circle —
+   reads as "working on it" instead of a static empty circle sitting there
+   for 650ms with no feedback. */
+.recommendations__step-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--question-accent);
+  opacity: 0;
+  animation: recommendations-pulse 1.1s ease-out infinite;
+}
+
+@keyframes recommendations-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* ---- Confetti burst, once every compiling step is done ---- */
+
+.recommendations__confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  overflow: hidden;
+}
+
+.recommendations__confetti-piece {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  width: 8px;
+  height: 14px;
+  margin: -7px 0 0 -4px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: recommendations-confetti-burst 1.15s cubic-bezier(0.15, 0.7, 0.25, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Two-phase so it reads as an outward burst that then falls, rather than
+   a straight line from center to end point: the 45% keyframe is each
+   piece's outward (--tx, --ty) position, and 100% adds a further drop
+   below that — a cheap stand-in for gravity without a JS animation loop. */
+@keyframes recommendations-confetti-burst {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  45% {
+    transform: translate(var(--tx), var(--ty)) rotate(calc(var(--rot) * 0.5));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), calc(var(--ty) + 260px)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* Same "don't leave anything stuck invisible, and don't animate at all"
+   rule AllSet.css follows for prefers-reduced-motion — the confetti is
+   pure celebration with no informational value, so it's dropped
+   entirely rather than shown in a reduced form. */
+@media (prefers-reduced-motion: reduce) {
+  .recommendations__compiling,
+  .recommendations__rise-in,
+  .recommendations__pick-enter,
+  .recommendations__step {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .recommendations__step--done .recommendations__step-check {
+    animation: none;
+  }
+
+  .recommendations__step-ring,
+  .recommendations__confetti {
+    display: none;
+  }
 }

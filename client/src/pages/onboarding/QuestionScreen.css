@@ -224,6 +224,21 @@
   color: rgba(0, 0, 0, 0.8);
 }
 
+/* Onboarding placement: the very first thing in .question-screen, above
+   the header/eyebrow/headline, left-aligned with them instead of centered
+   at the bottom of the body — leaving a step now reads as immediate,
+   top-of-screen affordance rather than something found only after
+   scrolling past the options and Continue button. Opt-in via this extra
+   modifier class (see QuestionScreen.jsx/Summary.jsx/CustomizeHabit.jsx's
+   non-embedded path) rather than changing the shared rule above, so
+   CustomizeHabit's `embedded` mode — rendered inside AddHabitFlow's own
+   chrome, which already has its own top-right × close button, and isn't
+   onboarding — keeps the original inline-with-Save placement untouched. */
+.question-screen__back--top {
+  align-self: flex-start;
+  margin: var(--space-5) var(--space-6) 0;
+}
+
 .question-screen__continue {
   display: flex;
   align-items: center;
