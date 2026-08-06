@@ -113,10 +113,6 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
 
       <div className="question-screen__spacer" />
 
-      <button type="button" className="question-screen__back" onClick={onBack}>
-        <span aria-hidden="true">←</span> Back
-      </button>
-
       <button
         type="button"
         className="question-screen__continue"
@@ -124,6 +120,10 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
         onClick={handleSave}
       >
         Save my habit
+      </button>
+
+      <button type="button" className="question-screen__back" onClick={onBack}>
+        <span aria-hidden="true">←</span> Back
       </button>
     </div>
   )

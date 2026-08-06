@@ -98,12 +98,12 @@ function Summary() {
 
         <div className="question-screen__spacer" />
 
-        <button type="button" className="question-screen__back" onClick={handleBack}>
-          <span aria-hidden="true">←</span> Back
-        </button>
-
         <button type="button" className="question-screen__continue" onClick={handleContinue}>
           {totalCount > 0 ? "Now let's build on it →" : "Let's get started"}
+        </button>
+
+        <button type="button" className="question-screen__back" onClick={handleBack}>
+          <span aria-hidden="true">←</span> Back
         </button>
         <p className="summary__caption">
           These {numberToWord(PILLARS.length)} areas make up your health foundation.
