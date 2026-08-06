@@ -45,6 +45,24 @@ const FOUNDATION_CATALOG_MATCH = {
   'stress:taking-breaks': 'outdoor-break',
 }
 
+// A few foundation options don't correspond to any catalog habit at all
+// (there's nothing to borrow via FOUNDATION_CATALOG_MATCH above), but
+// still got a real photo picked out for them directly — same treatment,
+// just a straight image instead of a borrowed catalog id. Keyed the same
+// way as FOUNDATION_CATALOG_MATCH.
+const FOUNDATION_IMAGE_OVERRIDES = {
+  'eating:cooking-at-home':
+    "url('/231644-Chicken-Souvlaki-with-Tzatziki-Sauce-3x4-0725-d6573d70f50d4e4aa2dd85c2c49ad731.webp')",
+  'moving:taking-stairs':
+    "url('/Stocksy_txpca07dfbdemz200_Medium_3690248-crop-95b70ea20d7d4249a434d08cdcd0ead4.webp')",
+  // Cropped down from the original — that file is actually a "How to
+  // Cast a Happiness Spell on Yourself" article banner with its own
+  // headline text baked into the image, which would've shown through on
+  // the card. This keeps just the photo itself.
+  'stress:clears-your-head':
+    "url('/Happiness-Spell-SF-bdc7515eab884208b677509e199ba6af-crop.webp')",
+}
+
 // The "brought with you" habits used to live on their own on the Me tab
 // (just pillar -> option labels, straight from onboarding's answers) —
 // moved here and reshaped into the same {title, subtitle, pillarId, key}
@@ -63,13 +81,17 @@ function foundationRows(habitsWorking) {
     const ids = (habitsWorking[pillar.id] || []).filter((id) => id !== NONE_OPTION.id)
     return pillar.options
       .filter((option) => ids.includes(option.id))
-      .map((option) => ({
-        key: `foundation-${pillar.id}-${option.id}`,
-        title: option.label,
-        subtitle: pillar.label,
-        pillarId: pillar.id,
-        id: FOUNDATION_CATALOG_MATCH[`${pillar.id}:${option.id}`],
-      }))
+      .map((option) => {
+        const matchKey = `${pillar.id}:${option.id}`
+        return {
+          key: `foundation-${pillar.id}-${option.id}`,
+          title: option.label,
+          subtitle: pillar.label,
+          pillarId: pillar.id,
+          id: FOUNDATION_CATALOG_MATCH[matchKey],
+          image: FOUNDATION_IMAGE_OVERRIDES[matchKey],
+        }
+      })
   })
 }
 
@@ -94,14 +116,15 @@ function graduatedRows(habits) {
 // page to link into. Graduated habits get a real catalog photo when one
 // exists and link through to HabitDetail, same as they already do from
 // Routine; foundation habits render the identical card shape statically,
-// with a borrowed catalog photo (see FOUNDATION_CATALOG_MATCH above) when
-// there's a clear one to borrow, and the pillar's flat gradient otherwise.
-function AlreadyYoursCard({ title, subtitle, pillarId, id, to }) {
-  const gradient = getHabitVisual(pillarId, id)
+// with a photo when there's one to show — borrowed from a matching catalog
+// habit (FOUNDATION_CATALOG_MATCH) or set directly (FOUNDATION_IMAGE_OVERRIDES)
+// above — and the pillar's flat gradient otherwise.
+function AlreadyYoursCard({ title, subtitle, pillarId, id, image, to }) {
+  const background = image || getHabitVisual(pillarId, id)
   const Wrapper = to ? Link : 'div'
 
   return (
-    <Wrapper to={to} className="already-yours-card" style={{ backgroundImage: gradient }}>
+    <Wrapper to={to} className="already-yours-card" style={{ backgroundImage: background }}>
       <div className="already-yours-card__scrim" />
       <div className="already-yours-card__content">
         <Pill label={subtitle} />
