@@ -10,7 +10,10 @@
 
 .app-footer__tab {
   flex: 1;
-  min-height: 66px;
+  /* -1px for the nav's own top border, so the two together add up to
+     exactly --footer-height (see index.css) — the number AppLayout.css
+     reserves at the bottom of the scrollable content area. */
+  min-height: calc(var(--footer-height) - 1px);
   display: flex;
   align-items: center;
   justify-content: center;

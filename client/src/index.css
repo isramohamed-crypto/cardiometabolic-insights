@@ -66,6 +66,17 @@ html {
   --radius-md: 0.8889rem;  /* 16px */
   --radius-lg: 1.2222rem;  /* 22px */
   --radius-pill: 999px;
+
+  /* The sticky footer nav's own rendered height — 66px tab min-height
+     (border-box, so padding's already inside that) plus its 1px top
+     border; see Footer.css, which derives its tab min-height from this
+     same value instead of repeating the number. AppLayout.css reserves
+     this much (plus safe-area-inset-bottom, since the footer pads for
+     that too) at the bottom of the scrollable content area, so a page's
+     last bit of content never ends up scrolled behind the footer. One
+     shared value instead of two guesses at the same number, so they
+     can't drift apart. */
+  --footer-height: 67px;
 }
 
 * {

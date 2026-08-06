@@ -10,5 +10,14 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: var(--space-5) var(--space-6) var(--space-8);
+  /* Bottom padding used to be a flat var(--space-8) (32px) — shorter
+     than the sticky footer's own ~67px, so on any page with enough
+     content to scroll, the last bit of it ended up hidden behind the
+     footer rather than stopping above it. Reserves the footer's real
+     height (plus its own safe-area-inset-bottom padding, since the
+     footer pads for that too) plus one more --space-5 of breathing room
+     above it, so scrolling to the very end always clears the footer with
+     room to spare. */
+  padding: var(--space-5) var(--space-6)
+    calc(var(--footer-height) + env(safe-area-inset-bottom, 0px) + var(--space-5));
 }
