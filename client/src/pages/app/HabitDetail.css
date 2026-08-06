@@ -156,8 +156,13 @@
   left: 0;
 }
 
+/* margin-bottom matches .habit-detail__current-moment's own
+   text-block-then-more-content spacing below, so the gap before the
+   "Did you know?" ContentCard (routine-habit-list) reads the same as
+   every other paragraph-into-content transition on this page, not as an
+   accidental default-margin gap of its own. */
 .habit-detail__justification {
-  margin: 0;
+  margin: 0 0 var(--space-3);
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.5;
