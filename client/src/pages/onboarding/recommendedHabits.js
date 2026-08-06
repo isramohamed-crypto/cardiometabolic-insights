@@ -55,6 +55,9 @@ export const RECOMMENDATIONS_BY_PILLAR = {
           'Meals decided in the moment, especially a hungry one, lean toward whatever’s fastest — planning ahead removes that pressure entirely.',
         expectation:
           'Expect the first attempt to feel like one more chore at the end of the day. Once it’s routine, it saves you the scramble every morning.',
+        // From the content inventory sheet's "New image" cell for this
+        // habit — same asset extra-veg-dinner's content piece already uses.
+        image: "url('/eatmoreveg.webp')",
         tiers: [
           { label: 'A couple nights a week' },
           { label: 'Most weeknights' },

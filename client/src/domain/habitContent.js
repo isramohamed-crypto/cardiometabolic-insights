@@ -153,10 +153,28 @@ export const CONTENT_POOL = {
     },
   ],
   'evening-journal': [
-    { id: 'ej-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Mind', title: 'Want to Relieve Stress ASAP? Write in a Gratitude Journal' },
+    {
+      id: 'ej-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Mind',
+      title: 'Want to Relieve Stress ASAP? Write in a Gratitude Journal',
+      body: "Writing down what you're grateful for — even a few lines — gives you somewhere to put the day's stress instead of just carrying it. Over time, regularly noticing the good tends to make it easier to spot, which is most of why the habit helps.",
+      fullBody: "Stress has a way of crowding out anything else you might be feeling, and a gratitude journal is a low-effort way to counter that — not by ignoring what's hard, but by deliberately naming what's still good alongside it. The practice is simple: write down a few things you're grateful for, and actually sit with why they matter rather than just listing them. Over time, that repeated noticing seems to shift how readily you spot good things during the day itself, not just at the desk with a notebook. It doesn't require any particular writing skill or a fixed format — a few sentences most nights is enough for the habit to start doing its job.",
+      url: 'https://www.verywellmind.com/writing-in-a-gratitude-journal-for-stress-relief-3144887',
+      image: "url('/GettyImages-1063024656-480380748f1f4c2baa262b9d69507351.webp')",
+    },
   ],
   'text-a-friend': [
-    { id: 'tf-1', type: CONTENT_TYPE.JUSTIFICATION, brand: 'Verywell Mind', title: 'How Social Isolation Can Damage Your Mental Health' },
+    {
+      id: 'tf-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Mind',
+      title: 'How Social Isolation Can Damage Your Mental Health',
+      body: 'Social isolation is linked to higher rates of depression, anxiety, and stress — brains are wired for connection, and going without it for too long tends to show up as a real cost to wellbeing, not just a feeling.',
+      fullBody: "Occasional time alone is normal and nothing to worry about — the concern is persistent isolation, which research consistently ties to higher depression, anxiety, and stress, along with broader effects on health over time. The mechanism isn't mysterious: people are wired for connection, and going without it for too long tends to register as a real cost, not just a passing feeling. The reassuring part is the fix doesn't need to be dramatic — a short, low-stakes check-in with someone is often enough to interrupt the drift toward isolation, which is part of why something as small as a text can matter more than it seems.",
+      url: 'https://www.verywellmind.com/the-impact-of-social-isolation-on-mental-health-7185458',
+      // No image sourced for this row yet.
+    },
   ],
   // First sourced piece for this habit — previously had nothing (see the
   // content inventory sheet's "NO SOURCED CONTENT YET" flag). No fullBody
@@ -171,6 +189,75 @@ export const CONTENT_POOL = {
       body: 'A handful of small, doable shifts — more plants, less added sugar, a bit more movement — tend to do more for how you feel than one big diet overhaul, and working an extra serving of vegetables into a meal is one of the easiest to start with.',
       url: 'https://www.allrecipes.com/article/5-easy-steps-to-eat-more-healthfully/',
       image: "url('/eatmoreveg.webp')",
+    },
+  ],
+  // Four habits below had no sourced content at all before this pass (per
+  // the content inventory sheet's "NO SOURCED CONTENT YET" flag) — first
+  // entries for each, added from the sheet's latest round of sourcing.
+  'prep-lunch-tonight': [
+    {
+      id: 'pl-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Better Homes & Gardens',
+      title: 'Meal Planning Ideas: A Complete Guide for Meal Prepping',
+      body: "A little planning the night before takes the guesswork out of tomorrow's lunch — one less decision to make when you're already hungry and short on time.",
+      url: 'https://www.bhg.com/recipes/healthy/meal-planning-ideas/',
+      // The sheet's image cell for this row just said "download" — a
+      // generic filename. It does match a real download.jpeg already
+      // sitting in client/public, so it's used here, but flag to confirm
+      // this is actually the intended image rather than a leftover.
+      image: "url('/download.jpeg')",
+    },
+  ],
+  'swap-snack-fruit': [
+    {
+      id: 'ss-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Simply Recipes', // sheet left Brand blank; inferred from the simplyrecipes.com URL
+      title: '10 Healthy Snacks You Can Make With Yogurt or Cottage Cheese',
+      body: 'Yogurt and cottage cheese make a snack feel more like a snack and less like just eating fruit alone — protein-rich, creamy, and quick to put together when a craving hits.',
+      url: 'https://www.simplyrecipes.com/yogurt-cottage-cheese-snack-recipes-11995854',
+      image: "url('/Simply-Recipes-Zucchini-Fritters-LEAD-2-59a39677d51a475c90ee6a881f73af45.webp')",
+    },
+  ],
+  'no-screens-before-bed': [
+    {
+      id: 'ns-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Parents',
+      title: "Sleep-Deprived Kids (and Parents) Aren't Just Cranky—Their Mental Health Is Suffering",
+      body: 'Sleep does more than recharge the body — it supports emotional and cognitive resilience for the whole family, which is part of why a calmer wind-down before bed pays off well beyond just feeling less tired.',
+      url: 'https://www.parents.com/sleep-deprived-kids-and-parents-aren-t-just-cranky-their-mental-health-is-suffering-11696629',
+      image: "url('/Parents-Sleep-Package-1-182005bddc24436db64bd202615637d0.webp')",
+    },
+  ],
+  'cool-dark-room': [
+    {
+      id: 'cd-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Better Homes & Gardens', // inferred from the bhg.com URL — sheet left Brand blank
+      title: 'The 9 Best Blackout Curtains, According to Testing',
+      // The sheet's teaser cell was blank for this row — written from the
+      // title alone rather than inventing facts about the habit itself.
+      body: 'A tested round-up of blackout curtains that actually block outside light — worth a look if this habit could use a small assist.',
+      url: 'https://www.bhg.com/best-blackout-curtains-6822097',
+      image: "url('/blackout.jpeg')",
+    },
+  ],
+  'outdoor-break': [
+    {
+      id: 'ob-1',
+      type: CONTENT_TYPE.JUSTIFICATION,
+      brand: 'Verywell Health', // sheet left Brand blank; inferred from the verywellhealth.com URL
+      title: '8 Reasons Exercising Outdoors Is Great for Your Health',
+      // The sheet's teaser cell for this row was pasted from an unrelated
+      // sleep article (a quote that doesn't match this title or URL at
+      // all) — disregarded in favor of the row's own Additional notes,
+      // which does match this title.
+      body: "Moving outside adds a few things a treadmill can't: natural light that supports your immune system, slightly more challenging terrain, and often a bit of a mood lift just from the change of scenery.",
+      fullBody: 'Taking a workout outside changes more than the view. Sunlight exposure during an outdoor session supports vitamin D production, which plays a role in immune health, and being around plants adds exposure to phytoncides — compounds released by vegetation that may give immune function an extra boost. Uneven terrain, wind, and small changes in elevation also tend to make an outdoor workout marginally more demanding than the same movement on a flat indoor surface, without needing to add intensity on purpose. None of this requires a formal hike or a long session — a short break outside, even a walk around the block, picks up most of these benefits.',
+      url: 'https://www.verywellhealth.com/outdoor-exercise-benefits-11757501',
+      image: "url('/VWH-GettyImages-2180466138-b3e669618a084939b352a9ac417bfaa3.webp')",
     },
   ],
 }
@@ -372,13 +459,14 @@ export function pickJustificationContent(habitId) {
 // same `url('/path.webp')`-wrapped format DAY_SCRIPTS' wa-day7.supportive
 // uses above, so every consumer (HabitDetail, Routine, Read) can just do
 // `thumbnail={item.image || gradient}` without caring which content
-// source the item came from. The entries below it are placeholders:
-// titles/brands invented in the same People Inc. house style (not sourced
-// from a live fetch, since this content pass didn't have real URLs to
-// pull from), with no `url` or `image` so ContentCard/ContentModal fall
-// back to the habit's flat gradient + thumbnail/body view instead of
-// trying to load a real page or photo. Swap each for the real sourced
-// piece — and add a `url`/`image` — once one exists.
+// source the item came from. Most entries below have since been upgraded
+// with real sourced url/image from a later content inventory pass; the
+// few still missing a `url` (wt-companion-podcast, ej-companion-prompts,
+// tf-companion-openers) simply had nothing sourced for that habit yet as
+// of that pass — ContentCard/ContentModal fall back to the habit's flat
+// gradient + thumbnail/body view for those instead of trying to load a
+// real page or photo. Swap each for the real sourced piece once one
+// exists.
 export const COMPANION_CONTENT = {
   'walk-after-meal': {
     sectionLabel: 'While you walk',
@@ -397,9 +485,12 @@ export const COMPANION_CONTENT = {
     content: {
       id: 'ts-companion-playlist',
       type: CONTENT_TYPE.COMPANION,
-      brand: 'Health',
-      title: 'The Best Workout Playlists for Strength Training, According to Trainers',
-      body: 'A steady beat helps carry you through the last few reps of a set — worth having something queued up before you start.',
+      brand: 'Shape',
+      title: '180 Epic Workout Songs to Spice Up Your Playlist',
+      body: 'Turn up your volume on these workout songs and your motivation will follow.',
+      fullBody: "A steady beat helps carry you through the last few reps of a set — the right playlist can be the difference between checking the clock and pushing to finish. This one spans genres on purpose (country, remixes, throwback classics, current hits) so there's something to reach for whatever mood a given session calls for, whether that's high-energy motivation or something steadier to keep pace against.",
+      url: 'https://www.shape.com/fitness/workout-music/best-workout-songs-playlist',
+      image: "url('/shp-fitness-awards-activewear-jthompson-8472-6d4068131e6b463fb75e0ed9583c0287.webp')",
     },
   },
   'chair-stands-after-breakfast': {
@@ -410,6 +501,9 @@ export const COMPANION_CONTENT = {
       brand: 'Verywell Health',
       title: 'How To Do a Perfect Sit-to-Stand, Step by Step',
       body: 'Good form matters more than reps here — a quick refresher on posture and pace before you get going.',
+      fullBody: 'Sit-to-stand works the same hip and glute muscles that keep you steady on stairs and help protect against falls, so form matters more than speed. Sit in a sturdy chair, lean forward until your nose is roughly over your toes, then push up through your legs rather than your hands — save the hands for balance only if you need them. Squeeze at the top to fully extend your hips, then lower back down slowly instead of dropping into the seat. If it feels too easy, try pausing just above the seat before standing back up, rather than sitting all the way down between reps.',
+      url: 'https://www.verywellhealth.com/hip-strengthening-exercises-for-seniors-5094077',
+      image: "url('/GettyImages-551704901-ca728dbe815e41eb9a07f53aeb23287c.webp')",
     },
   },
   'morning-stretch': {
@@ -418,8 +512,12 @@ export const COMPANION_CONTENT = {
       id: 'ms-companion-follow-along',
       type: CONTENT_TYPE.COMPANION,
       brand: 'Real Simple',
-      title: 'A 5-Minute Morning Stretch Routine You Can Follow Along To',
-      body: 'Something to move through with, rather than count reps against — press play and follow the sequence.',
+      title: 'This Daily Stretching Routine Will Make You Feel More Flexible in Just Minutes',
+      body: 'Something to move through with, rather than count reps against.',
+      fullBody: "A daily stretch doesn't need to be long to matter — a few minutes on the areas that get stiffest (hips, shoulders, spine) can improve flexibility and circulation, and some research even ties regular stretching to lower blood pressure and better sleep. The point of following a routine rather than freestyling is pacing: it keeps you moving through a full sequence instead of stopping at the first stretch that feels done.",
+      // No URL sourced for this row yet — the sheet's cell was blank, so
+      // this stays without a link-out/embed rather than guessing one.
+      image: "url('/DailyStretchingRoutine_ChildsPosecopy-e3cf0bc261be4393929c5aab356703c4.webp')",
     },
   },
   'consistent-wake-time': {
@@ -438,8 +536,11 @@ export const COMPANION_CONTENT = {
       id: 'fb-companion-ideas',
       type: CONTENT_TYPE.COMPANION,
       brand: 'EatingWell',
-      title: '5 High-Fiber Breakfast Ideas That Take Five Minutes',
-      body: 'A few easy additions to rotate in, for mornings when the usual one is out of reach.',
+      title: '15 High-Fiber Breakfasts You Can Make in 5 Minutes',
+      body: 'Quick recipes with at least six grams of fiber each — built for a busy morning, not a long prep session.',
+      fullBody: "Fifteen options rotate through smoothies, overnight oats, and quick stovetop dishes, all built around at least six grams of fiber per serving and a five-minute ceiling on hands-on time. A few lean on chia or flax for an easy fiber boost without changing the flavor much; others use fruit skins or whole grains left in rather than stripped out. Worth keeping a couple of favorites on rotation for the mornings when reaching for the usual one isn't an option.",
+      url: 'https://www.eatingwell.com/high-fiber-5-minute-breakfast-recipes-11909862',
+      image: "url('/No-Sugar-Added-High-Protein-StrawberryShake-beauty-37455_preview_maxWidth_4000_maxHeight_4000_ppi_300_quality_100-b15e3e5aa2e74cf786ed5bc5e7217af3.webp')",
     },
   },
   'water-on-waking': {
@@ -448,8 +549,11 @@ export const COMPANION_CONTENT = {
       id: 'ww-companion-signs',
       type: CONTENT_TYPE.COMPANION,
       brand: 'EatingWell',
-      title: '9 Silent Signs You’re Not Drinking Enough Water',
+      title: "8 Sneaky Signs You're Dehydrated, According to a Dietitian",
       body: 'Worth a skim if you’re ever tempted to skip this one — most of these show up before thirst does.',
+      fullBody: "Thirst is actually a lagging signal — by the time it kicks in, mild dehydration has usually already started, which is part of why it's easy to underestimate how much water a day actually needs. Some of the other signs are easy to miss or blame on something else entirely: headaches, dry skin, dark urine, fatigue, and even bad breath can all trace back to not drinking enough, especially during long stretches of exercise or hot weather when losses climb faster than usual.",
+      url: 'https://www.eatingwell.com/article/8064290/how-to-tell-if-you-are-dehydrated/',
+      image: "url('/How-to-Tell-If-Youre-Dehydrated-According-to-a-Dietitian-2000-68c2829bc37b48cda629ff48d820466d.webp')",
     },
   },
   'five-minute-breathing': {
