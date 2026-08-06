@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
+import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
 import { RECOMMENDATIONS_BY_PILLAR, suggestTierIndex, getHabitVisual } from '../onboarding/recommendedHabits.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
@@ -54,10 +55,28 @@ function AddHabitFlow({ onClose }) {
   const [trayOpen, setTrayOpen] = useState(false)
 
   const pillar = PILLARS_CANONICAL.find((p) => p.id === pillarId) || PILLARS_CANONICAL[0]
-  const { categoryLabel, habits } =
+  const { categoryLabel, habits: pillarHabits } =
     RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating
+
+  // Unlike onboarding's Recommendations (which only ever runs before any
+  // habit exists, so there's nothing yet to exclude), this flow is reached
+  // by someone who may already be trialing or have adopted one of a
+  // pillar's own recommended habits — recommending it back to them a
+  // second time would just be noise. Abandoned habits are deliberately
+  // NOT excluded — that's a real "pick this back up" candidate, not
+  // something already covered.
+  const activeHabitIds = useMemo(
+    () =>
+      new Set(
+        allHabits
+          .filter((h) => ACTIVE_OWNERSHIP_STATES.includes(h.ownershipState))
+          .map((h) => h.id),
+      ),
+    [allHabits],
+  )
+  const habits = pillarHabits.filter((h) => !activeHabitIds.has(h.id))
   const habit = habits[habitIndex]
-  const gradient = getHabitVisual(pillar.id, habit.id)
+  const gradient = habit ? getHabitVisual(pillar.id, habit.id) : null
 
   const handleNext = () => setHabitIndex((i) => (i + 1) % habits.length)
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
@@ -66,6 +85,10 @@ function AddHabitFlow({ onClose }) {
     if (pillarId === RECOMMEND_ID) {
       setPillarId(recommendPillar(allHabits).id)
     }
+    // Reset back to the first (remaining) habit for whichever pillar was
+    // just chosen — carrying over an index from a previously-viewed pillar
+    // could otherwise point past the end of a shorter, already-filtered list.
+    setHabitIndex(0)
     setStage('pick')
   }
 
@@ -132,7 +155,24 @@ function AddHabitFlow({ onClose }) {
         </>
       )}
 
-      {stage === 'pick' && (
+      {stage === 'pick' && habits.length === 0 && (
+        // Every habit this pillar recommends is already trialed/adopted —
+        // rather than crash on an empty pick list, send them back to try a
+        // different focus area.
+        <>
+          <h2 className="add-habit-flow__title">You're already on every {pillar.label.toLowerCase()} habit we recommend</h2>
+          <p className="question-screen__intro">Try a different focus area instead.</p>
+          <button
+            type="button"
+            className="question-screen__continue"
+            onClick={() => setStage('choosePillar')}
+          >
+            Choose another area
+          </button>
+        </>
+      )}
+
+      {stage === 'pick' && habits.length > 0 && (
         <>
           <h2 className="add-habit-flow__title">Pick a habit to start with</h2>
           <p className="question-screen__intro">Built for {pillar.label.toLowerCase()}.</p>
