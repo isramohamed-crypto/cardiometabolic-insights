@@ -1,0 +1,121 @@
+/* AllSet's entrance choreography — a quick celebratory beat before
+   handing off to Routine, instead of the whole screen just appearing
+   fully-formed like every other question-screen does. Two pieces: the
+   checkmark badge pops in with a ripple, then the eyebrow, headline, both
+   lines of copy, and the CTA cascade in one after another underneath it
+   (see .all-set__in's staggered animation-delay below). Plain CSS
+   @keyframes, same approach as Onboarding.css's landing-page ticker — no
+   animation library anywhere in this app. */
+
+.all-set__badge {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 0 0 var(--space-4);
+  border-radius: 50%;
+  background: var(--color-leaf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: all-set-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+.all-set__badge-check {
+  font-size: var(--text-h3);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+
+/* A single expanding-and-fading ring right after the badge lands — reads
+   as a little "success" pulse rather than a loop, so it doesn't nag. */
+.all-set__badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--color-leaf);
+  opacity: 0;
+  animation: all-set-ripple 0.9s ease-out 0.55s;
+}
+
+@keyframes all-set-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes all-set-ripple {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Shared rise-and-fade for everything below/around the badge — eyebrow,
+   headline, both copy lines, and the CTA. Each --N variant only sets the
+   delay, so the five just cascade in sequence instead of arriving as one
+   flat block. */
+.all-set__in {
+  opacity: 0;
+  animation: all-set-rise 0.45s ease-out forwards;
+}
+
+.all-set__in--1 {
+  animation-delay: 0s;
+}
+
+.all-set__in--2 {
+  animation-delay: 0.35s;
+}
+
+.all-set__in--3 {
+  animation-delay: 0.5s;
+}
+
+.all-set__in--4 {
+  animation-delay: 0.62s;
+}
+
+.all-set__in--5 {
+  animation-delay: 0.78s;
+}
+
+@keyframes all-set-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect the OS-level "reduce motion" preference — every animated piece
+   just renders in its final state immediately instead of skipping the
+   whole effect silently (which would leave the badge/copy stuck at
+   opacity: 0, invisible). */
+@media (prefers-reduced-motion: reduce) {
+  .all-set__badge,
+  .all-set__badge::after,
+  .all-set__in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
