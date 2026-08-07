@@ -114,7 +114,11 @@ function Recommendations() {
         clearTimeout(stageTimeout)
       }
     }
-    const timeout = setTimeout(() => setStepIndex((i) => i + 1), 650)
+    // Each step holds for its own random duration (0.5-2s) rather than a
+    // fixed interval, so the list doesn't read as a mechanical metronome —
+    // recomputed per step, not once for the whole sequence.
+    const stepDelay = 500 + Math.random() * 1500
+    const timeout = setTimeout(() => setStepIndex((i) => i + 1), stepDelay)
     return () => clearTimeout(timeout)
   }, [stage, stepIndex])
 

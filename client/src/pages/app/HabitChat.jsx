@@ -20,6 +20,31 @@ function makeId() {
 function getMockReply(message, habit, catalogHabit, gradient) {
   const text = message.toLowerCase()
 
+  // Scoped to the daily walk specifically — weather/indoor avoidance
+  // doesn't generalize to every habit the way the buckets below do, so
+  // this only fires for walk-after-meal rather than joining the generic
+  // chain. Checked before the generic "hard|stuck|struggl..." bucket so a
+  // rainy-day excuse doesn't get the generic "missing a day is normal"
+  // reply instead of this more specific, actionable one.
+  if (
+    habit.id === 'walk-after-meal' &&
+    /rain|raining|rainy|storm|snow|cold outside|too hot|don'?t want to walk|can'?t walk|indoor|inside/.test(text)
+  ) {
+    return {
+      text: `Weather doesn't have to bench the habit — there are plenty of ways to get simple movement in even while indoors. A few short routes to walk through your living room still count.`,
+      links: [
+        {
+          title: '6 Best Ways to Incorporate an Indoor Walking Workout to Your Routine',
+          url: 'https://www.verywellhealth.com/indoor-walking-workout-8729016',
+        },
+        {
+          title: 'How to Create the Ultimate Beginner Walking Workout Plan',
+          url: 'https://www.verywellhealth.com/walking-workout-8724153',
+        },
+      ],
+    }
+  }
+
   if (/second|another|more habit|add.*habit|slot/.test(text)) {
     return {
       text: `You could — but I'd hold. Two new routines is a lot to remember, and this one's still new. Give "${habit.title}" a couple more weeks to get boring. Boring means it's yours — then we'll open the next slot.`,
@@ -201,6 +226,22 @@ function HabitChat() {
             </div>
 
             {message.card && <ChatCard card={message.card} />}
+
+            {message.links && (
+              <div className="habit-chat__links">
+                {message.links.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="habit-chat__link"
+                  >
+                    {link.title} ↗
+                  </a>
+                ))}
+              </div>
+            )}
 
             {message.suggestions && (
               <div className="habit-chat__suggestions">

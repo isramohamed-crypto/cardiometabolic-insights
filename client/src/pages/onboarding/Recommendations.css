@@ -69,7 +69,7 @@
   align-items: center;
   gap: var(--space-3);
   font-family: var(--font-body);
-  font-size: var(--text-base);
+  font-size: var(--text-h5);
   color: rgba(0, 0, 0, 0.35);
   transition: color 0.2s ease;
   /* Cascades in with a per-row stagger (--stagger, set inline per item)

@@ -149,6 +149,35 @@
   cursor: pointer;
 }
 
+/* External article links surfaced from a reply (e.g. the indoor-walking
+   alternatives) — styled as its own small stacked list rather than reusing
+   .habit-chat__card, since these are plain title+URL pairs with no thumb
+   or brand to show. */
+.habit-chat__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-self: flex-start;
+  max-width: 82%;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.habit-chat__link {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  line-height: 1.35;
+  color: var(--color-seaweed);
+  text-decoration: none;
+}
+
+.habit-chat__link:hover {
+  text-decoration: underline;
+}
+
 .habit-chat__suggestions {
   display: flex;
   flex-wrap: wrap;

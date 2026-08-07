@@ -127,20 +127,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
   moving: {
     categoryLabel: 'Physical activity',
     gradient: 'linear-gradient(160deg, #00B9E2 0%, #063a52 100%)',
+    // Daily walk is deliberately 3rd here, not 1st — everything else about
+    // it (its own real photo/carousel/day-scripts) is unchanged, this is
+    // purely display order within the pillar's pick carousel.
     habits: [
-      {
-        id: 'walk-after-meal',
-        title: 'Daily walk',
-        subtitle: 'A 10 minute walk every evening.',
-        image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
-        justification:
-          'A short walk — especially after eating — helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
-        evidence:
-          'Blood sugar tends to spike in the hour or so after eating — light movement in that window is one of the simplest ways to blunt that rise.',
-        expectation:
-          'No pace goal, no step count — just a few minutes of moving. It should feel closer to a stroll than exercise.',
-        tiers: [{ label: '10 minutes' }, { label: '20 minutes' }, { label: '30 minutes' }],
-      },
       {
         id: 'two-strength-sessions',
         title: 'Strength training',
@@ -170,6 +160,19 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         expectation:
           'A couple minutes, first thing, before anything else grabs your attention. It should feel more like a reflex than a workout.',
         tiers: [{ label: '2 minutes' }, { label: '5 minutes' }, { label: '10 minutes' }],
+      },
+      {
+        id: 'walk-after-meal',
+        title: 'Daily walk',
+        subtitle: 'A 10 minute walk every evening.',
+        image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
+        justification:
+          'A short walk — especially after eating — helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',
+        evidence:
+          'Blood sugar tends to spike in the hour or so after eating — light movement in that window is one of the simplest ways to blunt that rise.',
+        expectation:
+          'No pace goal, no step count — just a few minutes of moving. It should feel closer to a stroll than exercise.',
+        tiers: [{ label: '10 minutes' }, { label: '20 minutes' }, { label: '30 minutes' }],
       },
       {
         id: 'chair-stands-after-breakfast',
