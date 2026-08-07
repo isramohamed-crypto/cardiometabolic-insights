@@ -25,22 +25,40 @@ const STATUS_LABEL = {
   [OWNERSHIP_STATE.ABANDONED]: 'Retired',
 }
 
-// The catalog title ("Daily walk") is intentionally generic — tier (how
-// much) and moment (when) are only decided afterward, at customize. Once
-// both are picked, this spells the title back out with the specifics
-// baked in ("10 minute walk every day after dinner" / "... at 7:30 PM")
-// instead of leaving the hero reading as generically as the catalog card
-// did. Only duration-style tiers ("10 minutes") read naturally this way,
-// so anything else (counts like "5 stands", cadences like "2 sessions a
-// week") falls back to the plain catalog title rather than forcing an
-// awkward sentence.
+// Temporary: retiring a habit is coming back later, just not turned on
+// for now — hides the "Retire this habit" action in the edit overlay
+// below without removing handleRetire or any of the ABANDONED-state
+// plumbing it leads to (STATUS_LABEL's own 'Retired' entry, HabitsContext,
+// etc.), so re-enabling later is just flipping this back to true. Same
+// flag-a-section-off pattern CustomizeHabit.jsx uses for
+// HIDE_TIER_SECTION_IN_ONBOARDING.
+const RETIRE_HABIT_ENABLED = false
+
+// Only for catalog titles that are still generic about how much/when
+// ("Daily walk", back when tier/moment were decided afterward at
+// customize) — spells the title back out with the specifics baked in
+// ("10 minute walk every day after dinner" / "... at 7:30 PM") instead of
+// leaving the hero reading as generically as the catalog card did.
+// Matching on the literal "Daily " prefix (rather than just trying to
+// strip it and falling through either way) matters now that the catalog's
+// own walk-after-meal title already names its duration and moment itself
+// ("10-minute walk after a meal") — running THAT through this composer
+// used to double up into "20 minute 10-minute walk after a meal every day
+// after dinner" instead of bailing out to the plain title like every
+// other non-"Daily "-prefixed habit already does below. No current
+// catalog title starts with "Daily " any more, so this is dormant for
+// now — kept in case a future habit's title needs the same generic-until-
+// customized treatment.
 function detailedTitle(catalogTitle, tier, moment) {
   if (!tier || !moment) return catalogTitle
+
+  const dailyMatch = catalogTitle.match(/^Daily\s+(.+)$/i)
+  if (!dailyMatch) return catalogTitle
 
   const minutesMatch = tier.match(/^(\d+)\s*minutes?$/i)
   if (!minutesMatch) return catalogTitle
 
-  const noun = catalogTitle.replace(/^Daily\s+/i, '').toLowerCase()
+  const noun = dailyMatch[1].toLowerCase()
   const momentPhrase = STACK_PRESETS.includes(moment) ? moment.toLowerCase() : `at ${moment}`
   return `${minutesMatch[1]} minute ${noun} every day ${momentPhrase}`
 }
@@ -410,14 +428,17 @@ function HabitDetail() {
                     to the status pill — folded in here instead, same
                     destructive red/underline treatment it always had,
                     just relocated to live with the rest of this habit's
-                    editable settings. */}
-                <button
-                  type="button"
-                  className="habit-edit-modal__retire"
-                  onClick={handleRetire}
-                >
-                  Retire this habit
-                </button>
+                    editable settings. Temporarily hidden — see
+                    RETIRE_HABIT_ENABLED above. */}
+                {RETIRE_HABIT_ENABLED && (
+                  <button
+                    type="button"
+                    className="habit-edit-modal__retire"
+                    onClick={handleRetire}
+                  >
+                    Retire this habit
+                  </button>
+                )}
               </div>
             </div>
           </div>

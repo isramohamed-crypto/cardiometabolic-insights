@@ -68,7 +68,9 @@
    above (rendered between groups, not before the first one), not from
    margin here. */
 .summary__row-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-bottom: var(--space-2);
   font-family: var(--font-body);
   font-weight: 500;
@@ -76,6 +78,16 @@
   letter-spacing: 1.32px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.45);
+}
+
+/* Same small-pillar-icon treatment as question-screen__option-icon on
+   FocusAreas — real ACLM two-tone artwork, not recolored to match this
+   label's own muted color, same as every other pillar icon in the app. */
+.summary__row-icon {
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  object-fit: contain;
 }
 
 .summary__row-values {

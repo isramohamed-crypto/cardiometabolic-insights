@@ -252,6 +252,7 @@ function AddHabitFlow({ onClose }) {
           <HabitPickCard
             habit={habit}
             categoryLabel={categoryLabel}
+            pillarId={pillar.id}
             gradient={gradient}
             index={habitIndex}
             total={habits.length}

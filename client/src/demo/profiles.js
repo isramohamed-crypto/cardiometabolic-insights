@@ -55,12 +55,12 @@ function dateKey(date) {
 }
 
 // --- The habit every profile starts with --------------------------------
-// Reuses the real "walk-after-meal" catalog entry (id kept as-is so it
-// keeps its existing 7-day content script — see domain/habitContent.js —
-// even though the on-screen copy has been generalized to a plain daily
-// walk rather than meal-specific). `tier`/`ownershipState` are overridable
-// so later profiles (e.g. "3 weeks in") can start this habit further along
-// — already adopted, escalated past its trial tier — without duplicating
+// Reuses the real "walk-after-meal" catalog entry — id, title, and
+// subtitle all kept in sync with recommendedHabits.js's own copy for it,
+// so a demo persona's card reads the same as one a real user just added
+// through the picker. `tier`/`ownershipState` are overridable so later
+// profiles (e.g. "3 weeks in") can start this habit further along —
+// already adopted, escalated past its trial tier — without duplicating
 // the rest of its shape.
 // `tierHistory` defaults to a single entry at the habit's own start (no
 // escalation yet) — pass one explicitly (see '3-weeks-in' below) for a
@@ -76,8 +76,8 @@ function walkingHabit({
 }) {
   return {
     id: 'walk-after-meal',
-    title: 'Daily walk',
-    subtitle: 'A 10 minute walk every evening.',
+    title: '10-minute walk after a meal',
+    subtitle: 'A short walk right after eating — any meal works.',
     pillarId: 'moving',
     tier,
     moment: 'In the evening',

@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import QuestionScreen from './QuestionScreen.jsx'
-import { PILLARS, BODY_COPY, getPillarIndex } from './pillars.js'
+import {
+  PILLARS,
+  BODY_COPY,
+  FOUNDATION_HEADLINE_LINES,
+  SOMETHING_ELSE_OPTION,
+  NONE_OF_THESE_OPTION,
+  getPillarIndex,
+  getPillarEyebrow,
+} from './pillars.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 
@@ -76,16 +84,21 @@ function PillarQuestion() {
     ? `Hi ${name} — ${BODY_COPY.charAt(0).toLowerCase()}${BODY_COPY.slice(1)}`
     : BODY_COPY
 
+  // Always appended after the pillar's own real options — see
+  // SOMETHING_ELSE_OPTION/NONE_OF_THESE_OPTION in pillars.js for why
+  // there are two instead of reviving the old single "Skip".
+  const options = [...pillar.options, SOMETHING_ELSE_OPTION, NONE_OF_THESE_OPTION]
+
   return (
     <QuestionScreen
       key={pillar.id}
-      eyebrow={pillar.label}
+      eyebrow={getPillarEyebrow(pillar.label)}
       step={index + 1}
       totalSteps={PILLARS.length}
       progressIcons={PROGRESS_ICONS}
-      headlineLines={pillar.headlineLines}
+      headlineLines={FOUNDATION_HEADLINE_LINES}
       body={body}
-      options={pillar.options}
+      options={options}
       selected={selected}
       onToggle={toggleOption}
       onContinue={handleContinue}

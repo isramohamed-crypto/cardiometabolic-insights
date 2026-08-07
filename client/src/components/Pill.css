@@ -19,3 +19,16 @@
   display: inline-flex;
   font-size: var(--text-caption);
 }
+
+/* Pillar pills (RoutineHabitCard/AlreadyYoursCard/HabitPickCard) pass a
+   real ACLM icon <img> as this icon now, instead of the emoji/text this
+   was originally sized for — 1em ties it to .pill__icon's own font-size
+   above, so it stays proportional wherever a pill's own font-size scales
+   down (e.g. RoutineHabitCard.css's compact override for the pill inside
+   its card). */
+.pill__icon img {
+  display: block;
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+}

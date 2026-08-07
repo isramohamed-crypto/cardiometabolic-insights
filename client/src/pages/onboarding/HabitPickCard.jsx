@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import Pill from '../../components/Pill.jsx'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './HabitPickCard.css'
 
 const SWIPE_THRESHOLD = 50
@@ -21,6 +22,7 @@ const SWIPE_THRESHOLD = 50
 function HabitPickCard({
   habit,
   categoryLabel,
+  pillarId,
   gradient,
   index,
   total,
@@ -47,7 +49,10 @@ function HabitPickCard({
 
   return (
     <div className="habit-card-wrap">
-      <Pill label={categoryLabel} />
+      <Pill
+        icon={pillarId ? <img src={getAclmIcon(pillarId)} alt="" /> : undefined}
+        label={categoryLabel}
+      />
 
       <div
         className="habit-card"

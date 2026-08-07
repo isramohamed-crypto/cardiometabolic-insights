@@ -127,9 +127,10 @@ export const RECOMMENDATIONS_BY_PILLAR = {
   moving: {
     categoryLabel: 'Physical Activity',
     gradient: 'linear-gradient(160deg, #00B9E2 0%, #063a52 100%)',
-    // Daily walk is deliberately 3rd here, not 1st — everything else about
-    // it (its own real photo/carousel/day-scripts) is unchanged, this is
-    // purely display order within the pillar's pick carousel.
+    // The after-meal walk (walk-after-meal) is deliberately 3rd here, not
+    // 1st — everything else about it (its own real photo/carousel/day-
+    // scripts) is unchanged, this is purely display order within the
+    // pillar's pick carousel.
     habits: [
       {
         id: 'two-strength-sessions',
@@ -163,8 +164,8 @@ export const RECOMMENDATIONS_BY_PILLAR = {
       },
       {
         id: 'walk-after-meal',
-        title: 'Daily walk',
-        subtitle: 'A 10 minute walk every evening.',
+        title: '10-minute walk after a meal',
+        subtitle: 'A short walk right after eating — any meal works.',
         image: "url('/The-Simple-After-Dinner-Habit-That-May-Balance-Blood-Sugars-b47f5d48f0564c9087d3af290b752726.webp')",
         justification:
           'A short walk — especially after eating — helps steady your blood sugar right when it tends to climb. It’s a small change that stacks onto something you’re already doing.',

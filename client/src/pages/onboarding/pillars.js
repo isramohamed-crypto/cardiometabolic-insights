@@ -1,22 +1,18 @@
 // The 5 pillars of health that drive the "what's already working" onboarding
 // questions. Each pillar gets its own screen (step X of 5) instead of one
 // combined list. Ids/labels come from the canonical list in domain/pillars.js
-// — this file only adds the onboarding-specific copy (headline + options)
-// on top of each one.
+// — this file only adds the onboarding-specific copy (options) on top of
+// each one.
 //
-// headlineLines' second line generally follows a "working with X?" pattern,
-// but 'moving' and 'social' break from it on purpose — "working with
-// movement?" and "working with connection?" are long enough that on common
-// phone widths (~360-390px) they wrap onto a 3rd line instead of the clean
-// 2 every other pillar gets (line 1 alone already fills a whole line at
-// this headline's font size, so there's no room left on it to absorb the
-// overflow from a long line 2). "working out?" / "staying connected?" are
-// short enough to reliably fit as one line instead.
+// Every pillar screen used to have its own headline ("What's already
+// working with sleep?" etc.) — replaced with one shared headline
+// (FOUNDATION_HEADLINE_LINES below) read off the eyebrow instead ("Your
+// Foundation: {pillar label}" — see PillarQuestion.jsx), so there's no
+// more per-pillar headlineLines to keep here.
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 
 const ONBOARDING_COPY = {
   eating: {
-    headlineLines: ['What\'s already', 'working with eating?'],
     options: [
       { id: 'more-veggies', label: 'Eating fruit or vegetables every day' },
       { id: 'cooking-at-home', label: 'Cooking at home' },
@@ -27,7 +23,6 @@ const ONBOARDING_COPY = {
     ],
   },
   moving: {
-    headlineLines: ['What\'s already', 'working out?'],
     options: [
       { id: 'daily-walks', label: 'Daily walks' },
       { id: 'strength-training', label: 'Strength training' },
@@ -38,7 +33,6 @@ const ONBOARDING_COPY = {
     ],
   },
   sleep: {
-    headlineLines: ['What\'s already', 'working with sleep?'],
     options: [
       { id: 'consistent-bedtime', label: 'A consistent bedtime' },
       { id: 'enough-hours', label: 'Getting 7+ hours a night' },
@@ -49,7 +43,6 @@ const ONBOARDING_COPY = {
     ],
   },
   stress: {
-    headlineLines: ['What\'s already', 'working with stress?'],
     options: [
       { id: 'meditation-breathing', label: 'Meditation or breathing exercises' },
       { id: 'journaling', label: 'Journaling' },
@@ -60,7 +53,6 @@ const ONBOARDING_COPY = {
     ],
   },
   social: {
-    headlineLines: ['What\'s already', 'staying connected?'],
     options: [
       { id: 'time-with-friends', label: 'Regular time with friends or family' },
       { id: 'community-groups', label: 'Community or group activities' },
@@ -78,14 +70,50 @@ export const PILLARS = PILLARS_CANONICAL.map((pillar) => ({
 
 export const BODY_COPY = "Everyone has habits that stick. Pick what's already on yours."
 
+// Shared across every pillar screen now (see PillarQuestion.jsx) instead
+// of each pillar having its own "What's already working with X?" —
+// eyebrow now carries which pillar via getPillarEyebrow below, so the
+// headline no longer needs to name it too.
+export const FOUNDATION_HEADLINE_LINES = ["Let's start with what's already", 'working.']
+
+export function getPillarEyebrow(pillarLabel) {
+  return `Your Foundation: ${pillarLabel}`
+}
+
 // Used to be a "Skip" escape hatch appended to the bottom of every
 // pillar's option list — removed along with every other explicit skip
-// affordance in onboarding, so each pillar screen now requires picking at
-// least one real option (QuestionScreen's requireSelection defaults to
-// true, and PillarQuestion no longer appends this to override that).
-// Summary.jsx still imports this to filter it out of any answer data that
-// predates the change; kept here so that import doesn't break.
+// affordance in onboarding, so each pillar screen required picking at
+// least one real option for a while. Re-added in a different shape (see
+// SOMETHING_ELSE_OPTION/NONE_OF_THESE_OPTION below) rather than revived
+// as-is, since "Skip" collapsed two different situations (there IS
+// something, it's just not listed vs. there's genuinely nothing yet) into
+// one option. Summary.jsx/Collection.jsx still import this to filter it
+// out of any answer data that predates the change; kept here so those
+// imports don't break.
 export const NONE_OPTION = { id: 'none', label: 'Skip' }
+
+// Appended to the bottom of every pillar's option list (see
+// PillarQuestion.jsx) so there's always a way to say "something's working
+// here, just not one of these" without forcing a pick from the fixed
+// list, and a separate, explicit way to say "nothing here yet" instead of
+// silently picking nothing (QuestionScreen's requireSelection would just
+// block Continue in that case, which reads as broken rather than as a
+// real answer). Neither corresponds to a real catalog habit or a real
+// "brought with you" fact, so both get filtered out the same way
+// NONE_OPTION's id already was wherever habitsWorking answers turn into
+// on-screen habit rows (Summary.jsx, Collection.jsx's foundationRows) —
+// see NON_HABIT_OPTION_IDS below.
+export const SOMETHING_ELSE_OPTION = { id: 'something-else', label: 'Something else' }
+export const NONE_OF_THESE_OPTION = { id: 'none-of-these', label: 'None of these' }
+
+// Every option id that isn't a real "brought with you" fact — combine
+// with .filter((id) => !NON_HABIT_OPTION_IDS.includes(id)) anywhere
+// habitsWorking answers get turned into real habit rows.
+export const NON_HABIT_OPTION_IDS = [
+  NONE_OPTION.id,
+  SOMETHING_ELSE_OPTION.id,
+  NONE_OF_THESE_OPTION.id,
+]
 
 export function getPillarIndex(pillarId) {
   return PILLARS.findIndex((p) => p.id === pillarId)

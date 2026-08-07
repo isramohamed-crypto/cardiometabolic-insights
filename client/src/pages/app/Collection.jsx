@@ -4,6 +4,7 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { getPillarLabel } from '../../domain/pillars.js'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { PILLARS, NONE_OPTION } from '../onboarding/pillars.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import Pill from '../../components/Pill.jsx'
@@ -127,7 +128,10 @@ function AlreadyYoursCard({ title, subtitle, pillarId, id, image, to }) {
     <Wrapper to={to} className="already-yours-card" style={{ backgroundImage: background }}>
       <div className="already-yours-card__scrim" />
       <div className="already-yours-card__content">
-        <Pill label={subtitle} />
+        <Pill
+          icon={pillarId ? <img src={getAclmIcon(pillarId)} alt="" /> : undefined}
+          label={subtitle}
+        />
         <h3 className="already-yours-card__title">{title}</h3>
       </div>
     </Wrapper>
