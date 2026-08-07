@@ -40,6 +40,7 @@
    recap reads as one contained block instead of a bare list floating in
    the page body. */
 .summary__card {
+  margin-top: var(--space-5);
   border: 1px solid rgba(0, 70, 32, 0.12);
   border-radius: var(--radius-md);
   padding: var(--space-5);
