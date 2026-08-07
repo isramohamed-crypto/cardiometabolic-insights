@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams, Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useFavorites } from '../../content/FavoritesContext.jsx'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
+import BrandLogo from '../../components/BrandLogo.jsx'
 import './HabitChat.css'
 
 let nextId = 1
@@ -113,7 +114,7 @@ function ChatCard({ card }) {
     <div className="habit-chat__card">
       <div className="habit-chat__card-thumb" style={{ backgroundImage: card.thumbnail }} />
       <div className="habit-chat__card-body">
-        <span className="habit-chat__card-brand">{card.brand}</span>
+        <BrandLogo brand={card.brand} className="habit-chat__card-brand" />
         <span className="habit-chat__card-title">{card.title}</span>
         <div className="habit-chat__card-actions">
           <Link to="/read" className="habit-chat__card-action">

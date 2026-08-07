@@ -66,13 +66,24 @@
   background: #fff;
 }
 
-.content-modal__brand {
+/* Text fallback (an unmapped brand — see BrandLogo.jsx) keeps the old
+   caption-label look; the img rule below is the normal case. */
+span.content-modal__brand {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-caption);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--color-seaweed);
+}
+
+img.content-modal__brand {
+  display: block;
+  height: 18px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .content-modal__title {

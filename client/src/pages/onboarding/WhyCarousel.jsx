@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import BrandLogo from '../../components/BrandLogo.jsx'
 import './WhyCarousel.css'
 
 /**
@@ -66,7 +67,12 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
         </button>
 
         <div className="why-carousel__top">
-          <span className="why-carousel__brand">{brand}</span>
+          {/* Standalone source badge — replaced with the real logo below.
+              The other `brand` reference in this file (the closing byline's
+              "{brand} · Updated {date}" line) stays plain text: it's a
+              sentence fragment, not a standalone label, and swapping in an
+              image mid-sentence there would read oddly. */}
+          <BrandLogo brand={brand} className="why-carousel__brand" />
           {hasMultiplePages && (
             <span className="why-carousel__count">
               {currentPage + 1} of {screens.length}

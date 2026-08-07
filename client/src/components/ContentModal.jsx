@@ -1,5 +1,6 @@
 import { useFavorites } from '../content/FavoritesContext.jsx'
 import HeartIcon from './HeartIcon.jsx'
+import BrandLogo from './BrandLogo.jsx'
 import './ContentModal.css'
 
 // Real article URL missing? Fall back to the publisher's homepage rather
@@ -97,7 +98,7 @@ function ContentModal({ content, onClose }) {
         </div>
 
         <div className="content-modal__bar-title">
-          {content.brand && <span className="content-modal__brand">{content.brand}</span>}
+          <BrandLogo brand={content.brand} className="content-modal__brand" />
           <span className="content-modal__title">{content.title}</span>
         </div>
 

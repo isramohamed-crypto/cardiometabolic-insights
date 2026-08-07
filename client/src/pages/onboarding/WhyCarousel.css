@@ -60,7 +60,6 @@
   margin-bottom: var(--space-4);
 }
 
-.why-carousel__brand,
 .why-carousel__count {
   font-family: var(--font-body);
   font-weight: 500;
@@ -68,6 +67,26 @@
   letter-spacing: 1.68px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.55);
+}
+
+/* Text fallback (an unmapped brand — see BrandLogo.jsx) keeps the same
+   look __count still has; the img rule below is the normal case. */
+span.why-carousel__brand {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-caption);
+  letter-spacing: 1.68px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+img.why-carousel__brand {
+  display: block;
+  height: 16px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .why-carousel__dots {

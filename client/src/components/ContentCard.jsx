@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ContentModal from './ContentModal.jsx'
 import HeartIcon from './HeartIcon.jsx'
+import BrandLogo from './BrandLogo.jsx'
 import { useFavorites } from '../content/FavoritesContext.jsx'
 import './ContentCard.css'
 
@@ -30,7 +31,7 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
         <button type="button" className="content-card__tap" onClick={() => setOpen(true)}>
           <div className="content-card__thumb" style={{ backgroundImage: thumbnail }} />
           <div className="content-card__body">
-            {brand && <span className="content-card__brand">{brand}</span>}
+            <BrandLogo brand={brand} className="content-card__brand" />
             <span className="content-card__title">{title}</span>
           </div>
         </button>

@@ -114,13 +114,24 @@
   min-width: 0;
 }
 
-.habit-chat__card-brand {
+/* Text fallback (an unmapped brand — see BrandLogo.jsx) keeps the old
+   caption-label look; the img rule below is the normal case. */
+span.habit-chat__card-brand {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: var(--text-caption);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.45);
+}
+
+img.habit-chat__card-brand {
+  display: block;
+  height: 14px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .habit-chat__card-title {

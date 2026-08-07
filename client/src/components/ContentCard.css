@@ -54,13 +54,28 @@
   min-width: 0;
 }
 
-.content-card__brand {
+/* Text fallback (an unmapped brand — see BrandLogo.jsx) keeps the old
+   caption-label look. The normal case is the img rule right below it. */
+span.content-card__brand {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-caption);
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--color-seaweed);
+}
+
+/* Logo replaces the old uppercase brand-name text — kept small and
+   left-aligned in the same slot, height-constrained (not width) so
+   every brand's differently-proportioned logo lines up the same way
+   regardless of its own aspect ratio. */
+img.content-card__brand {
+  display: block;
+  height: 16px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .content-card__title {
