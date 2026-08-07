@@ -1,16 +1,26 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
 import { getWhyCarouselContent } from '../onboarding/whyCarouselContent.js'
 import { CONTENT_POOL } from '../../domain/habitContent.js'
+import { prefersReducedMotion } from '../../utils/motion.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
 import WhyCarousel from '../onboarding/WhyCarousel.jsx'
 import CustomizeHabit from '../onboarding/CustomizeHabit.jsx'
+import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import '../onboarding/QuestionScreen.css'
 import './AddHabitFlow.css'
+
+// How long the confetti plays before this flow actually closes back out to
+// Routine/Collection — onboarding's Recommendations uses the same value
+// (CONFETTI_SETTLE_MS) for its own "let the burst settle" beat. This flow
+// only gets a pop, not onboarding's full compiling-screen treatment, since
+// it's a lighter-weight add from an already-set-up Routine, not a first-run
+// moment.
+const ADD_HABIT_CELEBRATION_MS = 700
 
 // The "add a habit" version of onboarding's Recommendations — same
 // underlying pick-a-habit and customize steps, but rendered in place inside
@@ -54,6 +64,12 @@ function AddHabitFlow({ onClose }) {
   const [pillarId, setPillarId] = useState(null)
   const [habitIndex, setHabitIndex] = useState(0)
   const [trayOpen, setTrayOpen] = useState(false)
+  const [celebrating, setCelebrating] = useState(false)
+  // Save's still clickable underneath the confetti overlay for the brief
+  // window before onClose actually unmounts this flow (the overlay itself
+  // is pointer-events: none) — this guards against a second click in that
+  // window adding the same habit twice.
+  const finalizedRef = useRef(false)
 
   const pillar = PILLARS_CANONICAL.find((p) => p.id === pillarId) || PILLARS_CANONICAL[0]
   const { categoryLabel, habits: pillarHabits } =
@@ -98,6 +114,9 @@ function AddHabitFlow({ onClose }) {
   }
 
   const handleFinalize = ({ tier, moment, remindersOn }) => {
+    if (finalizedRef.current) return
+    finalizedRef.current = true
+
     addHabit({
       id: habit.id,
       title: habit.title,
@@ -107,11 +126,25 @@ function AddHabitFlow({ onClose }) {
       moment,
       remindersOn,
     })
-    onClose()
+
+    // Habit's added either way — reduced motion just skips straight to
+    // closing instead of holding the flow open for a burst it won't show.
+    if (prefersReducedMotion()) {
+      onClose()
+      return
+    }
+    setCelebrating(true)
+    setTimeout(onClose, ADD_HABIT_CELEBRATION_MS)
   }
 
   return (
     <div className="add-habit-flow">
+      {/* Fixed to the viewport (not the flow's own box) so the burst reads
+          as a whole-screen moment, same as onboarding's Recommendations —
+          this is a real new habit landing on Routine, not a small in-card
+          decision like HabitTrialPrompt's confetti. */}
+      {celebrating && <ConfettiBurst count={30} />}
+
       <button
         type="button"
         className="add-habit-flow__close"

@@ -26,7 +26,13 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
+/* position: relative so the confetti burst (Keep it/Let it go) and the
+   sparkle badge (tier upsell) — both position: absolute, see below and
+   ConfettiBurst.css's --contained variant — anchor to this row instead of
+   the nearest positioned ancestor further up (the whole routine card),
+   which would center them over the photo instead of over the buttons. */
 .habit-trial-prompt__actions {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -84,4 +90,65 @@
 
 .habit-trial-prompt__link:hover {
   color: #fff;
+}
+
+.habit-trial-prompt__primary:disabled,
+.habit-trial-prompt__secondary:disabled,
+.habit-trial-prompt__link:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ---- Tier-upsell's own celebratory touch — a sparkle badge instead of
+   the confetti burst Keep it/Let it go get, so the two decision moments
+   don't read as the same effect recolored. ---- */
+
+.habit-trial-prompt__sparkle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.habit-trial-prompt__sparkle-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: var(--color-seaweed);
+  opacity: 0;
+  animation: habit-trial-sparkle-pop 0.6s cubic-bezier(0.2, 0.75, 0.3, 1.2) forwards;
+}
+
+@keyframes habit-trial-sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(6px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Same "drop the pure-celebration effect entirely" rule ConfettiBurst.css
+   and AllSet.css both follow for prefers-reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  .habit-trial-prompt__sparkle-badge {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
