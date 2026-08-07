@@ -17,17 +17,35 @@ import './WhyCarousel.css'
 function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
   const [page, setPage] = useState(0)
 
-  // Same reset-on-open rule as WhyThisMattersTray, so this never reopens
-  // mid-sequence on a later habit.
+  // Two separate resets, not one effect gated on `open && content` — this
+  // component never unmounts on close (why-carousel-scene just fades out
+  // via CSS, see the className below), so `content` can change while
+  // `open` is already false: "Show me another"'s onAnother flips `open`
+  // to false and advances to a new habit in the same update, and that new
+  // habit's own carousel can have fewer screens than whatever page the
+  // previous one was left on. Resetting only "on open" would leave `page`
+  // stale until the next open, and the very next render in between would
+  // index past the new, shorter `screens` array and crash. Reopening
+  // still always starts at page 0 too, so this never resumes mid-sequence
+  // on a later habit either.
+  useEffect(() => {
+    setPage(0)
+  }, [content])
+
   useEffect(() => {
     if (open) setPage(0)
-  }, [open, content])
+  }, [open])
 
   if (!content) return null
 
   const { brand, footer, screens } = content
-  const screen = screens[page]
-  const isLast = page === screens.length - 1
+  // Belt-and-suspenders alongside the resets above: never index past the
+  // end of this content's own screens, so a stale page from a
+  // longer-sequence habit can't crash the render even for a moment. Used
+  // everywhere below instead of the raw `page` state.
+  const currentPage = Math.min(page, screens.length - 1)
+  const screen = screens[currentPage]
+  const isLast = currentPage === screens.length - 1
   // A page count/dots row only means something once there's more than one
   // page to move through — habits with just a teaser and nothing further
   // (see buildWhyCarouselFromContentPool's 1-page case in
@@ -51,7 +69,7 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
           <span className="why-carousel__brand">{brand}</span>
           {hasMultiplePages && (
             <span className="why-carousel__count">
-              {page + 1} of {screens.length}
+              {currentPage + 1} of {screens.length}
             </span>
           )}
         </div>
@@ -61,7 +79,7 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
             {screens.map((_, i) => (
               <span
                 key={i}
-                className={`why-carousel__dot${i === page ? ' why-carousel__dot--active' : ''}`}
+                className={`why-carousel__dot${i === currentPage ? ' why-carousel__dot--active' : ''}`}
               />
             ))}
           </div>
