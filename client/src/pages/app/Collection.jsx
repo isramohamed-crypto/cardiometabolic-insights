@@ -163,7 +163,7 @@ function Collection() {
     return (
       <div className="page">
         <p className="page__lead">Nothing here yet.</p>
-        <p>Pick your first habit from Routine to start your collection.</p>
+        <p>Pick your first habit from Today to start your habits.</p>
       </div>
     )
   }

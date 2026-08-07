@@ -196,7 +196,7 @@ function HabitChat() {
       <main className="habit-chat">
         <p className="habit-chat__intro">This habit couldn’t be found.</p>
         <button type="button" className="habit-chat__back" onClick={() => navigate('/routine')}>
-          <span aria-hidden="true">←</span> Back to Routine
+          <span aria-hidden="true">←</span> Back to Today
         </button>
       </main>
     )

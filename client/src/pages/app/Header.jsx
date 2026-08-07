@@ -76,7 +76,7 @@ function CollectionHeaderCopy({ answers, habits }) {
 
   return (
     <>
-      <p className="app-header__eyebrow">Your Collection</p>
+      <p className="app-header__eyebrow">Your Habits</p>
       <h1 className="app-header__title">
         Everything that's <span className="app-header__title-accent">already yours.</span>
       </h1>

@@ -129,7 +129,7 @@ function HabitDetail() {
             className="question-screen__back"
             onClick={() => navigate('/routine')}
           >
-            <span aria-hidden="true">←</span> Back to Routine
+            <span aria-hidden="true">←</span> Back to Today
           </button>
         </div>
       </main>
@@ -160,7 +160,7 @@ function HabitDetail() {
   const currentTierIndex = Math.max(0, tiers.findIndex((t) => t.label === habit.tier))
 
   const handleRetire = () => {
-    if (window.confirm('Retire this habit? It will be removed from your Routine.')) {
+    if (window.confirm('Retire this habit? It will be removed from your Today list.')) {
       updateHabitState(habit.id, OWNERSHIP_STATE.ABANDONED)
       navigate('/routine')
     }
@@ -235,18 +235,18 @@ function HabitDetail() {
 
           {/* The actual keep/smaller/let-go decision (and the tier-upsell
               that can follow "Keep it") now shows as its own full-screen
-              modal on the Routine tab — see TrialPromptModal.jsx. This is
+              modal on the Today tab — see TrialPromptModal.jsx. This is
               just a one-line pointer over to it, not the decision UI
               itself. */}
           {showTrialPrompt && (
             <Link to="/routine" className="habit-detail__trial-hint">
-              A week of trying. Head to Routine to decide what's next →
+              A week of trying. Head to Today to decide what's next →
             </Link>
           )}
 
           {showTierUpsell && (
             <Link to="/routine" className="habit-detail__trial-hint">
-              "{habit.tier}" is working — head to Routine to bump it up →
+              "{habit.tier}" is working — head to Today to bump it up →
             </Link>
           )}
 

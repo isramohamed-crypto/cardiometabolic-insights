@@ -161,17 +161,17 @@ function HealthCheck() {
           </li>
           <li>
             <p className="health-check__change-title">More relevant reading, less noise</p>
-            <p className="health-check__change-desc">From Health and EatingWell, in the Read tab.</p>
+            <p className="health-check__change-desc">From Health and EatingWell, in the Learn tab.</p>
           </li>
           <li>
             <p className="health-check__change-title">A recap you can take to a doctor</p>
             <p className="health-check__change-desc">
-              Building quietly in Me — for whenever you go.
+              Building quietly in Progress — for whenever you go.
             </p>
           </li>
         </ul>
 
-        <p className="health-check__footnote">Change any answer in Me · Health details.</p>
+        <p className="health-check__footnote">Change any answer in Progress · Health details.</p>
 
         <button type="button" className="health-check__cta" onClick={() => navigate('/routine')}>
           Back to my routine

@@ -46,7 +46,7 @@ function HabitEdit() {
             className="question-screen__back"
             onClick={() => navigate('/routine')}
           >
-            <span aria-hidden="true">←</span> Back to Routine
+            <span aria-hidden="true">←</span> Back to Today
           </button>
         </div>
       </main>
