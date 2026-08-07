@@ -3,16 +3,24 @@
 // onboarding flow (pages/onboarding/pillars.js) layers its own copy
 // (headlines, intake options) on top of these rather than redefining them.
 //
-// A 6th pillar, "Moderation" (a soft framing of the American College of
-// Lifestyle Medicine's "avoidance of risky substances"), was added and then
-// removed — the app isn't tackling that area for now. Re-add it here (and
-// in onboarding/pillars.js + recommendedHabits.js) if that changes.
+// Labels now match the American College of Lifestyle Medicine's own
+// wording for its six pillars of lifestyle medicine (lifestylemedicine.org/
+// about-lifestyle-medicine/) — ids stay the plain lowercase words
+// (eating/moving/sleep/stress/social) since those are load-bearing all
+// over the app (route params, RECOMMENDATIONS_BY_PILLAR keys, demo profile
+// data); only the user-facing label changed, so nothing else needed to
+// move.
+//
+// A 6th pillar, "Moderation" (a soft framing of ACLM's "Risky Substance
+// Avoidance"), was added and then removed — the app isn't tackling that
+// area for now. Re-add it here (and in onboarding/pillars.js +
+// recommendedHabits.js) if that changes.
 export const PILLARS_CANONICAL = [
-  { id: 'eating', label: 'Eating' },
-  { id: 'moving', label: 'Moving' },
-  { id: 'sleep', label: 'Sleep' },
-  { id: 'stress', label: 'Stress' },
-  { id: 'social', label: 'Social' },
+  { id: 'eating', label: 'Optimal Nutrition' },
+  { id: 'moving', label: 'Physical Activity' },
+  { id: 'sleep', label: 'Restorative Sleep' },
+  { id: 'stress', label: 'Stress Management' },
+  { id: 'social', label: 'Connectedness' },
 ]
 
 export function getPillarLabel(pillarId) {

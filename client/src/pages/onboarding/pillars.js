@@ -78,8 +78,13 @@ export const PILLARS = PILLARS_CANONICAL.map((pillar) => ({
 
 export const BODY_COPY = "Everyone has habits that stick. Pick what's already on yours."
 
-// Polite escape hatch appended to the bottom of every pillar's option list,
-// for when none of the real options apply yet.
+// Used to be a "Skip" escape hatch appended to the bottom of every
+// pillar's option list — removed along with every other explicit skip
+// affordance in onboarding, so each pillar screen now requires picking at
+// least one real option (QuestionScreen's requireSelection defaults to
+// true, and PillarQuestion no longer appends this to override that).
+// Summary.jsx still imports this to filter it out of any answer data that
+// predates the change; kept here so that import doesn't break.
 export const NONE_OPTION = { id: 'none', label: 'Skip' }
 
 export function getPillarIndex(pillarId) {

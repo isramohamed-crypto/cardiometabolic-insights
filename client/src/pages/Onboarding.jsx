@@ -70,7 +70,9 @@ function Onboarding() {
         </div>
 
         <div className="onboarding__copy">
-          <h1 className="onboarding__title">Vitalist</h1>
+          <h1 className="onboarding__title">
+            <span className="onboarding__title-scrim">Vitalist</span>
+          </h1>
           <p className="onboarding__subtitle">
             Build healthier habits.
             <br />
@@ -82,7 +84,7 @@ function Onboarding() {
             className="onboarding__cta"
             onClick={() => navigate('/onboarding/name')}
           >
-            Get started
+            <span aria-hidden="true">🍃</span> Get started
           </button>
         </div>
       </div>

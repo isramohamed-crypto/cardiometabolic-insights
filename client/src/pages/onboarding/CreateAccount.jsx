@@ -3,15 +3,28 @@ import { useNavigate } from 'react-router-dom'
 import './QuestionScreen.css'
 
 // Stub account-creation screen — no real auth backend exists yet. Submitting
-// just stores nothing and moves on; "Skip for now" does the same thing
-// without pretending to collect anything. Wire up real signup before this
-// ships anywhere but a demo.
+// just stores nothing and moves on. Wire up real signup before this ships
+// anywhere but a demo.
+//
+// The email field autofills a fake account (testing@vitalist.com /
+// fizzbuzz) on focus, purely so a demo/QA pass doesn't need to type
+// throwaway credentials every time — and no longer masks what's typed
+// (see the removed .question-screen__input--masked below), since there's
+// no real credential here worth obscuring.
+const FAKE_EMAIL = 'testing@vitalist.com'
+const FAKE_PASSWORD = 'fizzbuzz'
+
 function CreateAccount() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const canContinue = email.trim().length > 0 && password.length > 0
+
+  const handleEmailFocus = () => {
+    setEmail(FAKE_EMAIL)
+    setPassword(FAKE_PASSWORD)
+  }
 
   const handleContinue = (e) => {
     e.preventDefault()
@@ -36,10 +49,11 @@ function CreateAccount() {
 
         <input
           type="email"
-          className="question-screen__input question-screen__input--masked"
+          className="question-screen__input"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onFocus={handleEmailFocus}
           autoComplete="email"
           style={{ marginBottom: 10 }}
         />
@@ -56,10 +70,6 @@ function CreateAccount() {
 
         <button type="submit" className="question-screen__continue" disabled={!canContinue}>
           Create account
-        </button>
-
-        <button type="button" className="question-screen__skip" onClick={() => navigate('/all-set')}>
-          Skip for now
         </button>
       </form>
     </main>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import QuestionScreen from './QuestionScreen.jsx'
-import { PILLARS, BODY_COPY, NONE_OPTION, getPillarIndex } from './pillars.js'
+import { PILLARS, BODY_COPY, getPillarIndex } from './pillars.js'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 
 // Renders one of the 5 "what's already working" pillar screens
@@ -33,18 +33,9 @@ function PillarQuestion() {
   const name = answers.name
 
   const toggleOption = (id) => {
-    setSelected((prev) => {
-      if (id === NONE_OPTION.id) {
-        // Selecting "Skip" clears everything else; clicking it again just
-        // deselects it.
-        return prev.includes(id) ? [] : [id]
-      }
-      // Picking a real option overrides "Skip".
-      const withoutNone = prev.filter((item) => item !== NONE_OPTION.id)
-      return withoutNone.includes(id)
-        ? withoutNone.filter((item) => item !== id)
-        : [...withoutNone, id]
-    })
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+    )
   }
 
   const handleContinue = () => {
@@ -82,12 +73,12 @@ function PillarQuestion() {
   return (
     <QuestionScreen
       key={pillar.id}
-      eyebrow="Existing habits"
+      eyebrow={pillar.label}
       step={index + 1}
       totalSteps={PILLARS.length}
       headlineLines={pillar.headlineLines}
       body={body}
-      options={[...pillar.options, NONE_OPTION]}
+      options={pillar.options}
       selected={selected}
       onToggle={toggleOption}
       onContinue={handleContinue}

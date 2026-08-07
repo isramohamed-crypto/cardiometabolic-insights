@@ -38,15 +38,38 @@
   margin: 0 0 var(--space-4);
 }
 
+/* Was a plain 4px sliver with just one "filled" modifier. Now each segment
+   is a chip tall enough to hold a mark (AclmMarkPlaceholder — see the note
+   there on why it's a placeholder, not ACLM's real logo) at ~1.2em, with
+   three states instead of two: upcoming (default), current, and completed
+   — see QuestionScreen.jsx's dotState. font-size sets the mark's own
+   size (it sizes off 1em); color sets the mark's fill (it renders
+   fill="currentColor") — every state below only ever needs to set
+   background + color, never touch the mark itself. */
 .question-screen__progress-dot {
   flex: 1;
-  height: 4px;
-  border-radius: var(--radius-pill);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
   background: rgba(0, 70, 32, 0.12);
+  font-size: 1.2em;
+  color: rgba(0, 0, 0, 0.4);
 }
 
-.question-screen__progress-dot--filled {
+/* Current step — white chip so the mark reads in its own "original" color
+   rather than blending into a colored background, the same way a badge
+   you're actively wearing stands out from ones already turned in. */
+.question-screen__progress-dot--current {
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.1);
+  color: var(--color-leaf);
+}
+
+.question-screen__progress-dot--completed {
   background: var(--color-seaweed);
+  color: #fff;
 }
 
 .question-screen__headline {

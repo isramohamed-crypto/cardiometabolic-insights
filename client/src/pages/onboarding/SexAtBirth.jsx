@@ -8,11 +8,10 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 // subtext under the headline exists
 // specifically to explain why we're asking (some guidance genuinely
 // differs by sex assigned at birth) rather than just collecting data for
-// its own sake. Single-select, and skippable without picking anything —
-// same pattern as HealthConditions later in the flow: "Prefer not to say"
-// is the explicit opt-out chip, and requireSelection={false} means
-// Continue itself also just becomes "Skip for now" if someone doesn't
-// want to answer at all.
+// its own sake. Single-select; "Prefer not to say" is the explicit
+// opt-out chip for anyone who doesn't want to answer — a real, required
+// choice rather than a separate skip affordance, same pattern
+// HealthConditions later in the flow now follows too.
 const PREFER_NOT_TO_SAY = { id: 'prefer-not-to-say', label: 'Prefer not to say' }
 
 const OPTIONS = [
@@ -46,8 +45,6 @@ function SexAtBirth() {
       onToggle={selectOption}
       onContinue={handleContinue}
       onBack={handleBack}
-      requireSelection={false}
-      continueLabel={selected.length > 0 ? 'Continue' : 'Skip for now'}
       multiSelect={false}
     />
   )

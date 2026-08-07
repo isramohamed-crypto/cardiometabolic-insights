@@ -5,6 +5,15 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import './FocusAreas.css'
 
+// Temporary launch restriction — only "moving" is a real focus area for
+// now, but every pillar should still render normally (same look, same
+// hover/press behavior) rather than showing a disabled state, so nothing
+// here tips the person off that most of the row is inert. Set this to
+// null (or delete the guard in selectOption below) to make every pillar
+// selectable again — that's the entire revert, no markup/CSS changes
+// needed since nothing about how an option looks was ever touched.
+const ONLY_SELECTABLE_IDS = ['moving']
+
 // Final onboarding question — which single pillar (category) the user
 // wants to focus on first. Single-select on purpose: staying focused on
 // one area builds momentum, and more can be added later. Options come
@@ -18,7 +27,11 @@ function FocusAreas() {
   const [selected, setSelected] = useState([])
 
   // Single-select: picking a new option always replaces the current one.
-  const selectOption = (id) => setSelected([id])
+  // See ONLY_SELECTABLE_IDS above — a tap on anything else just no-ops.
+  const selectOption = (id) => {
+    if (ONLY_SELECTABLE_IDS && !ONLY_SELECTABLE_IDS.includes(id)) return
+    setSelected([id])
+  }
 
   const handleBack = () => navigate('/onboarding/health-conditions')
 

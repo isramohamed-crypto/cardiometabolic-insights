@@ -32,6 +32,16 @@ const DEFAULT_MOMENT_BY_HABIT = {
   'walk-after-meal': 'After dinner',
 }
 
+// Temporary: hide "How much to start?" specifically in the onboarding
+// Recommendations flow (embedded === false) — AddHabitFlow's embedded
+// customize screen keeps showing it, since only the onboarding path was
+// asked for. Every habit still starts at tiers[0] either way (see
+// handleSave below); hiding this section only removes the picker's own
+// visibility, not what actually gets saved. To revert, delete this
+// constant and the `!embedded &&` check around the section it guards
+// below — no other code needs to change.
+const HIDE_TIER_SECTION_IN_ONBOARDING = true
+
 function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
   const [momentMode, setMomentMode] = useState('preset')
   const [momentPreset, setMomentPreset] = useState(
@@ -73,32 +83,34 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
         tiers unlock once you've made it through the trial at this one.
       </p>
 
-      <section className="customize-section">
-        <h2 className="customize-section__title">How much to start?</h2>
-        <div className="question-screen__options">
-          {habit.tiers.map((tier, i) => {
-            const isEasiest = i === 0
-            return (
-              <button
-                key={tier.label}
-                type="button"
-                className={`question-screen__option${isEasiest ? ' question-screen__option--selected' : ' question-screen__option--locked'}`}
-                aria-pressed={isEasiest}
-                disabled={!isEasiest}
-              >
-                <span>{tier.label}</span>
-                {isEasiest ? (
-                  <span className="customize-suggested">Suggested</span>
-                ) : (
-                  <span className="customize-locked">
-                    <span aria-hidden="true">🔒</span> Unlocks after trial
-                  </span>
-                )}
-              </button>
-            )
-          })}
-        </div>
-      </section>
+      {(embedded || !HIDE_TIER_SECTION_IN_ONBOARDING) && (
+        <section className="customize-section">
+          <h2 className="customize-section__title">How much to start?</h2>
+          <div className="question-screen__options">
+            {habit.tiers.map((tier, i) => {
+              const isEasiest = i === 0
+              return (
+                <button
+                  key={tier.label}
+                  type="button"
+                  className={`question-screen__option${isEasiest ? ' question-screen__option--selected' : ' question-screen__option--locked'}`}
+                  aria-pressed={isEasiest}
+                  disabled={!isEasiest}
+                >
+                  <span>{tier.label}</span>
+                  {isEasiest ? (
+                    <span className="customize-suggested">Suggested</span>
+                  ) : (
+                    <span className="customize-locked">
+                      <span aria-hidden="true">🔒</span> Unlocks after trial
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </section>
+      )}
 
       <section className="customize-section">
         <h2 className="customize-section__title">When will you do it?</h2>

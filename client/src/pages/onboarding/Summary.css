@@ -17,8 +17,13 @@
   margin-top: var(--space-1);
 }
 
+/* Used to color this span var(--color-green-apple) — the rest of the
+   headline is #1a1a1a (question-screen__headline's base color), so that
+   made "You're already doing N things." read as two different colors.
+   Kept the class (still a real DOM hook, just no visual effect now) so a
+   revert to a colored accent later doesn't need new markup, only a color
+   value added back here. */
 .summary__highlight {
-  color: var(--color-green-apple);
 }
 
 .summary .question-screen__body {

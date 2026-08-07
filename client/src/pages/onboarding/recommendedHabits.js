@@ -29,7 +29,7 @@ import { NONE_OPTION } from './pillars.js'
 // pipeline exists.
 export const RECOMMENDATIONS_BY_PILLAR = {
   eating: {
-    categoryLabel: 'Nutrition',
+    categoryLabel: 'Optimal Nutrition',
     gradient: 'linear-gradient(160deg, #FF8C2F 0%, #7a4a10 100%)',
     habits: [
       {
@@ -125,7 +125,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     ],
   },
   moving: {
-    categoryLabel: 'Physical activity',
+    categoryLabel: 'Physical Activity',
     gradient: 'linear-gradient(160deg, #00B9E2 0%, #063a52 100%)',
     // Daily walk is deliberately 3rd here, not 1st — everything else about
     // it (its own real photo/carousel/day-scripts) is unchanged, this is
@@ -190,7 +190,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     ],
   },
   sleep: {
-    categoryLabel: 'Sleep',
+    categoryLabel: 'Restorative Sleep',
     gradient: 'linear-gradient(160deg, #B676E7 0%, #2e1a42 100%)',
     habits: [
       {
@@ -249,7 +249,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     ],
   },
   stress: {
-    categoryLabel: 'Stress',
+    categoryLabel: 'Stress Management',
     gradient: 'linear-gradient(160deg, #004620 0%, #001a0c 100%)',
     habits: [
       {
@@ -302,7 +302,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     ],
   },
   social: {
-    categoryLabel: 'Social',
+    categoryLabel: 'Connectedness',
     gradient: 'linear-gradient(160deg, #FF9CFF 0%, #4a1a45 100%)',
     habits: [
       {

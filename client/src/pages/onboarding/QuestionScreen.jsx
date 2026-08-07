@@ -1,3 +1,4 @@
+import AclmMarkPlaceholder from '../../components/AclmMarkPlaceholder.jsx'
 import './QuestionScreen.css'
 
 /**
@@ -67,12 +68,20 @@ function QuestionScreen({
             aria-valuemax={totalSteps}
             aria-label={`Step ${step} of ${totalSteps}`}
           >
-            {Array.from({ length: totalSteps }).map((_, i) => (
-              <span
-                key={i}
-                className={`question-screen__progress-dot${i < step ? ' question-screen__progress-dot--filled' : ''}`}
-              />
-            ))}
+            {Array.from({ length: totalSteps }).map((_, i) => {
+              // step is the 1-indexed current step — i < step - 1 is
+              // everything before it (completed), i === step - 1 is the
+              // step itself (current), everything after is upcoming.
+              const dotState = i < step - 1 ? 'completed' : i === step - 1 ? 'current' : 'upcoming'
+              return (
+                <span
+                  key={i}
+                  className={`question-screen__progress-dot question-screen__progress-dot--${dotState}`}
+                >
+                  <AclmMarkPlaceholder />
+                </span>
+              )
+            })}
           </div>
         ) : null}
 

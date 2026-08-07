@@ -20,10 +20,6 @@ function NameInput() {
     navigate('/onboarding/sex')
   }
 
-  const handleSkip = () => {
-    navigate('/onboarding/sex')
-  }
-
   return (
     <main className="question-screen">
       <div className="question-screen__header">
@@ -60,10 +56,6 @@ function NameInput() {
           onClick={handleContinue}
         >
           Continue
-        </button>
-
-        <button type="button" className="question-screen__skip" onClick={handleSkip}>
-          Skip for now
         </button>
       </div>
     </main>

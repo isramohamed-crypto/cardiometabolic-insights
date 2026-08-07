@@ -13,6 +13,11 @@
   display: block;
 }
 
+/* Used to color this span var(--color-green-apple) — the rest of the
+   headline is #1a1a1a (question-screen__headline's base color), so that
+   made "Let's start with what's already working." read as two different
+   colors. Kept the class (still a real DOM hook, just no visual effect
+   now) so a revert to a colored accent later doesn't need new markup,
+   only a color value added back here. */
 .foundation-intro__highlight {
-  color: var(--color-green-apple);
 }
