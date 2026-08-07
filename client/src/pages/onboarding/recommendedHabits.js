@@ -303,7 +303,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     ],
   },
   social: {
-    categoryLabel: 'Connectedness',
+    categoryLabel: 'Social Connection',
     gradient: 'linear-gradient(160deg, #FF9CFF 0%, #4a1a45 100%)',
     habits: [
       {

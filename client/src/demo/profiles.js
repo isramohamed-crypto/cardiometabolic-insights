@@ -19,7 +19,6 @@ import { OWNERSHIP_STATE, LOG_STATUS, LOG_METHOD } from '../domain/habit.js'
 // social. These render via Summary.jsx / Me.jsx, which read straight off
 // these option ids (see pages/onboarding/pillars.js for the label text).
 const FOUNDATION_ANSWERS = {
-  name: 'Jordan',
   habitsWorking: {
     eating: ['more-veggies', 'cooking-at-home'],
     moving: ['taking-stairs'],

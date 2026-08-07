@@ -60,8 +60,8 @@ function AllSet() {
       <div className="question-screen__body">
         <p className="question-screen__intro all-set__in all-set__in--3">
           {habit
-            ? `"${habit.title}" is on your Routine, starting today${habit.moment ? ` — ${habit.moment.toLowerCase()}` : ''}.`
-            : 'Your first habit is on your Routine, starting today.'}
+            ? `"${habit.title}" is on your Today list, starting today${habit.moment ? ` — ${habit.moment.toLowerCase()}` : ''}.`
+            : 'Your first habit is on your Today list, starting today.'}
         </p>
         <p className="question-screen__intro all-set__in all-set__in--4">
           A week from now, we'll check in and ask how it's going — keep it, make it smaller, or

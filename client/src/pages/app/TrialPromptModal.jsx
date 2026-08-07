@@ -152,7 +152,7 @@ function TrialPromptModal({ onOpenAddHabit }) {
     // only happens once the person has actually committed to letting it
     // go, not on every tap of the link (which would fire it even for a
     // canceled confirm).
-    if (!window.confirm('Let this habit go? It will be removed from your Routine.')) return
+    if (!window.confirm('Let this habit go? It will be removed from your Today list.')) return
     celebrateThenRun('letgo', () => {
       updateHabitState(habit.id, OWNERSHIP_STATE.ABANDONED)
       setScreen('done')

@@ -20,7 +20,7 @@ export const PILLARS_CANONICAL = [
   { id: 'moving', label: 'Physical Activity' },
   { id: 'sleep', label: 'Restorative Sleep' },
   { id: 'stress', label: 'Stress Management' },
-  { id: 'social', label: 'Connectedness' },
+  { id: 'social', label: 'Social Connection' },
 ]
 
 export function getPillarLabel(pillarId) {

@@ -153,7 +153,7 @@ function Routine() {
             className="routine-habit-card__drip-more"
             style={{ display: 'inline-block', marginTop: 10 }}
           >
-            See more in Read →
+            See more in Learn →
           </Link>
         </section>
       )}

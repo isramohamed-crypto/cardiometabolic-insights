@@ -21,3 +21,41 @@
    only a color value added back here. */
 .foundation-intro__highlight {
 }
+
+/* The 5-pillar framework list — the actual "ACLM credibility moment"
+   content. A bordered card (same visual language as Summary's
+   .summary__card) rather than a bare list, so this reads as a deliberate
+   reference block introducing the framework, not just another paragraph. */
+.foundation-intro__pillars {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4) var(--space-5);
+  list-style: none;
+  border: 1px solid rgba(0, 70, 32, 0.12);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.foundation-intro__pillar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+.foundation-intro__pillar + .foundation-intro__pillar {
+  border-top: 1px solid rgba(0, 70, 32, 0.12);
+}
+
+.foundation-intro__pillar-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.foundation-intro__pillar-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: #1a1a1a;
+}

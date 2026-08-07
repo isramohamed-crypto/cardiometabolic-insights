@@ -5,6 +5,7 @@ import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
 import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
 import { getWhyCarouselContent } from '../onboarding/whyCarouselContent.js'
 import { CONTENT_POOL } from '../../domain/habitContent.js'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { prefersReducedMotion } from '../../utils/motion.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
@@ -184,6 +185,7 @@ function AddHabitFlow({ onClose }) {
                 aria-pressed={pillarId === p.id}
                 onClick={() => setPillarId(p.id)}
               >
+                <img src={getAclmIcon(p.id)} alt="" className="question-screen__option-icon" />
                 <span>{p.label}</span>
               </button>
             ))}
