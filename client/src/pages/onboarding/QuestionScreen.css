@@ -199,6 +199,21 @@
   text-align: center;
 }
 
+/* Opt-in per option (see QuestionScreen.jsx) — a real-color icon (e.g.
+   FocusAreas' pillar icons, via domain/aclmIcons.js) sitting to the left
+   of the label, sized off the option row's own font-size the same way
+   the progress-bar marks size off theirs. Left as its own real colors
+   rather than a currentColor silhouette (unlike the progress dots) —
+   this option row's background only ever goes from coconut to the single
+   solid --question-accent green, dark enough that every pillar icon's
+   own color still reads clearly against either. */
+.question-screen__option-icon {
+  flex-shrink: 0;
+  width: 1.75em;
+  height: 1.75em;
+  object-fit: contain;
+}
+
 /* Compact variant — opt-in via an extra class, for contexts where the
    standard option row (sized for a full onboarding screen) is too tall,
    e.g. nested inside a small card like habit detail's customize

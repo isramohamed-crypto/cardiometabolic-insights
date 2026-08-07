@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import QuestionScreen from './QuestionScreen.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './FocusAreas.css'
 
 // Temporary launch restriction — only "moving" is a real focus area for
@@ -13,6 +14,16 @@ import './FocusAreas.css'
 // selectable again — that's the entire revert, no markup/CSS changes
 // needed since nothing about how an option looks was ever touched.
 const ONLY_SELECTABLE_IDS = ['moving']
+
+// Each option gets its pillar's real ACLM icon at the left of its label
+// (see QuestionScreen.jsx's optional `icon` field, and domain/aclmIcons.js
+// for the source files + the licensing caveat on using them at all — same
+// asset set PillarQuestion's progress bar already draws on). Computed
+// once at module scope since PILLARS_CANONICAL is static.
+const FOCUS_OPTIONS = PILLARS_CANONICAL.map((pillar) => ({
+  ...pillar,
+  icon: getAclmIcon(pillar.id),
+}))
 
 // Final onboarding question — which single pillar (category) the user
 // wants to focus on first. Single-select on purpose: staying focused on
@@ -45,7 +56,7 @@ function FocusAreas() {
       eyebrow="Your focus"
       headlineLines={['Which area do you', 'want to focus on?']}
       body="You can add more later — staying focused on one area first helps you build momentum."
-      options={PILLARS_CANONICAL}
+      options={FOCUS_OPTIONS}
       selected={selected}
       onToggle={selectOption}
       onContinue={handleContinue}

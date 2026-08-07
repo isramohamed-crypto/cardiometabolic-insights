@@ -144,6 +144,13 @@ function QuestionScreen({
                 aria-pressed={isSelected}
                 onClick={() => onToggle(option.id)}
               >
+                {/* Opt-in per option — only screens that pass an `icon` on
+                    their option objects (e.g. FocusAreas, via
+                    domain/aclmIcons.js) get one; every other screen's
+                    options render exactly as before. */}
+                {option.icon && (
+                  <img src={option.icon} alt="" className="question-screen__option-icon" />
+                )}
                 {multiSelect && (
                   <span className="question-screen__option-check" aria-hidden="true">
                     {isSelected ? '✓' : ''}

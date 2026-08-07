@@ -113,6 +113,17 @@
   }
 }
 
+/* The two recap lines (habit-on-your-Routine, then the week-from-now
+   check-in note) read larger than a normal question-screen__intro here —
+   this is the celebratory payoff screen, not an ordinary question, so its
+   body copy gets more weight than the --text-base every other screen's
+   intro paragraph uses. --text-h5 is the type scale's own "Large body"
+   step (see index.css) rather than an arbitrary one-off size. */
+.question-screen__intro.all-set__in.all-set__in--3,
+.question-screen__intro.all-set__in.all-set__in--4 {
+  font-size: var(--text-h5);
+}
+
 /* Center the whole screen — header (eyebrow/headline/badge) and body copy
    both read as one centered celebratory block instead of the left-aligned
    layout every other question-screen uses. The CTA itself doesn't need
