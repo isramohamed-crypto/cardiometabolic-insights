@@ -50,6 +50,7 @@ function Onboarding() {
     <main className="onboarding">
       <div className="onboarding__scrim" />
       <img src={heroPhoto} alt="" className="onboarding__photo" />
+      <div className="onboarding__bottom-scrim" />
       <DemoProfileMenu />
 
       <div className="onboarding__content">
@@ -70,9 +71,7 @@ function Onboarding() {
         </div>
 
         <div className="onboarding__copy">
-          <h1 className="onboarding__title">
-            <span className="onboarding__title-scrim">Vitalist</span>
-          </h1>
+          <h1 className="onboarding__title">Vitalist</h1>
           <p className="onboarding__subtitle">
             Build healthier habits.
             <br />
@@ -84,7 +83,7 @@ function Onboarding() {
             className="onboarding__cta"
             onClick={() => navigate('/onboarding/name')}
           >
-            <span aria-hidden="true">🍃</span> Get started
+            Get started
           </button>
         </div>
       </div>

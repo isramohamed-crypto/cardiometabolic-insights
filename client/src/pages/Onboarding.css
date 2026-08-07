@@ -30,6 +30,33 @@
   );
 }
 
+/* A second, stronger scrim on top of .onboarding__scrim above, covering
+   just the bottom section of the screen — the title/subtitle/CTA block —
+   rather than the whole photo. Comes after .onboarding__photo in the DOM
+   (both position: absolute with the default z-index: auto, which paints
+   later siblings on top) so it actually lands above the photo instead of
+   underneath it. Same gradient shape as .routine-habit-card__scrim
+   (transparent at the top edge of the covered area, solid seaweed by the
+   bottom) — that's the app's existing pattern for "guarantee text
+   contrast over a photo," reused here instead of the old approach of a
+   tight solid-color box sized to just the word "Vitalist". Height is
+   sized to comfortably cover the whole copy block on common phone
+   viewports; the photo's own upper portion (hero subject, ticker) stays
+   clear of it. */
+.onboarding__bottom-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60%;
+  background: linear-gradient(
+    180deg,
+    rgba(217, 217, 217, 0) 0%,
+    rgba(58, 110, 82, 0.45) 45%,
+    rgba(0, 70, 32, 0.92) 100%
+  );
+}
+
 .onboarding__content {
   position: relative;
   z-index: 1;
@@ -146,21 +173,6 @@
   font-size: clamp(2.4444rem, 9vw, 3rem);
   letter-spacing: -1.4px;
   color: #fff;
-}
-
-/* A seaweed scrim sized to just the "Vitalist" text itself (not the whole
-   copy block) — the existing .onboarding__scrim already darkens the full
-   photo, most heavily right where this text sits, but it's still a photo
-   underneath; this adds a solid-color backdrop directly behind the
-   wordmark for guaranteed contrast regardless of what's in the photo.
-   Negative margins offset the padding this adds so the text still lines
-   up with the subtitle/CTA below instead of shifting right/down. */
-.onboarding__title-scrim {
-  display: inline-block;
-  background: var(--color-seaweed);
-  padding: 0.05em 0.2em;
-  margin: -0.05em -0.2em;
-  border-radius: var(--radius-sm);
 }
 
 .onboarding__subtitle {
