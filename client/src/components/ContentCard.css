@@ -8,7 +8,7 @@
 
 .content-card__tap {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-4);
   width: 100%;
   border: none;
