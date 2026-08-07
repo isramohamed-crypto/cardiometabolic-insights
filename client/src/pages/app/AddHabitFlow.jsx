@@ -35,33 +35,38 @@ const ADD_HABIT_CELEBRATION_MS = 700
 
 // Sentinel id for the "not sure? recommend one for me" option appended to
 // the pillar list below — selectable and highlightable just like a real
-// pillar, but resolved to an actual pillar id (see recommendPillar) only
-// once Continue is pressed, so the rest of the flow never has to know this
-// option exists.
+// pillar, but resolved (see buildRecommendedMix) only once Continue is
+// pressed, so the rest of the flow never has to know this option exists.
 const RECOMMEND_ID = 'recommend'
 
-// Simple, demo-appropriate heuristic: recommend whichever pillar has the
-// fewest habits already going, so a "recommend one for me" tap nudges
-// toward filling a gap rather than piling onto an area that's already
-// covered. Ties keep PILLARS_CANONICAL's order.
-function recommendPillar(habits) {
-  const counts = {}
-  PILLARS_CANONICAL.forEach((p) => {
-    counts[p.id] = 0
-  })
-  habits.forEach((h) => {
-    if (counts[h.pillarId] != null) counts[h.pillarId] += 1
-  })
-  return PILLARS_CANONICAL.reduce(
-    (fewest, p) => (counts[p.id] < counts[fewest.id] ? p : fewest),
-    PILLARS_CANONICAL[0],
-  )
+// "Recommend one for me" used to resolve to a single pillar (whichever had
+// the fewest habits already going) and hand back that one pillar's normal
+// pick list. Now it builds its own cross-pillar list instead — one habit
+// from each of the 5 pillars, so a "not sure" tap surfaces the full
+// breadth of what's available rather than committing to one area sight
+// unseen. Per pillar, picks the first of that pillar's recommended habits
+// not already active (same exclusion rule the normal per-pillar pick list
+// uses) — a pillar with nothing left to recommend is just skipped rather
+// than forcing something already covered back into view.
+function buildRecommendedMix(activeHabitIds) {
+  return PILLARS_CANONICAL.map((pillar) => {
+    const pool = RECOMMENDATIONS_BY_PILLAR[pillar.id]?.habits || []
+    const habit = pool.find((h) => !activeHabitIds.has(h.id))
+    return habit ? { pillar, habit } : null
+  }).filter(Boolean)
 }
 
 function AddHabitFlow({ onClose }) {
   const { habits: allHabits, addHabit } = useHabits()
   const [stage, setStage] = useState('choosePillar') // 'choosePillar' | 'pick' | 'customize'
   const [pillarId, setPillarId] = useState(null)
+  // Set only when "Not sure? Recommend one for me" was chosen — an array
+  // of { pillar, habit } spanning up to all 5 pillars (see
+  // buildRecommendedMix) instead of the normal single-pillar pick list.
+  // null the rest of the time, including whenever a real pillar is picked
+  // directly, so that path's derived values below stay exactly as they
+  // were before this existed.
+  const [recommendedMix, setRecommendedMix] = useState(null)
   const [habitIndex, setHabitIndex] = useState(0)
   const [trayOpen, setTrayOpen] = useState(false)
   const [celebrating, setCelebrating] = useState(false)
@@ -71,9 +76,7 @@ function AddHabitFlow({ onClose }) {
   // window adding the same habit twice.
   const finalizedRef = useRef(false)
 
-  const pillar = PILLARS_CANONICAL.find((p) => p.id === pillarId) || PILLARS_CANONICAL[0]
-  const { categoryLabel, habits: pillarHabits } =
-    RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating
+  const isMix = Boolean(recommendedMix)
 
   // Unlike onboarding's Recommendations (which only ever runs before any
   // habit exists, so there's nothing yet to exclude), this flow is reached
@@ -91,8 +94,22 @@ function AddHabitFlow({ onClose }) {
       ),
     [allHabits],
   )
-  const habits = pillarHabits.filter((h) => !activeHabitIds.has(h.id))
+
+  // Single-pillar path (pillarId points at a real pillar): the classic
+  // "every remaining habit from this one pillar" list.
+  const chosenPillar = PILLARS_CANONICAL.find((p) => p.id === pillarId) || PILLARS_CANONICAL[0]
+  const pillarHabits = (RECOMMENDATIONS_BY_PILLAR[chosenPillar.id] || RECOMMENDATIONS_BY_PILLAR.eating)
+    .habits.filter((h) => !activeHabitIds.has(h.id))
+
+  // Cross-pillar path (isMix): one entry per pillar instead, already
+  // resolved once in handleChoosePillarContinue — pillar/categoryLabel/
+  // gradient below track whichever entry is currently in view instead of
+  // staying fixed to a single pillar for the whole pick stage.
+  const habits = isMix ? recommendedMix.map((entry) => entry.habit) : pillarHabits
   const habit = habits[habitIndex]
+  const pillar = isMix ? recommendedMix[habitIndex]?.pillar || chosenPillar : chosenPillar
+  const categoryLabel = (RECOMMENDATIONS_BY_PILLAR[pillar.id] || RECOMMENDATIONS_BY_PILLAR.eating)
+    .categoryLabel
   const gradient = habit ? getHabitVisual(pillar.id, habit.id) : null
   // See Recommendations.jsx's identical check — habits with real sourced
   // content (hand-authored or built from CONTENT_POOL) get the richer
@@ -103,12 +120,11 @@ function AddHabitFlow({ onClose }) {
   const handlePrev = () => setHabitIndex((i) => (i - 1 + habits.length) % habits.length)
 
   const handleChoosePillarContinue = () => {
-    if (pillarId === RECOMMEND_ID) {
-      setPillarId(recommendPillar(allHabits).id)
-    }
-    // Reset back to the first (remaining) habit for whichever pillar was
-    // just chosen — carrying over an index from a previously-viewed pillar
-    // could otherwise point past the end of a shorter, already-filtered list.
+    setRecommendedMix(pillarId === RECOMMEND_ID ? buildRecommendedMix(activeHabitIds) : null)
+    // Reset back to the first (remaining) habit for whichever pillar (or
+    // cross-pillar mix) was just chosen — carrying over an index from a
+    // previously-viewed list could otherwise point past the end of a
+    // shorter, already-filtered one.
     setHabitIndex(0)
     setStage('pick')
   }
@@ -192,7 +208,24 @@ function AddHabitFlow({ onClose }) {
         </>
       )}
 
-      {stage === 'pick' && habits.length === 0 && (
+      {stage === 'pick' && habits.length === 0 && isMix && (
+        // Every pillar's every habit is already trialed/adopted — the
+        // cross-pillar mix came up completely empty, not just one pillar's
+        // worth. Nowhere left to send them but back to choosePillar (which
+        // would show this same outcome for any single pillar too, so it
+        // still reads as informative) or straight out of the flow.
+        <>
+          <h2 className="add-habit-flow__title">You're already on every habit we recommend</h2>
+          <p className="question-screen__intro">
+            Nice work — there's nothing left to add across any of the 5 areas right now.
+          </p>
+          <button type="button" className="question-screen__continue" onClick={onClose}>
+            Close
+          </button>
+        </>
+      )}
+
+      {stage === 'pick' && habits.length === 0 && !isMix && (
         // Every habit this pillar recommends is already trialed/adopted —
         // rather than crash on an empty pick list, send them back to try a
         // different focus area.
@@ -212,7 +245,9 @@ function AddHabitFlow({ onClose }) {
       {stage === 'pick' && habits.length > 0 && (
         <>
           <h2 className="add-habit-flow__title">Pick a habit to start with</h2>
-          <p className="question-screen__intro">Built for {pillar.label.toLowerCase()}.</p>
+          <p className="question-screen__intro">
+            {isMix ? 'One idea from each of the 5 areas.' : `Built for ${pillar.label.toLowerCase()}.`}
+          </p>
 
           <HabitPickCard
             habit={habit}
