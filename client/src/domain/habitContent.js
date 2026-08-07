@@ -169,11 +169,11 @@ export const CONTENT_POOL = {
       id: 'tf-1',
       type: CONTENT_TYPE.JUSTIFICATION,
       brand: 'Verywell Mind',
-      title: 'How Social Isolation Can Damage Your Mental Health',
-      body: 'Social isolation is linked to higher rates of depression, anxiety, and stress — brains are wired for connection, and going without it for too long tends to show up as a real cost to wellbeing, not just a feeling.',
-      fullBody: "Occasional time alone is normal and nothing to worry about — the concern is persistent isolation, which research consistently ties to higher depression, anxiety, and stress, along with broader effects on health over time. The mechanism isn't mysterious: people are wired for connection, and going without it for too long tends to register as a real cost, not just a passing feeling. The reassuring part is the fix doesn't need to be dramatic — a short, low-stakes check-in with someone is often enough to interrupt the drift toward isolation, which is part of why something as small as a text can matter more than it seems.",
-      url: 'https://www.verywellmind.com/the-impact-of-social-isolation-on-mental-health-7185458',
-      // No image sourced for this row yet.
+      title: 'The 4 Types of Social Support (and Why They All Matter)',
+      body: "A quick check-in text counts as real social support — not just the big, obvious kind (a shoulder to cry on), but the smaller \"someone noticed I'm here\" kind that keeps a relationship active between the bigger moments.",
+      fullBody: "Psychologists generally group social support into four kinds: emotional (empathy, comfort, being heard), instrumental (practical help — a ride, a meal, a hand with something), informational (advice or guidance from someone who's been there), and appraisal (feedback that helps you see a situation more clearly). A habit as small as texting a friend mostly lands in the emotional and informational buckets — it signals you're thinking of them and keeps the channel open for the other kinds of support to flow later, when either of you actually needs it. The relationships that hold up over time aren't usually built on one grand gesture; they're built on a steady drip of small, low-effort contact, which is exactly what a quick check-in provides.",
+      url: 'https://www.verywellmind.com/types-of-social-support-3144960',
+      image: "url('/475689837-56b7508c5f9b5829f8384123.webp')",
     },
   ],
   // First sourced piece for this habit — previously had nothing (see the

@@ -317,6 +317,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         expectation:
           'A quick message, no reply required same-day. It should take less time than deciding what to say.',
         tiers: [{ label: 'Weekly' }, { label: 'A few times a week' }, { label: 'Daily' }],
+        image: "url('/475689837-56b7508c5f9b5829f8384123.webp')",
       },
       {
         id: 'plan-a-call',

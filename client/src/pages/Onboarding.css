@@ -121,7 +121,7 @@
   align-items: center;
   gap: var(--space-6);
   width: max-content;
-  animation: onboarding-ticker-scroll 28s linear infinite;
+  animation: onboarding-ticker-scroll 56s linear infinite;
 }
 
 @keyframes onboarding-ticker-scroll {
