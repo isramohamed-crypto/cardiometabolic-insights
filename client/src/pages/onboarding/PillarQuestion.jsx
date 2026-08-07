@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import QuestionScreen from './QuestionScreen.jsx'
 import { PILLARS, BODY_COPY, getPillarIndex } from './pillars.js'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
+
+// One ACLM pillar icon per progress-bar segment, in the same order as
+// PILLARS — see domain/aclmIcons.js for the source files and the
+// licensing caveat on using them at all.
+const PROGRESS_ICONS = PILLARS.map((pillar) => getAclmIcon(pillar.id))
 
 // Renders one of the 5 "what's already working" pillar screens
 // (eating / moving / sleep / stress / social) based on the :pillar route
@@ -76,6 +82,7 @@ function PillarQuestion() {
       eyebrow={pillar.label}
       step={index + 1}
       totalSteps={PILLARS.length}
+      progressIcons={PROGRESS_ICONS}
       headlineLines={pillar.headlineLines}
       body={body}
       options={pillar.options}

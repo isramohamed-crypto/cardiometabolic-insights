@@ -35,6 +35,7 @@ function QuestionScreen({
   requireSelection = true,
   multiSelect = true,
   className,
+  progressIcons,
 }) {
   const canContinue = !requireSelection || selected.length > 0
 
@@ -73,12 +74,41 @@ function QuestionScreen({
               // everything before it (completed), i === step - 1 is the
               // step itself (current), everything after is upcoming.
               const dotState = i < step - 1 ? 'completed' : i === step - 1 ? 'current' : 'upcoming'
+              const icon = progressIcons?.[i]
+
+              // No progressIcons prop (or a missing entry within it) —
+              // fall back to the abstract placeholder mark, same as
+              // before this prop existed. Callers that do pass real icon
+              // URLs (PillarQuestion, via domain/aclmIcons.js) get two
+              // different renderings depending on state: the "current"
+              // step shows the icon's own real two-tone colors via a
+              // plain <img>, while "completed"/"upcoming" steps show it
+              // as a flat single-color CSS-mask silhouette instead, so it
+              // still picks up this dot's own `color` (set per state in
+              // QuestionScreen.css) rather than clashing with its baked-in
+              // fill — exactly what AclmMarkPlaceholder's currentColor
+              // fill did already, just applied to a real icon shape now.
+              let mark
+              if (!icon) {
+                mark = <AclmMarkPlaceholder />
+              } else if (dotState === 'current') {
+                mark = <img src={icon} alt="" className="question-screen__progress-icon" />
+              } else {
+                mark = (
+                  <span
+                    className="question-screen__progress-icon-mask"
+                    style={{ WebkitMaskImage: `url("${icon}")`, maskImage: `url("${icon}")` }}
+                    aria-hidden="true"
+                  />
+                )
+              }
+
               return (
                 <span
                   key={i}
                   className={`question-screen__progress-dot question-screen__progress-dot--${dotState}`}
                 >
-                  <AclmMarkPlaceholder />
+                  {mark}
                 </span>
               )
             })}

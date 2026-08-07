@@ -72,6 +72,36 @@
   color: #fff;
 }
 
+/* The "current" dot's icon (real ACLM artwork, via domain/aclmIcons.js) —
+   rendered as a plain <img> so its own real two-tone fill shows as-is,
+   same size/box as AclmMarkPlaceholder's 1em svg (sized relative to the
+   dot's 1.2em font-size above). */
+.question-screen__progress-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+}
+
+/* "Completed"/"upcoming" dots don't get the icon's real colors — cutting
+   it out of a solid background-color via a CSS mask (mask-image set
+   inline per-icon in QuestionScreen.jsx) turns it into a flat
+   single-color silhouette that picks up currentColor, i.e. this dot's own
+   `color` from the state rules above, the same way AclmMarkPlaceholder's
+   fill="currentColor" did. */
+.question-screen__progress-icon-mask {
+  display: block;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 .question-screen__headline {
   margin: 0;
   /* Was display:flex/flex-direction:column, forcing every direct <span>
