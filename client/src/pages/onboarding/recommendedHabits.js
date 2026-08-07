@@ -334,6 +334,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
           { label: 'Every couple weeks' },
           { label: 'Weekly' },
         ],
+        image: "url('/GettyImages-1176848423-8af4d372737944f485c9fe6f82ac78df.webp')",
       },
       {
         id: 'join-group-activity',
@@ -346,6 +347,7 @@ export const RECOMMENDATIONS_BY_PILLAR = {
         expectation:
           'The first session or two might feel like showing up somewhere new. That fades once it’s a regular fixture on your week.',
         tiers: [{ label: 'One-time' }, { label: 'Monthly' }, { label: 'Weekly' }],
+        image: "url('/GettyImages-1311247736-2e9719c1e2424dda85dc362ab66e1d17.webp')",
       },
     ],
   },
