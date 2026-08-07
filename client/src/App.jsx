@@ -24,6 +24,7 @@ import { OnboardingProvider } from './onboarding/OnboardingContext.jsx'
 import { HabitsProvider } from './habits/HabitsContext.jsx'
 import { FavoritesProvider } from './content/FavoritesContext.jsx'
 import DemoSeeder from './demo/DemoSeeder.jsx'
+import DemoProfileRoute from './demo/DemoProfileRoute.jsx'
 
 function App() {
   return (
@@ -49,6 +50,13 @@ function App() {
               <Route path="/habit/:habitId/edit" element={<HabitEdit />} />
               <Route path="/habit/:habitId/chat" element={<HabitChat />} />
               <Route path="/health-check" element={<HealthCheck />} />
+              {/* Path-based alternative to ?profile=<id> — see
+                  DemoProfileRoute.jsx. Declared before the plain /routine
+                  route below; react-router matches by specificity, not
+                  declaration order, so this ordering isn't load-bearing,
+                  it's just easiest to read grouped with the other
+                  seed-and-redirect demo route above. */}
+              <Route path="/routine/:demoProfile" element={<DemoProfileRoute />} />
 
               <Route element={<AppLayout />}>
                 <Route path="/routine" element={<Routine />} />

@@ -20,9 +20,23 @@ import './CustomizeHabit.css'
 // header) and returns just the body content instead — used by
 // AddHabitFlow, which sits inside Routine/Collection's own page body
 // rather than being a full-screen step of its own.
+// Daily walk (walk-after-meal) is specifically built around the "walk
+// it off after a meal" idea (see its catalog justification/why-carousel
+// copy) — defaulting its stack suggestion to "After dinner" instead of
+// leaving the picker blank saves the obvious choice for the one habit
+// whose whole premise already names the moment. No other current habit
+// has a similarly obvious single answer, so this stays a one-off keyed
+// off the habit id rather than a general "suggested moment" field on
+// every catalog entry.
+const DEFAULT_MOMENT_BY_HABIT = {
+  'walk-after-meal': 'After dinner',
+}
+
 function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
   const [momentMode, setMomentMode] = useState('preset')
-  const [momentPreset, setMomentPreset] = useState(null)
+  const [momentPreset, setMomentPreset] = useState(
+    () => DEFAULT_MOMENT_BY_HABIT[habit.id] || null,
+  )
   const [momentTime, setMomentTime] = useState('')
   const [remindersOn, setRemindersOn] = useState(false)
 

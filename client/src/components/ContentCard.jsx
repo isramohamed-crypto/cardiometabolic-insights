@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ContentModal from './ContentModal.jsx'
+import HeartIcon from './HeartIcon.jsx'
 import { useFavorites } from '../content/FavoritesContext.jsx'
 import './ContentCard.css'
 
@@ -41,7 +42,7 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
           aria-pressed={saved}
           aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
         >
-          {saved ? '♥' : '♡'}
+          <HeartIcon filled={saved} />
         </button>
       </div>
 

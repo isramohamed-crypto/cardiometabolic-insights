@@ -82,6 +82,49 @@ function Me() {
           </div>
         )}
       </section>
+
+      {/* Account-level settings, separate from the "how it's going" habit
+          content above — a plain list of rows rather than another card
+          grid, since these are one-line destinations/toggles, not data to
+          visualize. Connected devices is real (reuses the same
+          onboarding.connectedTracker answer ConnectSteps.jsx writes, and
+          links back to that same screen to change it) — notifications and
+          password reset have no backend yet, so they're shown with the
+          same "Coming soon" pill the doctor-summary card above uses,
+          rather than as dead taps with no feedback. */}
+      <section className="settings-section">
+        <h2 className="settings-section__title">Settings</h2>
+
+        <div className="settings-list">
+          <Link to="/connect" className="settings-row">
+            <div className="settings-row__text">
+              <span className="settings-row__label">Connected devices</span>
+              <span className="settings-row__value">
+                {answers.connectedTracker || 'Not connected'}
+              </span>
+            </div>
+            <span className="settings-row__chevron" aria-hidden="true">
+              →
+            </span>
+          </Link>
+
+          <div className="settings-row settings-row--static">
+            <div className="settings-row__text">
+              <span className="settings-row__label">Notifications</span>
+              <span className="settings-row__value">Reminders and weekly check-ins</span>
+            </div>
+            <Pill label="Coming soon" />
+          </div>
+
+          <div className="settings-row settings-row--static">
+            <div className="settings-row__text">
+              <span className="settings-row__label">Password &amp; security</span>
+              <span className="settings-row__value">Reset your password</span>
+            </div>
+            <Pill label="Coming soon" />
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

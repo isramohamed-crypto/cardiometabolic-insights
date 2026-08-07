@@ -77,3 +77,76 @@
   font-weight: 700;
   text-decoration: none;
 }
+
+/* --- Settings ---------------------------------------------------------
+   Sits at the bottom of the page, below the "how it's going" section —
+   a plain list of one-line destinations/toggles rather than another card
+   grid. */
+.settings-section {
+  margin-top: var(--space-6);
+}
+
+.settings-section__title {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h4);
+  color: #1a1a1a;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+/* Only the "Connected devices" row is a real link (to /connect) — the
+   others are static informational rows with a "Coming soon" pill instead
+   of a working destination, so only this one gets pointer/hover
+   affordance. */
+a.settings-row {
+  cursor: pointer;
+}
+
+a.settings-row:hover {
+  background: rgba(0, 70, 32, 0.04);
+}
+
+.settings-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-row__label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #1a1a1a;
+}
+
+.settings-row__value {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.settings-row__chevron {
+  flex-shrink: 0;
+  font-size: var(--text-h5);
+  color: rgba(0, 0, 0, 0.3);
+}

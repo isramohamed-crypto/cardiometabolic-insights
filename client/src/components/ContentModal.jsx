@@ -1,4 +1,5 @@
 import { useFavorites } from '../content/FavoritesContext.jsx'
+import HeartIcon from './HeartIcon.jsx'
 import './ContentModal.css'
 
 // Real article URL missing? Fall back to the publisher's homepage rather
@@ -91,7 +92,7 @@ function ContentModal({ content, onClose }) {
             aria-pressed={saved}
             aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
           >
-            {saved ? '♥' : '♡'}
+            <HeartIcon filled={saved} />
           </button>
         </div>
 

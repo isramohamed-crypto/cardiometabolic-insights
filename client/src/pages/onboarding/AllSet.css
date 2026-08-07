@@ -139,18 +139,26 @@
   opacity: 1;
 }
 
+/* Flashes through two brighter brand greens on the way back to the
+   button's normal --question-accent (seaweed) fill, instead of just
+   scaling — reads as a little celebratory spark on tap rather than a
+   plain mechanical press. */
 @keyframes all-set-cta-pop {
   0% {
     transform: scale(1);
+    background-color: var(--question-accent);
   }
   40% {
     transform: scale(0.94);
+    background-color: var(--color-leaf);
   }
   75% {
     transform: scale(1.06);
+    background-color: var(--color-green-apple);
   }
   100% {
     transform: scale(1);
+    background-color: var(--question-accent);
   }
 }
 

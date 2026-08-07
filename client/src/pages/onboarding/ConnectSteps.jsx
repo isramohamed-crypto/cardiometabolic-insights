@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import './QuestionScreen.css'
 
 // New step between finalizing the first habit and account creation: offer
@@ -15,6 +16,7 @@ const SOURCES = [
 
 function ConnectSteps() {
   const navigate = useNavigate()
+  const { setAnswer } = useOnboarding()
   const [connecting, setConnecting] = useState(null)
   const [connected, setConnected] = useState(null)
 
@@ -23,6 +25,11 @@ function ConnectSteps() {
     setTimeout(() => {
       setConnecting(null)
       setConnected(source.id)
+      // Recorded on the shared onboarding answers (rather than kept only
+      // in this component's own state) so it survives past this one
+      // screen — HabitDetail reads it back to show "Tracked with
+      // {source}" under the day tracker.
+      setAnswer('connectedTracker', source.label)
     }, 900)
   }
 

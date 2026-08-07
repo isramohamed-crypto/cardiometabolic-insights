@@ -212,8 +212,22 @@ export const DEMO_PROFILES = {
   },
 }
 
+// Shorter, hyphen-free aliases for the same profiles above — meant for a
+// path segment rather than a query string (see DemoProfileRoute.jsx,
+// wired up in App.jsx as /routine/:demoProfile), where a slug like
+// "newuser" or "7days" reads more like a normal URL than the canonical,
+// more-descriptive ids these map to. The canonical ids still work in both
+// places too (getDemoProfile below checks this map only as a fallback).
+export const PROFILE_URL_ALIASES = {
+  newuser: 'new-user',
+  '7days': 'after-7-days',
+  '3weeks': '3-weeks-in',
+}
+
 export function getDemoProfile(id) {
-  return Object.prototype.hasOwnProperty.call(DEMO_PROFILES, id) ? DEMO_PROFILES[id] : null
+  if (Object.prototype.hasOwnProperty.call(DEMO_PROFILES, id)) return DEMO_PROFILES[id]
+  const aliased = PROFILE_URL_ALIASES[id]
+  return aliased ? DEMO_PROFILES[aliased] : null
 }
 
 export function listDemoProfiles() {

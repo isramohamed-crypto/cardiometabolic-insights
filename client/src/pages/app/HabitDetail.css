@@ -59,23 +59,33 @@
   padding: var(--space-5) var(--space-6);
 }
 
-/* Dark-translucent to read against the photo, same treatment as the demo
-   profile menu's kebab trigger — a plain light close-X (like
-   AddHabitFlow's) would disappear against a busy image. */
-.habit-detail__close {
+/* Dark-translucent to read against the photo, same treatment the old
+   close-X used — a plain light button (like AddHabitFlow's) would
+   disappear against a busy image. Replaces that close-X: this is the
+   page's only way back to Routine now (the second, bottom-of-page "Back"
+   link that used to sit above the composer was dropped as redundant once
+   this one moved up here). */
+.habit-detail__back-top {
   position: absolute;
   top: var(--space-4);
   right: var(--space-4);
   z-index: 2;
-  width: 32px;
-  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
   background: rgba(0, 0, 0, 0.35);
-  font-size: var(--text-h5);
-  line-height: 1;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
   color: #fff;
   cursor: pointer;
+}
+
+.habit-detail__back-top:hover {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .habit-detail__hero-eyebrow {
@@ -107,10 +117,6 @@
 }
 
 .habit-detail .question-screen__intro {
-  margin-bottom: 0;
-}
-
-.habit-detail .question-screen__back {
   margin-bottom: 0;
 }
 
@@ -154,6 +160,18 @@
 .habit-detail__tracker .habit-day-tracker {
   top: 0;
   left: 0;
+}
+
+/* Small footnote under the tracker/done row — only rendered when a
+   passive-tracking source was connected in onboarding (see
+   ConnectSteps.jsx). Negative margin-top pulls it up against the row
+   above rather than taking a full body `gap` of its own, since it reads
+   as an annotation on the tracker, not a new independent section. */
+.habit-detail__tracker-note {
+  margin: calc(-1 * var(--space-3)) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.45);
 }
 
 /* margin-bottom matches .habit-detail__current-moment's own
@@ -285,26 +303,36 @@
 
 /* Pinned below the scrollable body (a flex sibling of question-screen__body
    inside .habit-detail, not part of it) so the ask-a-question input stays
-   put regardless of scroll position — same idea as HabitChat's own
-   composer bar, which this borrows its look from. */
+   put regardless of scroll position. Was a flat bar with a tinted input
+   and a separate square "Send" button sitting directly on the page
+   background — now the whole thing is one floating white pill (see
+   .habit-detail__composer-inner) so the ask affordance reads as a bigger,
+   more prominent element instead of a minor footer control. */
 .habit-detail__composer {
   flex-shrink: 0;
-  display: flex;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  padding-bottom: max(var(--space-3), env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: var(--space-4) var(--space-5);
+  padding-bottom: max(var(--space-4), env(safe-area-inset-bottom, 0px));
   background: var(--color-coconut);
+}
+
+.habit-detail__composer-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 .habit-detail__composer-input {
   flex: 1;
+  min-width: 0;
   border: none;
-  border-radius: var(--radius-pill);
-  padding: var(--space-3) var(--space-4);
-  background: rgba(0, 70, 32, 0.06);
+  background: none;
+  padding: var(--space-3) 0;
   font-family: var(--font-body);
-  font-size: var(--text-base);
+  font-size: var(--text-h5);
   color: rgba(0, 0, 0, 0.9);
 }
 
@@ -314,20 +342,30 @@
 
 .habit-detail__composer-input:focus {
   outline: none;
-  box-shadow: inset 0 0 0 2px var(--color-seaweed);
 }
 
+/* Circular icon button living inside the pill's trailing edge, rather
+   than a separate rectangular "Send" button next to it — sized to sit
+   comfortably inside the taller pill. */
 .habit-detail__composer-send {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   border: none;
-  border-radius: var(--radius-pill);
-  padding: 0 var(--space-5);
+  border-radius: 50%;
   background: var(--color-seaweed);
   color: #fff;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-small);
+  font-size: var(--text-h5);
+  line-height: 1;
   cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.habit-detail__composer-send:hover:not(:disabled) {
+  filter: brightness(1.08);
 }
 
 .habit-detail__composer-send:disabled {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
+import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { RECOMMENDATIONS_BY_PILLAR, STACK_PRESETS, getHabitVisual } from '../onboarding/recommendedHabits.js'
 import { daysSinceStart, pickJustificationContent, COMPANION_CONTENT } from '../../domain/habitContent.js'
 import { getPillarLabel } from '../../domain/pillars.js'
@@ -64,6 +65,8 @@ function HabitDetail() {
   const { habitId } = useParams()
   const navigate = useNavigate()
   const { habits, updateHabitState, updateHabit, toggleTodayDone } = useHabits()
+  const { answers } = useOnboarding()
+  const connectedTracker = answers.connectedTracker
 
   // Tier/moment editing and retiring the habit all live behind this one
   // "Edit" action now — tapping it opens them together as an overlay
@@ -158,11 +161,10 @@ function HabitDetail() {
           <div className="habit-detail__hero-scrim" />
           <button
             type="button"
-            className="habit-detail__close"
+            className="habit-detail__back-top"
             onClick={() => navigate('/routine')}
-            aria-label="Close"
           >
-            ×
+            <span aria-hidden="true">←</span> Back
           </button>
           <div className="habit-detail__hero-content">
             <p className="habit-detail__hero-eyebrow">{getPillarLabel(habit.pillarId)}</p>
@@ -189,6 +191,15 @@ function HabitDetail() {
               {doneToday ? 'Done today' : 'Mark done'}
             </button>
           </div>
+
+          {/* Only shown if the user connected a passive-tracking source
+              during onboarding (see ConnectSteps.jsx) — most habits are
+              still manually marked done above, so this is a footnote, not
+              a claim that this specific habit is actually being logged by
+              the device. */}
+          {connectedTracker && (
+            <p className="habit-detail__tracker-note">Tracked with {connectedTracker}</p>
+          )}
 
           <div className="habit-detail__status-row">
             <span className="habit-detail__status">
@@ -273,31 +284,32 @@ function HabitDetail() {
           )}
 
           <div className="question-screen__spacer" />
-
-          <button
-            type="button"
-            className="question-screen__back"
-            onClick={() => navigate('/routine')}
-          >
-            <span aria-hidden="true">←</span> Back
-          </button>
         </div>
 
+        {/* Restyled as one floating white pill (was a plain input + separate
+            square button sitting directly on the page background) — larger,
+            with the send action living inside the same container as a
+            circular icon button at its trailing edge, matching the
+            product's newer composer mockup instead of HabitChat's older
+            flatter bar treatment. */}
         <form className="habit-detail__composer" onSubmit={handleAskSubmit}>
-          <input
-            type="text"
-            className="habit-detail__composer-input"
-            placeholder="Ask about this habit…"
-            value={chatDraft}
-            onChange={(e) => setChatDraft(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="habit-detail__composer-send"
-            disabled={!chatDraft.trim()}
-          >
-            Send
-          </button>
+          <div className="habit-detail__composer-inner">
+            <input
+              type="text"
+              className="habit-detail__composer-input"
+              placeholder="Ask about this habit…"
+              value={chatDraft}
+              onChange={(e) => setChatDraft(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="habit-detail__composer-send"
+              disabled={!chatDraft.trim()}
+              aria-label="Send"
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
         </form>
 
         {/* "Edit" overlay — tiers, when-editor, and retiring the habit all
