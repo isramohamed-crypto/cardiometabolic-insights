@@ -1,32 +1,44 @@
 import { useNavigate } from 'react-router-dom'
 import heroPhoto from '../assets/onboarding/hero-photo.jpg'
-import logoPeople from '../assets/onboarding/logo-people.svg'
-import logoHealth from '../assets/onboarding/logo-health.svg'
-import logoEatingWell from '../assets/onboarding/logo-eatingwell.svg'
-import logoVerywellHealth from '../assets/onboarding/logo-verywellhealth.svg'
 import DemoProfileMenu from '../demo/DemoProfileMenu.jsx'
 import './Onboarding.css'
 
-// Publishers featured in the Figma masthead ticker. The first four have
-// exported logo assets; the rest didn't have an asset in the source file,
-// so they render as wordmarks until real logos are supplied.
-const PUBLISHERS = [
-  { name: 'PEOPLE', logo: logoPeople, width: 70 },
-  { name: 'Health', logo: logoHealth, width: 90 },
-  { name: 'EatingWell', logo: logoEatingWell, width: 80 },
-  { name: 'Verywell Health', logo: logoVerywellHealth, width: 120 },
-  { name: 'Real Simple' },
-  { name: 'Allrecipes' },
-  { name: 'Verywell Mind' },
-  { name: 'Simply Recipes' },
-  { name: 'Southern Living' },
-  { name: 'Verywell Fit' },
-  { name: 'Parents' },
-]
+// Publishers featured in the masthead ticker — now pointing at their real
+// logo files under public/logos/ (the same asset set domain/brandLogos.js
+// draws from for content brand labels) instead of the four one-off exports
+// under assets/onboarding/ this used to import plus seven bare wordmarks.
+// This uses each brand's white fill variant specifically, not the
+// color-preferred pick brandLogos.js makes — this ticker sits over a dark
+// photo/scrim, where a full-color logo (designed for a white card) would
+// read poorly, but every one of these brands does have a white variant.
+// Every publisher in the original masthead has a real asset now, so the
+// wordmark-text fallback in PublisherLogo is unused today but kept for
+// whichever publisher gets added next without one.
+const TICKER_LOGOS = {
+  PEOPLE: encodeURI('/logos/people/Style=solid, Fill=white.svg'),
+  Health: encodeURI('/logos/health/Fill=white.svg'),
+  EatingWell: encodeURI('/logos/eating-well/Layout=horiz, Fill=white.svg'),
+  'Verywell Health': encodeURI('/logos/verywell-health/Fill=white.svg'),
+  'Real Simple': encodeURI('/logos/real-simple/Color=white, Layout=horiz.svg'),
+  Allrecipes: encodeURI('/logos/allrecipes/Fill=white.svg'),
+  'Verywell Mind': encodeURI('/logos/verywell-mind/Fill=white.svg'),
+  'Simply Recipes': encodeURI('/logos/simply-recipes/Fill=white.svg'),
+  'Southern Living': encodeURI('/logos/southern-living/Fill=white, Layout=horiz.svg'),
+  'Verywell Fit': encodeURI('/logos/verywell-fit/Fill=white.svg'),
+  Parents: encodeURI('/logos/parents/Fill=white, Layout=horiz.svg'),
+}
 
-function PublisherLogo({ name, logo, width }) {
+const PUBLISHERS = Object.keys(TICKER_LOGOS).map((name) => ({ name }))
+
+// No more per-brand hand-tuned width overrides (the old four entries each
+// carried one, sized to match that specific hand-exported asset) — every
+// logo here is a real brand file with its own correct aspect ratio, so
+// height (set in CSS) plus width: auto scales every one of them
+// proportionately without needing a bespoke width per brand.
+function PublisherLogo({ name }) {
+  const logo = TICKER_LOGOS[name]
   if (logo) {
-    return <img src={logo} alt={name} className="onboarding-ticker__logo" style={{ width }} />
+    return <img src={logo} alt={name} className="onboarding-ticker__logo" />
   }
   return <span className="onboarding-ticker__wordmark">{name}</span>
 }
