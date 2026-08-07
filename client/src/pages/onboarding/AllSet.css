@@ -7,11 +7,16 @@
    @keyframes, same approach as Onboarding.css's landing-page ticker — no
    animation library anywhere in this app. */
 
+/* Whole screen reads as one centered celebratory moment now, rather than
+   the left-aligned block layout every other question-screen uses — see
+   the .all-set overrides at the bottom of this file. */
 .all-set__badge {
   position: relative;
-  width: 64px;
-  height: 64px;
-  margin: 0 0 var(--space-4);
+  /* Much larger than the old 64px — this is the screen's focal point now
+     that it sits below the headline instead of above it as a small icon. */
+  width: 140px;
+  height: 140px;
+  margin: var(--space-5) auto 0;
   border-radius: 50%;
   background: var(--color-leaf);
   display: flex;
@@ -22,7 +27,9 @@
 }
 
 .all-set__badge-check {
-  font-size: var(--text-h3);
+  /* Scaled up to match the badge's new size, same ~1:2.2 check-to-circle
+     ratio the old 64px/text-h3 pairing had. */
+  font-size: 3.5rem;
   font-weight: 700;
   line-height: 1;
   color: #fff;
@@ -106,10 +113,54 @@
   }
 }
 
+/* Center the whole screen — header (eyebrow/headline/badge) and body copy
+   both read as one centered celebratory block instead of the left-aligned
+   layout every other question-screen uses. The CTA itself doesn't need
+   any override here: it's already width: 100% of the centered .question-
+   screen__body column, so text-align has no effect on its position. */
+.all-set .question-screen__header,
+.all-set .question-screen__body {
+  text-align: center;
+}
+
+/* A quick scale "pop" on tap, played just before navigating to Routine —
+   see AllSet.jsx's handleGoToRoutine, which sets this class and waits
+   CTA_POP_MS (must match this animation's duration) before actually
+   navigating, so the feedback has time to actually be seen. Chained with
+   .question-screen__continue for higher specificity than .all-set__in's
+   own `animation` rule, which would otherwise win by source order.
+   opacity: 1 is required, not decorative — swapping the `animation`
+   property to a new animation-name drops the old (finished, forwards-
+   filled) all-set-rise animation's hold on opacity, which would otherwise
+   let it fall back to .all-set__in's own static `opacity: 0` and make the
+   button vanish for the duration of the pop. */
+.question-screen__continue.all-set__continue--pop {
+  animation: all-set-cta-pop 0.26s ease;
+  opacity: 1;
+}
+
+@keyframes all-set-cta-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.94);
+  }
+  75% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* Respect the OS-level "reduce motion" preference — every animated piece
    just renders in its final state immediately instead of skipping the
    whole effect silently (which would leave the badge/copy stuck at
-   opacity: 0, invisible). */
+   opacity: 0, invisible). The CTA pop never gets this far in practice —
+   AllSet.jsx checks the same media query and navigates immediately
+   instead of setting the class — but this covers it too in case that
+   check is ever bypassed. */
 @media (prefers-reduced-motion: reduce) {
   .all-set__badge,
   .all-set__badge::after,
@@ -117,5 +168,9 @@
     animation: none;
     opacity: 1;
     transform: none;
+  }
+
+  .question-screen__continue.all-set__continue--pop {
+    animation: none;
   }
 }
