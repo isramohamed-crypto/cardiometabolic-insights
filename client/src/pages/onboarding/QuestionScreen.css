@@ -52,10 +52,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-sm);
+  /* No rounding by default — only the two ends of the whole row (see the
+     :first-child/:last-child rules below) get a rounded outer corner, so
+     the row of separate dots still reads as one continuous bar with
+     square joins between segments, the way tabs/segmented bars usually
+     do, rather than each dot looking like its own separate rounded chip. */
+  border-radius: 0;
   background: rgba(0, 70, 32, 0.12);
   font-size: 1.2em;
   color: rgba(0, 0, 0, 0.4);
+}
+
+/* Rounds only the outward-facing corners of the first and last dot —
+   every dot in between has a neighbor on both sides, so it stays fully
+   square on both. :only-child covers totalSteps === 1, where the same
+   single dot is both first and last and needs all four corners rounded;
+   without it, the :last-child rule below would run after :first-child in
+   source order and win outright (both set the full border-radius
+   shorthand, so the second one simply overwrites the first rather than
+   merging with it), leaving that lone dot rounded on the right only. */
+.question-screen__progress-dot:first-child:not(:only-child) {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.question-screen__progress-dot:last-child:not(:only-child) {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.question-screen__progress-dot:only-child {
+  border-radius: var(--radius-sm);
 }
 
 /* Current step — white chip so the mark reads in its own "original" color
@@ -83,24 +108,6 @@
   object-fit: contain;
 }
 
-/* "Completed"/"upcoming" dots don't get the icon's real colors — cutting
-   it out of a solid background-color via a CSS mask (mask-image set
-   inline per-icon in QuestionScreen.jsx) turns it into a flat
-   single-color silhouette that picks up currentColor, i.e. this dot's own
-   `color` from the state rules above, the same way AclmMarkPlaceholder's
-   fill="currentColor" did. */
-.question-screen__progress-icon-mask {
-  display: block;
-  width: 1em;
-  height: 1em;
-  background-color: currentColor;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
 
 .question-screen__headline {
   margin: 0;

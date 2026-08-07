@@ -79,29 +79,25 @@ function QuestionScreen({
               // No progressIcons prop (or a missing entry within it) —
               // fall back to the abstract placeholder mark, same as
               // before this prop existed. Callers that do pass real icon
-              // URLs (PillarQuestion, via domain/aclmIcons.js) get two
-              // different renderings depending on state: the "current"
-              // step shows the icon's own real two-tone colors via a
-              // plain <img>, while "completed"/"upcoming" steps show it
-              // as a flat single-color CSS-mask silhouette instead, so it
-              // still picks up this dot's own `color` (set per state in
-              // QuestionScreen.css) rather than clashing with its baked-in
-              // fill — exactly what AclmMarkPlaceholder's currentColor
-              // fill did already, just applied to a real icon shape now.
-              let mark
-              if (!icon) {
-                mark = <AclmMarkPlaceholder />
-              } else if (dotState === 'current') {
-                mark = <img src={icon} alt="" className="question-screen__progress-icon" />
-              } else {
-                mark = (
-                  <span
-                    className="question-screen__progress-icon-mask"
-                    style={{ WebkitMaskImage: `url("${icon}")`, maskImage: `url("${icon}")` }}
-                    aria-hidden="true"
-                  />
-                )
-              }
+              // URLs (PillarQuestion, via domain/aclmIcons.js) used to get
+              // a flat single-color CSS-mask silhouette for "completed"/
+              // "upcoming" steps instead of the real icon — cutting an
+              // opaque raster mask out of these particular SVGs only ever
+              // clips to their outer badge outline (every icon in this set
+              // is a solid-color hexagon with an opaque white glyph on
+              // top, and CSS masking reads alpha, not color, so the two
+              // opaque layers mask identically), which is why every
+              // non-current step rendered as a plain hexagon instead of
+              // its own pillar's shape. Showing the real icon in every
+              // state instead keeps its actual shape/detail visible
+              // throughout — completed/upcoming still read as "not the
+              // current step" via the dot's own dimmer background
+              // (QuestionScreen.css), not via the icon losing its color.
+              const mark = icon ? (
+                <img src={icon} alt="" className="question-screen__progress-icon" />
+              ) : (
+                <AclmMarkPlaceholder />
+              )
 
               return (
                 <span
