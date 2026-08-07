@@ -7,6 +7,7 @@ import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
+import TrialPromptModal from './TrialPromptModal.jsx'
 import './page.css'
 
 const BUILDING_STATES = [
@@ -98,6 +99,8 @@ function Routine() {
 
   return (
     <div className="page">
+      <TrialPromptModal onOpenAddHabit={() => setAddingHabit(true)} />
+
       {tryingOn.length > 0 && (
         <section>
           <h2>Habits I'm trying on</h2>

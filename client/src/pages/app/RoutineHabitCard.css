@@ -36,27 +36,21 @@
   );
 }
 
-/* Used to be position: absolute; inset: 0 — a fixed overlay stretched to
-   match the card's own (then-fixed) height. Needed to become real in-flow
-   content instead once a trial prompt (see routine-habit-card__trial-prompt
-   below) could add enough text/buttons to need more than the classic
-   198px a bare title+meta card needs: an absolutely-positioned element's
-   height is dictated by its parent, not the other way around, so it could
-   never have grown the card to fit. min-height (not height) plus
-   border-box keeps the original 198px-tall look for a bare card — padding
-   included, same as inset: 0 against a 198px parent used to give — while
-   letting it grow past that floor when there's more to show.
+/* min-height (not height) plus border-box keeps this at the classic
+   198px-tall look a bare title+meta card has always had — padding
+   included. Used to also need to grow past that floor for the trial
+   prompt's own text/buttons, back when that rendered nested in here (see
+   TrialPromptModal.jsx, which owns that decision now, as its own
+   full-screen modal instead) — min-height stays real in-flow content
+   rather than reverting to the old position: absolute; inset: 0, since
+   there's no real cost to being able to grow again if this card ever
+   needs to show more than a bare title+meta in the future.
 
    padding-top is a hard reservation for HabitDayTracker (top: var(--space-4),
    27px-tall dots — see HabitDayTracker.css), not just the usual space-5
-   the other three sides use. justify-content: flex-end used to be enough
-   on its own to keep the Pill clear of the tracker, back when a bare
-   card's content was shorter than the 198px floor — the leftover slack
-   above it did the job. Once the trial prompt could make content tall
-   enough to fill the box with no slack left, the Pill (first child) ended
-   up flush against the top padding — right where the tracker already
-   was. A fixed reservation guarantees the gap regardless of how tall the
-   rest of the content gets. */
+   the other three sides use — justify-content: flex-end alone isn't
+   enough to guarantee the Pill (first child) stays clear of the tracker
+   regardless of how tall the rest of the content gets. */
 .routine-habit-card__content {
   position: relative;
   z-index: 1;

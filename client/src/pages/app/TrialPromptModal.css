@@ -1,0 +1,275 @@
+/* Full-screen, un-dismissable overlay — see TrialPromptModal.jsx for why
+   there's no backdrop-click/Escape/× anywhere here. position: fixed + a
+   z-index above the app shell's header/sticky footer (Header.css/
+   Footer.css don't set one of their own, so anything here comfortably
+   clears them) means this covers the whole viewport regardless of where
+   it's mounted in the tree. */
+.trial-prompt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---- Decision screen — full-bleed photo, matches the "upgradeoverlay"
+   design reference: eyebrow, two-tone headline, description, then a
+   primary pill plus one secondary/link action, pinned to the bottom of
+   the screen over a photo that darkens toward that same edge (same
+   gradient shape as .routine-habit-card__scrim). ---- */
+
+.trial-prompt-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(217, 217, 217, 0) 0%,
+    rgba(58, 110, 82, 0.5) 45%,
+    rgba(0, 70, 32, 0.95) 100%
+  );
+}
+
+.trial-prompt-modal__content {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-6) var(--space-6) var(--space-10);
+}
+
+.trial-prompt-modal__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Scoped under .trial-prompt-modal (two classes, not one) rather than
+   just .trial-prompt-modal__headline on its own — this modal renders as a
+   DOM descendant of Routine's <div className="page">, wherever it's
+   mounted (see TrialPromptModal.jsx/Routine.jsx), and page.css's own
+   ".page h2" rule (one class + one element, so it out-specifies a bare
+   single-class selector) was winning over this and flattening the
+   headline into a small uppercase section-label style meant for "Habits
+   I'm trying on"-type headers, not this. */
+.trial-prompt-modal .trial-prompt-modal__headline {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #fff;
+}
+
+.trial-prompt-modal__headline-accent {
+  color: var(--color-green-apple);
+}
+
+.trial-prompt-modal__desc {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* position: relative so the confetti burst (see ConfettiBurst's
+   --contained variant) anchors to this row instead of the nearest
+   positioned ancestor further up, which would center it over the whole
+   photo instead of over the buttons. */
+.trial-prompt-modal__actions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.trial-prompt-modal__primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-pill);
+  height: 56px;
+  background: #00301a;
+  color: var(--color-coconut);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.trial-prompt-modal__primary:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.trial-prompt-modal__secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-pill);
+  height: 56px;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.trial-prompt-modal__link {
+  margin: 0;
+  border: none;
+  background: none;
+  padding: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+}
+
+.trial-prompt-modal__link:hover {
+  color: #fff;
+}
+
+.trial-prompt-modal__primary:disabled,
+.trial-prompt-modal__secondary:disabled,
+.trial-prompt-modal__link:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ---- Confirm screen — plain light background, matches the "upgrade2"
+   design reference: a circular mark, a two-tone headline, a slot summary
+   (only when a slot is actually open — see TrialPromptModal.jsx's
+   hasOpenSlot), and a single CTA that's the only way off this screen. ---- */
+
+.trial-prompt-modal--confirm {
+  align-items: center;
+  justify-content: center;
+  background: var(--color-coconut);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.trial-prompt-modal__confirm-icon {
+  width: 72px;
+  height: 72px;
+  margin-bottom: var(--space-5);
+  border-radius: 50%;
+  background: rgba(0, 70, 32, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-prompt-modal__confirm-icon span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-seaweed);
+}
+
+/* Same over-specific ".page h2" collision as .trial-prompt-modal__headline
+   above — scoped the same way. */
+.trial-prompt-modal .trial-prompt-modal__confirm-headline {
+  margin: 0 0 var(--space-3);
+  max-width: 340px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #1a1a1a;
+}
+
+/* Green-apple reads fine on the decision screen's dark photo but not on
+   this screen's light coconut background — reassert a darker accent here
+   instead of inheriting the decision screen's color. */
+.trial-prompt-modal--confirm .trial-prompt-modal__headline-accent {
+  color: var(--color-seaweed);
+}
+
+.trial-prompt-modal__confirm-desc {
+  margin: 0 0 var(--space-6);
+  max-width: 320px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.trial-prompt-modal__slots {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: var(--space-6);
+}
+
+.trial-prompt-modal__slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+.trial-prompt-modal__slot--filled {
+  box-shadow: inset 0 0 0 1.5px var(--color-seaweed);
+  background: var(--color-coconut);
+}
+
+.trial-prompt-modal__slot-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #1a1a1a;
+}
+
+.trial-prompt-modal__slot-meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.trial-prompt-modal__slot-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-leaf);
+  flex-shrink: 0;
+}
+
+.trial-prompt-modal__slot--open {
+  background: rgba(0, 70, 32, 0.06);
+  color: var(--color-seaweed);
+  font-weight: 700;
+  font-size: var(--text-base);
+  justify-content: center;
+}
+
+.trial-prompt-modal--confirm .trial-prompt-modal__primary {
+  max-width: 380px;
+}

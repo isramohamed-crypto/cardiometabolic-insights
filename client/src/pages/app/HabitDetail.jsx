@@ -125,7 +125,7 @@ function HabitDetail() {
   const isTrialing = habit.ownershipState === OWNERSHIP_STATE.TRIALED
   const daysSince = daysSinceStart(habit.startedAt)
   // upsellPending lives on the habit itself (see updateHabit calls below
-  // and HabitTrialPrompt, which owns the actual decision UI now — this
+  // and TrialPromptModal, which owns the actual decision UI now — this
   // page only needs to know whether one applies, to show its one-line
   // pointer over to Routine). Storing it on the habit rather than as
   // local state here means it reads the same on both screens.
@@ -216,9 +216,9 @@ function HabitDetail() {
           </div>
 
           {/* The actual keep/smaller/let-go decision (and the tier-upsell
-              that can follow "Keep it") now lives on the Routine tab, right
-              under this habit's own card — see HabitTrialPrompt.jsx. This
-              is just a one-line pointer over to it, not the decision UI
+              that can follow "Keep it") now shows as its own full-screen
+              modal on the Routine tab — see TrialPromptModal.jsx. This is
+              just a one-line pointer over to it, not the decision UI
               itself. */}
           {showTrialPrompt && (
             <Link to="/routine" className="habit-detail__trial-hint">
