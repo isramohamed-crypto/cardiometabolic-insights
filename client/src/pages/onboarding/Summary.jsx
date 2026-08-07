@@ -78,30 +78,29 @@ function Summary() {
         </p>
 
         {totalCount > 0 && (
-          <>
-            <div className="summary__divider" />
-
-            <div className="summary__rows">
-              {pillarSummaries
-                .filter(({ labels }) => labels.length > 0)
-                .map(({ pillar, labels }) => (
-                  <div className="summary__row-group" key={pillar.id}>
-                    <span className="summary__row-label">{pillar.label}</span>
-                    {/* Each selected item gets its own line now instead of
-                        being joined with " · " into one row — the pillar
-                        label sits once per group (not repeated per item),
-                        same as a group heading over a short list. */}
-                    <div className="summary__row-values">
-                      {labels.map((label) => (
-                        <span className="summary__row-value" key={label}>
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </>
+          <div className="summary__card">
+            {pillarSummaries
+              .filter(({ labels }) => labels.length > 0)
+              .map(({ pillar, labels }, i) => (
+                <div className="summary__row-group" key={pillar.id}>
+                  {/* No divider above the first group — the card's own
+                      border already separates the whole list from the
+                      intro paragraph above it. */}
+                  {i > 0 && <div className="summary__divider" />}
+                  <span className="summary__row-label">{pillar.label}</span>
+                  {/* Each selected item is its own bulleted line — a small
+                      square marker plus the label, wrapping under its own
+                      text rather than under the bullet on longer items. */}
+                  <ul className="summary__row-values">
+                    {labels.map((label) => (
+                      <li className="summary__row-value" key={label}>
+                        {label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </div>
         )}
 
         <div className="question-screen__spacer" />

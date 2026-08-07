@@ -35,54 +35,74 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-.summary__divider {
-  margin: var(--space-5) 0;
-  border-top: 1px solid rgba(0, 70, 32, 0.15);
+/* The card wrapping every pillar group — replaces the old single divider
+   line above the list with an actual bordered container, so the whole
+   recap reads as one contained block instead of a bare list floating in
+   the page body. */
+.summary__card {
+  border: 1px solid rgba(0, 70, 32, 0.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  background: #fff;
 }
 
-.summary__rows {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+/* Between pillar groups inside the card — a hairline rather than the
+   card's own border, so different pillars still read as distinct
+   clusters without needing a second nested box per group. */
+.summary__divider {
+  margin: var(--space-4) 0;
+  border-top: 1px solid rgba(0, 70, 32, 0.12);
 }
 
 /* One of these per pillar that has at least one selected item — the
-   pillar label sits in the left column once, same as a group heading,
-   while summary__row-values stacks every selected item under it as its
-   own line (see below) instead of joining them into one comma/dot-
-   separated line. Renamed from the old singular "summary__row" now that
-   it's a label + a list of rows, not one row itself. */
-.summary__row-group {
-  display: grid;
-  grid-template-columns: 78px 1fr;
-  gap: var(--space-3);
-}
-
+   pillar label sits on its own line, same as a group heading, with
+   summary__row-values stacking every selected item under it as its own
+   bulleted line (see below) instead of joining them into one comma/dot-
+   separated line. Spacing between groups comes from summary__divider
+   above (rendered between groups, not before the first one), not from
+   margin here. */
 .summary__row-label {
+  display: block;
+  margin-bottom: var(--space-2);
   font-family: var(--font-body);
   font-weight: 500;
   font-size: var(--text-caption);
   letter-spacing: 1.32px;
   text-transform: uppercase;
-  color: var(--color-seaweed);
-  padding-top: 3px;
+  color: rgba(0, 0, 0, 0.45);
 }
 
-/* Tighter gap than summary__rows uses between different pillars — these
-   are all the same category, so they should read as one cluster rather
-   than getting the same breathing room as the boundary between two
-   different pillars. */
 .summary__row-values {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
+/* A small square bullet instead of list-style's round marker, to match
+   the rest of the app's boxy visual language (see e.g. HabitPickCard's
+   pill/square accents) — positioned absolutely against the first line
+   only, so a wrapped second line indents under the label text rather
+   than under the bullet. */
 .summary__row-value {
+  position: relative;
+  padding-left: var(--space-4);
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.45;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--color-seaweed);
+}
+
+.summary__row-value::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 7px;
+  height: 7px;
+  background: var(--color-green-apple);
 }
 
 .summary__caption {
