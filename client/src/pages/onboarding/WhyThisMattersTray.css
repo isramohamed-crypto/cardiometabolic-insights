@@ -1,6 +1,14 @@
 .why-tray-overlay {
   position: fixed;
-  inset: 0;
+  /* Same fix as WhyCarousel.css's .why-carousel-scene: inset: 0 sizes this
+     against the mobile browser's static "large" viewport rather than the
+     actually-visible one, so a tall enough tray could push its own bottom
+     edge (and the __add/__another buttons anchored to it) below the fold
+     of what's really on screen. 100dvh tracks the true visible height. */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100dvh;
   z-index: 20;
   pointer-events: none;
 }
@@ -37,7 +45,7 @@
   bottom: 0;
   max-width: 560px;
   margin: 0 auto;
-  max-height: 82vh;
+  max-height: 82dvh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

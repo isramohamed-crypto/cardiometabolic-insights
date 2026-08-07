@@ -5,7 +5,18 @@
    "page" of real content rather than a supplementary sheet. */
 .why-carousel-scene {
   position: fixed;
-  inset: 0;
+  /* inset: 0 used to size this against the mobile browser's "large" static
+     viewport, which ignores a collapsible address/toolbar — that let
+     .why-carousel's height: 100% end up taller than what's actually
+     visible, pushing __actions (the CTA buttons) below the fold even
+     though .why-carousel__body's flex: 1 had already left visible blank
+     space above them. 100dvh (dynamic viewport height) tracks the real
+     visible area instead — same convention .question-screen/.onboarding
+     already use. */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100dvh;
   z-index: 25;
   pointer-events: none;
   opacity: 0;

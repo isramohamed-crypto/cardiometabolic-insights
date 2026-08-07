@@ -387,15 +387,22 @@ function HabitDetail() {
                       ))}
                     </div>
                   ) : (
-                    <input
-                      type="time"
-                      className="question-screen__input question-screen__input--compact"
-                      value={momentTime}
-                      onChange={(e) => {
-                        setMomentTime(e.target.value)
-                        updateHabit(habit.id, { moment: formatTime(e.target.value) })
-                      }}
-                    />
+                    <div className="question-screen__input-wrap">
+                      <input
+                        type="time"
+                        className="question-screen__input question-screen__input--compact"
+                        value={momentTime}
+                        onChange={(e) => {
+                          setMomentTime(e.target.value)
+                          updateHabit(habit.id, { moment: formatTime(e.target.value) })
+                        }}
+                      />
+                      {!momentTime && (
+                        <span className="question-screen__input-placeholder" aria-hidden="true">
+                          Tap to set a time
+                        </span>
+                      )}
+                    </div>
                   )}
                 </section>
 

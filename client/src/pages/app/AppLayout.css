@@ -17,7 +17,10 @@
      height (plus its own safe-area-inset-bottom padding, since the
      footer pads for that too) plus one more --space-5 of breathing room
      above it, so scrolling to the very end always clears the footer with
-     room to spare. */
-  padding: var(--space-5) var(--space-6)
+     room to spare.
+     Top padding is 3/4 of the space-5 token (20px -> 15px) — the other
+     half of "the gap between header and main" alongside Header.css's own
+     .app-header bottom padding, scaled down the same way. */
+  padding: calc(var(--space-5) * 0.75) var(--space-6)
     calc(var(--footer-height) + env(safe-area-inset-bottom, 0px) + var(--space-5));
 }

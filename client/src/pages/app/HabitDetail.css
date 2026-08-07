@@ -68,7 +68,7 @@
 .habit-detail__back-top {
   position: absolute;
   top: var(--space-4);
-  right: var(--space-4);
+  left: var(--space-4);
   z-index: 2;
   display: inline-flex;
   align-items: center;

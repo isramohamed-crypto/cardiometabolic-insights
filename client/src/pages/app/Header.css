@@ -2,7 +2,12 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-6) var(--space-3);
+  /* Bottom padding is 3/4 of the space-3 token (12px -> 9px) rather than a
+     new hardcoded value — this is one half of "the gap between header and
+     main" (the other half is AppLayout.css's .app-shell__content top
+     padding); both were scaled down together so the whole gap shrinks to
+     3/4 of what it was, keeping the same header/main split it always had. */
+  padding: var(--space-6) var(--space-6) calc(var(--space-3) * 0.75);
 }
 
 .app-header__eyebrow {

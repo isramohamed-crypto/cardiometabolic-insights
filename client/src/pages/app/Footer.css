@@ -1,6 +1,22 @@
 .app-footer {
   position: sticky;
   bottom: 0;
+  /* Without an explicit z-index, this sits at the same "auto" paint level
+     as ordinary page content — any in-flow element with its own explicit
+     z-index (even something as low as 1, e.g. RoutineHabitCard's own
+     .routine-habit-card__content) escapes above it as soon as a stacking
+     context isn't established in between, since it never was on Header/
+     Footer's side of things (see the comment on TrialPromptModal's own
+     z-index: 60 — every full-screen overlay in the app already assumes it
+     needs to clear the footer, not the other way around). 10 sits above
+     every such in-page z-index currently in use (RoutineHabitCard/
+     HabitDetail/HabitPickCard/page.css/Onboarding/WhyCarousel's inner
+     values all stay at 1-2) while staying comfortably below the app's
+     real full-screen overlays (WhyThisMattersTray 20, WhyCarousel 25,
+     ContentModal/HabitDetail's article reader 30, Recommendations/
+     ConfettiBurst 40, TrialPromptModal 60) — those still need to cover
+     the footer too, and still do. */
+  z-index: 10;
   display: flex;
   width: 100%;
   background: var(--color-coconut);

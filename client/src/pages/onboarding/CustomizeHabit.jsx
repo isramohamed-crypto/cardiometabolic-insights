@@ -147,12 +147,19 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
             ))}
           </div>
         ) : (
-          <input
-            type="time"
-            className="question-screen__input"
-            value={momentTime}
-            onChange={(e) => setMomentTime(e.target.value)}
-          />
+          <div className="question-screen__input-wrap">
+            <input
+              type="time"
+              className="question-screen__input"
+              value={momentTime}
+              onChange={(e) => setMomentTime(e.target.value)}
+            />
+            {!momentTime && (
+              <span className="question-screen__input-placeholder" aria-hidden="true">
+                Tap to set a time
+              </span>
+            )}
+          </div>
         )}
       </section>
 

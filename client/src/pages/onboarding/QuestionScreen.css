@@ -267,6 +267,40 @@
   box-shadow: inset 0 0 0 2px var(--question-accent);
 }
 
+/* A native <input type="time"> has no `placeholder` attribute of its own —
+   some mobile browsers (notably iOS Safari) render an empty, unfocused
+   time input with nothing visible at all until it's tapped, since the
+   "--:--" placeholder segments only draw in once the control gains focus.
+   Wrapping it lets us paint our own always-visible placeholder text on top
+   (see the `!momentTime &&` guard everywhere this wrap is used) so the
+   field reads as an empty, tappable field from the first render instead of
+   looking blank/broken. pointer-events: none on the placeholder passes
+   every tap through to the real input underneath it. */
+.question-screen__input-wrap {
+  position: relative;
+}
+
+.question-screen__input-placeholder {
+  position: absolute;
+  top: 50%;
+  left: var(--space-5);
+  transform: translateY(-50%);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-base);
+  color: rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+/* Matches .question-screen__input--compact's own smaller padding/type
+   size — the placeholder is always the input's next sibling (see every
+   JSX usage), so this sibling selector picks it up automatically whenever
+   the input itself is the compact variant. */
+.question-screen__input--compact ~ .question-screen__input-placeholder {
+  left: var(--space-4);
+  font-size: var(--text-small);
+}
+
 .question-screen__spacer {
   flex: 1;
   min-height: var(--space-6);

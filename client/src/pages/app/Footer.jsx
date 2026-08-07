@@ -1,11 +1,15 @@
 import { NavLink } from 'react-router-dom'
 import './Footer.css'
 
+// Labels are the footer nav's own display text — the routes themselves
+// (and each page's own H1 title, set independently in Header.jsx) keep
+// their existing names, so this rename only changes what the tab bar
+// itself reads, not what each section calls itself once you're in it.
 const TABS = [
-  { to: '/routine', label: 'Routine' },
-  { to: '/read', label: 'Read' },
-  { to: '/collection', label: 'Collection' },
-  { to: '/me', label: 'Me' },
+  { to: '/routine', label: 'Today' },
+  { to: '/read', label: 'Learn' },
+  { to: '/collection', label: 'Habits' },
+  { to: '/me', label: 'Progress' },
 ]
 
 function Footer() {
