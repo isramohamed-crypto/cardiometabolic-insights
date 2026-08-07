@@ -6,14 +6,13 @@ import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './FocusAreas.css'
 
-// Temporary launch restriction — only "moving" is a real focus area for
-// now, but every pillar should still render normally (same look, same
-// hover/press behavior) rather than showing a disabled state, so nothing
-// here tips the person off that most of the row is inert. Set this to
-// null (or delete the guard in selectOption below) to make every pillar
-// selectable again — that's the entire revert, no markup/CSS changes
-// needed since nothing about how an option looks was ever touched.
-const ONLY_SELECTABLE_IDS = ['moving']
+// Was a temporary launch restriction limiting this to just "moving" —
+// every pillar is a real focus area now. Left as null (rather than
+// deleting the guard in selectOption below) so restricting to a subset
+// again later, if that's ever needed, is just setting this back to an
+// id array — no markup/CSS changes either way, since nothing about how
+// an option looks was ever touched.
+const ONLY_SELECTABLE_IDS = null
 
 // Each option gets its pillar's real ACLM icon at the left of its label
 // (see QuestionScreen.jsx's optional `icon` field, and domain/aclmIcons.js
