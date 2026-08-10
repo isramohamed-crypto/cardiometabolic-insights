@@ -58,6 +58,7 @@ function HabitSettingsCard({
     <div className="habit-edit-modal-scene">
       <div className="habit-edit-modal">
         <div className="hsettings">
+          <div className="hsettings__scroll">
           <button type="button" className="hsettings__back" onClick={onBack}>
             <span aria-hidden="true">←</span> Back
           </button>
@@ -130,16 +131,18 @@ function HabitSettingsCard({
             </div>
           </section>
 
-          <div className="question-screen__spacer" />
+          </div>
 
-          <button
-            type="button"
-            className="question-screen__continue"
-            disabled={!canSubmit}
-            onClick={submit}
-          >
-            {submitLabel}
-          </button>
+          <div className="hsettings__footer">
+            <button
+              type="button"
+              className="question-screen__continue"
+              disabled={!canSubmit}
+              onClick={submit}
+            >
+              {submitLabel}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,11 +1,23 @@
 .hsettings {
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.hsettings__scroll {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  padding: var(--space-4) var(--space-5) var(--space-6);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+}
+.hsettings__footer {
+  flex-shrink: 0;
+  padding: var(--space-4) var(--space-5) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .hsettings__back {
