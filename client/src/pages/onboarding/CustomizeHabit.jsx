@@ -52,20 +52,18 @@ function CustomizeHabit({ habit, onBack, onSave, embedded = false }) {
 
   const canSave = momentMode === 'preset' ? Boolean(momentPreset) : Boolean(momentTime)
 
-  const handleToggleReminders = async (next) => {
-    if (next && typeof Notification !== 'undefined') {
+  const handleToggleReminders = (next) => {
+    // Reflect the choice immediately — the toggle should always flip.
+    setRemindersOn(next)
+    // Best-effort OS permission ask when turning on; never force the toggle
+    // back off based on the result (denied/dismissed shouldn't look broken).
+    if (next && typeof Notification !== 'undefined' && Notification.permission === 'default') {
       try {
-        const permission = await Notification.requestPermission()
-        if (permission !== 'granted') {
-          setRemindersOn(false)
-          return
-        }
+        Promise.resolve(Notification.requestPermission()).catch(() => {})
       } catch {
-        setRemindersOn(false)
-        return
+        /* no-op */
       }
     }
-    setRemindersOn(next)
   }
 
   const handleSave = () => {
