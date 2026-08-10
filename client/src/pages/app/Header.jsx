@@ -102,10 +102,13 @@ function Header() {
 
   const greeting = answers.name ? `Welcome back, ${answers.name}` : 'Welcome'
 
-  const streak = pathname === '/routine' ? computeStreak(habits) : 0
-  const streakPhrase =
-    streak === 1 ? 'One day down. Keep it going.' : `${streak}-day streak. Keep it going.`
-  const phrase = streak > 0 ? streakPhrase : PHRASES[pathname] || TITLES[pathname] || 'Vitalist'
+  // No streak line in the headline anymore. Use the section phrase, and on
+  // Today sign it off with the person's name — "Getting started is the
+  // hardest part, Beth." (inserts the name just before the final period).
+  let phrase = PHRASES[pathname] || TITLES[pathname] || 'Vitalist'
+  if (pathname === '/routine' && answers.name) {
+    phrase = phrase.replace(/\.?$/, `, ${answers.name}.`)
+  }
 
   return (
     <header className="app-header">

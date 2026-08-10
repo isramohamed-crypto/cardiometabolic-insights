@@ -4,7 +4,7 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { pickDailyContent, daysSinceStart } from '../../domain/habitContent.js'
+import { pickDailyContent } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
@@ -51,22 +51,13 @@ function Routine() {
     return map
   })
 
-  // A finished trial (day 7+) still reads as TRIALED under the hood — that's
-  // what drives the keep/smaller/let-go wrap-up + slot unlock (see
-  // TrialPromptModal, same check). But for display it belongs with the
-  // habits you're building, not the ones you're still trying on. So group
-  // trial-complete habits into "building" visually while leaving their
-  // state (and the trial flow) untouched.
-  const isTrialComplete = (h) =>
-    h.ownershipState === OWNERSHIP_STATE.TRIALED &&
-    (daysSinceStart(h.startedAt) >= 7 || h.skipTrialWait)
-  const tryingOn = habits.filter(
-    (h) => h.ownershipState === OWNERSHIP_STATE.TRIALED && !isTrialComplete(h),
-  )
-  const building = habits.filter(
-    (h) => BUILDING_STATES.includes(h.ownershipState) || isTrialComplete(h),
-  )
-  const activeCount = habits.filter((h) => ACTIVE_STATES.includes(h.ownershipState)).length
+  // Every active habit lives under one "Habits I'm building" list — no
+  // separate trial vs. building sections. Whether a habit is still in its
+  // trial is surfaced inside the habit itself (its "trying it out" status),
+  // not by splitting the feed. Trial state is untouched under the hood, so
+  // the trial wrap-up + slot unlock (TrialPromptModal) still fire.
+  const activeHabits = habits.filter((h) => ACTIVE_STATES.includes(h.ownershipState))
+  const activeCount = activeHabits.length
   const nextSlotLocked = activeCount >= slotCount
 
   // Next slot used to be its own section with its own "Next slot" header —
@@ -103,12 +94,6 @@ function Routine() {
     )
   )
 
-  const nextSlotUnderTryingOn = Boolean(nextSlotContent) && tryingOn.length > 0
-  const nextSlotUnderBuilding =
-    Boolean(nextSlotContent) && !nextSlotUnderTryingOn && building.length > 0
-  const nextSlotStandalone =
-    Boolean(nextSlotContent) && !nextSlotUnderTryingOn && !nextSlotUnderBuilding
-
   // One shared "tonight" pick per active habit, combined into a single
   // section below the habit cards — rather than repeating a content teaser
   // underneath each individual card.
@@ -132,33 +117,15 @@ function Routine() {
     <div className="page">
       <TrialPromptModal onOpenAddHabit={() => setAddingHabit(true)} />
 
-      {tryingOn.length > 0 && (
-        <section>
-          <h2>Habits I'm trying on</h2>
-          <div className="routine-habit-list">
-            {tryingOn.map((habit) => (
-              <RoutineHabitCard key={habit.id} habit={habit} />
-            ))}
-            {nextSlotUnderTryingOn && nextSlotContent}
-          </div>
-        </section>
-      )}
-
-      {building.length > 0 && (
+      {(activeHabits.length > 0 || nextSlotContent) && (
         <section>
           <h2>Habits I'm building</h2>
           <div className="routine-habit-list">
-            {building.map((habit) => (
+            {activeHabits.map((habit) => (
               <RoutineHabitCard key={habit.id} habit={habit} />
             ))}
-            {nextSlotUnderBuilding && nextSlotContent}
+            {nextSlotContent}
           </div>
-        </section>
-      )}
-
-      {nextSlotStandalone && (
-        <section>
-          <div className="routine-habit-list">{nextSlotContent}</div>
         </section>
       )}
 
