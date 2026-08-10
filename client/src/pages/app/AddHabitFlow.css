@@ -14,16 +14,36 @@
   */
   --question-accent: var(--color-seaweed);
 
-  position: relative;
+  /* Full-screen overlay so the app header (Welcome / streak) doesn't show
+     behind the add-a-habit flow — this is its own focused moment. */
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--color-coconut);
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  padding: var(--space-8) var(--space-5) var(--space-8);
+}
+
+.add-habit-flow__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.add-habit-flow__sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .add-habit-flow__close {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
   width: 32px;
   height: 32px;
   border: none;

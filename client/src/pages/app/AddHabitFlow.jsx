@@ -173,9 +173,15 @@ function AddHabitFlow({ onClose }) {
 
       {stage === 'choosePillar' && (
         <>
-          <h2 className="add-habit-flow__title">
-            Which part of your health do you want to focus on?
-          </h2>
+          <div className="add-habit-flow__head">
+            <p className="question-screen__eyebrow">Your focus</p>
+            <h1 className="question-screen__headline">
+              <span>Which area do you want to focus on?</span>
+            </h1>
+            <p className="add-habit-flow__sub">
+              You can add more later — staying focused on one area first helps you build momentum.
+            </p>
+          </div>
           <div className="question-screen__options">
             {PILLARS_CANONICAL.map((p) => (
               <button
@@ -246,7 +252,7 @@ function AddHabitFlow({ onClose }) {
 
       {stage === 'pick' && habits.length > 0 && (
         <>
-          <h2 className="add-habit-flow__title">Pick a habit to start with</h2>
+          <h2 className="add-habit-flow__title">Add your next habit</h2>
           <p className="question-screen__intro">
             {isMix ? 'One idea from each of the 5 areas.' : `Built for ${pillar.label.toLowerCase()}.`}
           </p>
