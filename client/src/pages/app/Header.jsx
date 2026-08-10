@@ -3,6 +3,7 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
 import { PILLARS, NONE_OPTION } from '../onboarding/pillars.js'
+import DemoProfileMenu from '../../demo/DemoProfileMenu.jsx'
 import './Header.css'
 
 const OWNED_STATES = [OWNERSHIP_STATE.ADOPTED, OWNERSHIP_STATE.OWNED, OWNERSHIP_STATE.READOPTED]
@@ -93,6 +94,7 @@ function Header() {
   if (pathname === '/collection') {
     return (
       <header className="app-header">
+        <DemoProfileMenu />
         <CollectionHeaderCopy answers={answers} habits={habits} />
       </header>
     )
@@ -107,6 +109,7 @@ function Header() {
 
   return (
     <header className="app-header">
+        <DemoProfileMenu />
       <p className="app-header__eyebrow">{greeting}</p>
       <h1 className="app-header__title">{phrase}</h1>
     </header>

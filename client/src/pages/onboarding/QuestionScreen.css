@@ -4,6 +4,8 @@
      not for the header background anymore (see .question-screen__header). */
   --question-accent: var(--color-seaweed);
 
+  position: relative;
+
   min-height: 100dvh;
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
 import AclmMarkPlaceholder from '../../components/AclmMarkPlaceholder.jsx'
+import DemoProfileMenu from '../../demo/DemoProfileMenu.jsx'
 import './QuestionScreen.css'
 
 /**
@@ -41,6 +42,7 @@ function QuestionScreen({
 
   return (
     <main className={`question-screen${className ? ` ${className}` : ''}`}>
+      <DemoProfileMenu />
       {onBack && (
         <button
           type="button"

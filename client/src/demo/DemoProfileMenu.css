@@ -102,3 +102,5 @@
   line-height: 1.35;
   color: rgba(0, 0, 0, 0.6);
 }
+
+.demo-profile-menu__divider { height: 1px; background: rgba(0, 0, 0, 0.08); margin: 4px 6px; }

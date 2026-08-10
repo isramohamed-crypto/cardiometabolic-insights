@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { pickActiveHabits } from '../../domain/profileInsights.js'
-import DemoProfileMenu from '../../demo/DemoProfileMenu.jsx'
 import HabitProgressCard from './HabitProgressCard.jsx'
 import Pill from '../../components/Pill.jsx'
 import './page.css'
@@ -38,12 +37,6 @@ function Me() {
           {answers.name ? `${answers.name}'s profile.` : 'Your profile.'}
         </p>
 
-        {/* Same demo-only kebab shortcut as the onboarding landing page
-            (see DemoProfileMenu.jsx) — switching profiles from inside the
-            app itself, not just before it, since Me is the one screen
-            that's "about" the current profile. `inline` keeps it sitting
-            next to the title instead of floating in the corner. */}
-        <DemoProfileMenu inline />
       </div>
 
       <section className="progress-section">

@@ -29,6 +29,11 @@ function DemoProfileMenu({ inline }) {
     navigate(`/?profile=${id}`)
   }
 
+  const handleRestart = () => {
+    setOpen(false)
+    navigate('/')
+  }
+
   return (
     <div className={`demo-profile-menu${inline ? ' demo-profile-menu--inline' : ''}`}>
       <button
@@ -66,6 +71,16 @@ function DemoProfileMenu({ inline }) {
                 <span className="demo-profile-menu__item-desc">{profile.description}</span>
               </button>
             ))}
+            <div className="demo-profile-menu__divider" />
+            <button
+              type="button"
+              role="menuitem"
+              className="demo-profile-menu__item"
+              onClick={handleRestart}
+            >
+              <span className="demo-profile-menu__item-label">↺ Restart onboarding</span>
+              <span className="demo-profile-menu__item-desc">Jump back to the very beginning of the flow.</span>
+            </button>
           </div>
         </>
       )}
