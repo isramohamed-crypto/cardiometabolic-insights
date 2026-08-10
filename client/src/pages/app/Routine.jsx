@@ -4,7 +4,7 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { pickDailyContent } from '../../domain/habitContent.js'
+import { pickDailyContent, daysSinceStart } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
@@ -51,8 +51,21 @@ function Routine() {
     return map
   })
 
-  const tryingOn = habits.filter((h) => h.ownershipState === OWNERSHIP_STATE.TRIALED)
-  const building = habits.filter((h) => BUILDING_STATES.includes(h.ownershipState))
+  // A finished trial (day 7+) still reads as TRIALED under the hood — that's
+  // what drives the keep/smaller/let-go wrap-up + slot unlock (see
+  // TrialPromptModal, same check). But for display it belongs with the
+  // habits you're building, not the ones you're still trying on. So group
+  // trial-complete habits into "building" visually while leaving their
+  // state (and the trial flow) untouched.
+  const isTrialComplete = (h) =>
+    h.ownershipState === OWNERSHIP_STATE.TRIALED &&
+    (daysSinceStart(h.startedAt) >= 7 || h.skipTrialWait)
+  const tryingOn = habits.filter(
+    (h) => h.ownershipState === OWNERSHIP_STATE.TRIALED && !isTrialComplete(h),
+  )
+  const building = habits.filter(
+    (h) => BUILDING_STATES.includes(h.ownershipState) || isTrialComplete(h),
+  )
   const activeCount = habits.filter((h) => ACTIVE_STATES.includes(h.ownershipState)).length
   const nextSlotLocked = activeCount >= slotCount
 
