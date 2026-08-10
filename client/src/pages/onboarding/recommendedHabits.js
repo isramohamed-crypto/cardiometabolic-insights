@@ -374,3 +374,33 @@ export const STACK_PRESETS = [
   'First thing in the morning',
   'Before bed',
 ]
+
+
+// Per-habit "when will you do it?" config, so habit settings sync to the
+// habit: some are time-of-day ("consistent wake-up time"), most are anchored
+// to an existing moment ("after breakfast / lunch / dinner"). mode 'time'
+// shows a time picker; mode 'anchor' shows these preset moments. Anything
+// not listed falls back to the time picker.
+export const WHEN_BY_HABIT = {
+  'extra-veg-dinner': { mode: 'anchor', options: ['At breakfast', 'At lunch', 'At dinner'] },
+  'prep-lunch-tonight': { mode: 'anchor', options: ['After dinner', 'In the evening', 'Before bed'] },
+  'swap-snack-fruit': { mode: 'anchor', options: ['Morning snack', 'Afternoon snack', 'Whenever you snack'] },
+  'high-fiber-breakfast': { mode: 'anchor', options: ['At breakfast', 'Mid-morning'] },
+  'water-on-waking': { mode: 'anchor', options: ['When you wake up', 'Before coffee', 'First thing'] },
+  'morning-stretch': { mode: 'anchor', options: ['When you wake up', 'Before breakfast'] },
+  'walk-after-meal': { mode: 'anchor', options: ['After breakfast', 'After lunch', 'After dinner'] },
+  'chair-stands-after-breakfast': { mode: 'anchor', options: ['After breakfast', 'Mid-morning', 'While the kettle boils'] },
+  'consistent-wake-time': { mode: 'time' },
+  'no-screens-before-bed': { mode: 'anchor', options: ['30 min before bed', 'An hour before bed', 'After dinner'] },
+  'cool-dark-room': { mode: 'anchor', options: ['At bedtime', 'Before bed'] },
+  'five-minute-breathing': { mode: 'time' },
+  'outdoor-break': { mode: 'anchor', options: ['Mid-morning', 'Lunch break', 'Mid-afternoon'] },
+  'evening-journal': { mode: 'anchor', options: ['After dinner', 'Before bed', 'In the evening'] },
+  'text-a-friend': { mode: 'anchor', options: ['In the morning', 'At lunch', 'In the evening'] },
+  'plan-a-call': { mode: 'anchor', options: ['This weekend', 'A weekday evening', 'Sunday'] },
+  'join-group-activity': { mode: 'anchor', options: ['This week', 'This weekend', 'Next week'] },
+}
+
+export function getHabitWhen(id) {
+  return WHEN_BY_HABIT[id] || { mode: 'time' }
+}

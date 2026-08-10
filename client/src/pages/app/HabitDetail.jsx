@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
-import { RECOMMENDATIONS_BY_PILLAR, STACK_PRESETS, getHabitVisual } from '../onboarding/recommendedHabits.js'
+import { RECOMMENDATIONS_BY_PILLAR, STACK_PRESETS, getHabitVisual, getHabitWhen } from '../onboarding/recommendedHabits.js'
 import { daysSinceStart, pickJustificationContent, COMPANION_CONTENT } from '../../domain/habitContent.js'
 import { getPillarLabel } from '../../domain/pillars.js'
 import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
@@ -340,6 +340,8 @@ function HabitDetail() {
         {editOpen && (
           <HabitSettingsCard
             title={habit.title}
+            when={getHabitWhen(catalogHabit.id)}
+            initialMoment={habit.moment || ''}
             initialReminders={habit.remindersOn || false}
             submitLabel="Save changes"
             onBack={() => setEditOpen(false)}

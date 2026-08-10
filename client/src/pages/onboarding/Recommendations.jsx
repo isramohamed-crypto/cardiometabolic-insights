@@ -9,7 +9,8 @@ import { CONTENT_POOL } from '../../domain/habitContent.js'
 import HabitPickCard from './HabitPickCard.jsx'
 import WhyThisMattersTray from './WhyThisMattersTray.jsx'
 import WhyCarousel from './WhyCarousel.jsx'
-import CustomizeHabit from './CustomizeHabit.jsx'
+import HabitSettingsCard from '../../components/HabitSettingsCard.jsx'
+import { getHabitWhen } from './recommendedHabits.js'
 import './QuestionScreen.css'
 import './Recommendations.css'
 
@@ -203,10 +204,14 @@ function Recommendations() {
 
   if (stage === 'customize') {
     return (
-      <CustomizeHabit
-        habit={habit}
+      <HabitSettingsCard
+        title={habit.title}
+        when={getHabitWhen(habit.id)}
+        submitLabel="Add this habit"
         onBack={() => setStage('pick')}
-        onSave={handleFinalize}
+        onSubmit={({ moment, remindersOn }) =>
+          handleFinalize({ tier: habit.tiers[0], moment, remindersOn })
+        }
       />
     )
   }

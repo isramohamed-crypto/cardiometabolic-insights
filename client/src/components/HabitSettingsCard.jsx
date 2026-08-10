@@ -6,11 +6,12 @@ import '../pages/onboarding/CustomizeHabit.css'
 import '../pages/app/HabitDetail.css'
 import './HabitSettingsCard.css'
 
-// The one habit-settings sheet — shared by adding a habit (AddHabitFlow)
-// and editing one (HabitDetail) so they're the exact same screen. A
-// full-screen overlay (covers the app header behind it), a proper
-// eyebrow + habit-title headline, a friendly "when" picker (quick times +
-// an exact-time field), and a Reminders toggle.
+// The one habit-settings sheet — shared by onboarding, add-a-habit, and
+// edit so they're the exact same screen. Full-screen overlay, an eyebrow +
+// habit-title headline, a "when" picker that adapts to the habit (a time
+// picker for time-of-day habits like a consistent wake-up; preset moment
+// chips like "After breakfast / lunch / dinner" for anchored ones), and a
+// Reminders toggle.
 const QUICK_TIMES = [
   { label: 'Morning', value: '08:00' },
   { label: 'Midday', value: '12:30' },
@@ -20,13 +21,22 @@ const QUICK_TIMES = [
 
 function HabitSettingsCard({
   title,
-  initialTime = '',
+  when,
+  initialMoment = '',
   initialReminders = false,
   submitLabel,
   onSubmit,
   onBack,
 }) {
-  const [time, setTime] = useState(initialTime)
+  const mode = when?.mode === 'anchor' ? 'anchor' : 'time'
+  const anchorOptions = when?.options || []
+
+  // In anchor mode `value` is the chosen moment label; in time mode it's a
+  // native "HH:MM" string (formatted for display on submit). Prefill only
+  // makes sense to restore for anchor edits where it matches an option.
+  const [value, setValue] = useState(
+    mode === 'anchor' && anchorOptions.includes(initialMoment) ? initialMoment : '',
+  )
   const [remindersOn, setRemindersOn] = useState(initialReminders)
 
   const handleToggleReminders = (next) => {
@@ -40,7 +50,9 @@ function HabitSettingsCard({
     }
   }
 
-  const canSubmit = Boolean(time)
+  const canSubmit = Boolean(value)
+  const submit = () =>
+    onSubmit({ moment: mode === 'time' ? formatTime(value) : value, remindersOn })
 
   return (
     <div className="habit-edit-modal-scene">
@@ -59,30 +71,49 @@ function HabitSettingsCard({
 
           <section className="customize-section">
             <h2 className="customize-section__title">When will you do it?</h2>
-            <div className="hsettings__times">
-              {QUICK_TIMES.map((t) => (
-                <button
-                  key={t.value}
-                  type="button"
-                  className={`hsettings__timechip${time === t.value ? ' hsettings__timechip--on' : ''}`}
-                  aria-pressed={time === t.value}
-                  onClick={() => setTime(t.value)}
-                >
-                  <span className="hsettings__timechip-label">{t.label}</span>
-                  <span className="hsettings__timechip-time">{formatTime(t.value)}</span>
-                </button>
-              ))}
-            </div>
 
-            <label className="hsettings__exact">
-              <span className="hsettings__exact-label">Or set an exact time</span>
-              <input
-                type="time"
-                className="hsettings__time-input"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-              />
-            </label>
+            {mode === 'anchor' ? (
+              <div className="hsettings__times">
+                {anchorOptions.map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    className={`hsettings__timechip${value === opt ? ' hsettings__timechip--on' : ''}`}
+                    aria-pressed={value === opt}
+                    onClick={() => setValue(opt)}
+                  >
+                    <span className="hsettings__timechip-label">{opt}</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="hsettings__times">
+                  {QUICK_TIMES.map((t) => (
+                    <button
+                      key={t.value}
+                      type="button"
+                      className={`hsettings__timechip${value === t.value ? ' hsettings__timechip--on' : ''}`}
+                      aria-pressed={value === t.value}
+                      onClick={() => setValue(t.value)}
+                    >
+                      <span className="hsettings__timechip-label">{t.label}</span>
+                      <span className="hsettings__timechip-time">{formatTime(t.value)}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <label className="hsettings__exact">
+                  <span className="hsettings__exact-label">Or set an exact time</span>
+                  <input
+                    type="time"
+                    className="hsettings__time-input"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                  />
+                </label>
+              </>
+            )}
           </section>
 
           <section className="customize-section">
@@ -105,7 +136,7 @@ function HabitSettingsCard({
             type="button"
             className="question-screen__continue"
             disabled={!canSubmit}
-            onClick={() => onSubmit({ moment: formatTime(time), remindersOn })}
+            onClick={submit}
           >
             {submitLabel}
           </button>

@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { PILLARS_CANONICAL } from '../../domain/pillars.js'
 import { ACTIVE_OWNERSHIP_STATES } from '../../domain/habit.js'
-import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual } from '../onboarding/recommendedHabits.js'
+import { RECOMMENDATIONS_BY_PILLAR, getHabitVisual, getHabitWhen } from '../onboarding/recommendedHabits.js'
 import { getWhyCarouselContent } from '../onboarding/whyCarouselContent.js'
 import { CONTENT_POOL } from '../../domain/habitContent.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
@@ -301,6 +301,7 @@ function AddHabitFlow({ onClose }) {
       {stage === 'customize' && (
         <HabitSettingsCard
           title={habit.title}
+          when={getHabitWhen(habit.id)}
           submitLabel="Add this habit"
           onBack={() => setStage('pick')}
           onSubmit={({ moment, remindersOn }) =>
