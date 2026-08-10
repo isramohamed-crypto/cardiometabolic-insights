@@ -76,6 +76,16 @@ export const BODY_COPY = "Everyone has habits that stick. Pick what's already on
 // headline no longer needs to name it too.
 export const FOUNDATION_HEADLINE_LINES = ["Let's start with what's already", 'working.']
 
+// Per-pillar H1 for the "what's already working" screens — each pillar
+// asks its own question instead of the shared foundation headline.
+export const PILLAR_HEADLINE_LINES = {
+  eating: ["What's already working with food?"],
+  moving: ['How do you already move?'],
+  sleep: ["How's your sleep already?"],
+  stress: ['How do you already unwind?'],
+  social: ["Who's already in your corner?"],
+}
+
 export function getPillarEyebrow(pillarLabel) {
   return `Your Foundation: ${pillarLabel}`
 }

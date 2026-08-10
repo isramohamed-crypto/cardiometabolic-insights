@@ -5,6 +5,7 @@ import {
   PILLARS,
   BODY_COPY,
   FOUNDATION_HEADLINE_LINES,
+  PILLAR_HEADLINE_LINES,
   SOMETHING_ELSE_OPTION,
   NONE_OF_THESE_OPTION,
   getPillarIndex,
@@ -96,7 +97,7 @@ function PillarQuestion() {
       step={index + 1}
       totalSteps={PILLARS.length}
       progressIcons={PROGRESS_ICONS}
-      headlineLines={FOUNDATION_HEADLINE_LINES}
+      headlineLines={PILLAR_HEADLINE_LINES[pillar.id] || FOUNDATION_HEADLINE_LINES}
       body={body}
       options={options}
       selected={selected}
