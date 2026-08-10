@@ -390,7 +390,7 @@ export const WHEN_BY_HABIT = {
   'morning-stretch': { mode: 'anchor', options: ['When you wake up', 'Before breakfast'] },
   'walk-after-meal': { mode: 'anchor', options: ['After breakfast', 'After lunch', 'After dinner'] },
   'chair-stands-after-breakfast': { mode: 'anchor', options: ['After breakfast', 'Mid-morning', 'While the kettle boils'] },
-  'consistent-wake-time': { mode: 'time' },
+  'consistent-wake-time': { mode: 'time', presets: false, timeLabel: 'Set a wake-up time' },
   'no-screens-before-bed': { mode: 'anchor', options: ['30 min before bed', 'An hour before bed', 'After dinner'] },
   'cool-dark-room': { mode: 'anchor', options: ['At bedtime', 'Before bed'] },
   'five-minute-breathing': { mode: 'time' },

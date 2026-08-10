@@ -30,6 +30,8 @@ function HabitSettingsCard({
 }) {
   const mode = when?.mode === 'anchor' ? 'anchor' : 'time'
   const anchorOptions = when?.options || []
+  const showPresets = when?.presets !== false
+  const exactLabel = when?.timeLabel || 'Set a time'
 
   // In anchor mode `value` is the chosen moment label; in time mode it's a
   // native "HH:MM" string (formatted for display on submit). Prefill only
@@ -88,23 +90,25 @@ function HabitSettingsCard({
               </div>
             ) : (
               <>
-                <div className="hsettings__times">
-                  {QUICK_TIMES.map((t) => (
-                    <button
-                      key={t.value}
-                      type="button"
-                      className={`hsettings__timechip${value === t.value ? ' hsettings__timechip--on' : ''}`}
-                      aria-pressed={value === t.value}
-                      onClick={() => setValue(t.value)}
-                    >
-                      <span className="hsettings__timechip-label">{t.label}</span>
-                      <span className="hsettings__timechip-time">{formatTime(t.value)}</span>
-                    </button>
-                  ))}
-                </div>
+                {showPresets && (
+                  <div className="hsettings__times">
+                    {QUICK_TIMES.map((t) => (
+                      <button
+                        key={t.value}
+                        type="button"
+                        className={`hsettings__timechip${value === t.value ? ' hsettings__timechip--on' : ''}`}
+                        aria-pressed={value === t.value}
+                        onClick={() => setValue(t.value)}
+                      >
+                        <span className="hsettings__timechip-label">{t.label}</span>
+                        <span className="hsettings__timechip-time">{formatTime(t.value)}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 <label className="hsettings__exact">
-                  <span className="hsettings__exact-label">Or set an exact time</span>
+                  <span className="hsettings__exact-label">{showPresets ? 'Or set an exact time' : exactLabel}</span>
                   <input
                     type="time"
                     className="hsettings__time-input"
