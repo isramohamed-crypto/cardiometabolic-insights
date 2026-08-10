@@ -34,7 +34,6 @@ const FOUNDATION_CATALOG_MATCH = {
   'eating:meal-prepping': 'prep-lunch-tonight',
   'eating:drinking-water': 'water-on-waking',
   'moving:daily-walks': 'walk-after-meal',
-  'moving:strength-training': 'two-strength-sessions',
   'moving:stretching-yoga': 'morning-stretch',
   'sleep:wind-down-routine': 'no-screens-before-bed',
   'sleep:limiting-screens': 'no-screens-before-bed',

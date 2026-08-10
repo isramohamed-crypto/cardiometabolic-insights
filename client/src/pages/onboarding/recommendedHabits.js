@@ -133,23 +133,6 @@ export const RECOMMENDATIONS_BY_PILLAR = {
     // pillar's pick carousel.
     habits: [
       {
-        id: 'two-strength-sessions',
-        title: 'Strength training',
-        subtitle: 'A couple of sessions a week, at whatever length works for you.',
-        image: "url('/VWH-GettyImages-2212443785-1756a837a6f84c688c1b14bcd702f31a.webp')",
-        justification:
-          'You don’t need an hour or a gym. A little strength training goes a long way for everyday energy and mobility.',
-        evidence:
-          'Even a modest, consistent amount of strength work each week is associated with meaningfully better long-term outcomes than none at all.',
-        expectation:
-          'The first sessions might feel awkward if it’s new — that’s normal. Consistency matters far more than intensity here.',
-        tiers: [
-          { label: '1 session a week' },
-          { label: '2 sessions a week' },
-          { label: '3+ sessions a week' },
-        ],
-      },
-      {
         id: 'morning-stretch',
         title: 'Morning stretch',
         subtitle: 'Right when you wake up, before anything else.',
