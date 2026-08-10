@@ -50,7 +50,6 @@ function HabitSettingsCard({
     }
   }
 
-  const canSubmit = Boolean(value)
   const submit = () =>
     onSubmit({ moment: mode === 'time' ? formatTime(value) : value, remindersOn })
 
@@ -137,7 +136,6 @@ function HabitSettingsCard({
             <button
               type="button"
               className="question-screen__continue"
-              disabled={!canSubmit}
               onClick={submit}
             >
               {submitLabel}
