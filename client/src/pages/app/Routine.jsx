@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
+import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
+import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { pickDailyContent } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
@@ -19,8 +21,24 @@ const BUILDING_STATES = [
 const ACTIVE_STATES = [OWNERSHIP_STATE.TRIALED, ...BUILDING_STATES]
 
 function Routine() {
-  const { habits, slotCount } = useHabits()
+  const { habits, slotCount, seedHabits } = useHabits()
+  const { loadAnswers } = useOnboarding()
   const [addingHabit, setAddingHabit] = useState(false)
+
+  // User-testing fallback: a cold, direct visit to /routine (no onboarding,
+  // no ?profile= seed) would otherwise render an empty page. Seed the
+  // 'new-user' persona so there's always a habit to react to.
+  useEffect(() => {
+    if (habits.length === 0) {
+      const profile = getDemoProfile('new-user')
+      if (profile) {
+        const { answers, habits: seededHabits, slotCount: seededSlot } = profile.build()
+        loadAnswers(answers)
+        seedHabits(seededHabits, seededSlot)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Picked once per mount — i.e. once per visit to this page — so tonight's
   // pick rotates every time the user enters the Routine tab, rather than
