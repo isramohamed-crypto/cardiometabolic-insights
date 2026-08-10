@@ -147,7 +147,7 @@ export const DEMO_PROFILES = {
   'after-7-days': {
     label: 'After 7 days',
     description:
-      'The evening walk has finished its 7-day trial (5 of 7 days logged) and is now building — shown under "Habits I\'m building" with the next slot locked until it graduates, like the 3-weeks layout one stage earlier.',
+      'The evening walk has finished its 7-day trial — 5 of the 7 past days logged done — and is sitting at the keep-it / make-it-smaller / let-it-go prompt, with an upsell to 20 minutes if kept.',
     build() {
       const startedAt = daysAgo(7)
       // Slow start, then 5 days in a row — missed the first 2 days of the
@@ -155,9 +155,7 @@ export const DEMO_PROFILES = {
       const log = buildLog(startedAt, 7, [0, 1])
       return {
         answers: { ...FOUNDATION_ANSWERS },
-        // Adopted (building), not trialing — so Routine shows it under
-        // "Habits I'm building" with a locked next slot (slotCount 1).
-        habits: [walkingHabit({ startedAt, log, ownershipState: OWNERSHIP_STATE.ADOPTED })],
+        habits: [walkingHabit({ startedAt, log })],
         slotCount: 1,
       }
     },
