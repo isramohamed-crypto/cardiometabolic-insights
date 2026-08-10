@@ -1,26 +1,8 @@
+import { Link } from 'react-router-dom'
 import { useFavorites } from '../content/FavoritesContext.jsx'
 import HeartIcon from './HeartIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import './ContentModal.css'
-
-// Real article URL missing? Fall back to the publisher's homepage rather
-// than showing no way out at all — covers every brand currently used
-// anywhere in habitContent.js (CONTENT_POOL, COMPANION_CONTENT, DAY_SCRIPTS).
-// Add a brand here whenever a new one shows up in the content data.
-const BRAND_HOMEPAGES = {
-  Allrecipes: 'https://www.allrecipes.com',
-  Byrdie: 'https://www.byrdie.com',
-  EatingWell: 'https://www.eatingwell.com',
-  'Food & Wine': 'https://www.foodandwine.com',
-  Health: 'https://www.health.com',
-  'Martha Stewart': 'https://www.marthastewart.com',
-  Parents: 'https://www.parents.com',
-  'Real Simple': 'https://www.realsimple.com',
-  'Simply Recipes': 'https://www.simplyrecipes.com',
-  'The Spruce': 'https://www.thespruce.com',
-  'Verywell Health': 'https://www.verywellhealth.com',
-  'Verywell Mind': 'https://www.verywellmind.com',
-}
 
 // Full-screen article reader opened by tapping a ContentCard — no longer a
 // bottom tray. Same "card floating over a dimmed scene" language as
@@ -65,17 +47,16 @@ function ContentModal({ content, onClose }) {
   if (!content) return null
   const saved = isFavorite(content.id)
 
-  const readMoreUrl = content.url || (content.brand && BRAND_HOMEPAGES[content.brand]) || null
-  const readMoreLabel = content.url ? 'Read the full article ↗' : `Read more from ${content.brand} ↗`
-  const readMoreButton = readMoreUrl && (
-    <a
-      href={readMoreUrl}
-      target="_blank"
-      rel="noreferrer"
+  // Keep the reader in-experience: instead of an external "Read the full
+  // article" link that leaves the app, point to the Learn tab.
+  const readMoreButton = (
+    <Link
+      to="/read"
+      onClick={onClose}
       className="content-modal__fallback-link content-modal__fallback-link--primary"
     >
-      {readMoreLabel}
-    </a>
+      Read more on Learn →
+    </Link>
   )
 
   return (
