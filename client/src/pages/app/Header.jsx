@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
+import { daysSinceStart } from '../../domain/habitContent.js'
 import { PILLARS, NONE_OPTION } from '../onboarding/pillars.js'
 import DemoProfileMenu from '../../demo/DemoProfileMenu.jsx'
 import './Header.css'
@@ -100,14 +101,26 @@ function Header() {
     )
   }
 
-  const greeting = answers.name ? `Welcome back, ${answers.name}` : 'Welcome'
+  // Eyebrow no longer carries the name (that now lives in the headline).
+  const greeting = answers.name ? 'Welcome back' : 'Welcome'
 
-  // No streak line in the headline anymore. Use the section phrase, and on
-  // Today sign it off with the person's name — "Getting started is the
-  // hardest part, Beth." (inserts the name just before the final period).
+  // Today's headline reflects how far along they are — a new user gets an
+  // encouraging kickoff, someone mid-build or weeks in gets a message that
+  // acknowledges the momentum — and it's signed off with their name.
   let phrase = PHRASES[pathname] || TITLES[pathname] || 'Vitalist'
-  if (pathname === '/routine' && answers.name) {
-    phrase = phrase.replace(/\.?$/, `, ${answers.name}.`)
+  if (pathname === '/routine') {
+    const active = habits.filter((h) =>
+      [OWNERSHIP_STATE.TRIALED, ...OWNED_STATES].includes(h.ownershipState),
+    )
+    const established = active.some((h) => OWNED_STATES.includes(h.ownershipState))
+    const oldestDays = active.reduce((m, h) => Math.max(m, daysSinceStart(h.startedAt)), 0)
+    const base =
+      established || oldestDays >= 14
+        ? "Look how far you've come"
+        : oldestDays >= 7
+          ? "You're building real momentum"
+          : 'Getting started is the hardest part'
+    phrase = answers.name ? `${base}, ${answers.name}.` : `${base}.`
   }
 
   return (

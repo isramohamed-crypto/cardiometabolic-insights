@@ -144,14 +144,9 @@ function AddHabitFlow({ onClose }) {
       remindersOn,
     })
 
-    // Habit's added either way — reduced motion just skips straight to
-    // closing instead of holding the flow open for a burst it won't show.
-    if (prefersReducedMotion()) {
-      onClose()
-      return
-    }
-    setCelebrating(true)
-    setTimeout(onClose, ADD_HABIT_CELEBRATION_MS)
+    // Close straight back to Routine — the celebration hold was reading as
+    // a brief screen "flash" after adding, so we just return immediately.
+    onClose()
   }
 
   return (
@@ -160,7 +155,6 @@ function AddHabitFlow({ onClose }) {
           as a whole-screen moment, same as onboarding's Recommendations —
           this is a real new habit landing on Routine, not a small in-card
           decision like HabitTrialPrompt's confetti. */}
-      {celebrating && <ConfettiBurst count={30} />}
 
       <button
         type="button"
