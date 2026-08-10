@@ -64,3 +64,19 @@
   line-height: 1.25;
   color: #1a1a1a;
 }
+
+.add-habit-flow__back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  border: none;
+  background: none;
+  padding: var(--space-1) 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+.add-habit-flow__back:hover { color: rgba(0, 0, 0, 0.85); }

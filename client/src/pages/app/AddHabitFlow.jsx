@@ -252,10 +252,21 @@ function AddHabitFlow({ onClose }) {
 
       {stage === 'pick' && habits.length > 0 && (
         <>
-          <h2 className="add-habit-flow__title">Add your next habit</h2>
-          <p className="question-screen__intro">
-            {isMix ? 'One idea from each of the 5 areas.' : `Built for ${pillar.label.toLowerCase()}.`}
-          </p>
+          <button
+            type="button"
+            className="add-habit-flow__back"
+            onClick={() => setStage('choosePillar')}
+          >
+            <span aria-hidden="true">←</span> Back
+          </button>
+          <div className="add-habit-flow__head">
+            <h1 className="question-screen__headline">
+              <span>Add your next habit</span>
+            </h1>
+            <p className="add-habit-flow__sub">
+              {isMix ? 'One idea from each of the 5 areas.' : `Habits built for ${categoryLabel}`}
+            </p>
+          </div>
 
           <HabitPickCard
             habit={habit}
