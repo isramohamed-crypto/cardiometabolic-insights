@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { DEFAULT_REVIEWER } from './whyCarouselContent.js'
 import './WhyThisMattersTray.css'
 
 // Three pages of real per-habit copy now exist (see recommendedHabits.js:
@@ -80,6 +81,8 @@ function WhyThisMattersTray({ open, habit, gradient, onClose, onAdd, onAnother }
             </div>
           </>
         )}
+
+        <p className="why-tray__reviewer">Medically reviewed by {DEFAULT_REVIEWER.reviewer}</p>
 
         <button type="button" className="why-tray__add" onClick={onAdd}>
           Add this habit

@@ -33,6 +33,15 @@
 //     field to pull one from).
 // The last screen gets a "Reviewed by / Updated" byline instead of a Next
 // button when `footer` is set (rendered only on the final screen).
+// Default medical reviewer stamp, replicated onto every "why this one"
+// piece that doesn't carry its own reviewer metadata (the content pool
+// doesn't). Reuses an existing reviewer/photo so the stamp is consistent.
+export const DEFAULT_REVIEWER = {
+  reviewer: 'Lisa Valente, M.S., RD',
+  avatar: "url('/why-daily-walk-reviewer.jpg')",
+  updated: 'December 8, 2025',
+}
+
 export const WHY_CAROUSEL_CONTENT = {
   'walk-after-meal': {
     brand: 'EatingWell',
@@ -98,6 +107,7 @@ export function buildWhyCarouselFromContentPool(habitId, contentPool) {
 
   return {
     brand: first.brand,
+    footer: DEFAULT_REVIEWER,
     screens: screens.slice(0, MAX_SCREENS),
   }
 }

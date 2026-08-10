@@ -164,3 +164,10 @@
 .why-tray__dot--active {
   background: var(--color-seaweed);
 }
+
+.why-tray__reviewer {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.5);
+}

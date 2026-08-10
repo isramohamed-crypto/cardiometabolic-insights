@@ -1,4 +1,7 @@
 .hsettings {
+  /* borrowed .question-screen__continue reads this for its background —
+     define it here since we don't wrap in .question-screen */
+  --question-accent: var(--color-seaweed);
   flex: 1;
   min-height: 0;
   display: flex;

@@ -109,7 +109,7 @@ function WhyCarousel({ open, content, onClose, onAdd, onAnother }) {
                 aria-hidden="true"
               />
               <div>
-                <p className="why-carousel__byline-name">Reviewed by {footer.reviewer}</p>
+                <p className="why-carousel__byline-name">Medically reviewed by {footer.reviewer}</p>
                 <p className="why-carousel__byline-meta">
                   {brand} · Updated {footer.updated}
                 </p>
