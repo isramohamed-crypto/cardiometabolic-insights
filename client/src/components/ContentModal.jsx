@@ -83,24 +83,19 @@ function ContentModal({ content, onClose }) {
           <span className="content-modal__title">{content.title}</span>
         </div>
 
-        {content.fullBody ? (
-          <div className="content-modal__fallback">
-            <div className="content-modal__thumb" style={{ backgroundImage: content.thumbnail }} />
-            <p className="content-modal__text">{content.fullBody}</p>
-            {readMoreButton}
-          </div>
-        ) : content.url ? (
-          <>
-            <iframe src={content.url} title={content.title} className="content-modal__frame" />
-            {readMoreButton}
-          </>
-        ) : (
-          <div className="content-modal__fallback">
-            <div className="content-modal__thumb" style={{ backgroundImage: content.thumbnail }} />
-            {content.body && <p className="content-modal__text">{content.body}</p>}
-            {readMoreButton}
-          </div>
-        )}
+        {/* Never iframe the source — many publishers refuse to be embedded
+            (X-Frame-Options / CSP), which showed up as "refused to connect".
+            We keep readers in-app: show the in-app copy (or a short default),
+            with "Read more on Learn" as the way onward. */}
+        <div className="content-modal__fallback">
+          <div className="content-modal__thumb" style={{ backgroundImage: content.thumbnail }} />
+          <p className="content-modal__text">
+            {content.fullBody ||
+              content.body ||
+              `A quick read from ${content.brand || 'our editors'}. Explore more like this on Learn.`}
+          </p>
+          {readMoreButton}
+        </div>
       </div>
     </div>
   )
