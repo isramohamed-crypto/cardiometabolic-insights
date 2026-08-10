@@ -9,6 +9,7 @@ import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
 import { formatTime } from '../../domain/time.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import HabitDayTracker from './HabitDayTracker.jsx'
+import Toggle from '../../components/Toggle.jsx'
 import '../onboarding/QuestionScreen.css'
 import '../onboarding/CustomizeHabit.css'
 import './HabitDetail.css'
@@ -158,6 +159,17 @@ function HabitDetail() {
 
   const tiers = catalogHabit.tiers || []
   const currentTierIndex = Math.max(0, tiers.findIndex((t) => t.label === habit.tier))
+
+  const handleToggleReminders = (next) => {
+    updateHabit(habit.id, { remindersOn: next })
+    if (next && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+      try {
+        Promise.resolve(Notification.requestPermission()).catch(() => {})
+      } catch {
+        /* no-op */
+      }
+    }
+  }
 
   const handleRetire = () => {
     if (window.confirm('Retire this habit? It will be removed from your Today list.')) {
@@ -347,29 +359,10 @@ function HabitDetail() {
                 >
                   <span aria-hidden="true">←</span> Back
                 </button>
-                <span className="habit-edit-modal__title">Edit habit</span>
+                <span className="habit-edit-modal__title">{habit.title}</span>
               </div>
 
               <div className="habit-edit-modal__body">
-                {tiers.length > 1 && (
-                  <section className="customize-section">
-                    <h2 className="customize-section__title">How much</h2>
-                    <div className="habit-detail__tiers" role="group" aria-label="How much to do">
-                      {tiers.map((tier, i) => (
-                        <button
-                          key={tier.label}
-                          type="button"
-                          className={`habit-detail__tier${i === currentTierIndex ? ' habit-detail__tier--selected' : ''}`}
-                          aria-pressed={i === currentTierIndex}
-                          onClick={() => updateHabit(habit.id, { tier: tier.label })}
-                        >
-                          {tier.label}
-                        </button>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
                 <section className="customize-section">
                   <h2 className="customize-section__title">When will you do it?</h2>
 
@@ -422,6 +415,20 @@ function HabitDetail() {
                       )}
                     </div>
                   )}
+                </section>
+
+                <section className="customize-section">
+                  <div className="customize-reminders">
+                    <div>
+                      <h2 className="customize-section__title">Reminders</h2>
+                      <p className="customize-reminders__desc">Get a nudge when it's time.</p>
+                    </div>
+                    <Toggle
+                      checked={habit.remindersOn || false}
+                      onChange={handleToggleReminders}
+                      label="Enable reminders for this habit"
+                    />
+                  </div>
                 </section>
 
                 {/* Retiring used to be its own always-visible action next
