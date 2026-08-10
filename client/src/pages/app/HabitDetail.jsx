@@ -9,7 +9,7 @@ import { OWNERSHIP_STATE, LOG_STATUS } from '../../domain/habit.js'
 import { formatTime } from '../../domain/time.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import HabitDayTracker from './HabitDayTracker.jsx'
-import Toggle from '../../components/Toggle.jsx'
+import HabitSettingsCard from '../../components/HabitSettingsCard.jsx'
 import '../onboarding/QuestionScreen.css'
 import '../onboarding/CustomizeHabit.css'
 import './HabitDetail.css'
@@ -159,17 +159,6 @@ function HabitDetail() {
 
   const tiers = catalogHabit.tiers || []
   const currentTierIndex = Math.max(0, tiers.findIndex((t) => t.label === habit.tier))
-
-  const handleToggleReminders = (next) => {
-    updateHabit(habit.id, { remindersOn: next })
-    if (next && typeof Notification !== 'undefined' && Notification.permission === 'default') {
-      try {
-        Promise.resolve(Notification.requestPermission()).catch(() => {})
-      } catch {
-        /* no-op */
-      }
-    }
-  }
 
   const handleRetire = () => {
     if (window.confirm('Retire this habit? It will be removed from your Today list.')) {
@@ -349,106 +338,16 @@ function HabitDetail() {
             backdrop inset from the top, with a white card floating on top
             of it) rather than a new pattern of its own. */}
         {editOpen && (
-          <div className="habit-edit-modal-scene">
-            <div className="habit-edit-modal">
-              <div className="habit-edit-modal__bar">
-                <button
-                  type="button"
-                  className="habit-edit-modal__close"
-                  onClick={() => setEditOpen(false)}
-                >
-                  <span aria-hidden="true">←</span> Back
-                </button>
-                <span className="habit-edit-modal__title">{habit.title}</span>
-              </div>
-
-              <div className="habit-edit-modal__body">
-                <section className="customize-section">
-                  <h2 className="customize-section__title">When will you do it?</h2>
-
-                  <div className="customize-toggle">
-                    <button
-                      type="button"
-                      className={`customize-toggle__option${momentMode === 'preset' ? ' customize-toggle__option--active' : ''}`}
-                      onClick={() => setMomentMode('preset')}
-                    >
-                      Stack with a routine
-                    </button>
-                    <button
-                      type="button"
-                      className={`customize-toggle__option${momentMode === 'time' ? ' customize-toggle__option--active' : ''}`}
-                      onClick={() => setMomentMode('time')}
-                    >
-                      Set a specific time
-                    </button>
-                  </div>
-
-                  {momentMode === 'preset' ? (
-                    <div className="question-screen__options question-screen__options--compact">
-                      {STACK_PRESETS.map((preset) => (
-                        <button
-                          key={preset}
-                          type="button"
-                          className={`question-screen__option${preset === habit.moment ? ' question-screen__option--selected' : ''}`}
-                          aria-pressed={preset === habit.moment}
-                          onClick={() => updateHabit(habit.id, { moment: preset })}
-                        >
-                          <span>{preset}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="question-screen__input-wrap">
-                      <input
-                        type="time"
-                        className="question-screen__input question-screen__input--compact"
-                        value={momentTime}
-                        onChange={(e) => {
-                          setMomentTime(e.target.value)
-                          updateHabit(habit.id, { moment: formatTime(e.target.value) })
-                        }}
-                      />
-                      {!momentTime && (
-                        <span className="question-screen__input-placeholder" aria-hidden="true">
-                          Tap to set a time
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </section>
-
-                <section className="customize-section">
-                  <div className="customize-reminders">
-                    <div>
-                      <h2 className="customize-section__title">Reminders</h2>
-                      <p className="customize-reminders__desc">Get a nudge when it's time.</p>
-                    </div>
-                    <Toggle
-                      checked={habit.remindersOn || false}
-                      onChange={handleToggleReminders}
-                      label="Enable reminders for this habit"
-                    />
-                  </div>
-                </section>
-
-                {/* Retiring used to be its own always-visible action next
-                    to the status pill — folded in here instead, same
-                    destructive red/underline treatment it always had,
-                    just relocated to live with the rest of this habit's
-                    editable settings. Temporarily hidden — see
-                    RETIRE_HABIT_ENABLED above. */}
-                {RETIRE_HABIT_ENABLED && (
-                  <button
-                    type="button"
-                    className="habit-edit-modal__retire"
-                    onClick={handleRetire}
-                  >
-                    Retire this habit
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          <HabitSettingsCard
+            title={habit.title}
+            initialReminders={habit.remindersOn || false}
+            submitLabel="Save changes"
+            onBack={() => setEditOpen(false)}
+            onSubmit={({ moment, remindersOn }) => {
+              updateHabit(habit.id, { moment, remindersOn })
+              setEditOpen(false)
+            }}
+          />
         )}
     </main>
   )

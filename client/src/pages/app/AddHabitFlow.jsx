@@ -10,7 +10,7 @@ import { prefersReducedMotion } from '../../utils/motion.js'
 import HabitPickCard from '../onboarding/HabitPickCard.jsx'
 import WhyThisMattersTray from '../onboarding/WhyThisMattersTray.jsx'
 import WhyCarousel from '../onboarding/WhyCarousel.jsx'
-import CustomizeHabit from '../onboarding/CustomizeHabit.jsx'
+import HabitSettingsCard from '../../components/HabitSettingsCard.jsx'
 import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import '../onboarding/QuestionScreen.css'
 import './AddHabitFlow.css'
@@ -299,11 +299,13 @@ function AddHabitFlow({ onClose }) {
       )}
 
       {stage === 'customize' && (
-        <CustomizeHabit
-          habit={habit}
-          embedded
+        <HabitSettingsCard
+          title={habit.title}
+          submitLabel="Add this habit"
           onBack={() => setStage('pick')}
-          onSave={handleFinalize}
+          onSubmit={({ moment, remindersOn }) =>
+            handleFinalize({ tier: habit.tiers[0], moment, remindersOn })
+          }
         />
       )}
     </div>
