@@ -38,7 +38,7 @@ function DemoProfileMenu({ inline }) {
     // Actually reset the flow — clear onboarding answers and any seeded/
     // built habits (and the slot count) so onboarding truly starts fresh,
     // rather than just routing to '/' with the old selections still live.
-    loadAnswers({})
+    loadAnswers({ name: '' })
     seedHabits([], 1)
     navigate('/')
   }

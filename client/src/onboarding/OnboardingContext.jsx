@@ -14,7 +14,12 @@ export function OnboardingProvider({ children }) {
   // seeder (see src/demo) to drop in a persona's onboarding answers
   // without walking through the real onboarding screens.
   const loadAnswers = (nextAnswers) => {
-    setAnswers(nextAnswers)
+    // Demo profiles seed everything EXCEPT the name — so a real onboarding
+    // name the user typed carries through a profile switch. Callers that
+    // truly want to clear it (Restart onboarding) pass an explicit `name`.
+    setAnswers((prev) =>
+      'name' in nextAnswers ? nextAnswers : { ...nextAnswers, name: prev.name },
+    )
   }
 
   return (
