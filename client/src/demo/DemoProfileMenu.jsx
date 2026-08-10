@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useOnboarding } from '../onboarding/OnboardingContext.jsx'
+import { useHabits } from '../habits/HabitsContext.jsx'
 import { listDemoProfiles } from './profiles.js'
 import './DemoProfileMenu.css'
 
@@ -19,6 +21,8 @@ import './DemoProfileMenu.css'
 // wrapper stays a positioned element in both modes.
 function DemoProfileMenu({ inline }) {
   const navigate = useNavigate()
+  const { loadAnswers } = useOnboarding()
+  const { seedHabits } = useHabits()
   const [open, setOpen] = useState(false)
   const profiles = listDemoProfiles()
 
@@ -31,6 +35,11 @@ function DemoProfileMenu({ inline }) {
 
   const handleRestart = () => {
     setOpen(false)
+    // Actually reset the flow — clear onboarding answers and any seeded/
+    // built habits (and the slot count) so onboarding truly starts fresh,
+    // rather than just routing to '/' with the old selections still live.
+    loadAnswers({})
+    seedHabits([], 1)
     navigate('/')
   }
 
