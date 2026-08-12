@@ -76,8 +76,8 @@ export const PILLAR_BODY_COPY = {
   eating: "Select what you're already doing when it comes to your nutrition.",
   moving: "Select what you're already doing.",
   sleep: "Select what you already do.",
-  stress: "Select what you're already doing to manage stress.",
-  social: "Select what you're already doing to stay connected.",
+  stress: "Select what you already do.",
+  social: "Select what you already do.",
 }
 
 // Shared across every pillar screen now (see PillarQuestion.jsx) instead
