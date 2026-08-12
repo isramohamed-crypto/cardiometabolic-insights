@@ -54,11 +54,11 @@ function Summary() {
           // question-screen headlines rely on for a fixed two-line break —
           // it needs to flow and wrap naturally like a normal sentence.
           <h1 className="question-screen__headline summary__headline">
-            You're already doing{' '}
-            <span className="summary__highlight">{numberToWord(totalCount)}</span>{' '}
+            Look at you{answers.name ? `, ${answers.name}` : ''} —{' '}
             <span className="summary__highlight">
-              {totalCount === 1 ? 'thing.' : 'things.'}
-            </span>
+              {totalCount} health {totalCount === 1 ? 'win' : 'wins'}
+            </span>{' '}
+            already! 🎉
           </h1>
         ) : (
           // Every pillar was answered "Skip" — the Continue button
@@ -74,7 +74,7 @@ function Summary() {
       <div className="question-screen__body summary__body">
         <p className="summary__intro">
           {totalCount > 0
-            ? `Across ${PILLARS.length} parts of your health. That's a real foundation — not a blank slate.`
+            ? "You've already put so many positive things in place. Take a moment to feel good about that — you're starting with a real foundation."
             : "Taking the first step toward change is progress in itself. Let's build from here."}
         </p>
 
