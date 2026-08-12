@@ -50,6 +50,10 @@ const ONBOARDING_COPY = {
       { id: 'taking-breaks', label: 'Taking breaks during the day' },
       { id: 'talking-it-out', label: 'Talking it out with someone' },
       { id: 'clears-your-head', label: 'Something that clears your head — music, a walk, quiet' },
+      { id: 'few-minutes-destress', label: 'A few minutes to de-stress' },
+      { id: 'decluttering', label: 'Decluttering or tidying up' },
+      { id: 'calendar-control', label: 'Keeping my calendar under control' },
+      { id: 'daily-laugh', label: 'A good laugh most days' },
     ],
   },
   social: {
