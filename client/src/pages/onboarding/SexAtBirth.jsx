@@ -39,7 +39,7 @@ function SexAtBirth() {
     <QuestionScreen
       eyebrow="Health profile"
       headlineLines={['How would you describe', 'your gender?']}
-      body="This helps us make your experience feel a little more like you."
+      body="Some of the guidance differs — this is the only reason we ask."
       options={OPTIONS}
       selected={selected}
       onToggle={selectOption}
