@@ -4,6 +4,7 @@ import QuestionScreen from './QuestionScreen.jsx'
 import {
   PILLARS,
   BODY_COPY,
+  PILLAR_BODY_COPY,
   FOUNDATION_HEADLINE_LINES,
   PILLAR_HEADLINE_LINES,
   SOMETHING_ELSE_OPTION,
@@ -74,16 +75,7 @@ function PillarQuestion() {
     navigate(prev ? `/onboarding/habits/${prev.id}` : '/onboarding/habits-intro')
   }
 
-  // Only the join word right after the em dash gets lowercased, so "Hi
-  // {name} — everyone has..." still reads as one flowing sentence — full
-  // BODY_COPY.toLowerCase() was lowercasing the whole string, which broke
-  // sentence case on the second sentence too ("pick what's..." instead of
-  // "Pick what's..."). Only ever hit on the eating screen in practice
-  // (pillars.js index 0 = isFirst), since that's the only pillar visited
-  // with a name already on hand.
-  const body = isFirst && name
-    ? `Hi ${name} — ${BODY_COPY.charAt(0).toLowerCase()}${BODY_COPY.slice(1)}`
-    : BODY_COPY
+  const body = PILLAR_BODY_COPY[pillar.id] || BODY_COPY
 
   // Always appended after the pillar's own real options — see
   // SOMETHING_ELSE_OPTION/NONE_OF_THESE_OPTION in pillars.js for why

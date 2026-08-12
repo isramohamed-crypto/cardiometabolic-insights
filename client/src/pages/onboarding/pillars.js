@@ -70,6 +70,16 @@ export const PILLARS = PILLARS_CANONICAL.map((pillar) => ({
 
 export const BODY_COPY = "Everyone has habits that stick. Pick what's already on yours."
 
+// Per-pillar subtext for the "what's already working" screens — each pillar
+// gets a relevant instruction instead of the shared BODY_COPY line above.
+export const PILLAR_BODY_COPY = {
+  eating: "Select what you're already doing when it comes to your nutrition.",
+  moving: "Select what you're already doing.",
+  sleep: "Select what you're already doing when it comes to sleep.",
+  stress: "Select what you're already doing to manage stress.",
+  social: "Select what you're already doing to stay connected.",
+}
+
 // Shared across every pillar screen now (see PillarQuestion.jsx) instead
 // of each pillar having its own "What's already working with X?" —
 // eyebrow now carries which pillar via getPillarEyebrow below, so the
@@ -80,7 +90,7 @@ export const FOUNDATION_HEADLINE_LINES = ["Let's start with what's already", 'wo
 // asks its own question instead of the shared foundation headline.
 export const PILLAR_HEADLINE_LINES = {
   eating: ["What's already working with food?"],
-  moving: ['How do you already move?'],
+  moving: ['What movement do you already', 'get during your day?'],
   sleep: ["How's your sleep already?"],
   stress: ['How do you already unwind?'],
   social: ["Who's already in your corner?"],
