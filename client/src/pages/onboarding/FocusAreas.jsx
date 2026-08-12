@@ -54,7 +54,7 @@ function FocusAreas() {
     <QuestionScreen
       eyebrow="Your focus"
       headlineLines={['Which area do you', 'want to focus on?']}
-      body="You can add more later — staying focused on one area first helps you build momentum."
+      body="Each is a pillar of the American College of Lifestyle Medicine. You can add more later — staying focused on one first helps you build momentum."
       options={FOCUS_OPTIONS}
       selected={selected}
       onToggle={selectOption}
