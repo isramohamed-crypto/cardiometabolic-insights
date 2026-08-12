@@ -37,6 +37,7 @@ function QuestionScreen({
   multiSelect = true,
   className,
   progressIcons,
+  extraContent,
 }) {
   const canContinue = !requireSelection || selected.length > 0
 
@@ -159,6 +160,8 @@ function QuestionScreen({
             )
           })}
         </div>
+
+        {extraContent}
 
         <div className="question-screen__spacer" />
 
