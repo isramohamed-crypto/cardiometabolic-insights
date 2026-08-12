@@ -75,7 +75,7 @@ export const BODY_COPY = "Everyone has habits that stick. Pick what's already on
 export const PILLAR_BODY_COPY = {
   eating: "Select what you're already doing when it comes to your nutrition.",
   moving: "Select what you're already doing.",
-  sleep: "Select what you're already doing when it comes to sleep.",
+  sleep: "Select what you already do.",
   stress: "Select what you're already doing to manage stress.",
   social: "Select what you're already doing to stay connected.",
 }
@@ -91,7 +91,7 @@ export const FOUNDATION_HEADLINE_LINES = ["Let's start with what's already", 'wo
 export const PILLAR_HEADLINE_LINES = {
   eating: ["What's already working with food?"],
   moving: ['What movement do you already', 'get during your day?'],
-  sleep: ["How's your sleep already?"],
+  sleep: ['How are your sleeping habits?'],
   stress: ['How do you already unwind?'],
   social: ["Who's already in your corner?"],
 }
