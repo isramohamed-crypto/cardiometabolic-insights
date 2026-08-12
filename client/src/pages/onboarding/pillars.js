@@ -93,7 +93,7 @@ export const PILLAR_HEADLINE_LINES = {
   moving: ['What movement do you already', 'get during your day?'],
   sleep: ['How are your sleeping habits?'],
   stress: ['How do you already unwind?'],
-  social: ["Who's already in your corner?"],
+  social: ['How are you connecting with', 'the people in your life?'],
 }
 
 export function getPillarEyebrow(pillarLabel) {
