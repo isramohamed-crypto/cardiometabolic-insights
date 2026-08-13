@@ -513,3 +513,11 @@
 .habit-edit-modal__retire:hover {
   color: #8c1d17;
 }
+
+/* Bottom tab nav on this drill-in (see HabitDetail.jsx) — .habit-detail is
+   a height-bounded flex column, so pin the footer's natural height instead
+   of letting flexbox shrink it when content is tall enough to scroll. It
+   sits below the in-flow composer as the last row of the column. */
+.habit-detail > .app-footer {
+  flex-shrink: 0;
+}

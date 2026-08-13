@@ -10,6 +10,7 @@ import { formatTime } from '../../domain/time.js'
 import ContentCard from '../../components/ContentCard.jsx'
 import HabitDayTracker from './HabitDayTracker.jsx'
 import HabitSettingsCard from '../../components/HabitSettingsCard.jsx'
+import Footer from './Footer.jsx'
 import '../onboarding/QuestionScreen.css'
 import '../onboarding/CustomizeHabit.css'
 import './HabitDetail.css'
@@ -351,6 +352,12 @@ function HabitDetail() {
             }}
           />
         )}
+
+        {/* Bottom tab nav — this is a top-level route outside AppLayout, so it
+            has no Footer of its own. Render just the nav here (not the app
+            Header) so the drill-in keeps its focused hero/back-button top
+            but users can still jump between tabs. */}
+        <Footer />
     </main>
   )
 }
