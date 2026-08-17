@@ -6,7 +6,6 @@ import { listFoundationHabits } from '../../domain/foundationHabits.js'
 import { getOwnedInsights } from '../../domain/ownedInsights.js'
 import { getDayWord } from '../../domain/timeOfDay.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
-import CheckIcon from '../../components/CheckIcon.jsx'
 import SparkleIcon from '../../components/SparkleIcon.jsx'
 import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import './OwnedHabits.css'
@@ -111,9 +110,6 @@ function OwnedHabits() {
                   onClick={() => handleMark(row.key, OWNED_MARK.DONE)}
                   aria-pressed={done}
                 >
-                  <span className="owned-card__mark-icon">
-                    <CheckIcon checked={done} />
-                  </span>
                   Done
                 </button>
                 <button

@@ -45,18 +45,31 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
-/* Small cards, two across. Each carries its own done / not-today choice,
-   so a row-with-a-checkbox layout wouldn't fit the actions — and a column
-   of checkboxes read as a to-do list, which is the opposite of this
-   section's intent. Labels clamp so one wordy habit doesn't set the height
-   for the whole grid. */
+/* Narrow cards in a swipeable row rather than a two-column grid. Five
+   habits stacked two-across ran ~550px down the page for a section that
+   isn't the main event; horizontally it costs one card's height whatever
+   the count. Cards are deliberately narrow enough that the next one is
+   always partly visible — that's what says the row scrolls. */
 .owned-cards {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0 0 var(--space-1);
+  display: flex;
+  align-items: stretch;
   gap: var(--space-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.owned-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.owned-cards > * {
+  flex: 0 0 44%;
+  scroll-snap-align: start;
 }
 
 /* overflow: hidden clips the contained ConfettiBurst (fixed={false}) to the
@@ -67,7 +80,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-3);
+  padding: var(--space-2);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -104,7 +117,7 @@
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-small);
-  line-height: 1.3;
+  line-height: 1.25;
   color: rgba(0, 0, 0, 0.85);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -117,38 +130,31 @@
   color: var(--color-seaweed);
 }
 
-/* Stacked, not side by side: at two cards across, a 390px screen leaves
-   roughly 140px of inner width, and "Done" + "Not today" side by side
-   truncates well before that. */
+/* Side by side and small. The check glyph that used to sit in the Done
+   button is gone — in a ~150px card it took width the two labels need, and
+   the filled green state already says "done" without it. */
 .owned-card__actions {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+  gap: 4px;
 }
 
 .owned-card__mark,
 .owned-card__skip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  width: 100%;
-  padding: var(--space-2);
+  flex: 1;
+  min-width: 0;
+  padding: 5px 2px;
   border-radius: var(--radius-sm);
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: none;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-caption);
-  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.owned-card__mark-icon {
-  display: flex;
-  font-size: var(--text-base);
-  line-height: 1;
 }
 
 .owned-card__mark:hover,
