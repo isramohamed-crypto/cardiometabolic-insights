@@ -1,0 +1,237 @@
+/* Swipeable takeaway deck, opened from an insight. A bottom sheet rather
+   than a full-screen reader: these are short claims to react to, and keeping
+   the page visible behind it says "this is a peek, not a destination". */
+.snippet-deck {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.snippet-deck__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background: rgba(0, 20, 10, 0.55);
+  cursor: pointer;
+  animation: snippet-fade 0.18s ease-out;
+}
+
+.snippet-deck__sheet {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  padding: var(--space-4) 0 var(--space-5);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-bone, #fdfbf4);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.25);
+  animation: snippet-rise 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes snippet-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes snippet-rise {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.snippet-deck__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-5) var(--space-3);
+}
+
+.snippet-deck__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+.snippet-deck__count {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.snippet-deck__close {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.snippet-deck__close:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Cards are near-full-width with the next one just showing, same cue the
+   Today carousels use. Padding on the track (not the cards) keeps the first
+   and last card inset from the sheet edges while still snapping flush. */
+.snippet-deck__track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0 var(--space-5);
+}
+
+.snippet-deck__track::-webkit-scrollbar {
+  display: none;
+}
+
+.snippet {
+  flex: 0 0 86%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.snippet__image {
+  height: 108px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-seaweed);
+}
+
+.snippet__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+img.snippet__brand {
+  height: 14px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+span.snippet__brand {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+/* The takeaway itself is the biggest thing on the card — everything else is
+   attribution. */
+.snippet__text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-h5);
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.snippet__source {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.3;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.snippet__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.snippet__action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.snippet__action:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.snippet__action--save {
+  margin-left: auto;
+}
+
+.snippet__action--liked,
+.snippet__action--liked:hover {
+  color: var(--color-leaf);
+}
+
+.snippet__action--disliked,
+.snippet__action--disliked:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.snippet__action--saved,
+.snippet__action--saved:hover {
+  color: var(--color-seaweed);
+}
+
+.snippet-deck__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-4);
+}
+
+.snippet-deck__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 70, 32, 0.2);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.snippet-deck__dot--on {
+  background: var(--color-leaf);
+  transform: scale(1.25);
+}

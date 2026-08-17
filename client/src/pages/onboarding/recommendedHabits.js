@@ -349,6 +349,13 @@ export function getHabitVisual(pillarId, habitId) {
   return habit?.image || pillar.gradient
 }
 
+// The catalog habit ids that belong to one pillar. Exposed so other domain
+// modules (e.g. insight snippets) can gather everything relevant to a pillar
+// without importing the whole recommendation tree.
+export function getPillarHabitIds(pillarId) {
+  return (RECOMMENDATIONS_BY_PILLAR[pillarId]?.habits || []).map((habit) => habit.id)
+}
+
 // A representative photo for a whole pillar: the first of its habits that
 // has one. Used by onboarding's focus-area tiles, which are per-pillar and
 // so have no single habit to borrow from — falls back to the pillar's flat

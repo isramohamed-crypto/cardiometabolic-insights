@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useOwnedChecklist, OWNED_MARK } from '../../habits/OwnedChecklistContext.jsx'
 import { listFoundationHabits, getFoundationVisual } from '../../domain/foundationHabits.js'
+import { PILLARS, NON_HABIT_OPTION_IDS } from '../onboarding/pillars.js'
 import { getOwnedInsights } from '../../domain/ownedInsights.js'
+import { buildSnippets } from '../../domain/insightSnippets.js'
+import SnippetDeck from '../../components/SnippetDeck.jsx'
+import BrandLogo from '../../components/BrandLogo.jsx'
 import { getDayWord } from '../../domain/timeOfDay.js'
 import CheckIcon from '../../components/CheckIcon.jsx'
 import SkipIcon from '../../components/SkipIcon.jsx'
 import SparkleIcon from '../../components/SparkleIcon.jsx'
+import GearIcon from '../../components/GearIcon.jsx'
 import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import './OwnedHabits.css'
 
@@ -37,13 +42,15 @@ const ALL_BURST_MS = 1600
 // demo profile seeds identically (see demo/profiles.js FOUNDATION_ANSWERS),
 // so this populates for all of them and for a real onboarding run alike.
 function OwnedHabits() {
-  const { answers } = useOnboarding()
+  const { answers, setAnswer } = useOnboarding()
   const { marks, getMark, setMark, setAll } = useOwnedChecklist()
   const [burstCard, setBurstCard] = useState(null)
   const [celebrateAll, setCelebrateAll] = useState(false)
   const [insightCursor, setInsightCursor] = useState(0)
   const [doneDismissed, setDoneDismissed] = useState(false)
   const [expanded, setExpanded] = useState(false)
+  const [managing, setManaging] = useState(false)
+  const [deckOpen, setDeckOpen] = useState(false)
 
   const rows = useMemo(
     () => listFoundationHabits(answers.habitsWorking || {}),
@@ -55,6 +62,9 @@ function OwnedHabits() {
   const insights = getOwnedInsights(rows, marks)
 
   const currentInsight = insights.length ? insights[insightCursor % insights.length] : null
+  // Takeaways for the pillar this insight is about — see
+  // domain/insightSnippets.js for where the text comes from.
+  const snippets = currentInsight ? buildSnippets(currentInsight.row, currentInsight.state) : []
 
   const doneCount = rows.filter((row) => getMark(row.key) === OWNED_MARK.DONE).length
   const allDone = rows.length > 0 && doneCount === rows.length
@@ -87,7 +97,35 @@ function OwnedHabits() {
     return () => clearTimeout(timer)
   }, [burstCard])
 
-  if (rows.length === 0) return null
+  // Everything from the intake lists that isn't already owned — what the
+  // edit mode offers to add. Same NON_HABIT_OPTION_IDS filter the rest of
+  // the app uses, so "Skip"/"Something else"/"None of these" never appear as
+  // addable habits.
+  const ownedKeys = new Set(rows.map((row) => row.key))
+  const addable = PILLARS.flatMap((pillar) =>
+    pillar.options
+      .filter(
+        (option) =>
+          !NON_HABIT_OPTION_IDS.includes(option.id) &&
+          !ownedKeys.has(`${pillar.id}:${option.id}`),
+      )
+      .map((option) => ({ key: `${pillar.id}:${option.id}`, pillarId: pillar.id, ...option })),
+  )
+
+  // Editing writes straight back to the onboarding answers these cards are
+  // derived from, so a change here shows up everywhere else that reads them
+  // (the Habits tab's "Already yours", the Progress insights) rather than
+  // being a Today-only view state.
+  const writeOption = (pillarId, optionId, add) => {
+    const working = answers.habitsWorking || {}
+    const current = working[pillarId] || []
+    const next = add
+      ? [...current, optionId]
+      : current.filter((id) => id !== optionId)
+    setAnswer('habitsWorking', { ...working, [pillarId]: next })
+  }
+
+  if (rows.length === 0 && !managing) return null
 
   const handleMark = (key, state) => {
     // Only "done" celebrates, and only when it's newly set — "not today" is
@@ -101,17 +139,31 @@ function OwnedHabits() {
       <div className="owned-habits__head">
         <h2>
           Habits I own <span className="page__count">{doneCount}/{rows.length}</span>
+          <button
+            type="button"
+            className={`owned-habits__gear${managing ? ' owned-habits__gear--on' : ''}`}
+            onClick={() => {
+              setManaging((prev) => !prev)
+              setExpanded(true)
+            }}
+            aria-pressed={managing}
+            aria-label={managing ? 'Done editing habits' : 'Edit which habits are here'}
+          >
+            <GearIcon />
+          </button>
         </h2>
         <button
           type="button"
           className="owned-habits__all"
           onClick={() => setAll(allDone ? [] : rows.map((row) => row.key), OWNED_MARK.DONE)}
         >
-          {allDone ? 'Start over' : 'Mark all complete'}
+          {allDone ? 'Clear all' : 'Mark all complete'}
         </button>
       </div>
       <p className="owned-habits__lead">
-        The ones that already stuck. Mark what you've done {getDayWord()}.
+        {managing
+          ? 'Add or remove what belongs here. Removing one only takes it off this list.'
+          : `The ones that already stuck. Mark what you've done ${getDayWord()}.`}
       </p>
 
       {/* One row by default. A carousel hid most of the set behind a swipe
@@ -132,8 +184,19 @@ function OwnedHabits() {
               style={{ backgroundImage: getFoundationVisual(row) }}
             >
               <span className="owned-card__scrim" />
+
+              {managing && (
+                <button
+                  type="button"
+                  className="owned-card__remove"
+                  onClick={() => writeOption(row.pillarId, row.key.split(':')[1], false)}
+                  aria-label={`Remove ${row.label}`}
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              )}
               <p className="owned-card__label">{row.label}</p>
-              <div className="owned-card__actions">
+              <div className={`owned-card__actions${managing ? ' owned-card__actions--hidden' : ''}`}>
                 <button
                   type="button"
                   className={`owned-card__toggle owned-card__toggle--done${
@@ -167,7 +230,25 @@ function OwnedHabits() {
         })}
       </ul>
 
-      {rows.length > ROW_SIZE && (
+      {managing && addable.length > 0 && (
+        <div className="owned-add">
+          <p className="owned-add__label">Add one you already do</p>
+          <div className="owned-add__chips">
+            {addable.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                className="owned-add__chip"
+                onClick={() => writeOption(option.pillarId, option.id, true)}
+              >
+                + {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!managing && rows.length > ROW_SIZE && (
         <button
           type="button"
           className="owned-habits__expand"
@@ -176,6 +257,10 @@ function OwnedHabits() {
         >
           {expanded ? 'Show less' : `Show all ${rows.length}`}
         </button>
+      )}
+
+      {deckOpen && (
+        <SnippetDeck snippets={snippets} onClose={() => setDeckOpen(false)} />
       )}
 
       {allDone && !doneDismissed && (
@@ -222,10 +307,38 @@ function OwnedHabits() {
               read as a list to get through rather than a single easy win.
               `key` on the snippet is deliberate: it remounts the element on
               every change so the CSS entry animation replays. */}
-          <p className="owned-insight" key={insightCursor}>
-            <span className="owned-insight__lead">{currentInsight.lead}</span>{' '}
-            <span className="owned-insight__body">{currentInsight.suggestion}</span>
-          </p>
+          <div className="owned-insight" key={insightCursor}>
+            <p className="owned-insight__text">
+              <span className="owned-insight__lead">{currentInsight.lead}</span>{' '}
+              <span className="owned-insight__body">{currentInsight.suggestion}</span>
+            </p>
+
+            {/* One piece shown as a small card — a preview of the reading,
+                not a link row. Tapping it opens the full deck (SnippetDeck),
+                where the rest can be swiped through and reacted to. */}
+            {snippets.length > 0 && (
+              <button
+                type="button"
+                className="insight-card"
+                onClick={() => setDeckOpen(true)}
+                aria-label={`Open ${snippets.length} takeaways`}
+              >
+                <span
+                  className="insight-card__thumb"
+                  style={snippets[0].image ? { backgroundImage: snippets[0].image } : undefined}
+                />
+                <span className="insight-card__body">
+                  <BrandLogo brand={snippets[0].brand} className="insight-card__brand" />
+                  <span className="insight-card__text">{snippets[0].text}</span>
+                  {snippets.length > 1 && (
+                    <span className="insight-card__more">
+                      +{snippets.length - 1} more to swipe
+                    </span>
+                  )}
+                </span>
+              </button>
+            )}
+          </div>
 
           {insights.length > 1 && (
             <div className="owned-insights__nav">

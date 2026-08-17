@@ -318,11 +318,210 @@
 }
 
 .owned-insight {
+  animation: owned-insight-in 0.22s ease-out;
+}
+
+.owned-insight__text {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-small);
   line-height: 1.45;
+}
+
+/* A small preview card for the reading under a suggestion — replaces the
+   full-width bordered row that came before it, which read as a link bar
+   rather than as content. Photo, masthead, the takeaway itself: enough to be
+   worth tapping, small enough not to compete with the suggestion above it. */
+.insight-card {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.insight-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
+  transform: translateY(-1px);
+}
+
+.insight-card__thumb {
+  flex: 0 0 74px;
+  align-self: stretch;
+  min-height: 92px;
+  background-color: var(--color-seaweed);
+  background-size: cover;
+  background-position: center;
+}
+
+.insight-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+}
+
+img.insight-card__brand {
+  height: 12px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+span.insight-card__brand {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+.insight-card__text {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.3;
+  color: rgba(0, 0, 0, 0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Says the rest exist and that they're swipeable — the affordance the old
+   single arrow never conveyed. */
+.insight-card__more {
+  margin-top: auto;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.3px;
+  color: var(--color-seaweed);
+}
+
+.owned-habits__done {
+  position: relative;
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(27, 188, 60, 0.1);
+}
+
+/* Dismiss. The banner is a celebration, not an alert, so this is quiet —
+   and dismissing is per-completion, not permanent (see OwnedHabits.jsx). */
+.owned-habits__done-close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(0, 70, 32, 0.5);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.owned-habits__done-close:hover {
+  background: rgba(0, 70, 32, 0.1);
+  color: var(--color-seaweed);
+}
+
+.owned-habits__done-title {
+  margin: 0 var(--space-6) var(--space-1) 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  color: var(--color-seaweed);
+}
+
+.owned-habits__done-body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.45;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Insights — snippets of easy wins off the habits above, with the Progress
+   link separated out below a divider (see OwnedHabits.jsx for why the whole
+   block isn't one link). Tinted rather than white so it reads as a
+   different kind of thing from the cards above it. */
+.owned-insights {
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(0, 70, 32, 0.05);
+}
+
+.owned-insights__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+.owned-insights__sparkle {
+  font-size: var(--text-base);
+  line-height: 1;
+  color: var(--color-leaf);
+}
+
+.owned-insights__count {
+  margin-left: auto;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 70, 32, 0.45);
+}
+
+/* Remounted on every change (see the `key` in OwnedHabits.jsx) so this
+   replays — a plain swap read as a glitch, where a short rise makes it
+   obvious a different suggestion arrived. */
+@keyframes owned-insight-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.owned-insight {
   animation: owned-insight-in 0.22s ease-out;
+}
+
+.owned-insight__text {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.45;
 }
 
 .owned-insight__lead {
@@ -399,4 +598,108 @@
 .owned-insights__cta:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Edit toggle, sitting with the count in the section heading. Quiet by
+   default; filled once editing is on, so the mode is obvious without a
+   banner announcing it. */
+.owned-habits__gear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-left: var(--space-1);
+  vertical-align: middle;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.owned-habits__gear:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.owned-habits__gear--on {
+  background: var(--color-seaweed);
+  color: #fff;
+}
+
+/* While editing, the done / not-today controls step aside — marking and
+   editing are different jobs and the card is too small to host both. */
+.owned-card__actions--hidden {
+  display: none;
+}
+
+.owned-card__remove {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.owned-card__remove:hover {
+  background: rgba(180, 30, 30, 0.9);
+}
+
+/* The add list. Chips rather than another grid of photo cards — these are
+   options being considered, not habits being tracked, and a wrapping row of
+   labels makes the whole intake list scannable at once. */
+.owned-add {
+  margin-top: var(--space-3);
+}
+
+.owned-add__label {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.owned-add__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.owned-add__chip {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid rgba(0, 70, 32, 0.2);
+  border-radius: 999px;
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.2;
+  text-align: left;
+  color: var(--color-seaweed);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.owned-add__chip:hover {
+  background: rgba(27, 188, 60, 0.08);
+  border-color: var(--color-leaf);
 }
