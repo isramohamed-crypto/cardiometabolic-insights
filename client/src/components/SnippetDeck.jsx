@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import BrandLogo from './BrandLogo.jsx'
-import BookmarkIcon from './BookmarkIcon.jsx'
-import ThumbIcon from './ThumbIcon.jsx'
-import { useFavorites } from '../content/FavoritesContext.jsx'
-import { useReactions } from '../content/ReactionsContext.jsx'
+import SnippetCard from './SnippetCard.jsx'
 import './SnippetDeck.css'
 
 // Swipeable overlay of short takeaways, opened from an insight on the Today
@@ -21,9 +17,6 @@ import './SnippetDeck.css'
 function SnippetDeck({ snippets, onClose, title = 'Worth knowing' }) {
   const trackRef = useRef(null)
   const [index, setIndex] = useState(0)
-  const { isFavorite, toggleFavorite } = useFavorites()
-  const { isLiked, isDisliked, toggleLike, toggleDislike } = useReactions()
-
   // Escape closes, and the page behind doesn't scroll while this is open —
   // otherwise swiping the deck on a phone drags the feed underneath it.
   useEffect(() => {
@@ -79,65 +72,19 @@ function SnippetDeck({ snippets, onClose, title = 'Worth knowing' }) {
           </button>
         </div>
 
-        <div className="snippet-deck__track" ref={trackRef} onScroll={handleScroll}>
-          {snippets.map((snippet) => {
-            const liked = isLiked(snippet.id)
-            const disliked = isDisliked(snippet.id)
-            const saved = isFavorite(snippet.id)
-            return (
-              <article className="snippet" key={snippet.id}>
-                {snippet.image && (
-                  <div className="snippet__image" style={{ backgroundImage: snippet.image }} />
-                )}
-                <div className="snippet__body">
-                  <BrandLogo brand={snippet.brand} className="snippet__brand" />
-                  <p className="snippet__text">{snippet.text}</p>
-                  <p className="snippet__source">{snippet.sourceTitle}</p>
-                </div>
-
-                <div className="snippet__actions">
-                  <button
-                    type="button"
-                    className={`snippet__action${liked ? ' snippet__action--liked' : ''}`}
-                    onClick={() => toggleLike(snippet.id)}
-                    aria-pressed={liked}
-                    aria-label={liked ? 'Undo more like this' : 'More like this'}
-                  >
-                    <ThumbIcon direction="up" filled={liked} />
-                  </button>
-                  <button
-                    type="button"
-                    className={`snippet__action${disliked ? ' snippet__action--disliked' : ''}`}
-                    onClick={() => toggleDislike(snippet.id)}
-                    aria-pressed={disliked}
-                    aria-label={disliked ? 'Undo less like this' : 'Less like this'}
-                  >
-                    <ThumbIcon direction="down" filled={disliked} />
-                  </button>
-                  <button
-                    type="button"
-                    className={`snippet__action snippet__action--save${
-                      saved ? ' snippet__action--saved' : ''
-                    }`}
-                    onClick={() => toggleFavorite(snippet.item)}
-                    aria-pressed={saved}
-                  >
-                    <BookmarkIcon filled={saved} />
-                    {saved ? 'Saved' : 'Save'}
-                  </button>
-                </div>
-              </article>
-            )
-          })}
+        <div className="snippet-deck__track snippet-track" ref={trackRef} onScroll={handleScroll}>
+          {snippets.map((snippet) => (
+            <SnippetCard key={snippet.id} snippet={snippet} />
+          ))}
         </div>
 
         {snippets.length > 1 && (
-          <div className="snippet-deck__dots">
+          <div className="snippet-dots">
             {snippets.map((snippet, i) => (
               <button
                 key={snippet.id}
                 type="button"
-                className={`snippet-deck__dot${i === index ? ' snippet-deck__dot--on' : ''}`}
+                className={`snippet-dot${i === index ? ' snippet-dot--on' : ''}`}
                 onClick={() => goTo(i)}
                 aria-label={`Go to ${i + 1} of ${snippets.length}`}
                 aria-current={i === index}

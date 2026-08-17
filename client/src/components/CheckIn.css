@@ -1,0 +1,297 @@
+/* Floating daily check-in button. Offset from the footer using the same
+   --footer-height token AppLayout reserves, so it can't drift out of step
+   with the nav, plus the safe-area inset for the home-indicator strip. */
+.checkin-fab {
+  position: fixed;
+  right: var(--space-5);
+  bottom: calc(var(--footer-height) + var(--space-4) + env(safe-area-inset-bottom, 0px));
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-seaweed);
+  font-size: 26px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 40, 20, 0.32);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.checkin-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 40, 20, 0.38);
+}
+
+.checkin-fab:active {
+  transform: scale(0.95);
+}
+
+/* One answer a day, so a dot is the whole state — a count would only ever
+   read "1". */
+.checkin-fab__dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-seaweed);
+  border-radius: 50%;
+  background: var(--color-green-apple);
+}
+
+/* See the stacking-order note at the top of SnippetDeck.css. */
+.checkin {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.checkin__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  background: rgba(0, 20, 10, 0.55);
+  cursor: pointer;
+  animation: checkin-fade 0.18s ease-out;
+}
+
+.checkin__sheet {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-bone, #fdfbf4);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.25);
+  animation: checkin-rise 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes checkin-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes checkin-rise {
+  from { transform: translateY(28px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.checkin__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.checkin__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+.checkin__headline {
+  margin: 0 var(--space-6) var(--space-5) 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h4);
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+  color: #1a1a1a;
+}
+
+/* The mic is the primary way in, so it's given room rather than being one
+   more button in a row. */
+.checkin__voice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) 0 var(--space-5);
+}
+
+.checkin__mic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-leaf);
+  font-size: 32px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.checkin__mic:active {
+  transform: scale(0.95);
+}
+
+/* A live pulse only while the browser is actually listening — this state is
+   driven by the recognition API's own events, not a timer, so it can't say
+   "listening" when nothing is. */
+.checkin__mic--live {
+  background: var(--color-seaweed);
+  animation: checkin-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes checkin-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(27, 188, 60, 0.5); }
+  50% { box-shadow: 0 0 0 16px rgba(27, 188, 60, 0); }
+}
+
+.checkin__voice-label {
+  margin: 0;
+  max-width: 82%;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.checkin__error {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  text-align: center;
+  color: #9a3412;
+}
+
+.checkin__or {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.checkin__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.checkin__option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid rgba(0, 70, 32, 0.15);
+  border-radius: var(--radius-md);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.checkin__option:hover {
+  border-color: var(--color-leaf);
+  background: rgba(27, 188, 60, 0.05);
+}
+
+.checkin__option-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: var(--color-seaweed);
+}
+
+.checkin__option-blurb {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.checkin__heard {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.checkin__answered {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.checkin__answered strong {
+  color: var(--color-seaweed);
+}
+
+/* Suggestions live in this sheet rather than a second one on top of it —
+   see the note in CheckInSheet.jsx. The track bleeds to the sheet's edges so
+   cards can scroll off rather than stopping inside the padding. */
+.checkin__suggestions {
+  margin: 0 calc(-1 * var(--space-5));
+}
+
+.checkin__suggestions-label {
+  margin: 0 var(--space-5) var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.checkin__track {
+  padding: 0 var(--space-5);
+}
+
+.checkin__track .snippet {
+  flex: 0 0 78%;
+}
+
+.checkin__reset {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-2);
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: var(--color-seaweed);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}

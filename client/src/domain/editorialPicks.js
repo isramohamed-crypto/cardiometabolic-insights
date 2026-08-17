@@ -54,10 +54,15 @@ export function attributionFor(item) {
   return item.attribution || item.brand
 }
 
-// How many editorial cards follow the cover. Four keeps the row scrollable
+// How many editorial cards the row aims to show. Four keeps it scrollable
 // (and so keeps the next-card peek that tells you it scrolls) even for a
 // first-time user with one habit.
 const MIN_CARDS = 4
+
+// Extra candidates built beyond what's displayed, so dismissing a card with
+// a thumbs-down has something real to slide into its place instead of
+// leaving the row one shorter each time.
+const SPARE_CARDS = 8
 
 // Builds the feed: the cover story, then today's scripted pick for each
 // active habit, then the rest of those habits' libraries as backfill.
@@ -83,6 +88,13 @@ export function buildEditorialFeed(activeHabits = []) {
   // the one inconsistent thing in it.
   return [
     { habit: null, item: LEAD_STORY },
-    ...cards.slice(0, Math.max(MIN_CARDS, activeHabits.length)),
+    ...cards.slice(0, Math.max(MIN_CARDS, activeHabits.length) + SPARE_CARDS),
   ]
+}
+
+// How many of the feed's entries to actually render. The rest are held back
+// as replacements — see SPARE_CARDS.
+export function visibleCount(activeHabits = []) {
+  // +1 for the lead story, which always shows.
+  return Math.max(MIN_CARDS, activeHabits.length) + 1
 }

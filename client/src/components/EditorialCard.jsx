@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ContentModal from './ContentModal.jsx'
 import BookmarkIcon from './BookmarkIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
@@ -20,14 +20,29 @@ import './EditorialCard.css'
 // short read in a phone-sized sheet, not the whole article, with a link
 // onward to Read. See domain/editorialPicks.js for how quotes in that copy
 // are sourced.
+// How long the "we'll show you less like this" confirmation sits on the card
+// before the dismissal is committed and the card gives way to the next one.
+// Long enough to read, short enough not to feel like a wait.
+const DISMISS_MS = 1100
+
 function EditorialCard({ item, thumbnail }) {
   const [open, setOpen] = useState(false)
+  const [dismissing, setDismissing] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
   const { isLiked, isDisliked, toggleLike, toggleDislike } = useReactions()
   const saved = isFavorite(item.id)
   const liked = isLiked(item.id)
   const disliked = isDisliked(item.id)
   const background = item.image || thumbnail
+
+  // The dislike is recorded only once the confirmation has been shown —
+  // recording it immediately would unmount this card mid-message, since the
+  // feed filters on exactly that state.
+  useEffect(() => {
+    if (!dismissing) return
+    const timer = setTimeout(() => toggleDislike(item.id), DISMISS_MS)
+    return () => clearTimeout(timer)
+  }, [dismissing, item.id, toggleDislike])
 
   return (
     <>
@@ -54,11 +69,11 @@ function EditorialCard({ item, thumbnail }) {
           <button
             type="button"
             className={`story-card__icon${disliked ? ' story-card__icon--disliked' : ''}`}
-            onClick={() => toggleDislike(item.id)}
+            onClick={() => setDismissing(true)}
             aria-pressed={disliked}
             aria-label={disliked ? 'Undo less like this' : 'Less like this'}
           >
-            <ThumbIcon direction="down" filled={disliked} />
+            <ThumbIcon direction="down" filled={disliked || dismissing} />
           </button>
           <button
             type="button"
@@ -70,6 +85,13 @@ function EditorialCard({ item, thumbnail }) {
             <BookmarkIcon filled={saved} />
           </button>
         </div>
+
+        {dismissing && (
+          <div className="story-card__dismissed" role="status">
+            <ThumbIcon direction="down" filled />
+            <span>We’ll show you less like this</span>
+          </div>
+        )}
 
         <div className="story-card__content">
           {/* Real masthead, same component every other surface uses — the

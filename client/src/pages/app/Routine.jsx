@@ -4,7 +4,8 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { buildEditorialFeed } from '../../domain/editorialPicks.js'
+import { buildEditorialFeed, visibleCount } from '../../domain/editorialPicks.js'
+import { useReactions } from '../../content/ReactionsContext.jsx'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import EditorialCard from '../../components/EditorialCard.jsx'
@@ -32,6 +33,7 @@ const MIN_FEED_CARDS = 4
 function Routine() {
   const { habits, slotCount, seedHabits } = useHabits()
   const { loadAnswers } = useOnboarding()
+  const { isDisliked } = useReactions()
   const [addingHabit, setAddingHabit] = useState(false)
 
   // User-testing fallback: a cold, direct visit to /today (no onboarding,
@@ -92,6 +94,14 @@ function Routine() {
     [activeHabitsKey],
   )
 
+  // A thumbs-down takes its card out of the row and the next spare candidate
+  // moves up — which is what makes the gesture feel like it did something.
+  // Filtering happens here rather than inside the memo so a dismissal
+  // doesn't rebuild (and re-randomise) the whole feed.
+  const visibleFeed = feed
+    .filter(({ item }) => !isDisliked(item.id))
+    .slice(0, visibleCount(activeHabits))
+
   // Next slot used to be its own section with its own "Next slot" header —
   // now it just tucks into the end of whichever habit-list section is
   // already on screen (preferring "Habits I'm trying on", since that's
@@ -143,14 +153,14 @@ function Routine() {
 
       {/* Heading follows the clock — "tonight" read as wrong to anyone
           opening this at breakfast (see domain/timeOfDay.js). */}
-      {feed.length > 0 && (
+      {visibleFeed.length > 0 && (
         <section>
           <h2>{getNewForYouHeading()}</h2>
           <p className="page__section-lead">
             Picked for what you're working on right now, from the People Inc. newsrooms.
           </p>
           <div className="content-carousel content-carousel--editorial">
-            {feed.map(({ habit, item }) => (
+            {visibleFeed.map(({ habit, item }) => (
               <EditorialCard
                 key={item.id}
                 item={item}

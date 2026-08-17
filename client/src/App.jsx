@@ -24,6 +24,7 @@ import { HabitsProvider } from './habits/HabitsContext.jsx'
 import { FavoritesProvider } from './content/FavoritesContext.jsx'
 import { ReactionsProvider } from './content/ReactionsContext.jsx'
 import { OwnedChecklistProvider } from './habits/OwnedChecklistContext.jsx'
+import { CheckInProvider } from './habits/CheckInContext.jsx'
 import DemoSeeder from './demo/DemoSeeder.jsx'
 import DemoProfileRoute from './demo/DemoProfileRoute.jsx'
 
@@ -35,6 +36,7 @@ function App() {
           <FavoritesProvider>
             <ReactionsProvider>
               <OwnedChecklistProvider>
+                <CheckInProvider>
                 <DemoSeeder />
                 <Routes>
                   <Route path="/" element={<Onboarding />} />
@@ -67,6 +69,7 @@ function App() {
                     <Route path="/me" element={<Me />} />
                   </Route>
                 </Routes>
+                </CheckInProvider>
               </OwnedChecklistProvider>
             </ReactionsProvider>
           </FavoritesProvider>
