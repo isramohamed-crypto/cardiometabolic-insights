@@ -59,7 +59,7 @@ function HealthConditions() {
   return (
     <QuestionScreen
       eyebrow="Health profile"
-      headlineLines={['What health conditions', 'are you currently monitoring?']}
+      headlineLines={['Anything else on your mind,', 'health-wise?']}
       body="Totally optional — it helps us point things the right way."
       options={CONDITIONS}
       selected={selected}

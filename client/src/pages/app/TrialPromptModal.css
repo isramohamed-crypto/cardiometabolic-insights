@@ -273,3 +273,33 @@
 .trial-prompt-modal--confirm .trial-prompt-modal__primary {
   max-width: 380px;
 }
+
+/* Dismiss control. Sits above the scrim (z-index) and outside
+   __content so it stays pinned to the modal's own corner rather than
+   moving with the content block between the decision, upsell and confirm
+   screens. Circular translucent-dark rather than a bare glyph — the
+   backdrop behind it is a photo, and a plain × disappears over a light one. */
+.trial-prompt-modal__close {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.38);
+  font-family: var(--font-body);
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.trial-prompt-modal__close:hover {
+  background: rgba(0, 0, 0, 0.55);
+}

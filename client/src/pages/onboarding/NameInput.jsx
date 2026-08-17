@@ -5,8 +5,8 @@ import './QuestionScreen.css'
 
 // First onboarding step — collects the user's name before the habit
 // questions. Reuses the same header/body/CTA chrome as QuestionScreen.jsx,
-// swapping the option list for a text input. Leads into SexAtBirth next,
-// not straight into the habit questions anymore.
+// swapping the option list for a text input. Leads into the brand picker
+// (TrustedBrands) next, not straight into the habit questions.
 function NameInput() {
   const navigate = useNavigate()
   const { setAnswer } = useOnboarding()
@@ -17,11 +17,19 @@ function NameInput() {
   const handleContinue = () => {
     if (!canContinue) return
     setAnswer('name', name.trim())
-    navigate('/onboarding/sex')
+    navigate('/onboarding/brands')
   }
 
   return (
     <main className="question-screen">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={() => navigate('/')}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Welcome</p>
         <h1 className="question-screen__headline">

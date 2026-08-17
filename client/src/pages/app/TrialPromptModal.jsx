@@ -106,6 +106,10 @@ function TrialPromptModal({ onOpenAddHabit }) {
   const hasLowerTier = tiers.length > 0 && currentTierIndex > 0
   const nextTierLabel = tiers[currentTierIndex + 1]?.label
 
+  // Same value as showTierUpsell below — read here too because
+  // handleDismiss is defined before that constant exists.
+  const showTierUpsellNow = Boolean(habit.upsellPending)
+
   const celebrateThenRun = (kind, run) => {
     if (prefersReducedMotion()) {
       run()
@@ -157,6 +161,27 @@ function TrialPromptModal({ onOpenAddHabit }) {
       updateHabitState(habit.id, OWNERSHIP_STATE.ABANDONED)
       setScreen('done')
     })
+  }
+
+  // The X in the corner. The modal used to be un-dismissable, which is
+  // right for a real user finishing a real trial but wrong for a demo —
+  // every visit to the after-7-days persona forced the whole decision flow
+  // before the Today page could be seen at all.
+  //
+  // Dismissing is not "no answer": it takes the habit exactly as it stands.
+  // From the trial prompt that means keeping it at its current tier and
+  // opening the next slot, the same as "Keep it" minus the tier upsell.
+  // From the upsell it means staying at the current tier, the same as
+  // "Not right now". Either way it skips straight past the Confirm screen
+  // rather than trading one forced screen for another.
+  const handleDismiss = () => {
+    if (showTierUpsellNow) {
+      updateHabit(habit.id, { upsellPending: false })
+    } else {
+      updateHabitState(habit.id, OWNERSHIP_STATE.ADOPTED)
+      unlockSlot()
+    }
+    setScreen('done')
   }
 
   const handleUpgradeTier = () => {
@@ -251,6 +276,16 @@ function TrialPromptModal({ onOpenAddHabit }) {
   return (
     <div className="trial-prompt-modal" style={{ backgroundImage: visual }}>
       <div className="trial-prompt-modal__scrim" />
+
+      <button
+        type="button"
+        className="trial-prompt-modal__close"
+        onClick={handleDismiss}
+        aria-label="Close and keep this habit as it is"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+
       <div className="trial-prompt-modal__content">
         <p className="trial-prompt-modal__eyebrow">One week in</p>
 

@@ -68,7 +68,7 @@
 }
 
 .owned-cards > * {
-  flex: 0 0 44%;
+  flex: 0 0 47%;
   scroll-snap-align: start;
 }
 
@@ -87,7 +87,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-2);
-  padding: var(--space-3);
+  padding: var(--space-2) var(--space-3) var(--space-3);
   border-radius: var(--radius-md);
   background-color: var(--color-seaweed);
   background-size: cover;
@@ -134,38 +134,61 @@
   align-self: flex-end;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-small);
-  line-height: 1.3;
+  font-size: var(--text-base);
+  line-height: 1.2;
   color: #fff;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  /* 5 lines at the tighter leading: the longest intake option ("Something
+     that clears your head — music, a walk, quiet") runs to five at this type
+     size, and a 161px square has room for them once the controls and padding
+     are counted. Anything longer still ellipsises rather than pushing the
+     card out of square. */
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Label sits at the bottom of the card and the controls at the top, so the
-   two circles never land on top of the busiest part of the photo (the
-   scrim is darkest at the bottom, where the text needs it). */
+/* Habit text sits at the bottom of the card (where the scrim is darkest)
+   and the two controls are centred across the top, so neither lands on the
+   other and the pair reads as one control group rather than two corner
+   affordances. */
 .owned-card__actions {
   position: relative;
   z-index: 1;
   order: -1;
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-3);
 }
 
+/* Each control is its own column: glyph, then its word. The words matter —
+   a dash alone doesn't say "not today" to anyone seeing the card for the
+   first time. */
 .owned-card__toggle {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
   border: none;
   background: none;
   padding: 0;
-  font-size: 26px;
+  font-size: 32px;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
   transition: color 0.15s ease, transform 0.12s ease;
+}
+
+.owned-card__toggle-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  color: #fff;
 }
 
 .owned-card__toggle:hover {

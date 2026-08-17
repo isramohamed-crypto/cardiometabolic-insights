@@ -35,6 +35,14 @@ function ConnectSteps() {
 
   return (
     <main className="question-screen">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={() => navigate('/onboarding/recommendations')}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">One more thing</p>
         <h1 className="question-screen__headline">

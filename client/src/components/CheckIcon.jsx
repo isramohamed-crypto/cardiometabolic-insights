@@ -1,10 +1,9 @@
-// Tick glyph for the Today page's "Habits I own" list. A circle rather
-// than a checkbox square, and it sits at the trailing edge of each row —
-// both deliberate: a column of square boxes down the left edge reads as
-// an unfinished to-do list, where a trailing circle reads as confirming
-// something that's already true. Draws the ring and the tick as one icon
-// so the checked state is a single element swapping fill, rather than a
-// box with a separately positioned tick to keep aligned.
+// Tick glyph for the Today page's "Habits I own" cards, drawn to pair with
+// SkipIcon: same circle, same diameter, same stroke weight, and — like
+// SkipIcon's dash — the tick is always drawn rather than appearing only once
+// marked. An empty ring gave no clue what the button did until you pressed
+// it. The tick strokes white when the circle is filled and currentColor when
+// it isn't, so it reads either way.
 function CheckIcon({ checked }) {
   return (
     <svg
@@ -22,16 +21,14 @@ function CheckIcon({ checked }) {
         stroke="currentColor"
         strokeWidth="1.8"
       />
-      {checked && (
-        <path
-          d="m7.8 12.3 3 3 5.4-6"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="2.1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
+      <path
+        d="m7.9 12.2 2.9 2.9 5.3-5.9"
+        fill="none"
+        stroke={checked ? '#fff' : 'currentColor'}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }

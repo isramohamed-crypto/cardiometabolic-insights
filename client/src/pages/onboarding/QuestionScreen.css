@@ -395,3 +395,15 @@
 .question-screen__skip:hover {
   color: rgba(0, 0, 0, 0.7);
 }
+
+/* Small print under the Continue CTA — see QuestionScreen's `footer` prop.
+   Centred and muted so it reads as attribution rather than as another
+   instruction competing with the button above it. */
+.question-screen__footnote {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.45);
+}

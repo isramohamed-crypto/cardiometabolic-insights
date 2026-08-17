@@ -33,6 +33,14 @@ function CreateAccount() {
 
   return (
     <main className="question-screen">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={() => navigate('/connect')}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Save your progress</p>
         <h1 className="question-screen__headline">

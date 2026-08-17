@@ -125,9 +125,9 @@ function OwnedHabits() {
                   onClick={() => handleMark(row.key, OWNED_MARK.DONE)}
                   aria-pressed={done}
                   aria-label={done ? 'Undo done' : 'Mark done'}
-                  title="Done"
                 >
                   <CheckIcon checked={done} />
+                  <span className="owned-card__toggle-label">Done</span>
                 </button>
                 <button
                   type="button"
@@ -137,9 +137,9 @@ function OwnedHabits() {
                   onClick={() => handleMark(row.key, OWNED_MARK.NOT_TODAY)}
                   aria-pressed={notToday}
                   aria-label={notToday ? 'Undo not today' : 'Mark not today'}
-                  title="Not today"
                 >
                   <SkipIcon marked={notToday} />
+                  <span className="owned-card__toggle-label">Not today</span>
                 </button>
               </div>
               {burstCard === row.key && (

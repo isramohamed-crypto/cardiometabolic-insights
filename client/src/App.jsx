@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Onboarding from './pages/Onboarding.jsx'
 import NameInput from './pages/onboarding/NameInput.jsx'
-import SexAtBirth from './pages/onboarding/SexAtBirth.jsx'
-import FoundationIntro from './pages/onboarding/FoundationIntro.jsx'
+import TrustedBrands from './pages/onboarding/TrustedBrands.jsx'
 import PillarQuestion from './pages/onboarding/PillarQuestion.jsx'
 import Summary from './pages/onboarding/Summary.jsx'
 import HealthConditions from './pages/onboarding/HealthConditions.jsx'
@@ -40,8 +39,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Onboarding />} />
                   <Route path="/onboarding/name" element={<NameInput />} />
-                  <Route path="/onboarding/sex" element={<SexAtBirth />} />
-                  <Route path="/onboarding/habits-intro" element={<FoundationIntro />} />
+                  <Route path="/onboarding/brands" element={<TrustedBrands />} />
                   <Route path="/onboarding/habits/:pillar" element={<PillarQuestion />} />
                   <Route path="/onboarding/summary" element={<Summary />} />
                   <Route path="/onboarding/health-conditions" element={<HealthConditions />} />

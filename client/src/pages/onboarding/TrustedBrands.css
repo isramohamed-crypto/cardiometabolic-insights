@@ -1,0 +1,64 @@
+/* Brand picker grid. Same object language as the rest of onboarding — white
+   surface, hairline border, brand-green selected state — just square tiles
+   instead of full-width pills, because a masthead needs to be seen at its own
+   proportions rather than squeezed onto a text row. */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.brand-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.brand-tile:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.brand-tile--selected {
+  border-color: var(--color-leaf);
+  box-shadow: 0 0 0 1px var(--color-leaf);
+}
+
+.brand-tile:active {
+  transform: scale(0.97);
+}
+
+/* Height-constrained, not width-constrained, so every brand's differently
+   proportioned logo optically matches its neighbours — the same approach
+   ContentCard takes with img.content-card__brand. */
+.brand-tile__logo {
+  max-width: 100%;
+  max-height: 26px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Filled green tick in the corner, same glyph as the Today page's cards. */
+.brand-tile__check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-leaf);
+}
+
+/* No pill options on this screen, so the empty options container would
+   otherwise contribute its own gap above the grid. */
+.trusted-brands .question-screen__options {
+  display: none;
+}

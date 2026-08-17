@@ -12,13 +12,7 @@ import {
   getPillarIndex,
   getPillarEyebrow,
 } from './pillars.js'
-import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
-
-// One ACLM pillar icon per progress-bar segment, in the same order as
-// PILLARS — see domain/aclmIcons.js for the source files and the
-// licensing caveat on using them at all.
-const PROGRESS_ICONS = PILLARS.map((pillar) => getAclmIcon(pillar.id))
 
 // Renders one of the 5 "what's already working" pillar screens
 // (eating / moving / sleep / stress / social) based on the :pillar route
@@ -72,7 +66,7 @@ function PillarQuestion() {
     })
 
     const prev = PILLARS[index - 1]
-    navigate(prev ? `/onboarding/habits/${prev.id}` : '/onboarding/habits-intro')
+    navigate(prev ? `/onboarding/habits/${prev.id}` : '/onboarding/brands')
   }
 
   const body = PILLAR_BODY_COPY[pillar.id] || BODY_COPY
@@ -86,9 +80,6 @@ function PillarQuestion() {
     <QuestionScreen
       key={pillar.id}
       eyebrow={getPillarEyebrow(pillar.label)}
-      step={index + 1}
-      totalSteps={PILLARS.length}
-      progressIcons={PROGRESS_ICONS}
       headlineLines={PILLAR_HEADLINE_LINES[pillar.id] || FOUNDATION_HEADLINE_LINES}
       body={body}
       options={options}

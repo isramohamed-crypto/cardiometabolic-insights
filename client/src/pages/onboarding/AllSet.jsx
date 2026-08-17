@@ -44,6 +44,14 @@ function AllSet() {
 
   return (
     <main className="question-screen all-set">
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={() => navigate('/create-account')}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow all-set__in all-set__in--1">That's it</p>
         <h1 className="question-screen__headline all-set__in all-set__in--2">

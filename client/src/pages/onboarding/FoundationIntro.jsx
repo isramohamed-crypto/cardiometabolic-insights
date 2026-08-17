@@ -4,7 +4,7 @@ import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './QuestionScreen.css'
 import './FoundationIntro.css'
 
-// Cover page for "Existing habits" — sits between SexAtBirth and the first
+// Cover page for "Existing habits" — sits between the brand picker and the first
 // "what's already working" pillar question (PillarQuestion), so it's not
 // a question itself and has no options list, just a headline/body/CTA
 // like AllSet at the other end of onboarding. Doubles as the ACLM
