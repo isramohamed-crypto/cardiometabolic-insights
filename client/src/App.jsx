@@ -23,6 +23,8 @@ import HealthCheck from './pages/app/HealthCheck.jsx'
 import { OnboardingProvider } from './onboarding/OnboardingContext.jsx'
 import { HabitsProvider } from './habits/HabitsContext.jsx'
 import { FavoritesProvider } from './content/FavoritesContext.jsx'
+import { ReactionsProvider } from './content/ReactionsContext.jsx'
+import { OwnedChecklistProvider } from './habits/OwnedChecklistContext.jsx'
 import DemoSeeder from './demo/DemoSeeder.jsx'
 import DemoProfileRoute from './demo/DemoProfileRoute.jsx'
 
@@ -32,39 +34,43 @@ function App() {
       <OnboardingProvider>
         <HabitsProvider>
           <FavoritesProvider>
-            <DemoSeeder />
-            <Routes>
-              <Route path="/" element={<Onboarding />} />
-              <Route path="/onboarding/name" element={<NameInput />} />
-              <Route path="/onboarding/sex" element={<SexAtBirth />} />
-              <Route path="/onboarding/habits-intro" element={<FoundationIntro />} />
-              <Route path="/onboarding/habits/:pillar" element={<PillarQuestion />} />
-              <Route path="/onboarding/summary" element={<Summary />} />
-              <Route path="/onboarding/health-conditions" element={<HealthConditions />} />
-              <Route path="/onboarding/focus" element={<FocusAreas />} />
-              <Route path="/onboarding/recommendations" element={<Recommendations />} />
-              <Route path="/connect" element={<ConnectSteps />} />
-              <Route path="/create-account" element={<CreateAccount />} />
-              <Route path="/all-set" element={<AllSet />} />
-              <Route path="/habit/:habitId" element={<HabitDetail />} />
-              <Route path="/habit/:habitId/edit" element={<HabitEdit />} />
-              <Route path="/habit/:habitId/chat" element={<HabitChat />} />
-              <Route path="/health-check" element={<HealthCheck />} />
-              {/* Path-based alternative to ?profile=<id> — see
-                  DemoProfileRoute.jsx. Declared before the plain /routine
-                  route below; react-router matches by specificity, not
-                  declaration order, so this ordering isn't load-bearing,
-                  it's just easiest to read grouped with the other
-                  seed-and-redirect demo route above. */}
-              <Route path="/routine/:demoProfile" element={<DemoProfileRoute />} />
+            <ReactionsProvider>
+              <OwnedChecklistProvider>
+                <DemoSeeder />
+                <Routes>
+                  <Route path="/" element={<Onboarding />} />
+                  <Route path="/onboarding/name" element={<NameInput />} />
+                  <Route path="/onboarding/sex" element={<SexAtBirth />} />
+                  <Route path="/onboarding/habits-intro" element={<FoundationIntro />} />
+                  <Route path="/onboarding/habits/:pillar" element={<PillarQuestion />} />
+                  <Route path="/onboarding/summary" element={<Summary />} />
+                  <Route path="/onboarding/health-conditions" element={<HealthConditions />} />
+                  <Route path="/onboarding/focus" element={<FocusAreas />} />
+                  <Route path="/onboarding/recommendations" element={<Recommendations />} />
+                  <Route path="/connect" element={<ConnectSteps />} />
+                  <Route path="/create-account" element={<CreateAccount />} />
+                  <Route path="/all-set" element={<AllSet />} />
+                  <Route path="/habit/:habitId" element={<HabitDetail />} />
+                  <Route path="/habit/:habitId/edit" element={<HabitEdit />} />
+                  <Route path="/habit/:habitId/chat" element={<HabitChat />} />
+                  <Route path="/health-check" element={<HealthCheck />} />
+                  {/* Path-based alternative to ?profile=<id> — see
+                      DemoProfileRoute.jsx. Declared before the plain /routine
+                      route below; react-router matches by specificity, not
+                      declaration order, so this ordering isn't load-bearing,
+                      it's just easiest to read grouped with the other
+                      seed-and-redirect demo route above. */}
+                  <Route path="/routine/:demoProfile" element={<DemoProfileRoute />} />
 
-              <Route element={<AppLayout />}>
-                <Route path="/routine" element={<Routine />} />
-                <Route path="/read" element={<Read />} />
-                <Route path="/collection" element={<Collection />} />
-                <Route path="/me" element={<Me />} />
-              </Route>
-            </Routes>
+                  <Route element={<AppLayout />}>
+                    <Route path="/routine" element={<Routine />} />
+                    <Route path="/read" element={<Read />} />
+                    <Route path="/collection" element={<Collection />} />
+                    <Route path="/me" element={<Me />} />
+                  </Route>
+                </Routes>
+              </OwnedChecklistProvider>
+            </ReactionsProvider>
           </FavoritesProvider>
         </HabitsProvider>
       </OnboardingProvider>

@@ -596,3 +596,31 @@ export const COMPANION_CONTENT = {
     },
   },
 }
+
+// Every distinct piece of content behind one habit, in the order the
+// Today feed should reach for it: that habit's scripted day-by-day pieces
+// first (they're the sourced, deliberately sequenced ones), then its
+// general pool. Deduped by id, since a scripted entry and a pool entry can
+// be the same article.
+//
+// This exists so the Today feed can pad itself out to a minimum card
+// count and, more importantly, so a disliked card always has a real
+// replacement to fall back on instead of leaving a hole (see Routine.jsx).
+// pickDailyContent stays the single source for "today's" pick — this is
+// the whole library, unranked beyond the script-first ordering.
+export function listHabitContent(habitId) {
+  const seen = new Set()
+  const out = []
+
+  const push = (item) => {
+    if (!item || seen.has(item.id)) return
+    seen.add(item.id)
+    out.push(item)
+  }
+
+  const script = DAY_SCRIPTS[habitId]
+  if (script) Object.values(script).forEach((entry) => push(entry?.supportive))
+  ;(CONTENT_POOL[habitId] || []).forEach(push)
+
+  return out
+}

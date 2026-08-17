@@ -92,7 +92,7 @@ function Read() {
 
       {favorites.length > 0 && (
         <section>
-          <h2>Favorites</h2>
+          <h2>Saved</h2>
           <div className="routine-habit-list">
             {favorites.map((item) => (
               <ContentCard

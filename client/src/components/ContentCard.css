@@ -85,3 +85,67 @@ img.content-card__brand {
   line-height: 1.35;
   color: rgba(0, 0, 0, 0.85);
 }
+
+/* Feedback row shown instead of the corner heart when ContentCard is
+   passed `actions` — the Today page's "New for you" feed (see
+   ContentCard.jsx for why the two are exclusive rather than stacked).
+   Sits below the tappable area with its own hairline so the reactions
+   read as a separate act from opening the article, and so a tap aimed at
+   a thumb can't accidentally open the reader. */
+.content-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.content-card__action {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: none;
+  background: none;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-h5);
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.content-card__action:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.content-card__action--liked,
+.content-card__action--liked:hover {
+  color: var(--color-leaf);
+}
+
+.content-card__action--disliked,
+.content-card__action--disliked:hover {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* Save is the only labelled action — a bookmark alone doesn't say where
+   the thing goes, and this one goes somewhere specific (the Learn tab).
+   Pushed to the right so the two thumbs stay paired as one control group
+   and saving doesn't get lumped in with them. */
+.content-card__action--save {
+  margin-left: auto;
+}
+
+.content-card__action--saved,
+.content-card__action--saved:hover {
+  color: var(--color-seaweed);
+}
+
+.content-card__action-label {
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
