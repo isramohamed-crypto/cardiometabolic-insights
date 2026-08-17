@@ -22,12 +22,14 @@ const HEADING_SUFFIX = {
   evening: 'tonight',
 }
 
-// "Healthy living for you ..." rather than the original "New for you ..." —
-// the section is a standing place for lifestyle content, and "new" was
-// making a promise about freshness that the pick can't always keep (it
-// rotates from a fixed pool, so the same article can come back).
+// "Living healthy ..." rather than the original "New for you ..." — the
+// section is a standing place for lifestyle content, and "new" was making a
+// promise about freshness that the pick can't always keep (it rotates from a
+// fixed pool, so the same article can come back). Shorter than the
+// "Healthy living for you ..." it briefly was, which ran the full width of a
+// 390px screen once uppercased and letter-spaced.
 export function getNewForYouHeading(now = new Date()) {
-  return `Healthy living for you ${HEADING_SUFFIX[getTimeOfDay(now)]}`
+  return `Living healthy ${HEADING_SUFFIX[getTimeOfDay(now)]}`
 }
 
 // Second person, used by the owned-habits checklist ("Did you do these

@@ -190,9 +190,9 @@ const PILLAR_FALLBACK = {
   },
 }
 
-// Rotates daily among candidates so an untouched list doesn't show the same
+// Rotates daily among candidates so an unmarked list doesn't show the same
 // suggestion forever, while staying stable within a single day (no
-// reshuffling on every render or tick).
+// reshuffling on every render or mark).
 function pickRotating(candidates, now) {
   if (candidates.length === 0) return null
   const dayIndex = Math.floor(
@@ -201,30 +201,47 @@ function pickRotating(candidates, now) {
   return candidates[dayIndex % candidates.length]
 }
 
-// Picks which owned habit the insight should talk about.
+function copyFor(row, state) {
+  // "not today" and "not marked yet" get the same copy: the easiest version
+  // of a habit they already own. Neither is a miss, so neither gets
+  // different treatment — the only distinction that changes the suggestion
+  // is whether they've actually done it (then it's a level-up).
+  const key = state === 'done' ? 'done' : 'todo'
+  const entry = INSIGHTS[row.key]?.[key] || PILLAR_FALLBACK[row.pillarId]?.[key]
+  return entry ? { ...entry, row, state: key } : null
+}
+
+// How many suggestions the insights section shows at once. Three is enough
+// to feel like a response to a few taps without turning into a wall of
+// advice — the point is an easy win, not a plan.
+const MAX_INSIGHTS = 3
+
+// Builds the insights list from what's been marked today.
 //
-// Most recently ticked wins — that's what makes the card feel like a
-// response to what you just did rather than a static tip. `checkedToday` is
-// insertion-ordered (see OwnedChecklistContext), so its last entry is the
-// latest tick. With nothing ticked yet, it rotates through the unticked
-// ones instead. Returns null only when there are no owned habits at all.
-export function getOwnedInsight(rows, checkedToday = [], now = new Date()) {
-  if (rows.length === 0) return null
+// Most recently marked first — that's what makes the section feel like it's
+// responding to the taps rather than serving a static tip. `marks` is
+// ordered least-to-most-recent (see OwnedChecklistContext), so it's read
+// backwards. With nothing marked yet it falls back to a single rotating
+// suggestion, so the section is never empty.
+export function getOwnedInsights(rows, marks = [], now = new Date()) {
+  if (rows.length === 0) return []
 
-  const tickedRows = checkedToday
-    .map((key) => rows.find((row) => row.key === key))
+  const fromMarks = [...marks]
+    .reverse()
+    .map(({ key, state }) => {
+      const row = rows.find((candidate) => candidate.key === key)
+      return row ? copyFor(row, state) : null
+    })
     .filter(Boolean)
+    .slice(0, MAX_INSIGHTS)
 
-  const target = tickedRows.length
-    ? tickedRows[tickedRows.length - 1]
-    : pickRotating(
-        rows.filter((row) => !checkedToday.includes(row.key)),
-        now,
-      )
+  if (fromMarks.length > 0) return fromMarks
 
-  if (!target) return null
-
-  const state = checkedToday.includes(target.key) ? 'done' : 'todo'
-  const copy = INSIGHTS[target.key]?.[state] || PILLAR_FALLBACK[target.pillarId]?.[state]
-  return copy ? { ...copy, row: target, state } : null
+  const markedKeys = new Set(marks.map((mark) => mark.key))
+  const fallback = pickRotating(
+    rows.filter((row) => !markedKeys.has(row.key)),
+    now,
+  )
+  const copy = fallback ? copyFor(fallback, 'todo') : null
+  return copy ? [copy] : []
 }

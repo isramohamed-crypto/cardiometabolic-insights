@@ -45,82 +45,128 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
-.owned-habits__panel {
+/* Small cards, two across. Each carries its own done / not-today choice,
+   so a row-with-a-checkbox layout wouldn't fit the actions — and a column
+   of checkboxes read as a to-do list, which is the opposite of this
+   section's intent. Labels clamp so one wordy habit doesn't set the height
+   for the whole grid. */
+.owned-cards {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+/* overflow: hidden clips the contained ConfettiBurst (fixed={false}) to the
+   card, so marking one done pops inside it rather than across the screen. */
+.owned-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.owned-habits__panel li + li .owned-habit {
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
+/* Done cards tint green and go semibold — deliberately not struck through
+   or faded. A done card here is the good outcome, so it should look more
+   present than an unmarked one, not less. */
+.owned-card--done {
+  background: rgba(27, 188, 60, 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--color-leaf);
 }
 
-/* position: relative + the panel's overflow: hidden let a ticked row host
-   its own contained ConfettiBurst (fixed={false}) — a small pop at the
-   tick rather than a screen-wide celebration for one tap. */
-.owned-habit {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  border: none;
-  background: none;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+/* "Not today" recedes rather than reading as an error — no red, no strike,
+   just less contrast than its neighbours. */
+.owned-card--not-today {
+  background: rgba(0, 0, 0, 0.03);
 }
 
-.owned-habit:hover {
-  background: rgba(0, 0, 0, 0.02);
+.owned-card--not-today .owned-card__label,
+.owned-card--not-today .owned-card__pillar {
+  opacity: 0.55;
 }
 
-/* Ticked rows tint green and go semibold — deliberately not struck
-   through or faded. A completed row here is the good outcome, so it
-   should look more present than an unticked one, not less. */
-.owned-habit--done {
-  background: rgba(27, 188, 60, 0.07);
-}
-
-.owned-habit__pillar {
-  flex-shrink: 0;
+.owned-card__pillar {
   width: 20px;
   height: 20px;
   object-fit: contain;
 }
 
-.owned-habit__label {
+.owned-card__label {
   flex: 1;
-  min-width: 0;
+  margin: 0;
   font-family: var(--font-body);
-  font-size: var(--text-base);
+  font-size: var(--text-small);
   line-height: 1.3;
   color: rgba(0, 0, 0, 0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.owned-habit--done .owned-habit__label {
+.owned-card--done .owned-card__label {
   font-weight: 700;
   color: var(--color-seaweed);
 }
 
-/* Trailing, not leading — a column of empty boxes down the left edge is
-   the strongest "unfinished chores" signal there is. */
-.owned-habit__check {
-  flex-shrink: 0;
-  font-size: var(--text-h5);
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.2);
-  transition: color 0.15s ease;
+/* Stacked, not side by side: at two cards across, a 390px screen leaves
+   roughly 140px of inner width, and "Done" + "Not today" side by side
+   truncates well before that. */
+.owned-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
-.owned-habit--done .owned-habit__check {
-  color: var(--color-leaf);
+.owned-card__mark,
+.owned-card__skip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.owned-card__mark-icon {
+  display: flex;
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+.owned-card__mark:hover,
+.owned-card__skip:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.owned-card__mark--on {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+}
+
+.owned-card__skip--on {
+  border-color: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .owned-habits__done {
@@ -147,60 +193,75 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-/* Insights teaser — routes to the Progress tab. Tinted rather than white
-   so it reads as a different kind of thing from the list above it (a
-   generated read on the habits, not another habit). */
+/* Insights — snippets of easy wins off the habits above, with the Progress
+   link separated out below a divider (see OwnedHabits.jsx for why the whole
+   block isn't one link). Tinted rather than white so it reads as a
+   different kind of thing from the cards above it. */
 .owned-insights {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
   margin-top: var(--space-3);
   padding: var(--space-4);
   border-radius: var(--radius-md);
-  background: var(--color-mist, rgba(0, 70, 32, 0.05));
-  text-decoration: none;
-  transition: background-color 0.15s ease;
+  background: rgba(0, 70, 32, 0.05);
 }
 
-.owned-insights:hover {
-  background: rgba(0, 70, 32, 0.09);
+.owned-insights__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
 }
 
-.owned-insights__icon {
-  flex-shrink: 0;
-  align-self: flex-start;
-  margin-top: 2px;
-  font-size: var(--text-h4);
+.owned-insights__sparkle {
+  font-size: var(--text-base);
   line-height: 1;
   color: var(--color-leaf);
 }
 
-.owned-insights__text {
+.owned-insights__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  gap: var(--space-3);
 }
 
-.owned-insights__lead {
+.owned-insight {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.45;
+}
+
+.owned-insight__lead {
+  font-weight: 700;
+  color: var(--color-seaweed);
+}
+
+.owned-insight__body {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+/* Divider above the CTA does the separating — the suggestions are the
+   content, the link goes somewhere else (Progress). */
+.owned-insights__cta {
+  display: block;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(0, 70, 32, 0.12);
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-small);
-  line-height: 1.35;
   color: var(--color-seaweed);
+  text-decoration: none;
 }
 
-.owned-insights__body {
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  line-height: 1.4;
-  color: rgba(0, 0, 0, 0.55);
-}
-
-.owned-insights__arrow {
-  align-self: flex-start;
-  margin-top: 2px;
-  flex-shrink: 0;
-  font-size: var(--text-h5);
-  color: var(--color-seaweed);
+.owned-insights__cta:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

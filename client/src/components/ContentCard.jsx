@@ -51,34 +51,16 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
           </div>
         </button>
 
-        <div className={`content-card__icons${actions ? ' content-card__icons--feed' : ''}`}>
-          {actions && (
-            <>
-              <button
-                type="button"
-                className={`content-card__icon${liked ? ' content-card__icon--liked' : ''}`}
-                onClick={() => toggleLike(id)}
-                aria-pressed={liked}
-                aria-label={liked ? 'Undo more like this' : 'More like this'}
-              >
-                <ThumbIcon direction="up" filled={liked} />
-              </button>
-
-              <button
-                type="button"
-                className={`content-card__icon${disliked ? ' content-card__icon--disliked' : ''}`}
-                onClick={() => toggleDislike(id)}
-                aria-pressed={disliked}
-                aria-label={disliked ? 'Undo less like this' : 'Less like this'}
-              >
-                <ThumbIcon direction="down" filled={disliked} />
-              </button>
-            </>
-          )}
-
+        {/* Save stays in the top-right corner, where the heart has always
+            been. The two reactions get their own cluster at the bottom
+            instead of joining it — three glyphs in one corner squeezed the
+            headline down to ~110px on a carousel-width card. */}
+        <div className="content-card__icons">
           <button
             type="button"
-            className={`content-card__icon${saved ? ' content-card__icon--saved' : ''}`}
+            className={`content-card__icon${saved ? ' content-card__icon--saved' : ''}${
+              actions ? ' content-card__icon--bookmark' : ''
+            }`}
             onClick={() => toggleFavorite(item)}
             aria-pressed={saved}
             aria-label={saved ? 'Remove from saved' : 'Save for later'}
@@ -86,6 +68,31 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
             {actions ? <BookmarkIcon filled={saved} /> : <HeartIcon filled={saved} />}
           </button>
         </div>
+
+        {actions && (
+          <div className="content-card__reactions">
+            <button
+              type="button"
+              className={`content-card__icon${liked ? ' content-card__icon--liked' : ''}`}
+              onClick={() => toggleLike(id)}
+              aria-pressed={liked}
+              aria-label={liked ? 'Undo more like this' : 'More like this'}
+            >
+              <ThumbIcon direction="up" filled={liked} />
+            </button>
+
+            <button
+              type="button"
+              className={`content-card__icon${disliked ? ' content-card__icon--disliked' : ''}`}
+              onClick={() => toggleDislike(id)}
+              aria-pressed={disliked}
+              aria-label={disliked ? 'Undo less like this' : 'Less like this'}
+            >
+              <ThumbIcon direction="down" filled={disliked} />
+            </button>
+          </div>
+        )}
+
       </div>
 
       {open && <ContentModal content={item} onClose={() => setOpen(false)} />}

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
-import { useOwnedChecklist } from '../../habits/OwnedChecklistContext.jsx'
+import { useOwnedChecklist, OWNED_MARK } from '../../habits/OwnedChecklistContext.jsx'
 import { listFoundationHabits } from '../../domain/foundationHabits.js'
-import { getOwnedInsight } from '../../domain/ownedInsights.js'
+import { getOwnedInsights } from '../../domain/ownedInsights.js'
 import { getDayWord } from '../../domain/timeOfDay.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
 import CheckIcon from '../../components/CheckIcon.jsx'
@@ -11,36 +11,31 @@ import SparkleIcon from '../../components/SparkleIcon.jsx'
 import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import './OwnedHabits.css'
 
-// How long a per-row confetti pop stays mounted, and how long the
-// all-done banner's burst does. Both are just long enough to finish the
-// ConfettiBurst keyframes (~0.9s including the gravity drop) — the row's
-// checked state itself is permanent, only the celebration is transient.
-const ROW_BURST_MS = 950
+// How long a per-card confetti pop stays mounted, and how long the all-done
+// banner's burst does. Both are just long enough to finish the ConfettiBurst
+// keyframes (~0.9s including the gravity drop) — the mark itself is
+// permanent, only the celebration is transient.
+const CARD_BURST_MS = 950
 const ALL_BURST_MS = 1600
 
-// "Habits I own" — the foundation habits carried in from onboarding.
+// "Habits I own" — the foundation habits carried in from onboarding, as
+// small cards that can each be marked done or "not today".
 //
 // The point of this section is affirmation, not tracking: these are things
 // the person already does, so the interaction is "yes, I did that" and the
-// reward is immediate. Hence no streaks, no misses, no empty-state guilt —
-// an unchecked row is neutral, and nothing anywhere counts what didn't get
-// ticked. Unchecking is always allowed (a mis-tap shouldn't be permanent).
-//
-// Presented as one grouped panel with hairline dividers rather than a
-// stack of individually-boxed rows with leading checkboxes: the boxed
-// version read as a to-do list, which is the opposite of the intent. The
-// tick moved to the trailing edge for the same reason — a column of empty
-// boxes down the left is the strongest "unfinished chores" signal there
-// is, where a trailing check reads as confirmation of something already
-// true.
+// reward is immediate. "Not today" exists so the alternative to done isn't
+// silence — it's a real answer, and it feeds the insights section just as
+// done does. Neither state is scored, counted against them, or shown as a
+// miss. Tapping a state a card is already in clears it, so nothing is a
+// dead end.
 //
 // Sourced from onboarding answers via listFoundationHabits, which every
 // demo profile seeds identically (see demo/profiles.js FOUNDATION_ANSWERS),
 // so this populates for all of them and for a real onboarding run alike.
 function OwnedHabits() {
   const { answers } = useOnboarding()
-  const { checkedToday, isChecked, toggle, setAll } = useOwnedChecklist()
-  const [burstRow, setBurstRow] = useState(null)
+  const { marks, getMark, setMark, setAll } = useOwnedChecklist()
+  const [burstCard, setBurstCard] = useState(null)
   const [celebrateAll, setCelebrateAll] = useState(false)
 
   const rows = useMemo(
@@ -48,15 +43,13 @@ function OwnedHabits() {
     [answers.habitsWorking],
   )
 
-  // Recomputed on every tick on purpose — reacting to the habit just
-  // ticked is the whole point of the card (see domain/ownedInsights.js).
-  const insight = getOwnedInsight(rows, checkedToday)
+  // Recomputed on every mark on purpose — reacting to what was just tapped
+  // is the whole point of the insights list (see domain/ownedInsights.js).
+  const insights = getOwnedInsights(rows, marks)
 
-  const doneCount = rows.filter((row) => isChecked(row.key)).length
+  const doneCount = rows.filter((row) => getMark(row.key) === OWNED_MARK.DONE).length
   const allDone = rows.length > 0 && doneCount === rows.length
 
-  // Fire the big celebration on the transition into "all done" only — not
-  // on every render while it stays true.
   useEffect(() => {
     if (!allDone) return
     setCelebrateAll(true)
@@ -65,67 +58,76 @@ function OwnedHabits() {
   }, [allDone])
 
   useEffect(() => {
-    if (!burstRow) return
-    const timer = setTimeout(() => setBurstRow(null), ROW_BURST_MS)
+    if (!burstCard) return
+    const timer = setTimeout(() => setBurstCard(null), CARD_BURST_MS)
     return () => clearTimeout(timer)
-  }, [burstRow])
+  }, [burstCard])
 
   if (rows.length === 0) return null
 
-  const handleToggle = (key) => {
-    // Only celebrate ticking on — unticking is a correction, not a moment.
-    if (!isChecked(key)) setBurstRow(key)
-    toggle(key)
+  const handleMark = (key, state) => {
+    // Only "done" celebrates, and only when it's newly set — "not today" is
+    // a valid answer, not a moment, and un-setting is a correction.
+    if (state === OWNED_MARK.DONE && getMark(key) !== OWNED_MARK.DONE) setBurstCard(key)
+    setMark(key, state)
   }
 
   return (
     <section className="owned-habits">
       <div className="owned-habits__head">
         <h2>
-          <span className="owned-habits__sparkle">
-            <SparkleIcon />
-          </span>
           Habits I own <span className="page__count">{doneCount}/{rows.length}</span>
         </h2>
         <button
           type="button"
           className="owned-habits__all"
-          onClick={() => setAll(allDone ? [] : rows.map((row) => row.key))}
+          onClick={() => setAll(allDone ? [] : rows.map((row) => row.key), OWNED_MARK.DONE)}
         >
           {allDone ? 'Start over' : 'All of them'}
         </button>
       </div>
       <p className="owned-habits__lead">
-        The ones that already stuck. Tap what you've done {getDayWord()}.
+        The ones that already stuck. Mark what you've done {getDayWord()}.
       </p>
 
-      <ul className="owned-habits__panel">
+      <ul className="owned-cards">
         {rows.map((row) => {
-          const checked = isChecked(row.key)
+          const mark = getMark(row.key)
+          const done = mark === OWNED_MARK.DONE
+          const notToday = mark === OWNED_MARK.NOT_TODAY
           return (
-            <li key={row.key}>
-              <button
-                type="button"
-                className={`owned-habit${checked ? ' owned-habit--done' : ''}`}
-                onClick={() => handleToggle(row.key)}
-                aria-pressed={checked}
-              >
-                <img className="owned-habit__pillar" src={getAclmIcon(row.pillarId)} alt="" />
-                <span className="owned-habit__label">{row.label}</span>
-                <span className="owned-habit__check">
-                  <CheckIcon checked={checked} />
-                </span>
-                {burstRow === row.key && (
-                  <ConfettiBurst
-                    fixed={false}
-                    small
-                    count={12}
-                    spread={[40, 70]}
-                    drop={120}
-                    originLeft="86%"
-                  />
-                )}
-              </button>
+            <li
+              key={row.key}
+              className={`owned-card${done ? ' owned-card--done' : ''}${
+                notToday ? ' owned-card--not-today' : ''
+              }`}
+            >
+              <img className="owned-card__pillar" src={getAclmIcon(row.pillarId)} alt="" />
+              <p className="owned-card__label">{row.label}</p>
+              <div className="owned-card__actions">
+                <button
+                  type="button"
+                  className={`owned-card__mark${done ? ' owned-card__mark--on' : ''}`}
+                  onClick={() => handleMark(row.key, OWNED_MARK.DONE)}
+                  aria-pressed={done}
+                >
+                  <span className="owned-card__mark-icon">
+                    <CheckIcon checked={done} />
+                  </span>
+                  Done
+                </button>
+                <button
+                  type="button"
+                  className={`owned-card__skip${notToday ? ' owned-card__skip--on' : ''}`}
+                  onClick={() => handleMark(row.key, OWNED_MARK.NOT_TODAY)}
+                  aria-pressed={notToday}
+                >
+                  Not today
+                </button>
+              </div>
+              {burstCard === row.key && (
+                <ConfettiBurst fixed={false} small count={12} spread={[40, 70]} drop={120} />
+              )}
             </li>
           )
         })}
@@ -142,23 +144,35 @@ function OwnedHabits() {
         </div>
       )}
 
-      {/* Insight built off the habits above: which one they most recently
-          ticked, and whether it's done yet. Copy lives in
-          domain/ownedInsights.js. Still routes to Progress — that's where
-          the trend view this is a doorway into already lives. */}
-      {insight && (
-        <Link to="/me" className="owned-insights">
-          <span className="owned-insights__icon">
-            <SparkleIcon />
-          </span>
-          <span className="owned-insights__text">
-            <span className="owned-insights__lead">{insight.lead}</span>
-            <span className="owned-insights__body">{insight.suggestion}</span>
-          </span>
-          <span className="owned-insights__arrow" aria-hidden="true">
-            →
-          </span>
-        </Link>
+      {/* Insights: easy wins built off the habits above and how they were
+          marked. Copy lives in domain/ownedInsights.js. The CTA is a
+          separate row below a divider rather than the whole block being one
+          link — the snippets are the content, and "learn more" goes somewhere
+          else entirely (the Progress tab), so conflating the two would make
+          every suggestion look like it links to a trend chart. */}
+      {insights.length > 0 && (
+        <div className="owned-insights">
+          <p className="owned-insights__eyebrow">
+            <span className="owned-insights__sparkle">
+              <SparkleIcon />
+            </span>
+            Insights
+          </p>
+
+          <ul className="owned-insights__list">
+            {insights.map((insight) => (
+              <li key={`${insight.row.key}-${insight.state}`} className="owned-insight">
+                <span className="owned-insight__lead">{insight.lead}</span>{' '}
+                <span className="owned-insight__body">{insight.suggestion}</span>
+              </li>
+            ))}
+          </ul>
+
+          <Link to="/me" className="owned-insights__cta">
+            Learn more about your progress
+            <span aria-hidden="true"> →</span>
+          </Link>
+        </div>
       )}
     </section>
   )

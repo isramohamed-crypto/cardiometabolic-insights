@@ -2,19 +2,26 @@ import { createContext, useContext, useState } from 'react'
 
 const OwnedChecklistContext = createContext(null)
 
-// Tracks which of the "habits I own" (the foundation habits brought in
-// from onboarding — see domain/foundationHabits.js) have been ticked off
-// on a given day.
+// Every owned habit is in one of three states on a given day: unmarked,
+// done, or explicitly "not today". The third one matters — it's the
+// difference between "hasn't got round to it" and "consciously not doing
+// this today", and only the person can tell you which. Both marked states
+// feed the insights section (see domain/ownedInsights.js); neither is
+// treated as a failure anywhere.
+export const OWNED_MARK = {
+  DONE: 'done',
+  NOT_TODAY: 'not-today',
+}
+
+// Marks are stored as an ordered array per day rather than a key->value
+// map, because "what did they just mark?" is load-bearing: the insights
+// section leads with the most recently marked habit. Re-marking a habit
+// moves it to the end of the array, so the order is always
+// least-to-most-recent.
 //
-// Keyed by local date string rather than a flat list, for two reasons:
-// the checklist is a daily affirmation, so it has to come back empty
-// tomorrow; and keying by date means no reset timer or midnight listener
-// is needed — the key simply stops matching. Local date, not ISO/UTC, so
-// "today" flips at the user's midnight and not at 8pm.
-//
-// Lives here rather than in HabitsContext because these aren't habits in
-// the domain sense — they have no id in the catalog, no trial, no
-// ownership state, no log. They're onboarding answers being celebrated.
+// Keyed by local date string so the day resets on its own — no timer, no
+// midnight listener, the key simply stops matching. Local rather than
+// ISO/UTC so "today" flips at the user's midnight, not at 8pm.
 function localDateKey(date = new Date()) {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -25,31 +32,30 @@ function localDateKey(date = new Date()) {
 export function OwnedChecklistProvider({ children }) {
   const [byDate, setByDate] = useState({})
   const today = localDateKey()
-  const checkedToday = byDate[today] || []
+  const marks = byDate[today] || []
 
-  const isChecked = (key) => checkedToday.includes(key)
+  const getMark = (key) => marks.find((mark) => mark.key === key)?.state
 
-  const toggle = (key) => {
+  // Tapping the state a habit is already in clears it, so a mis-tap is
+  // always undoable and there's no third button to reach for.
+  const setMark = (key, state) => {
     setByDate((prev) => {
       const current = prev[today] || []
+      const existing = current.find((mark) => mark.key === key)
+      const without = current.filter((mark) => mark.key !== key)
       return {
         ...prev,
-        [today]: current.includes(key)
-          ? current.filter((item) => item !== key)
-          : [...current, key],
+        [today]: existing?.state === state ? without : [...without, { key, state }],
       }
     })
   }
 
-  // "I did all of these" — set rather than merge, so the same control can
-  // be used to clear the day back out again (see the checklist's toggle-all
-  // button, which passes an empty list when everything is already ticked).
-  const setAll = (keys) => {
-    setByDate((prev) => ({ ...prev, [today]: [...keys] }))
+  const setAll = (keys, state) => {
+    setByDate((prev) => ({ ...prev, [today]: keys.map((key) => ({ key, state })) }))
   }
 
   return (
-    <OwnedChecklistContext.Provider value={{ checkedToday, isChecked, toggle, setAll }}>
+    <OwnedChecklistContext.Provider value={{ marks, getMark, setMark, setAll }}>
       {children}
     </OwnedChecklistContext.Provider>
   )

@@ -21,13 +21,10 @@
   cursor: pointer;
 }
 
-/* Three glyphs won't fit beside the headline on a carousel-width card
-   (~294px, of which the thumbnail already takes 72), so the feed's cluster
-   drops to the bottom-right instead of the top-right. The text then gets
-   the card's full width and the reserved space becomes vertical, where
-   there's slack. A single heart still sits top-right as it always did. */
-.content-card:has(.content-card__icons--feed) .content-card__tap {
-  padding-right: var(--space-4);
+/* Feed cards reserve room at the bottom for the reactions cluster; the
+   right-hand reserve is unchanged, since the save glyph sits in the same
+   top corner the heart always did. */
+.content-card:has(.content-card__reactions) .content-card__tap {
   padding-bottom: 34px;
 }
 
@@ -44,10 +41,15 @@
   gap: var(--space-1);
 }
 
-.content-card__icons--feed {
-  top: auto;
+/* The two thumbs, bottom-right. Separate cluster from the save glyph
+   above rather than one row of three — see ContentCard.jsx. */
+.content-card__reactions {
+  position: absolute;
   bottom: var(--space-2);
   right: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 .content-card__icon {
@@ -72,7 +74,9 @@
   color: #d6336c;
 }
 
-.content-card__icons--feed .content-card__icon--saved {
+/* The bookmark's saved state uses the brand green; the heart keeps its
+   original pink (above), since a bookmark is filing rather than favouriting. */
+.content-card__icon--bookmark.content-card__icon--saved {
   color: var(--color-seaweed);
 }
 
