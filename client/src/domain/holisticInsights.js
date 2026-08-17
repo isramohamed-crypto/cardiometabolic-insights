@@ -45,7 +45,6 @@ export function getHolisticInsights({
   answers = {},
   marks = [],
   savedCount = 0,
-  triedCount = 0,
 } = {}) {
   const insights = []
   const active = habits.filter((h) => ACTIVE_OWNERSHIP_STATES.includes(h.ownershipState))
@@ -104,17 +103,11 @@ export function getHolisticInsights({
   }
 
   // 5. Engagement with the reading, when there is any.
-  if (triedCount > 0 || savedCount > 0) {
+  if (savedCount > 0) {
     insights.push({
       id: 'reading',
-      lead:
-        triedCount > 0
-          ? `${triedCount} ${triedCount === 1 ? 'tip' : 'tips'} you've actually tried.`
-          : `${savedCount} ${savedCount === 1 ? 'article' : 'articles'} saved for later.`,
-      body:
-        triedCount > 0
-          ? 'Suggestions you acted on tell us more about what fits than anything you tapped through.'
-          : 'They are waiting in Read whenever you want them.',
+      lead: `${savedCount} ${savedCount === 1 ? 'article' : 'articles'} saved for later.`,
+      body: 'They are waiting in Read whenever you want them.',
     })
   }
 

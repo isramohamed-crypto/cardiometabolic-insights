@@ -5,7 +5,6 @@ import { pickActiveHabits } from '../../domain/profileInsights.js'
 import { getHolisticInsights } from '../../domain/holisticInsights.js'
 import { useOwnedChecklist } from '../../habits/OwnedChecklistContext.jsx'
 import { useFavorites } from '../../content/FavoritesContext.jsx'
-import { useReactions } from '../../content/ReactionsContext.jsx'
 import SparkleIcon from '../../components/SparkleIcon.jsx'
 import HabitProgressCard from './HabitProgressCard.jsx'
 import Pill from '../../components/Pill.jsx'
@@ -22,7 +21,6 @@ function Me() {
   const { habits } = useHabits()
   const { marks } = useOwnedChecklist()
   const { favorites } = useFavorites()
-  const { tried } = useReactions()
 
   // The Today tab's insights react to a single habit just marked; these read
   // across everything at once — what was brought in versus built, how the
@@ -33,7 +31,6 @@ function Me() {
     answers,
     marks,
     savedCount: favorites.length,
-    triedCount: tried.length,
   })
 
   // Built from a "CONCEPT · DIRECTION ONLY" mockup for a "how it's actually

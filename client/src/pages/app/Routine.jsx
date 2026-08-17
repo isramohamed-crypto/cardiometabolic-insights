@@ -7,7 +7,7 @@ import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { buildEditorialFeed } from '../../domain/editorialPicks.js'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
-import { EditorialCard, EditorialCover } from '../../components/EditorialCard.jsx'
+import EditorialCard from '../../components/EditorialCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import OwnedHabits from './OwnedHabits.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
@@ -143,22 +143,21 @@ function Routine() {
 
       {/* Heading follows the clock — "tonight" read as wrong to anyone
           opening this at breakfast (see domain/timeOfDay.js). */}
-      {feed.cards.length > 0 && (
+      {feed.length > 0 && (
         <section>
           <h2>{getNewForYouHeading()}</h2>
           <div className="content-carousel content-carousel--editorial">
-            <EditorialCover item={feed.cover} />
-            {feed.cards.map(({ habit, item }) => (
+            {feed.map(({ habit, item }) => (
               <EditorialCard
                 key={item.id}
                 item={item}
-                thumbnail={getHabitVisual(habit.pillarId, habit.id)}
+                thumbnail={habit ? getHabitVisual(habit.pillarId, habit.id) : undefined}
               />
             ))}
             {/* Last card in the row rather than a link under it. As a
                 full-width text link it was the loudest thing in the section
                 — and putting it at the end of the scroll means reaching it
-                is the natural result of swiping through the picks. */}
+                is the natural result of swiping through the stories. */}
             <Link to="/read" className="content-carousel__more">
               <span className="content-carousel__more-arrow" aria-hidden="true">
                 →

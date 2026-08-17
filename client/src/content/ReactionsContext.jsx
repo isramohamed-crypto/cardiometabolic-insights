@@ -16,15 +16,8 @@ const ReactionsContext = createContext(null)
 export function ReactionsProvider({ children }) {
   const [liked, setLiked] = useState([])
   const [disliked, setDisliked] = useState([])
-  // "I actually did this" on an editorial tip — a stronger signal than a
-  // like, and the one the Today feed's cards lead with.
-  const [tried, setTried] = useState([])
 
   const isLiked = (id) => liked.includes(id)
-  const isTried = (id) => tried.includes(id)
-
-  const toggleTried = (id) =>
-    setTried((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
   const isDisliked = (id) => disliked.includes(id)
 
   const toggleLike = (id) => {
@@ -42,13 +35,10 @@ export function ReactionsProvider({ children }) {
       value={{
         liked,
         disliked,
-        tried,
         isLiked,
         isDisliked,
-        isTried,
         toggleLike,
         toggleDislike,
-        toggleTried,
       }}
     >
       {children}

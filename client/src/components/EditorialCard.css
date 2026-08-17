@@ -1,69 +1,58 @@
-/* Editorial cards for the Today page's "Living healthy" row. Taller and
-   wider than the thumbnail-and-headline card they replace — the photo is the
-   card, with the pull-quote below it and the action last. Width and snap
-   behaviour come from .content-carousel in pages/app/page.css. */
-.editorial-card {
+/* Story cards for the Today page's "Living healthy" row. Full-bleed photo,
+   text reversed out over a scrim, actions in the corner — the same object for
+   every story in the row including the lead. Width and snap behaviour come
+   from .content-carousel in pages/app/page.css; the height is fixed here so
+   every card in the row matches whatever its headline length is. */
+.story-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  height: 380px;
   border-radius: var(--radius-md);
-  background: #fff;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-}
-
-.editorial-card__image {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  width: 100%;
-  height: 132px;
-  border: none;
-  padding: var(--space-3);
   background-color: var(--color-seaweed);
   background-size: cover;
   background-position: center;
-  text-align: left;
-  cursor: pointer;
 }
 
-/* Bottom-weighted so the headline reversed out over the photo holds up
-   whatever the image behind it is doing. */
-.editorial-card__image-scrim {
+/* Bottom-weighted: transparent enough at the top for the photo to read,
+   dark enough at the bottom to carry white type over anything. */
+.story-card__scrim {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.05) 0%,
-    rgba(0, 30, 15, 0.45) 55%,
-    rgba(0, 30, 15, 0.9) 100%
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 28, 14, 0.35) 42%,
+    rgba(0, 28, 14, 0.92) 100%
   );
 }
 
-.editorial-card__headline {
-  position: relative;
+/* Whole-card tap target, underneath the icons and the text block. */
+.story-card__tap {
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: var(--text-h5);
-  line-height: 1.2;
-  color: #fff;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-.editorial-card__save {
+.story-card__actions {
   position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
-  z-index: 2;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.story-card__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.35);
@@ -71,177 +60,91 @@
   line-height: 1;
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.editorial-card__save:hover {
-  background: rgba(0, 0, 0, 0.5);
+.story-card__icon:hover {
+  background: rgba(0, 0, 0, 0.55);
 }
 
-.editorial-card__save--on {
-  background: var(--color-leaf);
-}
-
-.editorial-card__quote-block {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  flex: 1;
-  padding: var(--space-3) var(--space-3) var(--space-2);
-}
-
-/* The brand's own logo stands in for the editor headshot the reference
-   design uses — see the sourcing note in domain/editorialPicks.js. Boxed
-   rather than circular, since a masthead cropped to a circle reads as a
-   mistake. */
-.editorial-card__avatar {
-  flex-shrink: 0;
-  width: 34px;
-  height: 22px;
-  object-fit: contain;
-  object-position: left center;
-}
-
-.editorial-card__quote-text {
-  min-width: 0;
-}
-
-.editorial-card__quote {
-  margin: 0 0 var(--space-1);
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  line-height: 1.35;
-  color: rgba(0, 0, 0, 0.8);
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.editorial-card__author {
-  margin: 0;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-.editorial-card__try-row {
-  padding: 0 var(--space-3) var(--space-3);
-}
-
-.try-btn {
-  width: 100%;
-  padding: var(--space-2);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 999px;
-  background: none;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-caption);
-  color: rgba(0, 0, 0, 0.6);
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.try-btn:hover {
-  border-color: rgba(0, 0, 0, 0.3);
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.try-btn--tried {
-  border-color: var(--color-leaf);
+.story-card__icon--liked,
+.story-card__icon--liked:hover {
   background: var(--color-leaf);
   color: #fff;
 }
 
-/* Cover story. Photo when there's one, the deep brand green when there
-   isn't — either way it reads as a cover rather than a broken image. */
-.editorial-cover {
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background-color: var(--color-seaweed);
-  background-size: cover;
-  background-position: center 22%;
+.story-card__icon--disliked,
+.story-card__icon--disliked:hover {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.75);
 }
 
-.editorial-cover__tap {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: none;
-  padding: 0;
-  text-align: left;
-  cursor: pointer;
+.story-card__icon--saved,
+.story-card__icon--saved:hover {
+  background: var(--color-leaf);
+  color: #fff;
 }
 
-.editorial-cover__scrim {
+/* pointer-events: none so a tap on the headline still reaches the card's own
+   tap layer underneath instead of landing on dead text. */
+.story-card__content {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 30, 15, 0.25) 0%,
-    rgba(0, 30, 15, 0.7) 55%,
-    rgba(0, 30, 15, 0.95) 100%
-  );
-}
-
-.editorial-cover__content {
-  position: relative;
-  z-index: 1;
+  inset: auto 0 0 0;
+  z-index: 2;
+  pointer-events: none;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  min-height: 300px;
   gap: var(--space-2);
   padding: var(--space-4);
 }
 
-.editorial-cover__brand {
+/* Text fallback for an unmapped brand keeps the old caption-label look. */
+span.story-card__brand {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-caption);
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.editorial-cover__title {
+/* Height-constrained, not width-constrained, so every brand's differently
+   proportioned logo lines up the same way — same rule as
+   img.content-card__brand. Most of these mastheads are dark, and this one
+   sits over a photo, so it gets a white plate to stay legible rather than
+   being swapped for a white-fill variant that only some brands ship. */
+img.story-card__brand {
+  display: block;
+  height: 15px;
+  width: auto;
+  max-width: 116px;
+  object-fit: contain;
+  object-position: left center;
+  align-self: flex-start;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  box-sizing: content-box;
+}
+
+.story-card__title {
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: var(--text-h4);
   line-height: 1.15;
   letter-spacing: -0.2px;
   color: #fff;
-}
-
-.editorial-cover__quote,
-.editorial-cover__sub {
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.85);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.editorial-cover__quote {
-  font-style: italic;
-}
-
-.editorial-cover__cue {
+.story-card__cta {
   font-family: var(--font-body);
   font-weight: 700;
   font-size: var(--text-caption);
-  letter-spacing: 0.4px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--color-green-apple);
 }

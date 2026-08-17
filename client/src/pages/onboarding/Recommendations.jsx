@@ -218,6 +218,17 @@ function Recommendations() {
 
   return (
     <main className="question-screen recommendations__pick-enter">
+      {/* The pick stage had no way back — every other onboarding screen has
+          one, and this is the screen someone is most likely to want to leave
+          (to change the focus area that produced these suggestions). */}
+      <button
+        type="button"
+        className="question-screen__back question-screen__back--top"
+        onClick={() => navigate('/onboarding/focus')}
+      >
+        <span aria-hidden="true">←</span> Back
+      </button>
+
       <div className="question-screen__header">
         <p className="question-screen__eyebrow">Your plan</p>
         <h1 className="question-screen__headline">

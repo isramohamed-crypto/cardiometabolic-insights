@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../content/FavoritesContext.jsx'
 import BookmarkIcon from './BookmarkIcon.jsx'
@@ -62,7 +63,13 @@ function ContentModal({ content, onClose }) {
     </Link>
   )
 
-  return (
+  // Rendered into document.body rather than in place. Its trigger now lives
+  // inside the Today page's horizontally-scrolling carousel — a scroll
+  // container with overflow: hidden and its own stacking context — which
+  // clipped the reader and buried it under the rest of the feed on scroll.
+  // A portal takes it out of that subtree entirely; position: fixed then
+  // means what it says.
+  return createPortal(
     <div className="content-modal-scene">
       <div className="content-modal">
         <div className="content-modal__bar">
@@ -100,7 +107,8 @@ function ContentModal({ content, onClose }) {
           {readMoreButton}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 

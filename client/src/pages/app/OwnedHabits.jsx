@@ -16,6 +16,10 @@ import './OwnedHabits.css'
 // keyframes (~0.9s including the gravity drop) — the mark itself is
 // permanent, only the celebration is transient.
 const CARD_BURST_MS = 950
+
+// Cards shown before "Show all" — matches the grid's column count (see
+// OwnedHabits.css) so the default state is exactly one row.
+const ROW_SIZE = 2
 const ALL_BURST_MS = 1600
 
 // "Habits I own" — the foundation habits carried in from onboarding, as
@@ -39,6 +43,7 @@ function OwnedHabits() {
   const [celebrateAll, setCelebrateAll] = useState(false)
   const [insightCursor, setInsightCursor] = useState(0)
   const [doneDismissed, setDoneDismissed] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   const rows = useMemo(
     () => listFoundationHabits(answers.habitsWorking || {}),
@@ -109,8 +114,12 @@ function OwnedHabits() {
         The ones that already stuck. Mark what you've done {getDayWord()}.
       </p>
 
+      {/* One row by default. A carousel hid most of the set behind a swipe
+          nobody had a reason to make; a capped grid shows the shape of it and
+          lets the rest be asked for. ROW_SIZE mirrors the grid's column
+          count in OwnedHabits.css — keep the two in step. */}
       <ul className="owned-cards">
-        {rows.map((row) => {
+        {(expanded ? rows : rows.slice(0, ROW_SIZE)).map((row) => {
           const mark = getMark(row.key)
           const done = mark === OWNED_MARK.DONE
           const notToday = mark === OWNED_MARK.NOT_TODAY
@@ -157,6 +166,17 @@ function OwnedHabits() {
           )
         })}
       </ul>
+
+      {rows.length > ROW_SIZE && (
+        <button
+          type="button"
+          className="owned-habits__expand"
+          onClick={() => setExpanded((prev) => !prev)}
+          aria-expanded={expanded}
+        >
+          {expanded ? 'Show less' : `Show all ${rows.length}`}
+        </button>
+      )}
 
       {allDone && !doneDismissed && (
         <div className="owned-habits__done">

@@ -25,9 +25,8 @@ export const LEAD_STORY = {
   id: 'people-metz-glp1',
   brand: 'People',
   title: 'Chrissy Metz on why she finally said yes to a GLP-1',
-  standfirst:
-    'The actor spent years turning the idea down. What changed her mind was not the number on the scale — it was realising how much of her day food noise was taking up.',
-  quote: 'It’s so nice not to be obsessing about what I’m going to have every minute.',
+  body:
+    'The actor spent years turning the idea down. What changed her mind was not the number on the scale — it was realising how much of her day food noise was taking up. “I just vilified food for so long because I was taught that it was bad, and you shouldn’t eat this or that,” she told People. Now, she says, the quiet is the point: “It’s so nice not to be obsessing about what I’m going to have every minute, even as I’m still consuming the meal.” She is careful about what it isn’t — “I know it’s not a magic wand, and I need to change other things” — and clear about whose call it was: “My life is my life, and I have to do what’s best for me.”',
   attribution: 'Chrissy Metz, to People',
   url: 'https://people.com/chrissy-metz-taking-glp1-12037287',
   // Drop the portrait at client/public/chrissy-metz-glp1.jpg and this
@@ -77,8 +76,12 @@ export function buildEditorialFeed(activeHabits = []) {
     listHabitContent(habit.id).forEach((item) => push(habit, item)),
   )
 
-  return {
-    cover: LEAD_STORY,
-    cards: cards.slice(0, Math.max(MIN_CARDS, activeHabits.length)),
-  }
+  // The lead story rides at the front of the same list rather than getting
+  // its own component: every card in this row is the same object now — full
+  // bleed photo, brand, headline, Read more — so a bespoke cover would be
+  // the one inconsistent thing in it.
+  return [
+    { habit: null, item: LEAD_STORY },
+    ...cards.slice(0, Math.max(MIN_CARDS, activeHabits.length)),
+  ]
 }

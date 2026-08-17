@@ -45,31 +45,17 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
-/* Narrow cards in a swipeable row rather than a two-column grid. Five
-   habits stacked two-across ran ~550px down the page for a section that
-   isn't the main event; horizontally it costs one card's height whatever
-   the count. Cards are deliberately narrow enough that the next one is
-   always partly visible — that's what says the row scrolls. */
+/* Stacked grid, two across, capped at one row until expanded (see
+   OwnedHabits.jsx's ROW_SIZE — keep it equal to the column count here).
+   Was a swipeable row, which hid three of five habits behind a gesture
+   nobody had a reason to make. */
 .owned-cards {
   list-style: none;
   margin: 0;
-  padding: 0 0 var(--space-1);
-  display: flex;
-  align-items: stretch;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.owned-cards::-webkit-scrollbar {
-  display: none;
-}
-
-.owned-cards > * {
-  flex: 0 0 51%;
-  scroll-snap-align: start;
 }
 
 /* overflow: hidden clips the contained ConfettiBurst (fixed={false}) to the
@@ -82,7 +68,9 @@
 .owned-card {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1 / 1;
+  /* Shorter than square: at 2 across a square card was 174px tall, and two
+     rows of those pushed everything below off the screen. */
+  aspect-ratio: 5 / 4;
   display: flex;
   flex-direction: column;
   /* Centred as a block rather than pinned top-and-bottom: the habit text is
@@ -139,15 +127,11 @@
   text-align: center;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-h5);
+  font-size: var(--text-base);
   line-height: 1.2;
   color: #fff;
   display: -webkit-box;
-  /* Four lines at this size is what a 175px square fits alongside the
-     controls; the longest intake option ("Something that clears your head —
-     music, a walk, quiet") ellipsises rather than pushing the card out of
-     square. */
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -175,9 +159,9 @@
   border: none;
   background: none;
   padding: 0;
-  font-size: 32px;
+  font-size: 26px;
   line-height: 1;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
   transition: color 0.15s ease, transform 0.12s ease;
@@ -207,6 +191,27 @@
    disc also suits what this state means — receding, not celebrating. */
 .owned-card__toggle--skip.owned-card__toggle--on {
   color: rgba(0, 0, 0, 0.72);
+}
+
+/* Quiet full-width toggle for the rest of the set. */
+.owned-habits__expand {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid rgba(0, 70, 32, 0.18);
+  border-radius: var(--radius-sm);
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: var(--color-seaweed);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.owned-habits__expand:hover {
+  background: rgba(0, 70, 32, 0.06);
 }
 
 .owned-habits__done {

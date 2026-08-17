@@ -373,12 +373,11 @@
 /* The editorial row is taller and its cards wider than the old thumbnail
    cards — a photo, a pull-quote and an action need the room. The cover is
    wider still, since it's the invitation into the package. */
+/* Narrower than the old cards and taller (see .story-card's height) — the
+   photo does the work, so the card wants portrait proportions, and a
+   narrower card leaves more of the next one showing. */
 .content-carousel--editorial > * {
-  flex: 0 0 78%;
-}
-
-.content-carousel--editorial > .editorial-cover {
-  flex: 0 0 84%;
+  flex: 0 0 68%;
 }
 
 .content-carousel--editorial > .content-carousel__more {

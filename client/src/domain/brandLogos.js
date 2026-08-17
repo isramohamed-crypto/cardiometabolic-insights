@@ -22,6 +22,12 @@ const RAW_PATHS = {
   Health: '/logos/health/Fill=color.svg',
   'Martha Stewart': '/logos/martha-stewart/Layout=horiz, Fill=black.svg',
   Parents: '/logos/parents/Fill=color, Layout=horiz.svg',
+  // Added for the Today page's lead story. "solid, Fill=color" is People's
+  // primary lockup; the white variant exists too, but every other entry here
+  // is the color one and these logos are rendered on light card chrome as
+  // well as over photos.
+  People: '/logos/people/Style=solid, Fill=color.svg',
+  'People Inc.': '/logos/people-inc/fill=black yellow dot.svg',
   'Real Simple': '/logos/real-simple/Color=color, Layout=horiz.svg',
   'Simply Recipes': '/logos/simply-recipes/Fill=color.svg',
   'The Spruce': '/logos/the-spruce/fill=black.svg',
