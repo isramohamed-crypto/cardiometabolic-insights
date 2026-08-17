@@ -37,6 +37,7 @@ function OwnedHabits() {
   const { marks, getMark, setMark, setAll } = useOwnedChecklist()
   const [burstCard, setBurstCard] = useState(null)
   const [celebrateAll, setCelebrateAll] = useState(false)
+  const [insightCursor, setInsightCursor] = useState(0)
 
   const rows = useMemo(
     () => listFoundationHabits(answers.habitsWorking || {}),
@@ -47,6 +48,8 @@ function OwnedHabits() {
   // is the whole point of the insights list (see domain/ownedInsights.js).
   const insights = getOwnedInsights(rows, marks)
 
+  const currentInsight = insights.length ? insights[insightCursor % insights.length] : null
+
   const doneCount = rows.filter((row) => getMark(row.key) === OWNED_MARK.DONE).length
   const allDone = rows.length > 0 && doneCount === rows.length
 
@@ -56,6 +59,14 @@ function OwnedHabits() {
     const timer = setTimeout(() => setCelebrateAll(false), ALL_BURST_MS)
     return () => clearTimeout(timer)
   }, [allDone])
+
+  // Marking a habit puts its suggestion at the front of the list, so jump
+  // back to the front when that happens — otherwise the thing they just
+  // tapped is sitting behind a card they've already read.
+  const leadInsightKey = insights[0] ? `${insights[0].row.key}-${insights[0].state}` : ''
+  useEffect(() => {
+    setInsightCursor(0)
+  }, [leadInsightKey])
 
   useEffect(() => {
     if (!burstCard) return
@@ -163,16 +174,51 @@ function OwnedHabits() {
               <SparkleIcon />
             </span>
             Insights
+            {insights.length > 1 && (
+              <span className="owned-insights__count">
+                {(insightCursor % insights.length) + 1}/{insights.length}
+              </span>
+            )}
           </p>
 
-          <ul className="owned-insights__list">
-            {insights.map((insight) => (
-              <li key={`${insight.row.key}-${insight.state}`} className="owned-insight">
-                <span className="owned-insight__lead">{insight.lead}</span>{' '}
-                <span className="owned-insight__body">{insight.suggestion}</span>
-              </li>
-            ))}
-          </ul>
+          {/* One at a time. Three stacked suggestions filled most of a screen
+              for a section that's meant to be a glance — and stacked, they
+              read as a list to get through rather than a single easy win.
+              `key` on the snippet is deliberate: it remounts the element on
+              every change so the CSS entry animation replays. */}
+          <p className="owned-insight" key={insightCursor}>
+            <span className="owned-insight__lead">{currentInsight.lead}</span>{' '}
+            <span className="owned-insight__body">{currentInsight.suggestion}</span>
+          </p>
+
+          {insights.length > 1 && (
+            <div className="owned-insights__nav">
+              <span className="owned-insights__dots">
+                {insights.map((insight, index) => (
+                  <button
+                    key={`${insight.row.key}-${insight.state}`}
+                    type="button"
+                    className={`owned-insights__dot${
+                      index === insightCursor % insights.length
+                        ? ' owned-insights__dot--on'
+                        : ''
+                    }`}
+                    onClick={() => setInsightCursor(index)}
+                    aria-label={`Suggestion ${index + 1} of ${insights.length}`}
+                    aria-current={index === insightCursor % insights.length}
+                  />
+                ))}
+              </span>
+              <button
+                type="button"
+                className="owned-insights__next"
+                onClick={() => setInsightCursor((prev) => (prev + 1) % insights.length)}
+              >
+                Another
+                <span aria-hidden="true"> ↻</span>
+              </button>
+            </div>
+          )}
 
           <Link to="/me" className="owned-insights__cta">
             Learn more about your progress
@@ -180,6 +226,7 @@ function OwnedHabits() {
           </Link>
         </div>
       )}
+
     </section>
   )
 }
