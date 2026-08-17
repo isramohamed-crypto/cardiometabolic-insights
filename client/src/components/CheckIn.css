@@ -295,3 +295,66 @@
   text-underline-offset: 3px;
   cursor: pointer;
 }
+
+/* Inline placement on the Today page. The panel is shared with the bottom
+   sheet, so this only supplies the surface around it — the sheet brings its
+   own. */
+.today-checkin__panel {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* The sheet leads with its own eyebrow and a big headline; inline, the
+   section heading above already says "Daily check-in", so the panel drops the
+   eyebrow and steps the headline down to avoid two titles stacked on each
+   other.
+   The headline is an <h2>, and inline it lands inside .page — whose own h2
+   rule is a small uppercase letter-spaced section label. Left alone that
+   turned the prompt into "WHAT DO YOU NEED HELP WITH TODAY?", so the
+   heading styles are restated here rather than inherited. */
+.today-checkin__panel .checkin__eyebrow {
+  display: none;
+}
+
+.today-checkin__panel .checkin__headline {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-transform: none;
+  color: #1a1a1a;
+}
+
+/* Inline, the suggestions can bleed to the card's edges the same way they do
+   in the sheet — just with this surface's padding instead. */
+.today-checkin__panel .checkin__suggestions {
+  margin: 0 calc(-1 * var(--space-4));
+}
+
+.today-checkin__panel .checkin__suggestions-label,
+.today-checkin__panel .checkin__track {
+  margin-left: var(--space-4);
+  margin-right: var(--space-4);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.today-checkin__panel .checkin__track .snippet {
+  flex: 0 0 82%;
+}
+
+/* A smaller mic here than in the sheet: inline it's one section among
+   several, not the whole surface. */
+.today-checkin__panel .checkin__voice {
+  padding: var(--space-2) 0 var(--space-4);
+}
+
+.today-checkin__panel .checkin__mic {
+  width: 56px;
+  height: 56px;
+  font-size: 26px;
+}

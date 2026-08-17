@@ -7,10 +7,12 @@ import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { buildEditorialFeed, visibleCount } from '../../domain/editorialPicks.js'
 import { useReactions } from '../../content/ReactionsContext.jsx'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
+import { daysSinceStart } from '../../domain/habitContent.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import EditorialCard from '../../components/EditorialCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import OwnedHabits from './OwnedHabits.jsx'
+import CheckInPanel from '../../components/CheckInPanel.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import TrialPromptModal from './TrialPromptModal.jsx'
 import './page.css'
@@ -93,6 +95,10 @@ function Routine() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeHabitsKey],
   )
+
+  // A week of history is the gate for the inline check-in — see the note by
+  // the section itself.
+  const showInlineCheckIn = activeHabits.some((habit) => daysSinceStart(habit.startedAt) >= 7)
 
   // A thumbs-down takes its card out of the row and the next spare candidate
   // moves up — which is what makes the gesture feel like it did something.
@@ -182,6 +188,22 @@ function Routine() {
       )}
 
       <OwnedHabits />
+
+      {/* The check-in also lives inline here, not just behind the floating
+          mic. Held back until a habit is a week old: on day one there's
+          nothing to check in against and the page already asks enough of a
+          new person — the first-time profile gets the mic only. */}
+      {showInlineCheckIn && (
+        <section className="today-checkin">
+          <h2>Daily check-in</h2>
+          <p className="page__section-lead">
+            A minute on what today actually needs. Say it or tap it.
+          </p>
+          <div className="today-checkin__panel">
+            <CheckInPanel />
+          </div>
+        </section>
+      )}
 
       {(activeHabits.length > 0 || nextSlotContent) && (
         <section>
