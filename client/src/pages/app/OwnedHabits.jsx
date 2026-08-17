@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useOwnedChecklist, OWNED_MARK } from '../../habits/OwnedChecklistContext.jsx'
-import { listFoundationHabits } from '../../domain/foundationHabits.js'
+import { listFoundationHabits, getFoundationVisual } from '../../domain/foundationHabits.js'
 import { getOwnedInsights } from '../../domain/ownedInsights.js'
 import { getDayWord } from '../../domain/timeOfDay.js'
 import CheckIcon from '../../components/CheckIcon.jsx'
@@ -83,7 +83,7 @@ function OwnedHabits() {
           className="owned-habits__all"
           onClick={() => setAll(allDone ? [] : rows.map((row) => row.key), OWNED_MARK.DONE)}
         >
-          {allDone ? 'Start over' : 'All of them'}
+          {allDone ? 'Start over' : 'Mark all complete'}
         </button>
       </div>
       <p className="owned-habits__lead">
@@ -101,7 +101,9 @@ function OwnedHabits() {
               className={`owned-card${done ? ' owned-card--done' : ''}${
                 notToday ? ' owned-card--not-today' : ''
               }`}
+              style={{ backgroundImage: getFoundationVisual(row) }}
             >
+              <span className="owned-card__scrim" />
               <p className="owned-card__label">{row.label}</p>
               <div className="owned-card__actions">
                 <button

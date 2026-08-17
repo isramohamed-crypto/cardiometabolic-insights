@@ -74,11 +74,11 @@
 
 /* overflow: hidden clips the contained ConfettiBurst (fixed={false}) to the
    card, so marking one done pops inside it rather than across the screen. */
-/* Roughly square, and styled as the same object as the content cards above
-   (white, hairline inset border, same radius) so the page reads as one
-   system. The pillar icon is gone — five of them in a row was five pieces of
-   unrelated colour competing with the habit text, which is the only thing
-   here worth reading. */
+/* Square photo cards, same visual language as the Habits tab's "Already
+   yours" cards and the routine habit cards: photo (or the pillar's gradient
+   when a foundation option has no matching photo), a dark scrim, white text
+   over it. Photo lookup is shared with the Habits tab — see
+   domain/foundationHabits.js. */
 .owned-card {
   position: relative;
   overflow: hidden;
@@ -89,54 +89,67 @@
   gap: var(--space-2);
   padding: var(--space-3);
   border-radius: var(--radius-md);
-  background: #fff;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  background-color: var(--color-seaweed);
+  background-size: cover;
+  background-position: center;
+  transition: box-shadow 0.15s ease;
 }
 
-/* Done cards tint green — deliberately not struck through or faded. A done
-   card here is the good outcome, so it should look more present than an
-   unmarked one, not less. */
+/* Same gradient shape as .already-yours-card__scrim — transparent at the
+   top so the photo reads, dark green at the bottom so the label and the two
+   circles hold contrast wherever the photo happens to be light. */
+.owned-card__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 45, 22, 0.45) 45%,
+    rgba(0, 45, 22, 0.88) 100%
+  );
+}
+
+/* Done reads as a green ring on the photo rather than a fill — a tint can't
+   survive on top of an image, and the ring plus the filled tick is enough. */
 .owned-card--done {
-  background: rgba(27, 188, 60, 0.08);
-  box-shadow: inset 0 0 0 1.5px var(--color-leaf);
+  box-shadow: inset 0 0 0 2.5px var(--color-leaf);
 }
 
-/* "Not today" recedes rather than reading as an error — no red, no strike,
-   just less contrast than its neighbours. */
+/* "Not today" desaturates and dims the photo instead of showing an error
+   state — it recedes next to its neighbours, nothing more. */
 .owned-card--not-today {
-  background: rgba(0, 0, 0, 0.03);
+  filter: grayscale(0.75);
 }
 
 .owned-card--not-today .owned-card__label {
-  opacity: 0.55;
+  opacity: 0.7;
 }
 
-/* Same family, weight and colour as .content-card__title, one step down in
-   size for the narrower card. */
+/* Same family and weight as .content-card__title, reversed out to white
+   over the scrim. */
 .owned-card__label {
+  position: relative;
+  z-index: 1;
   margin: 0;
+  align-self: flex-end;
   font-family: var(--font-body);
-  font-weight: 400;
+  font-weight: 700;
   font-size: var(--text-small);
-  line-height: 1.35;
-  color: rgba(0, 0, 0, 0.85);
+  line-height: 1.3;
+  color: #fff;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.owned-card--done .owned-card__label {
-  font-weight: 700;
-  color: var(--color-seaweed);
-}
-
-/* Two plain circles instead of the bordered pills this had before — at this
-   card size the pills were most of the card, and the labels inside them had
-   to shrink to 10px to fit. The glyphs carry the meaning (tick / dash) and
-   the accessible names carry the words. */
+/* Label sits at the bottom of the card and the controls at the top, so the
+   two circles never land on top of the busiest part of the photo (the
+   scrim is darkest at the bottom, where the text needs it). */
 .owned-card__actions {
+  position: relative;
+  z-index: 1;
+  order: -1;
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -149,13 +162,14 @@
   padding: 0;
   font-size: 26px;
   line-height: 1;
-  color: rgba(0, 0, 0, 0.22);
+  color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
   transition: color 0.15s ease, transform 0.12s ease;
 }
 
 .owned-card__toggle:hover {
-  color: rgba(0, 0, 0, 0.45);
+  color: #fff;
   transform: scale(1.06);
 }
 
@@ -163,8 +177,11 @@
   color: var(--color-leaf);
 }
 
+/* Dark, not white: SkipIcon fills the circle with currentColor and strokes
+   the dash in white, so a white "on" state hid the dash entirely. A dark
+   disc also suits what this state means — receding, not celebrating. */
 .owned-card__toggle--skip.owned-card__toggle--on {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(0, 0, 0, 0.72);
 }
 
 .owned-habits__done {
