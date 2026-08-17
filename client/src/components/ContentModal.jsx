@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../content/FavoritesContext.jsx'
-import HeartIcon from './HeartIcon.jsx'
+import BookmarkIcon from './BookmarkIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import './ContentModal.css'
 
@@ -48,14 +48,17 @@ function ContentModal({ content, onClose }) {
   const saved = isFavorite(content.id)
 
   // Keep the reader in-experience: instead of an external "Read the full
-  // article" link that leaves the app, point to the Learn tab.
+  // article" link that leaves the app, point to the Read tab. Worded "See
+  // more in Read" rather than "Read more on Read", which the tab's rename
+  // turned into a stutter — and it matches the Today page's link to the
+  // same place.
   const readMoreButton = (
     <Link
       to="/read"
       onClick={onClose}
       className="content-modal__fallback-link content-modal__fallback-link--primary"
     >
-      Read more on Learn →
+      See more in Read →
     </Link>
   )
 
@@ -74,7 +77,7 @@ function ContentModal({ content, onClose }) {
             aria-pressed={saved}
             aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
           >
-            <HeartIcon filled={saved} />
+            <BookmarkIcon filled={saved} />
           </button>
         </div>
 
@@ -86,13 +89,13 @@ function ContentModal({ content, onClose }) {
         {/* Never iframe the source — many publishers refuse to be embedded
             (X-Frame-Options / CSP), which showed up as "refused to connect".
             We keep readers in-app: show the in-app copy (or a short default),
-            with "Read more on Learn" as the way onward. */}
+            with "See more in Read" as the way onward. */}
         <div className="content-modal__fallback">
           <div className="content-modal__thumb" style={{ backgroundImage: content.thumbnail }} />
           <p className="content-modal__text">
             {content.fullBody ||
               content.body ||
-              `A quick read from ${content.brand || 'our editors'}. Explore more like this on Learn.`}
+              `A quick read from ${content.brand || 'our editors'}. Explore more like this in Read.`}
           </p>
           {readMoreButton}
         </div>

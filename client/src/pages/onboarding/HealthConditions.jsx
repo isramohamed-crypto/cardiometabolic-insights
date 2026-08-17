@@ -5,7 +5,7 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 
 // First of the post-summary questions — optional health context, not part
 // of "Existing habits" pillar sequence. Followed by FocusAreas.jsx (the
-// final onboarding question) before landing on /routine.
+// final onboarding question) before landing on /today.
 //
 // Two distinct opt-out chips rather than one: "None of the above" is a
 // real, informative answer (no conditions apply), while "Prefer not to

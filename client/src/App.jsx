@@ -53,15 +53,15 @@ function App() {
                   <Route path="/habit/:habitId/chat" element={<HabitChat />} />
                   <Route path="/health-check" element={<HealthCheck />} />
                   {/* Path-based alternative to ?profile=<id> — see
-                      DemoProfileRoute.jsx. Declared before the plain /routine
+                      DemoProfileRoute.jsx. Declared before the plain /today
                       route below; react-router matches by specificity, not
                       declaration order, so this ordering isn't load-bearing,
                       it's just easiest to read grouped with the other
                       seed-and-redirect demo route above. */}
-                  <Route path="/routine/:demoProfile" element={<DemoProfileRoute />} />
+                  <Route path="/today/:demoProfile" element={<DemoProfileRoute />} />
 
                   <Route element={<AppLayout />}>
-                    <Route path="/routine" element={<Routine />} />
+                    <Route path="/today" element={<Routine />} />
                     <Route path="/read" element={<Read />} />
                     <Route path="/collection" element={<Collection />} />
                     <Route path="/me" element={<Me />} />

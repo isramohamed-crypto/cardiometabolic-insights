@@ -132,7 +132,7 @@ function HealthCheck() {
           <button type="button" className="health-check__cta" onClick={() => setStage('confirm')}>
             Start the check
           </button>
-          <button type="button" className="health-check__link" onClick={() => navigate('/routine')}>
+          <button type="button" className="health-check__link" onClick={() => navigate('/today')}>
             Not now
           </button>
           <p className="health-check__disclaimer">
@@ -161,7 +161,7 @@ function HealthCheck() {
           </li>
           <li>
             <p className="health-check__change-title">More relevant reading, less noise</p>
-            <p className="health-check__change-desc">From Health and EatingWell, in the Learn tab.</p>
+            <p className="health-check__change-desc">From Health and EatingWell, in the Read tab.</p>
           </li>
           <li>
             <p className="health-check__change-title">A recap you can take to a doctor</p>
@@ -173,7 +173,7 @@ function HealthCheck() {
 
         <p className="health-check__footnote">Change any answer in Progress · Health details.</p>
 
-        <button type="button" className="health-check__cta" onClick={() => navigate('/routine')}>
+        <button type="button" className="health-check__cta" onClick={() => navigate('/today')}>
           Back to my routine
         </button>
       </main>

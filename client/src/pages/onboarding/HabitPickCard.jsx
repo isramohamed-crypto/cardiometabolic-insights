@@ -1,6 +1,4 @@
 import { useRef } from 'react'
-import Pill from '../../components/Pill.jsx'
-import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './HabitPickCard.css'
 
 const SWIPE_THRESHOLD = 50
@@ -49,11 +47,11 @@ function HabitPickCard({
 
   return (
     <div className="habit-card-wrap">
-      <Pill
-        icon={pillarId ? <img src={getAclmIcon(pillarId)} alt="" /> : undefined}
-        label={categoryLabel}
-      />
-
+      {/* The category pill that used to sit above the card is gone — the
+          card's own photo and title already say what this is, and the pill
+          was the last place the ACLM badge icons appeared in onboarding.
+          `categoryLabel`/`pillarId` are still accepted (callers pass them)
+          so re-introducing a label here needs no changes upstream. */}
       <div
         className="habit-card"
         style={{ backgroundImage: gradient }}

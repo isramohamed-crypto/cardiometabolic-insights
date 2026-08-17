@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { PILLARS, NONE_OPTION } from './pillars.js'
-import { getAclmIcon } from '../../domain/aclmIcons.js'
 import './QuestionScreen.css'
 import './Summary.css'
 
@@ -89,11 +88,6 @@ function Summary() {
                       intro paragraph above it. */}
                   {i > 0 && <div className="summary__divider" />}
                   <span className="summary__row-label">
-                    <img
-                      src={getAclmIcon(pillar.id)}
-                      alt=""
-                      className="summary__row-icon"
-                    />
                     {pillar.label}
                   </span>
                   {/* Each selected item is its own bulleted line — a small

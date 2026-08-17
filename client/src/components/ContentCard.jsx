@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import ContentModal from './ContentModal.jsx'
-import HeartIcon from './HeartIcon.jsx'
 import ThumbIcon from './ThumbIcon.jsx'
 import BookmarkIcon from './BookmarkIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
@@ -24,13 +23,14 @@ import './ContentCard.css'
 // link-out rather than an embed (see ContentModal.jsx).
 //
 // `actions` (the Today page's "New for you" feed) adds thumbs-up and
-// thumbs-down beside the save control and swaps the save glyph from the
-// heart to a bookmark — on a recommendation feed the useful gesture is
-// telling the app whether the pick landed, and a heart sitting next to a
-// thumbs-up would read as two likes. Everything else about the card is
-// unchanged: same corner cluster position, no labels, no extra row. Both
-// glyphs write to the same FavoritesContext, so anything saved from
-// either place shows up under Learn. A thumbs-down is only recorded here.
+// thumbs-down beside the save control. Everything else about the card is
+// unchanged: same corner cluster position, no labels, no extra row.
+//
+// Save is a bookmark, not a heart — filing an article to read later isn't
+// the same gesture as liking it, and on the feed the thumbs now carry the
+// liking. Both surfaces write to the same FavoritesContext, so anything
+// saved anywhere shows up under Read. A thumbs-down is only recorded here;
+// it's the feed that acts on it.
 function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact, actions }) {
   const [open, setOpen] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
@@ -65,7 +65,7 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
             aria-pressed={saved}
             aria-label={saved ? 'Remove from saved' : 'Save for later'}
           >
-            {actions ? <BookmarkIcon filled={saved} /> : <HeartIcon filled={saved} />}
+            <BookmarkIcon filled={saved} />
           </button>
         </div>
 

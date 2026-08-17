@@ -4,7 +4,7 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { pickDailyContent } from '../../domain/habitContent.js'
+import { pickDailyContent, listHabitContent } from '../../domain/habitContent.js'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
@@ -22,12 +22,19 @@ const BUILDING_STATES = [
 
 const ACTIVE_STATES = [OWNERSHIP_STATE.TRIALED, ...BUILDING_STATES]
 
+// Floor for the "Living healthy" carousel. One pick per active habit leaves
+// the first-time-user profile looking at a single card — and a lone card
+// fills the track, so nothing peeks in at the edge and there's no clue the
+// row scrolls at all. Padding out of the same habits' wider libraries keeps
+// at least this many, so the swipe affordance is always visible.
+const MIN_FEED_CARDS = 4
+
 function Routine() {
   const { habits, slotCount, seedHabits } = useHabits()
   const { loadAnswers } = useOnboarding()
   const [addingHabit, setAddingHabit] = useState(false)
 
-  // User-testing fallback: a cold, direct visit to /routine (no onboarding,
+  // User-testing fallback: a cold, direct visit to /today (no onboarding,
   // no ?profile= seed) would otherwise render an empty page. Seed the
   // 'new-user' persona so there's always a habit to react to.
   useEffect(() => {
@@ -64,19 +71,33 @@ function Routine() {
   //
   // This used to be a useState initializer, which ran once at mount and so
   // came up empty whenever habits were seeded *after* the page mounted — a
-  // cold /routine visit (seeded by the effect above) or a demo-profile
+  // cold /today visit (seeded by the effect above) or a demo-profile
   // switch. That silently emptied this whole section for two of the three
   // demo profiles. Keyed on activeHabitsKey instead, it fills in as soon as
   // habits arrive, and still rotates per visit (pickDailyContent's pool
   // fallback is random) rather than per render.
-  const tonightPicks = useMemo(
-    () =>
-      activeHabits
-        .map((habit) => ({ habit, content: pickDailyContent(habit.id, habit.startedAt) }))
-        .filter((entry) => entry.content),
+  const tonightPicks = useMemo(() => {
+    const seen = new Set()
+    const feed = []
+
+    const push = (habit, content) => {
+      if (!content || seen.has(content.id)) return
+      seen.add(content.id)
+      feed.push({ habit, content })
+    }
+
+    // Today's scripted pick for each active habit first — those are the
+    // sourced, deliberately sequenced ones — then the rest of each habit's
+    // library as backfill, deduped across habits since two habits can share
+    // an article.
+    activeHabits.forEach((habit) => push(habit, pickDailyContent(habit.id, habit.startedAt)))
+    activeHabits.forEach((habit) =>
+      listHabitContent(habit.id).forEach((content) => push(habit, content)),
+    )
+
+    return feed.slice(0, Math.max(MIN_FEED_CARDS, activeHabits.length))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [activeHabitsKey],
-  )
+  }, [activeHabitsKey])
 
   // Next slot used to be its own section with its own "Next slot" header —
   // now it just tucks into the end of whichever habit-list section is
@@ -146,14 +167,17 @@ function Routine() {
                 actions
               />
             ))}
+            {/* Last card in the row rather than a link under it. As a
+                full-width text link it was the loudest thing in the section
+                — and putting it at the end of the scroll means reaching it
+                is the natural result of swiping through the picks. */}
+            <Link to="/read" className="content-carousel__more">
+              <span className="content-carousel__more-arrow" aria-hidden="true">
+                →
+              </span>
+              <span className="content-carousel__more-label">See more in Read</span>
+            </Link>
           </div>
-          <Link
-            to="/read"
-            className="routine-habit-card__drip-more"
-            style={{ display: 'inline-block', marginTop: 10 }}
-          >
-            See more in Learn →
-          </Link>
         </section>
       )}
 
@@ -174,7 +198,7 @@ function Routine() {
       {habits.length === 0 && (
         <section>
           <h2>Today</h2>
-          <p>Pick a habit to start building your routine.</p>
+          <p>Pick a habit to start building your day.</p>
         </section>
       )}
     </div>

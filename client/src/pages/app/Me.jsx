@@ -69,7 +69,7 @@ function Me() {
           <div className="progress-card progress-card--getting-started">
             <p className="progress-card__empty-title">Nothing to show yet</p>
             <p className="progress-card__empty-body">
-              Start a habit in <Link to="/routine">Today</Link> and this is where
+              Start a habit in <Link to="/today">Today</Link> and this is where
               you'll see how it's actually going.
             </p>
           </div>

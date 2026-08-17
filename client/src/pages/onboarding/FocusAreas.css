@@ -11,3 +11,84 @@
   font-size: var(--text-h4);
   box-shadow: 0 8px 28px rgba(232, 239, 101, 0.6);
 }
+
+/* Two across, not the brand grid's three: pillar names ("Stress
+   Management") need more width than a masthead does, and five tiles across
+   two columns leaves one on its own bottom row rather than a lopsided
+   three-plus-two. */
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* Same photo-and-scrim object as the Today page's "Habits I own" cards,
+   at the brand tiles' proportions. */
+.focus-tile {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-3);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  background-color: var(--color-seaweed);
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.12s ease;
+}
+
+.focus-tile:active {
+  transform: scale(0.98);
+}
+
+.focus-tile--selected {
+  border-color: var(--color-leaf);
+}
+
+/* Transparent at the top so the photo reads, dark at the bottom where the
+   label sits — same gradient shape as .owned-card__scrim. */
+.focus-tile__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 45, 22, 0.45) 45%,
+    rgba(0, 45, 22, 0.88) 100%
+  );
+}
+
+.focus-tile__label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  line-height: 1.25;
+  text-align: left;
+  color: #fff;
+}
+
+/* Filled green tick in the corner, same glyph and placement as the brand
+   picker's — this screen is single-select, so only ever one is showing. */
+.focus-tile__check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: flex;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--color-leaf);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* No pill options on this screen, so the empty container would otherwise
+   contribute its own gap above the grid. */
+.focus-areas .question-screen__options {
+  display: none;
+}

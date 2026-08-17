@@ -68,7 +68,7 @@
 }
 
 .owned-cards > * {
-  flex: 0 0 47%;
+  flex: 0 0 51%;
   scroll-snap-align: start;
 }
 
@@ -85,9 +85,13 @@
   aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3) var(--space-3);
+  /* Centred as a block rather than pinned top-and-bottom: the habit text is
+     the content, and pushing it to the far edges of a square left it
+     reading as two separate things stuck to opposite walls. */
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
   border-radius: var(--radius-md);
   background-color: var(--color-seaweed);
   background-size: cover;
@@ -125,41 +129,39 @@
   opacity: 0.7;
 }
 
-/* Same family and weight as .content-card__title, reversed out to white
-   over the scrim. */
+/* Same size as .content-card__title, reversed out to white over the scrim
+   and centred — a centred block of two or three words sits better in a
+   square than a left-aligned one. */
 .owned-card__label {
   position: relative;
   z-index: 1;
   margin: 0;
-  align-self: flex-end;
+  text-align: center;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-base);
+  font-size: var(--text-h5);
   line-height: 1.2;
   color: #fff;
   display: -webkit-box;
-  /* 5 lines at the tighter leading: the longest intake option ("Something
-     that clears your head — music, a walk, quiet") runs to five at this type
-     size, and a 161px square has room for them once the controls and padding
-     are counted. Anything longer still ellipsises rather than pushing the
-     card out of square. */
-  -webkit-line-clamp: 5;
+  /* Four lines at this size is what a 175px square fits alongside the
+     controls; the longest intake option ("Something that clears your head —
+     music, a walk, quiet") ellipsises rather than pushing the card out of
+     square. */
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Habit text sits at the bottom of the card (where the scrim is darkest)
-   and the two controls are centred across the top, so neither lands on the
-   other and the pair reads as one control group rather than two corner
+/* Centred under the habit text — reading order is "what it is", then "mark
+   it", and the pair reads as one control group rather than two corner
    affordances. */
 .owned-card__actions {
   position: relative;
   z-index: 1;
-  order: -1;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 /* Each control is its own column: glyph, then its word. The words matter —
@@ -215,8 +217,36 @@
   background: rgba(27, 188, 60, 0.1);
 }
 
+/* Dismiss. The banner is a celebration, not an alert, so this is quiet —
+   and dismissing is per-completion, not permanent (see OwnedHabits.jsx). */
+.owned-habits__done-close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(0, 70, 32, 0.5);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.owned-habits__done-close:hover {
+  background: rgba(0, 70, 32, 0.1);
+  color: var(--color-seaweed);
+}
+
 .owned-habits__done-title {
-  margin: 0 0 var(--space-1);
+  margin: 0 var(--space-6) var(--space-1) 0;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: var(--text-h5);

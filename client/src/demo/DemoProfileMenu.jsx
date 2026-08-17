@@ -9,7 +9,7 @@ import './DemoProfileMenu.css'
 // profiles.js. Picking one is equivalent to visiting "/?profile=<id>"
 // directly — this just navigates there; DemoSeeder (mounted once at the
 // App level — see App.jsx) is what actually reads the query param, seeds
-// the contexts, and redirects to /routine. Keeping that logic centralized
+// the contexts, and redirects to /today. Keeping that logic centralized
 // in DemoSeeder means this menu, and any future entry point, never needs
 // its own copy of the seeding logic.
 //

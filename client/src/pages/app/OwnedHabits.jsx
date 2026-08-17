@@ -38,6 +38,7 @@ function OwnedHabits() {
   const [burstCard, setBurstCard] = useState(null)
   const [celebrateAll, setCelebrateAll] = useState(false)
   const [insightCursor, setInsightCursor] = useState(0)
+  const [doneDismissed, setDoneDismissed] = useState(false)
 
   const rows = useMemo(
     () => listFoundationHabits(answers.habitsWorking || {}),
@@ -52,6 +53,13 @@ function OwnedHabits() {
 
   const doneCount = rows.filter((row) => getMark(row.key) === OWNED_MARK.DONE).length
   const allDone = rows.length > 0 && doneCount === rows.length
+
+  // Dismissing the all-done banner only hides it for this run: unmark
+  // anything and the flag clears, so finishing the set again brings the
+  // celebration back rather than suppressing it for good.
+  useEffect(() => {
+    if (!allDone) setDoneDismissed(false)
+  }, [allDone])
 
   useEffect(() => {
     if (!allDone) return
@@ -150,9 +158,17 @@ function OwnedHabits() {
         })}
       </ul>
 
-      {allDone && (
+      {allDone && !doneDismissed && (
         <div className="owned-habits__done">
           {celebrateAll && <ConfettiBurst count={22} />}
+          <button
+            type="button"
+            className="owned-habits__done-close"
+            onClick={() => setDoneDismissed(true)}
+            aria-label="Dismiss"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
           <p className="owned-habits__done-title">That's all of them. 🎉</p>
           <p className="owned-habits__done-body">
             Every habit you own, done today. This is the part that's already working — worth

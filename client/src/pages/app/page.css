@@ -247,20 +247,20 @@
   display: none;
 }
 
-/* 78% rather than a full-width card: the visible slice of the next one is
+/* 74% rather than a full-width card: the visible slice of the next one is
    what tells you the row scrolls at all, and at 86% (with a wider gap) that
    slice was too thin to read as a card. Gap is deliberately tighter than
    the vertical rhythm used between stacked cards — horizontally, a wide gap
    just eats the space the next card needs to show through. */
 .content-carousel > * {
-  flex: 0 0 78%;
+  flex: 0 0 74%;
   scroll-snap-align: start;
 }
 
-/* With one pick there's no next card to reveal, so the narrow width just
-   leaves a dead strip on the right — the new-user and after-7-days
-   profiles have exactly one active habit and hit this. Full width there,
-   which is what the section looked like before it became a carousel. */
+/* Safety net only: the feed now pads itself to MIN_FEED_CARDS (see
+   Routine.jsx), so a single card only happens if a habit has exactly one
+   piece of content behind it. Full width there, since there'd be nothing to
+   peek at anyway. */
 .content-carousel > :only-child {
   flex-basis: 100%;
 }
@@ -323,3 +323,49 @@
   right: var(--space-2);
 }
 
+
+/* Trailing "see more" card in the Living healthy carousel. Narrower than a
+   content card — it's a signpost, not an article — and dashed rather than
+   solid so it reads as the end of the row instead of one more thing to
+   read. */
+.content-carousel__more {
+  flex: 0 0 42% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1.5px dashed rgba(0, 70, 32, 0.25);
+  border-radius: var(--radius-md);
+  background: rgba(0, 70, 32, 0.04);
+  text-decoration: none;
+  text-align: center;
+  padding: var(--space-3);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.content-carousel__more:hover {
+  background: rgba(0, 70, 32, 0.08);
+  border-color: rgba(0, 70, 32, 0.4);
+}
+
+.content-carousel__more-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-leaf);
+  font-size: var(--text-h5);
+  line-height: 1;
+  color: #fff;
+}
+
+.content-carousel__more-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  line-height: 1.25;
+  color: var(--color-seaweed);
+}

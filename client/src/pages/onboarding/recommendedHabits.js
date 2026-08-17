@@ -349,6 +349,18 @@ export function getHabitVisual(pillarId, habitId) {
   return habit?.image || pillar.gradient
 }
 
+// A representative photo for a whole pillar: the first of its habits that
+// has one. Used by onboarding's focus-area tiles, which are per-pillar and
+// so have no single habit to borrow from — falls back to the pillar's flat
+// gradient when none of its habits has a photo yet, exactly as
+// getHabitVisual does for an unmatched habit id.
+export function getPillarVisual(pillarId) {
+  const pillar = RECOMMENDATIONS_BY_PILLAR[pillarId]
+  if (!pillar) return null
+  const withPhoto = pillar.habits.find((habit) => habit.image)
+  return withPhoto?.image || pillar.gradient
+}
+
 // Suggests a starting tier (index into a habit's `tiers` array) based on how
 // many "already working" options the user picked for this pillar during
 // onboarding — a rough proxy for how active they already are in this area.

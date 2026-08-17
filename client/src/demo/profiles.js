@@ -131,7 +131,7 @@ function buildLog(startedAt, dayCount, skipDays = []) {
 
 export const DEMO_PROFILES = {
   'new-user': {
-    label: 'New user',
+    label: 'First time user',
     description:
       'Just finished onboarding. One habit — an evening walk — sitting at day 1 of its trial, nothing logged yet.',
     build() {
@@ -213,7 +213,7 @@ export const DEMO_PROFILES = {
 
 // Shorter, hyphen-free aliases for the same profiles above — meant for a
 // path segment rather than a query string (see DemoProfileRoute.jsx,
-// wired up in App.jsx as /routine/:demoProfile), where a slug like
+// wired up in App.jsx as /today/:demoProfile), where a slug like
 // "newuser" or "7days" reads more like a normal URL than the canonical,
 // more-descriptive ids these map to. The canonical ids still work in both
 // places too (getDemoProfile below checks this map only as a fallback).

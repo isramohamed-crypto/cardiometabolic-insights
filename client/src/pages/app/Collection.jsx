@@ -4,7 +4,6 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
 import { getPillarLabel } from '../../domain/pillars.js'
-import { getAclmIcon } from '../../domain/aclmIcons.js'
 import {
   FOUNDATION_CATALOG_MATCH,
   FOUNDATION_IMAGE_OVERRIDES,
@@ -83,7 +82,6 @@ function AlreadyYoursCard({ title, subtitle, pillarId, id, image, to }) {
       <div className="already-yours-card__scrim" />
       <div className="already-yours-card__content">
         <Pill
-          icon={pillarId ? <img src={getAclmIcon(pillarId)} alt="" /> : undefined}
           label={subtitle}
         />
         <h3 className="already-yours-card__title">{title}</h3>

@@ -35,11 +35,11 @@ function AllSet() {
       typeof window !== 'undefined' &&
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) {
-      navigate('/routine')
+      navigate('/today')
       return
     }
     setCtaPopping(true)
-    setTimeout(() => navigate('/routine'), CTA_POP_MS)
+    setTimeout(() => navigate('/today'), CTA_POP_MS)
   }
 
   return (

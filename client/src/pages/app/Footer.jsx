@@ -6,8 +6,8 @@ import './Footer.css'
 // their existing names, so this rename only changes what the tab bar
 // itself reads, not what each section calls itself once you're in it.
 const TABS = [
-  { to: '/routine', label: 'Today' },
-  { to: '/read', label: 'Learn' },
+  { to: '/today', label: 'Today' },
+  { to: '/read', label: 'Read' },
   { to: '/collection', label: 'Habits' },
   { to: '/me', label: 'Progress' },
 ]

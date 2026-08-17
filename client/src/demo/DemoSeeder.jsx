@@ -36,7 +36,7 @@ function DemoSeeder() {
     loadAnswers(answers)
     seedHabits(habits, slotCount)
     seededFor.current = profileId
-    navigate('/routine', { replace: true })
+    navigate('/today', { replace: true })
     // Only re-run when the URL's profile id actually changes — loadAnswers/
     // seedHabits/navigate are stable enough for this and re-including them
     // isn't needed to react to a new ?profile= value.

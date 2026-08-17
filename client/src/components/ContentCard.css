@@ -67,18 +67,18 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-/* The heart's saved state keeps its original pink; the bookmark's uses the
-   brand green, since it sits next to a green thumbs-up and a second pink
-   accent in the same cluster would read as a third, unrelated state. */
-.content-card__icon--saved {
-  color: #d6336c;
-}
-
-/* The bookmark's saved state uses the brand green; the heart keeps its
-   original pink (above), since a bookmark is filing rather than favouriting. */
-.content-card__icon--bookmark.content-card__icon--saved {
+/* Saved bookmarks are brand green — the pink here belonged to the heart
+   this replaced, and next to a green thumbs-up it read as a third,
+   unrelated state. */
+/* :hover is included so the base hover rule above (equal weight, declared
+   earlier, but with a pseudo-class it outranks a plain class) can't grey out
+   a bookmark that's already saved. */
+.content-card__icon--saved,
+.content-card__icon--saved:hover {
   color: var(--color-seaweed);
 }
+
+
 
 .content-card__icon--liked,
 .content-card__icon--liked:hover {

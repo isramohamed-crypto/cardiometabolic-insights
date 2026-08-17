@@ -72,7 +72,7 @@ function detailedTitle(catalogTitle, tier, moment) {
 // a flip-open card floating over a dimmed Routine backdrop, but that read
 // as a modal rather than a real screen of its own, so it's a normal page
 // now, just reached the same way (tap a habit, land here; Back/Close both
-// return to /routine). Uses the habit's own photo (or its pillar's
+// return to /today). Uses the habit's own photo (or its pillar's
 // gradient fallback — same getHabitVisual asset every other card uses) as
 // a hero banner instead of a plain text header. Shows the 7-day tracker,
 // trial status, a manual "mark today done" check-in, and supporting
@@ -129,7 +129,7 @@ function HabitDetail() {
           <button
             type="button"
             className="question-screen__back"
-            onClick={() => navigate('/routine')}
+            onClick={() => navigate('/today')}
           >
             <span aria-hidden="true">←</span> Back to Today
           </button>
@@ -164,7 +164,7 @@ function HabitDetail() {
   const handleRetire = () => {
     if (window.confirm('Retire this habit? It will be removed from your Today list.')) {
       updateHabitState(habit.id, OWNERSHIP_STATE.ABANDONED)
-      navigate('/routine')
+      navigate('/today')
     }
   }
 
@@ -182,7 +182,7 @@ function HabitDetail() {
           <button
             type="button"
             className="habit-detail__back-top"
-            onClick={() => navigate('/routine')}
+            onClick={() => navigate('/today')}
           >
             <span aria-hidden="true">←</span> Back
           </button>
@@ -241,13 +241,13 @@ function HabitDetail() {
               just a one-line pointer over to it, not the decision UI
               itself. */}
           {showTrialPrompt && (
-            <Link to="/routine" className="habit-detail__trial-hint">
+            <Link to="/today" className="habit-detail__trial-hint">
               A week of trying. Head to Today to decide what's next →
             </Link>
           )}
 
           {showTierUpsell && (
-            <Link to="/routine" className="habit-detail__trial-hint">
+            <Link to="/today" className="habit-detail__trial-hint">
               "{habit.tier}" is working — head to Today to bump it up →
             </Link>
           )}
