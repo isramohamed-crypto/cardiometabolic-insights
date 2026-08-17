@@ -1,7 +1,9 @@
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../content/FavoritesContext.jsx'
+import { useReactions } from '../content/ReactionsContext.jsx'
 import BookmarkIcon from './BookmarkIcon.jsx'
+import ThumbIcon from './ThumbIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import './ContentModal.css'
 
@@ -44,6 +46,9 @@ import './ContentModal.css'
 // a recognized brand.
 function ContentModal({ content, onClose }) {
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { isLiked, isDisliked, toggleLike, toggleDislike } = useReactions()
+  const liked = isLiked(content.id)
+  const disliked = isDisliked(content.id)
 
   if (!content) return null
   const saved = isFavorite(content.id)
@@ -104,6 +109,34 @@ function ContentModal({ content, onClose }) {
               content.body ||
               `A quick read from ${content.brand || 'our editors'}. Explore more like this in Read.`}
           </p>
+          {/* Labelled here, icon-only on the card. In the reader there's room
+              for words, and "more/less like this" says what the thumbs
+              actually do — they tune what gets surfaced, they aren't a rating
+              of the article. Same store as the card's icons, so a reaction
+              made in either place shows in both. */}
+          <div className="content-modal__reactions">
+            <button
+              type="button"
+              className={`content-modal__reaction${liked ? ' content-modal__reaction--liked' : ''}`}
+              onClick={() => toggleLike(content.id)}
+              aria-pressed={liked}
+            >
+              <ThumbIcon direction="up" filled={liked} />
+              More like this
+            </button>
+            <button
+              type="button"
+              className={`content-modal__reaction${
+                disliked ? ' content-modal__reaction--disliked' : ''
+              }`}
+              onClick={() => toggleDislike(content.id)}
+              aria-pressed={disliked}
+            >
+              <ThumbIcon direction="down" filled={disliked} />
+              Less like this
+            </button>
+          </div>
+
           {readMoreButton}
         </div>
       </div>

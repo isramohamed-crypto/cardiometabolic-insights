@@ -169,3 +169,49 @@ img.content-modal__brand {
   line-height: 1.55;
   color: rgba(0, 0, 0, 0.7);
 }
+
+/* Labelled reactions in the reader. The card's versions are icon-only for
+   space; here there's room to say what they do — these tune what gets
+   surfaced next, they aren't a star rating of the piece. */
+.content-modal__reactions {
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-5) 0 var(--space-4);
+}
+
+.content-modal__reaction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex: 1;
+  padding: var(--space-3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.content-modal__reaction:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.content-modal__reaction--liked,
+.content-modal__reaction--liked:hover {
+  border-color: var(--color-leaf);
+  background: rgba(27, 188, 60, 0.1);
+  color: var(--color-seaweed);
+}
+
+.content-modal__reaction--disliked,
+.content-modal__reaction--disliked:hover {
+  border-color: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.75);
+}

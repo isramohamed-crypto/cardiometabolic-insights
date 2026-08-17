@@ -106,7 +106,12 @@ function Header() {
   }
 
   // Eyebrow no longer carries the name (that now lives in the headline).
-  const greeting = answers.name ? 'Welcome back' : 'Welcome'
+  // Names the product in the eyebrow rather than leaving a bare "Welcome" —
+  // the app's name appeared nowhere in the UI itself, only in the browser
+  // tab. No Vitalist mark exists in public/ (every logo asset in there
+  // belongs to a People Inc. title), so this is type only for now; drop an
+  // icon in and it can sit before the text.
+  const greeting = answers.name ? 'Welcome back to Vitalist' : 'Welcome to Vitalist'
 
   // Today's headline reflects how far along they are — a new user gets an
   // encouraging kickoff, someone mid-build or weeks in gets a message that

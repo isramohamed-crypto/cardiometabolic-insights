@@ -29,11 +29,12 @@ export const LEAD_STORY = {
     'The actor spent years turning the idea down. What changed her mind was not the number on the scale — it was realising how much of her day food noise was taking up. “I just vilified food for so long because I was taught that it was bad, and you shouldn’t eat this or that,” she told People. Now, she says, the quiet is the point: “It’s so nice not to be obsessing about what I’m going to have every minute, even as I’m still consuming the meal.” She is careful about what it isn’t — “I know it’s not a magic wand, and I need to change other things” — and clear about whose call it was: “My life is my life, and I have to do what’s best for me.”',
   attribution: 'Chrissy Metz, to People',
   url: 'https://people.com/chrissy-metz-taking-glp1-12037287',
-  // Drop the portrait at client/public/chrissy-metz-glp1.jpg and this
-  // resolves; until then the cover falls back to its gradient (see
-  // EditorialCard.css's .editorial-cover background-color), so a missing
-  // file reads as a designed cover rather than a broken image.
-  image: "url('/chrissy-metz-glp1.jpg')",
+  // Filename must match what's actually in client/public/ exactly —
+  // ".jpeg", not ".jpg". A mismatch here is a silent 404: the card falls back
+  // to .story-card's background-color and reads as a designed green cover
+  // rather than a broken image, so nothing looks wrong, it just isn't the
+  // photo.
+  image: "url('/chrissy-metz-glp1.jpeg')",
 }
 
 // First sentence of the item's body, used as the card's pull-quote. Cards
