@@ -44,6 +44,20 @@
   margin: 0 0 var(--space-2);
 }
 
+/* One line of context under a section heading. The headings themselves are
+   small uppercase labels (see .page h2 above) — enough to name a section but
+   not to explain it, which left several of them reading as bare labels over
+   a pile of cards. Sentence case and muted so it supports the heading
+   instead of competing with it. Habits I own had one of these first; this
+   generalises it. */
+.page__section-lead {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.55);
+}
+
 /* Count badge next to a section heading — e.g. Collection's "Already
    yours 6" (see Collection.jsx). Not uppercase/letter-spaced like the
    heading it sits in, so the number reads as a number, not a label. */

@@ -135,6 +135,9 @@ function Collection() {
       {workingOnIt.length > 0 && (
         <section>
           <h2>Working on it</h2>
+          <p className="page__section-lead">
+            Still in its trial. Nothing is locked in until you decide to keep it.
+          </p>
           <div className="routine-habit-list">
             {workingOnIt.map((habit) => (
               <RoutineHabitCard key={habit.id} habit={habit} />
@@ -146,6 +149,9 @@ function Collection() {
       {nextSlotLocked ? (
         <section>
           <h2>Next slot</h2>
+          <p className="page__section-lead">
+            Opens up as soon as a trial resolves — keep it, or make it smaller.
+          </p>
           <div className="locked-slot">
             <span className="locked-slot__icon" aria-hidden="true">
               🔒
@@ -161,6 +167,9 @@ function Collection() {
       ) : (
         <section>
           <h2>Next slot</h2>
+          <p className="page__section-lead">
+            Room for one more, whenever you want it. One habit is a perfectly good routine.
+          </p>
           <button type="button" className="open-slot" onClick={() => setAddingHabit(true)}>
             <span className="open-slot__icon" aria-hidden="true">
               +
@@ -178,6 +187,9 @@ function Collection() {
           <h2>
             Already yours <span className="page__count">{alreadyYours.length}</span>
           </h2>
+          <p className="page__section-lead">
+            Everything you brought with you, plus the habits you've graduated out of a trial.
+          </p>
           <div className="already-yours-list">
             {alreadyYours.map(({ key, ...row }) => <AlreadyYoursCard key={key} {...row} />)}
           </div>

@@ -146,6 +146,9 @@ function Routine() {
       {feed.length > 0 && (
         <section>
           <h2>{getNewForYouHeading()}</h2>
+          <p className="page__section-lead">
+            Picked for what you're working on right now, from the People Inc. newsrooms.
+          </p>
           <div className="content-carousel content-carousel--editorial">
             {feed.map(({ habit, item }) => (
               <EditorialCard
@@ -173,6 +176,9 @@ function Routine() {
       {(activeHabits.length > 0 || nextSlotContent) && (
         <section>
           <h2>Habits I'm building</h2>
+          <p className="page__section-lead">
+            The newer ones, still finding their footing. Tap any of them to see the week.
+          </p>
           <div className="routine-habit-list">
             {activeHabits.map((habit) => (
               <RoutineHabitCard key={habit.id} habit={habit} />
@@ -185,7 +191,9 @@ function Routine() {
       {habits.length === 0 && (
         <section>
           <h2>Today</h2>
-          <p>Pick a habit to start building your day.</p>
+          <p className="page__section-lead">
+            Nothing here yet. Pick one habit to start with — one is plenty.
+          </p>
         </section>
       )}
     </div>

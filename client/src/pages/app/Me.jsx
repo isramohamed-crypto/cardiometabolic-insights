@@ -64,6 +64,9 @@ function Me() {
             </span>
             Insights
           </h2>
+          <p className="page__section-lead">
+            Read across everything at once, not one habit at a time.
+          </p>
           <ul className="progress-insights__list">
             {holistic.map((insight) => (
               <li className="progress-insight" key={insight.id}>
