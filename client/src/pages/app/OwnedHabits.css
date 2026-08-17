@@ -74,22 +74,29 @@
 
 /* overflow: hidden clips the contained ConfettiBurst (fixed={false}) to the
    card, so marking one done pops inside it rather than across the screen. */
+/* Roughly square, and styled as the same object as the content cards above
+   (white, hairline inset border, same radius) so the page reads as one
+   system. The pillar icon is gone — five of them in a row was five pieces of
+   unrelated colour competing with the habit text, which is the only thing
+   here worth reading. */
 .owned-card {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: var(--space-2);
-  padding: var(--space-2);
+  padding: var(--space-3);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
   transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Done cards tint green and go semibold — deliberately not struck through
-   or faded. A done card here is the good outcome, so it should look more
-   present than an unmarked one, not less. */
+/* Done cards tint green — deliberately not struck through or faded. A done
+   card here is the good outcome, so it should look more present than an
+   unmarked one, not less. */
 .owned-card--done {
   background: rgba(27, 188, 60, 0.08);
   box-shadow: inset 0 0 0 1.5px var(--color-leaf);
@@ -101,26 +108,21 @@
   background: rgba(0, 0, 0, 0.03);
 }
 
-.owned-card--not-today .owned-card__label,
-.owned-card--not-today .owned-card__pillar {
+.owned-card--not-today .owned-card__label {
   opacity: 0.55;
 }
 
-.owned-card__pillar {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-}
-
+/* Same family, weight and colour as .content-card__title, one step down in
+   size for the narrower card. */
 .owned-card__label {
-  flex: 1;
   margin: 0;
   font-family: var(--font-body);
+  font-weight: 400;
   font-size: var(--text-small);
-  line-height: 1.25;
+  line-height: 1.35;
   color: rgba(0, 0, 0, 0.85);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -130,49 +132,39 @@
   color: var(--color-seaweed);
 }
 
-/* Side by side and small. The check glyph that used to sit in the Done
-   button is gone — in a ~150px card it took width the two labels need, and
-   the filled green state already says "done" without it. */
+/* Two plain circles instead of the bordered pills this had before — at this
+   card size the pills were most of the card, and the labels inside them had
+   to shrink to 10px to fit. The glyphs carry the meaning (tick / dash) and
+   the accessible names carry the words. */
 .owned-card__actions {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.owned-card__mark,
-.owned-card__skip {
-  flex: 1;
-  min-width: 0;
-  padding: 5px 2px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+.owned-card__toggle {
+  display: flex;
+  border: none;
   background: none;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 10px;
-  line-height: 1.2;
-  letter-spacing: 0.2px;
-  white-space: nowrap;
-  color: rgba(0, 0, 0, 0.5);
+  padding: 0;
+  font-size: 26px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.22);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: color 0.15s ease, transform 0.12s ease;
 }
 
-.owned-card__mark:hover,
-.owned-card__skip:hover {
-  border-color: rgba(0, 0, 0, 0.3);
-  color: rgba(0, 0, 0, 0.75);
+.owned-card__toggle:hover {
+  color: rgba(0, 0, 0, 0.45);
+  transform: scale(1.06);
 }
 
-.owned-card__mark--on {
-  border-color: var(--color-leaf);
-  background: var(--color-leaf);
-  color: #fff;
+.owned-card__toggle--done.owned-card__toggle--on {
+  color: var(--color-leaf);
 }
 
-.owned-card__skip--on {
-  border-color: rgba(0, 0, 0, 0.35);
-  background: rgba(0, 0, 0, 0.06);
-  color: rgba(0, 0, 0, 0.7);
+.owned-card__toggle--skip.owned-card__toggle--on {
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .owned-habits__done {

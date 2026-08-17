@@ -5,7 +5,8 @@ import { useOwnedChecklist, OWNED_MARK } from '../../habits/OwnedChecklistContex
 import { listFoundationHabits } from '../../domain/foundationHabits.js'
 import { getOwnedInsights } from '../../domain/ownedInsights.js'
 import { getDayWord } from '../../domain/timeOfDay.js'
-import { getAclmIcon } from '../../domain/aclmIcons.js'
+import CheckIcon from '../../components/CheckIcon.jsx'
+import SkipIcon from '../../components/SkipIcon.jsx'
 import SparkleIcon from '../../components/SparkleIcon.jsx'
 import ConfettiBurst from '../../components/ConfettiBurst.jsx'
 import './OwnedHabits.css'
@@ -101,24 +102,31 @@ function OwnedHabits() {
                 notToday ? ' owned-card--not-today' : ''
               }`}
             >
-              <img className="owned-card__pillar" src={getAclmIcon(row.pillarId)} alt="" />
               <p className="owned-card__label">{row.label}</p>
               <div className="owned-card__actions">
                 <button
                   type="button"
-                  className={`owned-card__mark${done ? ' owned-card__mark--on' : ''}`}
+                  className={`owned-card__toggle owned-card__toggle--done${
+                    done ? ' owned-card__toggle--on' : ''
+                  }`}
                   onClick={() => handleMark(row.key, OWNED_MARK.DONE)}
                   aria-pressed={done}
+                  aria-label={done ? 'Undo done' : 'Mark done'}
+                  title="Done"
                 >
-                  Done
+                  <CheckIcon checked={done} />
                 </button>
                 <button
                   type="button"
-                  className={`owned-card__skip${notToday ? ' owned-card__skip--on' : ''}`}
+                  className={`owned-card__toggle owned-card__toggle--skip${
+                    notToday ? ' owned-card__toggle--on' : ''
+                  }`}
                   onClick={() => handleMark(row.key, OWNED_MARK.NOT_TODAY)}
                   aria-pressed={notToday}
+                  aria-label={notToday ? 'Undo not today' : 'Mark not today'}
+                  title="Not today"
                 >
-                  Not today
+                  <SkipIcon marked={notToday} />
                 </button>
               </div>
               {burstCard === row.key && (

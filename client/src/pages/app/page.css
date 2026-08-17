@@ -277,15 +277,40 @@
   overflow: hidden;
 }
 
-/* Content sits at the top of the card rather than centering in it: the
-   feed card reserves room at the bottom for its icon cluster, and centering
-   inside that taller box left a band of dead space above the text. */
+/* The tap area fills the card so the thumbnail can stretch to its full
+   height — the carousel already equalises card heights (align-items:
+   stretch on the track), so this makes every image the same height too. */
 .content-carousel .content-card__tap {
-  align-items: flex-start;
+  align-items: stretch;
+  height: 100%;
   gap: var(--space-3);
   padding: var(--space-3);
   padding-right: 44px;
   padding-bottom: 30px;
+}
+
+/* Portrait rather than square: the image gets taller by filling the card's
+   height instead of by making the card taller. Width is fixed and narrow so
+   the extra height comes out of the image's aspect ratio, not out of the
+   headline's space. min-height keeps it from collapsing on a card whose
+   headline is a single line. */
+.content-carousel .content-card__thumb {
+  align-self: stretch;
+  flex: 0 0 62px;
+  width: 62px;
+  height: auto;
+  min-height: 92px;
+}
+
+.content-carousel .content-card__title {
+  -webkit-line-clamp: 3;
+  line-height: 1.3;
+}
+
+/* Brand logo shrinks a touch so the four available headline lines are the
+   thing filling the space next to the larger image, not the masthead. */
+.content-carousel img.content-card__brand {
+  height: 13px;
 }
 
 .content-carousel .content-card__icons {
@@ -298,9 +323,3 @@
   right: var(--space-2);
 }
 
-/* Smaller thumbnail in the carousel — at 72px it took a quarter of a
-   78%-width card's inner width away from the headline. */
-.content-carousel .content-card__thumb {
-  width: 56px;
-  height: 56px;
-}
