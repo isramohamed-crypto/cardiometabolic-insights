@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { pickActiveHabits } from '../../domain/profileInsights.js'
+import { getHolisticInsights } from '../../domain/holisticInsights.js'
+import { useOwnedChecklist } from '../../habits/OwnedChecklistContext.jsx'
+import { useFavorites } from '../../content/FavoritesContext.jsx'
+import { useReactions } from '../../content/ReactionsContext.jsx'
+import SparkleIcon from '../../components/SparkleIcon.jsx'
 import HabitProgressCard from './HabitProgressCard.jsx'
 import Pill from '../../components/Pill.jsx'
 import './page.css'
@@ -15,6 +20,21 @@ import './Me.css'
 function Me() {
   const { answers } = useOnboarding()
   const { habits } = useHabits()
+  const { marks } = useOwnedChecklist()
+  const { favorites } = useFavorites()
+  const { tried } = useReactions()
+
+  // The Today tab's insights react to a single habit just marked; these read
+  // across everything at once — what was brought in versus built, how the
+  // week actually went, what's oldest. See domain/holisticInsights.js, which
+  // omits any line it can't support with real data rather than padding.
+  const holistic = getHolisticInsights({
+    habits,
+    answers,
+    marks,
+    savedCount: favorites.length,
+    triedCount: tried.length,
+  })
 
   // Built from a "CONCEPT · DIRECTION ONLY" mockup for a "how it's actually
   // going" section — the pill badge and the doctor-summary card's literal
@@ -38,6 +58,25 @@ function Me() {
         </p>
 
       </div>
+
+      {holistic.length > 0 && (
+        <section className="progress-insights">
+          <h2 className="progress-insights__eyebrow">
+            <span className="progress-insights__sparkle">
+              <SparkleIcon />
+            </span>
+            Insights
+          </h2>
+          <ul className="progress-insights__list">
+            {holistic.map((insight) => (
+              <li className="progress-insight" key={insight.id}>
+                <p className="progress-insight__lead">{insight.lead}</p>
+                <p className="progress-insight__body">{insight.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="progress-section">
         <h1 className="progress-section__title">

@@ -369,3 +369,18 @@
   line-height: 1.25;
   color: var(--color-seaweed);
 }
+
+/* The editorial row is taller and its cards wider than the old thumbnail
+   cards — a photo, a pull-quote and an action need the room. The cover is
+   wider still, since it's the invitation into the package. */
+.content-carousel--editorial > * {
+  flex: 0 0 78%;
+}
+
+.content-carousel--editorial > .editorial-cover {
+  flex: 0 0 84%;
+}
+
+.content-carousel--editorial > .content-carousel__more {
+  flex: 0 0 40% !important;
+}

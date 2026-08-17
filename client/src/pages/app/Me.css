@@ -150,3 +150,59 @@ a.settings-row:hover {
   font-size: var(--text-h5);
   color: rgba(0, 0, 0, 0.3);
 }
+
+/* Progress-tab insights — the holistic counterpart to the Today tab's
+   per-habit nudges. One tinted block with a short stack of observations
+   rather than a card per line: this is a read of the whole picture, and
+   splitting it into cards would make each line look like a separate
+   feature. */
+.progress-insights {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(0, 70, 32, 0.05);
+}
+
+.progress-insights__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
+
+.progress-insights__sparkle {
+  font-size: var(--text-base);
+  line-height: 1;
+  color: var(--color-leaf);
+}
+
+.progress-insights__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.progress-insight__lead {
+  margin: 0 0 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-base);
+  line-height: 1.3;
+  color: var(--color-seaweed);
+}
+
+.progress-insight__body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.45;
+  color: rgba(0, 0, 0, 0.6);
+}

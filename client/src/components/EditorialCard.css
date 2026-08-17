@@ -1,0 +1,247 @@
+/* Editorial cards for the Today page's "Living healthy" row. Taller and
+   wider than the thumbnail-and-headline card they replace — the photo is the
+   card, with the pull-quote below it and the action last. Width and snap
+   behaviour come from .content-carousel in pages/app/page.css. */
+.editorial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.editorial-card__image {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 132px;
+  border: none;
+  padding: var(--space-3);
+  background-color: var(--color-seaweed);
+  background-size: cover;
+  background-position: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Bottom-weighted so the headline reversed out over the photo holds up
+   whatever the image behind it is doing. */
+.editorial-card__image-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 30, 15, 0.45) 55%,
+    rgba(0, 30, 15, 0.9) 100%
+  );
+}
+
+.editorial-card__headline {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  line-height: 1.2;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.editorial-card__save {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: var(--text-h5);
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.editorial-card__save:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.editorial-card__save--on {
+  background: var(--color-leaf);
+}
+
+.editorial-card__quote-block {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  flex: 1;
+  padding: var(--space-3) var(--space-3) var(--space-2);
+}
+
+/* The brand's own logo stands in for the editor headshot the reference
+   design uses — see the sourcing note in domain/editorialPicks.js. Boxed
+   rather than circular, since a masthead cropped to a circle reads as a
+   mistake. */
+.editorial-card__avatar {
+  flex-shrink: 0;
+  width: 34px;
+  height: 22px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.editorial-card__quote-text {
+  min-width: 0;
+}
+
+.editorial-card__quote {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.editorial-card__author {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.editorial-card__try-row {
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.try-btn {
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.try-btn:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.try-btn--tried {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+}
+
+/* Cover story. Photo when there's one, the deep brand green when there
+   isn't — either way it reads as a cover rather than a broken image. */
+.editorial-cover {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-seaweed);
+  background-size: cover;
+  background-position: center 22%;
+}
+
+.editorial-cover__tap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.editorial-cover__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 30, 15, 0.25) 0%,
+    rgba(0, 30, 15, 0.7) 55%,
+    rgba(0, 30, 15, 0.95) 100%
+  );
+}
+
+.editorial-cover__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-height: 300px;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.editorial-cover__brand {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.editorial-cover__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h4);
+  line-height: 1.15;
+  letter-spacing: -0.2px;
+  color: #fff;
+}
+
+.editorial-cover__quote,
+.editorial-cover__sub {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.editorial-cover__quote {
+  font-style: italic;
+}
+
+.editorial-cover__cue {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--color-green-apple);
+}

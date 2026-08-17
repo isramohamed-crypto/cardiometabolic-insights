@@ -4,10 +4,10 @@ import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { pickDailyContent, listHabitContent } from '../../domain/habitContent.js'
+import { buildEditorialFeed } from '../../domain/editorialPicks.js'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
-import ContentCard from '../../components/ContentCard.jsx'
+import { EditorialCard, EditorialCover } from '../../components/EditorialCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import OwnedHabits from './OwnedHabits.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
@@ -76,28 +76,21 @@ function Routine() {
   // demo profiles. Keyed on activeHabitsKey instead, it fills in as soon as
   // habits arrive, and still rotates per visit (pickDailyContent's pool
   // fallback is random) rather than per render.
-  const tonightPicks = useMemo(() => {
-    const seen = new Set()
-    const feed = []
-
-    const push = (habit, content) => {
-      if (!content || seen.has(content.id)) return
-      seen.add(content.id)
-      feed.push({ habit, content })
-    }
-
-    // Today's scripted pick for each active habit first — those are the
-    // sourced, deliberately sequenced ones — then the rest of each habit's
-    // library as backfill, deduped across habits since two habits can share
-    // an article.
-    activeHabits.forEach((habit) => push(habit, pickDailyContent(habit.id, habit.startedAt)))
-    activeHabits.forEach((habit) =>
-      listHabitContent(habit.id).forEach((content) => push(habit, content)),
-    )
-
-    return feed.slice(0, Math.max(MIN_FEED_CARDS, activeHabits.length))
+  // The editorial package for this section: a cover story, then one card
+  // per piece of content off the active habits. See domain/editorialPicks.js
+  // — including the note on why pull-quotes are attributed to publications
+  // rather than to named editors.
+  //
+  // Keyed on activeHabitsKey rather than activeHabits itself: that array is
+  // a fresh reference every render, so depending on it would re-randomise
+  // the pool-fallback picks constantly. It also means the feed fills in when
+  // habits are seeded *after* mount (a cold /today visit, or a demo-profile
+  // switch), which a useState initializer silently failed to do.
+  const feed = useMemo(
+    () => buildEditorialFeed(activeHabits),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeHabitsKey])
+    [activeHabitsKey],
+  )
 
   // Next slot used to be its own section with its own "Next slot" header —
   // now it just tucks into the end of whichever habit-list section is
@@ -150,21 +143,16 @@ function Routine() {
 
       {/* Heading follows the clock — "tonight" read as wrong to anyone
           opening this at breakfast (see domain/timeOfDay.js). */}
-      {tonightPicks.length > 0 && (
+      {feed.cards.length > 0 && (
         <section>
           <h2>{getNewForYouHeading()}</h2>
-          <div className="content-carousel">
-            {tonightPicks.map(({ habit, content }) => (
-              <ContentCard
-                key={content.id}
-                id={content.id}
-                thumbnail={content.image || getHabitVisual(habit.pillarId, habit.id)}
-                brand={content.brand}
-                title={content.title}
-                body={content.body}
-                fullBody={content.fullBody}
-                url={content.url}
-                actions
+          <div className="content-carousel content-carousel--editorial">
+            <EditorialCover item={feed.cover} />
+            {feed.cards.map(({ habit, item }) => (
+              <EditorialCard
+                key={item.id}
+                item={item}
+                thumbnail={getHabitVisual(habit.pillarId, habit.id)}
               />
             ))}
             {/* Last card in the row rather than a link under it. As a

@@ -190,17 +190,6 @@ const PILLAR_FALLBACK = {
   },
 }
 
-// Rotates daily among candidates so an unmarked list doesn't show the same
-// suggestion forever, while staying stable within a single day (no
-// reshuffling on every render or mark).
-function pickRotating(candidates, now) {
-  if (candidates.length === 0) return null
-  const dayIndex = Math.floor(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86400000,
-  )
-  return candidates[dayIndex % candidates.length]
-}
-
 function copyFor(row, state) {
   // "not today" and "not marked yet" get the same copy: the easiest version
   // of a habit they already own. Neither is a miss, so neither gets
@@ -218,13 +207,13 @@ const MAX_INSIGHTS = 3
 
 // Builds the insights list from what's been marked today.
 //
-// Most recently marked first — that's what makes the section feel like it's
-// responding to the taps rather than serving a static tip. `marks` is
-// ordered least-to-most-recent (see OwnedChecklistContext), so it's read
-// backwards. With nothing marked yet it falls back to a single rotating
-// suggestion, so the section is never empty.
+// Returns nothing until they've actually marked something. The section used
+// to show a rotating suggestion cold, which made it read as a static tips
+// box; earning it with a tap is what makes it feel like a response. Most
+// recently marked leads, since `marks` is ordered least-to-most-recent (see
+// OwnedChecklistContext) and read backwards here.
 export function getOwnedInsights(rows, marks = [], now = new Date()) {
-  if (rows.length === 0) return []
+  if (rows.length === 0 || marks.length === 0) return []
 
   const fromMarks = [...marks]
     .reverse()
@@ -235,13 +224,5 @@ export function getOwnedInsights(rows, marks = [], now = new Date()) {
     .filter(Boolean)
     .slice(0, MAX_INSIGHTS)
 
-  if (fromMarks.length > 0) return fromMarks
-
-  const markedKeys = new Set(marks.map((mark) => mark.key))
-  const fallback = pickRotating(
-    rows.filter((row) => !markedKeys.has(row.key)),
-    now,
-  )
-  const copy = fallback ? copyFor(fallback, 'todo') : null
-  return copy ? [copy] : []
+  return fromMarks
 }
