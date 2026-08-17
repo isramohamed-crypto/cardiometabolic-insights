@@ -29,7 +29,7 @@ import { NONE_OPTION } from './pillars.js'
 // pipeline exists.
 export const RECOMMENDATIONS_BY_PILLAR = {
   eating: {
-    categoryLabel: 'Optimal Nutrition',
+    categoryLabel: 'Healthy eating',
     gradient: 'linear-gradient(160deg, #FF8C2F 0%, #7a4a10 100%)',
     habits: [
       {

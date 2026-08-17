@@ -1,7 +1,10 @@
-// Checkbox glyph for the Today page's "Habits I own" list. Draws the box
-// and the tick as one icon so the checked state is a single element
-// swapping fill, rather than a box with a separately positioned tick that
-// has to be kept aligned. `checked` fills the box and shows the tick.
+// Tick glyph for the Today page's "Habits I own" list. A circle rather
+// than a checkbox square, and it sits at the trailing edge of each row —
+// both deliberate: a column of square boxes down the left edge reads as
+// an unfinished to-do list, where a trailing circle reads as confirming
+// something that's already true. Draws the ring and the tick as one icon
+// so the checked state is a single element swapping fill, rather than a
+// box with a separately positioned tick to keep aligned.
 function CheckIcon({ checked }) {
   return (
     <svg
@@ -11,19 +14,17 @@ function CheckIcon({ checked }) {
       aria-hidden="true"
       style={{ display: 'block' }}
     >
-      <rect
-        x="3"
-        y="3"
-        width="18"
-        height="18"
-        rx="5.5"
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
         fill={checked ? 'currentColor' : 'none'}
         stroke="currentColor"
         strokeWidth="1.8"
       />
       {checked && (
         <path
-          d="m7.5 12.4 3.1 3.1 5.9-6.4"
+          d="m7.8 12.3 3 3 5.4-6"
           fill="none"
           stroke="#fff"
           strokeWidth="2.1"

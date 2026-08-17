@@ -225,3 +225,43 @@
   font-size: var(--text-small);
   color: rgba(0, 0, 0, 0.5);
 }
+
+/* Horizontal, snap-scrolling row for the Today page's "New for you" picks.
+   Stacked vertically, each pick cost a full card of height and pushed the
+   habit sections below the fold — one card's height for the whole section
+   is the point of this. Cards are deliberately narrower than the viewport
+   so the next one peeks in at the right edge, which is what tells you the
+   row scrolls at all without needing a visible scrollbar. */
+.content-carousel {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: var(--space-2);
+}
+
+.content-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.content-carousel > * {
+  flex: 0 0 86%;
+  scroll-snap-align: start;
+}
+
+/* One card can have a three-line headline and the next a one-liner; in a
+   row (rather than a stack) that difference shows up as ragged card
+   heights, so titles clamp here. Stretch keeps every card as tall as the
+   tallest one regardless. */
+.content-carousel {
+  align-items: stretch;
+}
+
+.content-carousel .content-card__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

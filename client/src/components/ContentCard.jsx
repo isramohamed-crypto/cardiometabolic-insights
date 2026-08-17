@@ -23,15 +23,14 @@ import './ContentCard.css'
 // instead of iframing, with `url` (if set) as a "Read the full article"
 // link-out rather than an embed (see ContentModal.jsx).
 //
-// Two save affordances, one store. By default the card shows the corner
-// heart it always had. Pass `actions` (the Today page's "New for you"
-// feed) to swap it for a bottom row of thumbs-up / thumbs-down / bookmark
-// instead: on a recommendation feed the useful gesture is telling the app
-// whether the pick landed, and a heart sitting next to a thumbs-up would
-// read as two likes. The bookmark writes to the same FavoritesContext the
-// heart does, so anything saved from either place shows up under Learn.
-// A thumbs-down is only recorded here — it's the feed that acts on it, by
-// dropping the card and pulling in the next candidate (see Routine.jsx).
+// `actions` (the Today page's "New for you" feed) adds thumbs-up and
+// thumbs-down beside the save control and swaps the save glyph from the
+// heart to a bookmark — on a recommendation feed the useful gesture is
+// telling the app whether the pick landed, and a heart sitting next to a
+// thumbs-up would read as two likes. Everything else about the card is
+// unchanged: same corner cluster position, no labels, no extra row. Both
+// glyphs write to the same FavoritesContext, so anything saved from
+// either place shows up under Learn. A thumbs-down is only recorded here.
 function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact, actions }) {
   const [open, setOpen] = useState(false)
   const { isFavorite, toggleFavorite } = useFavorites()
@@ -52,52 +51,41 @@ function ContentCard({ id, thumbnail, brand, title, body, fullBody, url, compact
           </div>
         </button>
 
-        {actions ? (
-          <div className="content-card__actions">
-            <button
-              type="button"
-              className={`content-card__action${liked ? ' content-card__action--liked' : ''}`}
-              onClick={() => toggleLike(id)}
-              aria-pressed={liked}
-              aria-label={liked ? 'Undo more like this' : 'More like this'}
-            >
-              <ThumbIcon direction="up" filled={liked} />
-            </button>
+        <div className={`content-card__icons${actions ? ' content-card__icons--feed' : ''}`}>
+          {actions && (
+            <>
+              <button
+                type="button"
+                className={`content-card__icon${liked ? ' content-card__icon--liked' : ''}`}
+                onClick={() => toggleLike(id)}
+                aria-pressed={liked}
+                aria-label={liked ? 'Undo more like this' : 'More like this'}
+              >
+                <ThumbIcon direction="up" filled={liked} />
+              </button>
 
-            <button
-              type="button"
-              className={`content-card__action${disliked ? ' content-card__action--disliked' : ''}`}
-              onClick={() => toggleDislike(id)}
-              aria-pressed={disliked}
-              aria-label={disliked ? 'Undo less like this' : 'Less like this'}
-            >
-              <ThumbIcon direction="down" filled={disliked} />
-            </button>
+              <button
+                type="button"
+                className={`content-card__icon${disliked ? ' content-card__icon--disliked' : ''}`}
+                onClick={() => toggleDislike(id)}
+                aria-pressed={disliked}
+                aria-label={disliked ? 'Undo less like this' : 'Less like this'}
+              >
+                <ThumbIcon direction="down" filled={disliked} />
+              </button>
+            </>
+          )}
 
-            <button
-              type="button"
-              className={`content-card__action content-card__action--save${
-                saved ? ' content-card__action--saved' : ''
-              }`}
-              onClick={() => toggleFavorite(item)}
-              aria-pressed={saved}
-              aria-label={saved ? 'Remove from saved' : 'Save to Learn'}
-            >
-              <BookmarkIcon filled={saved} />
-              <span className="content-card__action-label">{saved ? 'Saved' : 'Save'}</span>
-            </button>
-          </div>
-        ) : (
           <button
             type="button"
-            className={`content-card__heart${saved ? ' content-card__heart--active' : ''}`}
+            className={`content-card__icon${saved ? ' content-card__icon--saved' : ''}`}
             onClick={() => toggleFavorite(item)}
             aria-pressed={saved}
             aria-label={saved ? 'Remove from saved' : 'Save for later'}
           >
-            <HeartIcon filled={saved} />
+            {actions ? <BookmarkIcon filled={saved} /> : <HeartIcon filled={saved} />}
           </button>
-        )}
+        </div>
       </div>
 
       {open && <ContentModal content={item} onClose={() => setOpen(false)} />}

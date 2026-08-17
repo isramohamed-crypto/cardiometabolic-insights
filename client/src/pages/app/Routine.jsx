@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
-import { useReactions } from '../../content/ReactionsContext.jsx'
 import { getDemoProfile } from '../../demo/profiles.js'
 import { OWNERSHIP_STATE } from '../../domain/habit.js'
-import { pickDailyContent, listHabitContent } from '../../domain/habitContent.js'
+import { pickDailyContent } from '../../domain/habitContent.js'
 import { getNewForYouHeading } from '../../domain/timeOfDay.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import ContentCard from '../../components/ContentCard.jsx'
@@ -22,17 +22,9 @@ const BUILDING_STATES = [
 
 const ACTIVE_STATES = [OWNERSHIP_STATE.TRIALED, ...BUILDING_STATES]
 
-// Floor for the "New for you" feed. One pick per active habit alone leaves
-// a brand-new visitor looking at a single card, which doesn't read as a
-// place where new things surface — so the feed pads itself out of the same
-// habits' wider libraries up to this many cards. Habits with more active
-// habits than this still show one per habit rather than being truncated.
-const MIN_FEED_CARDS = 3
-
 function Routine() {
   const { habits, slotCount, seedHabits } = useHabits()
   const { loadAnswers } = useOnboarding()
-  const { isDisliked } = useReactions()
   const [addingHabit, setAddingHabit] = useState(false)
 
   // User-testing fallback: a cold, direct visit to /routine (no onboarding,
@@ -66,42 +58,25 @@ function Routine() {
   // liked.
   const activeHabitsKey = activeHabits.map((h) => `${h.id}@${h.startedAt}`).join('|')
 
-  // The "New for you" candidate list, longest-lived first: today's scripted
-  // pick for each active habit, then the rest of each habit's library as
-  // backfill. Deduped across habits, since two habits can share an article.
+  // One shared "tonight" pick per active habit, combined into a single
+  // section above the habit cards — rather than repeating a content teaser
+  // underneath each individual card.
   //
   // This used to be a useState initializer, which ran once at mount and so
   // came up empty whenever habits were seeded *after* the page mounted — a
   // cold /routine visit (seeded by the effect above) or a demo-profile
-  // switch from the Progress tab. That silently emptied this whole section
-  // for two of the three demo profiles. Keyed on activeHabitsKey instead,
-  // it now fills in as soon as habits arrive, and still rotates per visit
-  // (pickDailyContent's pool fallback is random) rather than per render.
-  const contentFeed = useMemo(() => {
-    const seen = new Set()
-    const feed = []
-
-    const push = (habit, content) => {
-      if (!content || seen.has(content.id)) return
-      seen.add(content.id)
-      feed.push({ habit, content })
-    }
-
-    activeHabits.forEach((habit) => push(habit, pickDailyContent(habit.id, habit.startedAt)))
-    activeHabits.forEach((habit) =>
-      listHabitContent(habit.id).forEach((content) => push(habit, content)),
-    )
-
-    return feed
+  // switch. That silently emptied this whole section for two of the three
+  // demo profiles. Keyed on activeHabitsKey instead, it fills in as soon as
+  // habits arrive, and still rotates per visit (pickDailyContent's pool
+  // fallback is random) rather than per render.
+  const tonightPicks = useMemo(
+    () =>
+      activeHabits
+        .map((habit) => ({ habit, content: pickDailyContent(habit.id, habit.startedAt) }))
+        .filter((entry) => entry.content),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeHabitsKey])
-
-  // Disliking a card drops it and lets the next candidate slide up into
-  // its place, rather than leaving a gap — which is why the feed above is
-  // built as a long candidate list and only sliced here at render.
-  const visibleFeed = contentFeed
-    .filter(({ content }) => !isDisliked(content.id))
-    .slice(0, Math.max(MIN_FEED_CARDS, activeCount))
+    [activeHabitsKey],
+  )
 
   // Next slot used to be its own section with its own "Next slot" header —
   // now it just tucks into the end of whichever habit-list section is
@@ -152,18 +127,13 @@ function Routine() {
     <div className="page">
       <TrialPromptModal onOpenAddHabit={() => setAddingHabit(true)} />
 
-      {/* Content leads the page, and its heading follows the clock —
-          "tonight" read as wrong to anyone opening this at breakfast (see
-          domain/timeOfDay.js). The old "See more in Learn" link-out is
-          gone: the cards carry their own thumbs-up / thumbs-down / save
-          now, so the section is something to react to in place rather
-          than a teaser pointing somewhere else. Saving still lands on the
-          Learn tab, which is where a saved article belongs. */}
-      {visibleFeed.length > 0 && (
+      {/* Heading follows the clock — "tonight" read as wrong to anyone
+          opening this at breakfast (see domain/timeOfDay.js). */}
+      {tonightPicks.length > 0 && (
         <section>
           <h2>{getNewForYouHeading()}</h2>
-          <div className="routine-habit-list">
-            {visibleFeed.map(({ habit, content }) => (
+          <div className="content-carousel">
+            {tonightPicks.map(({ habit, content }) => (
               <ContentCard
                 key={content.id}
                 id={content.id}
@@ -177,6 +147,13 @@ function Routine() {
               />
             ))}
           </div>
+          <Link
+            to="/read"
+            className="routine-habit-card__drip-more"
+            style={{ display: 'inline-block', marginTop: 10 }}
+          >
+            See more in Learn →
+          </Link>
         </section>
       )}
 

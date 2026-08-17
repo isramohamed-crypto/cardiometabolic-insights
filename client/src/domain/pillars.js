@@ -16,7 +16,7 @@
 // area for now. Re-add it here (and in onboarding/pillars.js +
 // recommendedHabits.js) if that changes.
 export const PILLARS_CANONICAL = [
-  { id: 'eating', label: 'Optimal Nutrition' },
+  { id: 'eating', label: 'Healthy eating' },
   { id: 'moving', label: 'Physical Activity' },
   { id: 'sleep', label: 'Restorative Sleep' },
   { id: 'stress', label: 'Stress Management' },
