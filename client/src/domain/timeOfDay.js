@@ -16,14 +16,18 @@ export function getTimeOfDay(now = new Date()) {
   return 'evening'
 }
 
-const NEW_FOR_YOU_SUFFIX = {
+const HEADING_SUFFIX = {
   morning: 'this morning',
   afternoon: 'this afternoon',
   evening: 'tonight',
 }
 
+// "Healthy living for you ..." rather than the original "New for you ..." —
+// the section is a standing place for lifestyle content, and "new" was
+// making a promise about freshness that the pick can't always keep (it
+// rotates from a fixed pool, so the same article can come back).
 export function getNewForYouHeading(now = new Date()) {
-  return `New for you ${NEW_FOR_YOU_SUFFIX[getTimeOfDay(now)]}`
+  return `Healthy living for you ${HEADING_SUFFIX[getTimeOfDay(now)]}`
 }
 
 // Second person, used by the owned-habits checklist ("Did you do these

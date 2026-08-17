@@ -152,7 +152,7 @@
    generated read on the habits, not another habit). */
 .owned-insights {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-3);
   margin-top: var(--space-3);
   padding: var(--space-4);
@@ -168,6 +168,8 @@
 
 .owned-insights__icon {
   flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
   font-size: var(--text-h4);
   line-height: 1;
   color: var(--color-leaf);
@@ -180,10 +182,11 @@
   min-width: 0;
 }
 
-.owned-insights__title {
+.owned-insights__lead {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-base);
+  font-size: var(--text-small);
+  line-height: 1.35;
   color: var(--color-seaweed);
 }
 
@@ -195,7 +198,8 @@
 }
 
 .owned-insights__arrow {
-  margin-left: auto;
+  align-self: flex-start;
+  margin-top: 2px;
   flex-shrink: 0;
   font-size: var(--text-h5);
   color: var(--color-seaweed);

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 import { useOwnedChecklist } from '../../habits/OwnedChecklistContext.jsx'
 import { listFoundationHabits } from '../../domain/foundationHabits.js'
+import { getOwnedInsight } from '../../domain/ownedInsights.js'
 import { getDayWord } from '../../domain/timeOfDay.js'
 import { getAclmIcon } from '../../domain/aclmIcons.js'
 import CheckIcon from '../../components/CheckIcon.jsx'
@@ -38,7 +39,7 @@ const ALL_BURST_MS = 1600
 // so this populates for all of them and for a real onboarding run alike.
 function OwnedHabits() {
   const { answers } = useOnboarding()
-  const { isChecked, toggle, setAll } = useOwnedChecklist()
+  const { checkedToday, isChecked, toggle, setAll } = useOwnedChecklist()
   const [burstRow, setBurstRow] = useState(null)
   const [celebrateAll, setCelebrateAll] = useState(false)
 
@@ -46,6 +47,10 @@ function OwnedHabits() {
     () => listFoundationHabits(answers.habitsWorking || {}),
     [answers.habitsWorking],
   )
+
+  // Recomputed on every tick on purpose — reacting to the habit just
+  // ticked is the whole point of the card (see domain/ownedInsights.js).
+  const insight = getOwnedInsight(rows, checkedToday)
 
   const doneCount = rows.filter((row) => isChecked(row.key)).length
   const allDone = rows.length > 0 && doneCount === rows.length
@@ -137,26 +142,24 @@ function OwnedHabits() {
         </div>
       )}
 
-      {/* Insights placeholder. What this card actually says isn't decided
-          yet — it's here as the shape of the idea (a generated read on what
-          these habits add up to) with a real route through to the Progress
-          tab, where the trend data already lives. Swap the body copy for a
-          real derived insight when there's one to show; the card, its
-          sparkle and its link don't need to change for that. */}
-      <Link to="/me" className="owned-insights">
-        <span className="owned-insights__icon">
-          <SparkleIcon />
-        </span>
-        <span className="owned-insights__text">
-          <span className="owned-insights__title">What this adds up to</span>
-          <span className="owned-insights__body">
-            Your habits are building a pattern. See how it's trending.
+      {/* Insight built off the habits above: which one they most recently
+          ticked, and whether it's done yet. Copy lives in
+          domain/ownedInsights.js. Still routes to Progress — that's where
+          the trend view this is a doorway into already lives. */}
+      {insight && (
+        <Link to="/me" className="owned-insights">
+          <span className="owned-insights__icon">
+            <SparkleIcon />
           </span>
-        </span>
-        <span className="owned-insights__arrow" aria-hidden="true">
-          →
-        </span>
-      </Link>
+          <span className="owned-insights__text">
+            <span className="owned-insights__lead">{insight.lead}</span>
+            <span className="owned-insights__body">{insight.suggestion}</span>
+          </span>
+          <span className="owned-insights__arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
+      )}
     </section>
   )
 }
