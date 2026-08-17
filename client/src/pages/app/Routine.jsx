@@ -95,8 +95,9 @@ function Routine() {
   )
 
   // One shared "tonight" pick per active habit, combined into a single
-  // section below the habit cards — rather than repeating a content teaser
-  // underneath each individual card.
+  // section above the habit cards — rather than repeating a content teaser
+  // underneath each individual card. Sits first on the page so the fresh
+  // content is what greets you, with the habit list below it.
   const tonightPicks = habits
     .filter((h) => ACTIVE_STATES.includes(h.ownershipState))
     .map((h) => ({ habit: h, content: dailyContent[h.id] }))
@@ -116,18 +117,6 @@ function Routine() {
   return (
     <div className="page">
       <TrialPromptModal onOpenAddHabit={() => setAddingHabit(true)} />
-
-      {(activeHabits.length > 0 || nextSlotContent) && (
-        <section>
-          <h2>Habits I'm building</h2>
-          <div className="routine-habit-list">
-            {activeHabits.map((habit) => (
-              <RoutineHabitCard key={habit.id} habit={habit} />
-            ))}
-            {nextSlotContent}
-          </div>
-        </section>
-      )}
 
       {tonightPicks.length > 0 && (
         <section>
@@ -153,6 +142,18 @@ function Routine() {
           >
             See more in Learn →
           </Link>
+        </section>
+      )}
+
+      {(activeHabits.length > 0 || nextSlotContent) && (
+        <section>
+          <h2>Habits I'm building</h2>
+          <div className="routine-habit-list">
+            {activeHabits.map((habit) => (
+              <RoutineHabitCard key={habit.id} habit={habit} />
+            ))}
+            {nextSlotContent}
+          </div>
         </section>
       )}
 
