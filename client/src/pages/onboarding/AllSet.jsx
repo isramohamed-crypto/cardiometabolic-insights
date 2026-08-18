@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useHabits } from '../../habits/HabitsContext.jsx'
+import Tagline from '../../components/Tagline.jsx'
 import './QuestionScreen.css'
 import './AllSet.css'
 
@@ -87,6 +88,11 @@ function AllSet() {
         >
           Go to my routine
         </button>
+
+        {/* Closes onboarding on the same line it opened with, and the same
+            line that now signs off every tab inside the app. Joins the
+            existing cascade as its last beat. */}
+        <Tagline className="tagline--bare all-set__in all-set__in--6" />
       </div>
     </main>
   )

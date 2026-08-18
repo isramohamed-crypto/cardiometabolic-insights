@@ -1,0 +1,25 @@
+/* Quiet sign-off, not a banner: hairline above it so it reads as the end of
+   the page rather than one more piece of content, and italic heading type in
+   brand green to match the landing screen's treatment of the same line. */
+.tagline {
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--text-small);
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: var(--color-seaweed);
+  opacity: 0.55;
+}
+
+/* On the onboarding sign-off screen it sits under the CTA on a white card
+   with its own centered rhythm — no rule needed there, the CTA already
+   closes the block. */
+.tagline--bare {
+  margin-top: var(--space-5);
+  padding-top: 0;
+  border-top: none;
+}

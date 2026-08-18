@@ -75,7 +75,11 @@ function Onboarding() {
           <p className="onboarding__subtitle">
             Build healthier habits.
             <br />
-            <span className="onboarding__subtitle-accent">Live longer and live well.</span>
+            {/* The brand line — same words as components/Tagline.jsx, which
+                carries it through the rest of the app; display type here
+                because this is the one screen it gets to be the headline
+                thought rather than a sign-off. */}
+            <span className="onboarding__subtitle-accent">Living well to live better.</span>
           </p>
 
           <button
