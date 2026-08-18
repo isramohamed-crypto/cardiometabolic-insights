@@ -13,6 +13,7 @@ import EditorialCard from '../../components/EditorialCard.jsx'
 import RoutineHabitCard from './RoutineHabitCard.jsx'
 import OwnedHabits from './OwnedHabits.jsx'
 import CheckInPanel from '../../components/CheckInPanel.jsx'
+import CheckInSheet from '../../components/CheckInSheet.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import TrialPromptModal from './TrialPromptModal.jsx'
 import './page.css'
@@ -37,6 +38,9 @@ function Routine() {
   const { loadAnswers } = useOnboarding()
   const { isDisliked } = useReactions()
   const [addingHabit, setAddingHabit] = useState(false)
+  // Answering the inline check-in opens the full sheet rather than expanding
+  // in place — one answered state, in one place, however it was answered.
+  const [checkInOpen, setCheckInOpen] = useState(false)
 
   // User-testing fallback: a cold, direct visit to /today (no onboarding,
   // no ?profile= seed) would otherwise render an empty page. Seed the
@@ -195,12 +199,9 @@ function Routine() {
           new person — the first-time profile gets the mic only. */}
       {showInlineCheckIn && (
         <section className="today-checkin">
-          <h2>Daily check-in</h2>
-          <p className="page__section-lead">
-            A minute on what today actually needs. Say it or tap it.
-          </p>
+          <h2>Today's check-in</h2>
           <div className="today-checkin__panel">
-            <CheckInPanel />
+            <CheckInPanel inline onAnswered={() => setCheckInOpen(true)} />
           </div>
         </section>
       )}
@@ -219,6 +220,8 @@ function Routine() {
           </div>
         </section>
       )}
+
+      {checkInOpen && <CheckInSheet onClose={() => setCheckInOpen(false)} />}
 
       {habits.length === 0 && (
         <section>

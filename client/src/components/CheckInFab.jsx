@@ -21,7 +21,7 @@ function CheckInFab() {
         type="button"
         className={`checkin-fab${checkIn ? ' checkin-fab--answered' : ''}`}
         onClick={() => setOpen(true)}
-        aria-label={checkIn ? 'Today’s check-in' : 'Start your daily check-in'}
+        aria-label="Today’s check-in"
       >
         <MicIcon />
         {checkIn && <span className="checkin-fab__dot" aria-hidden="true" />}

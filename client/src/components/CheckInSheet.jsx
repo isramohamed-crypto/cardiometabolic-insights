@@ -23,7 +23,7 @@ function CheckInSheet({ onClose }) {
     <div className="checkin">
       <button type="button" className="checkin__backdrop" onClick={onClose} aria-label="Close" />
 
-      <div className="checkin__sheet" role="dialog" aria-label="Daily check-in">
+      <div className="checkin__sheet" role="dialog" aria-label="Today’s check-in">
         <button type="button" className="checkin__close" onClick={onClose} aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>

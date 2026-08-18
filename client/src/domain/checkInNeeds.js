@@ -27,6 +27,33 @@ export const CHECK_IN_NEEDS = [
     reply: 'One small swap is enough to count.',
   },
   {
+    id: 'move-more',
+    label: 'Move more',
+    blurb: 'Get out of the chair for a bit',
+    pillarId: 'moving',
+    optionKey: 'moving:daily-walks',
+    spoken: ['move', 'moving', 'walk', 'walking', 'exercise', 'workout', 'active', 'steps', 'stiff', 'sitting'],
+    reply: 'A short one counts as a real one.',
+  },
+  {
+    id: 'stay-connected',
+    label: 'Stay connected',
+    blurb: 'Reach someone you meant to',
+    pillarId: 'social',
+    optionKey: 'social:time-with-friends',
+    spoken: ['lonely', 'alone', 'friend', 'friends', 'family', 'connect', 'connected', 'isolated', 'talk to someone'],
+    reply: 'One message is a whole thing.',
+  },
+  {
+    id: 'drink-water',
+    label: 'Drink more water',
+    blurb: 'Catch up before the afternoon',
+    pillarId: 'eating',
+    optionKey: 'eating:drinking-water',
+    spoken: ['water', 'hydrate', 'hydrated', 'hydration', 'thirsty', 'headache', 'dehydrated'],
+    reply: 'Start with the next glass, not the whole day.',
+  },
+  {
     id: 'sleep-on-time',
     label: 'Go to bed on time',
     blurb: 'Get the night started earlier',
@@ -37,7 +64,21 @@ export const CHECK_IN_NEEDS = [
   },
 ]
 
+// Typed or spoken input that doesn't match any of the needs above is kept
+// as-is rather than being forced into the nearest one — guessing that
+// "my back hurts" means "de-stress" would put words in someone's mouth and
+// then serve content off that guess. The check-in still records what they
+// said; it just asks them to point at the closest need instead of picking
+// for them.
+export const UNMATCHED_NEED = {
+  id: 'unmatched',
+  label: 'Something else',
+  pillarId: null,
+  reply: 'Noted for today.',
+}
+
 export function getNeed(id) {
+  if (id === UNMATCHED_NEED.id) return UNMATCHED_NEED
   return CHECK_IN_NEEDS.find((need) => need.id === id) || null
 }
 

@@ -296,65 +296,165 @@
   cursor: pointer;
 }
 
-/* Inline placement on the Today page. The panel is shared with the bottom
-   sheet, so this only supplies the surface around it — the sheet brings its
-   own. */
+/* Inline placement on the Today page — the compact variant (see
+   CheckInPanel's `inline` prop). Deliberately small: this is a prompt on a
+   busy page, not the page's main event. The full-size version with the mic
+   is what the floating button opens. */
 .today-checkin__panel {
-  padding: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-/* The sheet leads with its own eyebrow and a big headline; inline, the
-   section heading above already says "Daily check-in", so the panel drops the
-   eyebrow and steps the headline down to avoid two titles stacked on each
-   other.
-   The headline is an <h2>, and inline it lands inside .page — whose own h2
-   rule is a small uppercase letter-spaced section label. Left alone that
-   turned the prompt into "WHAT DO YOU NEED HELP WITH TODAY?", so the
-   heading styles are restated here rather than inherited. */
-.today-checkin__panel .checkin__eyebrow {
-  display: none;
-}
-
-.today-checkin__panel .checkin__headline {
-  margin: 0 0 var(--space-4);
-  font-family: var(--font-heading);
+.checkin__compact-prompt {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-h5);
-  line-height: 1.25;
-  letter-spacing: -0.1px;
-  text-transform: none;
-  color: #1a1a1a;
+  font-size: var(--text-small);
+  line-height: 1.3;
+  color: rgba(0, 0, 0, 0.85);
 }
 
-/* Inline, the suggestions can bleed to the card's edges the same way they do
-   in the sheet — just with this surface's padding instead. */
-.today-checkin__panel .checkin__suggestions {
-  margin: 0 calc(-1 * var(--space-4));
+.checkin__compact-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.today-checkin__panel .checkin__suggestions-label,
-.today-checkin__panel .checkin__track {
-  margin-left: var(--space-4);
-  margin-right: var(--space-4);
-  padding-left: 0;
-  padding-right: 0;
+.checkin__compact-chip {
+  padding: 7px var(--space-3);
+  border: 1px solid rgba(0, 70, 32, 0.2);
+  border-radius: 999px;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--color-seaweed);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.today-checkin__panel .checkin__track .snippet {
-  flex: 0 0 82%;
+.checkin__compact-chip:hover {
+  background: rgba(27, 188, 60, 0.08);
+  border-color: var(--color-leaf);
 }
 
-/* A smaller mic here than in the sheet: inline it's one section among
-   several, not the whole surface. */
-.today-checkin__panel .checkin__voice {
-  padding: var(--space-2) 0 var(--space-4);
+/* Points at the floating mic rather than repeating it — one voice target,
+   not two. */
+.checkin__compact-hint {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.42);
 }
 
-.today-checkin__panel .checkin__mic {
-  width: 56px;
-  height: 56px;
-  font-size: 26px;
+.checkin__compact-reply {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.checkin__compact-reply strong {
+  color: var(--color-seaweed);
+}
+
+.checkin__compact-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.checkin__compact-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: var(--color-seaweed);
+  cursor: pointer;
+}
+
+.checkin__compact-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.checkin__compact-reset {
+  margin-left: auto;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  color: rgba(0, 0, 0, 0.4);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* Free-text entry, in both the compact and full variants. Sits between the
+   pills and the mic hint: the pills are the fast path, typing is the escape
+   hatch when none of them is it. */
+.checkin__typed {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.checkin__typed-input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px var(--space-3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.checkin__typed-input::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.checkin__typed-input:focus {
+  outline: none;
+  border-color: var(--color-leaf);
+  box-shadow: 0 0 0 2px rgba(27, 188, 60, 0.15);
+}
+
+.checkin__typed-submit {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-seaweed);
+  font-size: var(--text-base);
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.checkin__typed-submit:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* The pills wrap to as many rows as they need now there are six of them. */
+.checkin__compact-options {
+  row-gap: 6px;
 }
