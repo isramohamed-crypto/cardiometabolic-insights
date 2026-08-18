@@ -197,42 +197,33 @@
   color: rgba(0, 0, 0, 0.35);
 }
 
+/* Wrapping chips rather than a column of full-width rows — six of those
+   turned the sheet into a scrolling list. Same shape as the inline card's
+   chips, so the two surfaces read as one control. */
 .checkin__options {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .checkin__option {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--space-3) var(--space-4);
-  border: 1.5px solid rgba(0, 70, 32, 0.15);
-  border-radius: var(--radius-md);
+  padding: 9px var(--space-3);
+  border: 1px solid rgba(0, 70, 32, 0.2);
+  border-radius: 999px;
   background: #fff;
-  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--color-seaweed);
   cursor: pointer;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .checkin__option:hover {
   border-color: var(--color-leaf);
-  background: rgba(27, 188, 60, 0.05);
-}
-
-.checkin__option-label {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-base);
-  color: var(--color-seaweed);
-}
-
-.checkin__option-blurb {
-  font-family: var(--font-body);
-  font-size: var(--text-small);
-  line-height: 1.35;
-  color: rgba(0, 0, 0, 0.55);
+  background: rgba(27, 188, 60, 0.08);
 }
 
 .checkin__heard {

@@ -205,8 +205,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
                       className="checkin__option"
                       onClick={() => answer(need.id, checkIn.spoken)}
                     >
-                      <span className="checkin__option-label">{need.label}</span>
-                      <span className="checkin__option-blurb">{need.blurb}</span>
+                      {need.label}
                     </button>
                   ))}
                 </div>
@@ -312,6 +311,10 @@ function CheckInPanel({ inline = false, onAnswered }) {
             <p className="checkin__or">or pick one</p>
 
             <div className="checkin__options">
+              {/* Chips, not full-width rows. Six stacked buttons with a
+                  description each made the sheet a scrolling list; the label
+                  alone is enough to choose from, and the blurbs were only
+                  ever read once. */}
               {CHECK_IN_NEEDS.map((need) => (
                 <button
                   key={need.id}
@@ -319,8 +322,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
                   className="checkin__option"
                   onClick={() => answer(need.id)}
                 >
-                  <span className="checkin__option-label">{need.label}</span>
-                  <span className="checkin__option-blurb">{need.blurb}</span>
+                  {need.label}
                 </button>
               ))}
             </div>
