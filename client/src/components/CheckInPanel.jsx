@@ -76,7 +76,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
   const startListening = () => {
     const recognition = getRecognition()
     if (!recognition) {
-      setVoiceError('This browser has no speech recognition — pick one below instead.')
+      setVoiceError('This browser has no speech recognition — pick or type instead.')
       return
     }
     recognitionRef.current = recognition
@@ -94,15 +94,15 @@ function CheckInPanel({ inline = false, onAnswered }) {
       if (!isFinal) return
       const match = matchSpokenNeed(transcript)
       if (match) answer(match.id, transcript)
-      else setVoiceError('I didn’t catch which one that was — pick one below.')
+      else setVoiceError('I didn’t catch which one that was — pick or type instead.')
       recognition.stop()
     }
     recognition.onerror = (event) => {
       setListening(false)
       setVoiceError(
         event.error === 'not-allowed'
-          ? 'Microphone access is off for this site — pick one below instead.'
-          : 'The mic didn’t catch anything — pick one below instead.',
+          ? 'Microphone access is off for this site — pick or type instead.'
+          : 'The mic didn’t catch anything — pick or type instead.',
       )
     }
     recognition.onend = () => setListening(false)
@@ -111,7 +111,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
       recognition.start()
     } catch {
       setListening(false)
-      setVoiceError('Couldn’t start the mic — pick one below instead.')
+      setVoiceError('Couldn’t start the mic — pick or type instead.')
     }
   }
 
@@ -153,15 +153,28 @@ function CheckInPanel({ inline = false, onAnswered }) {
               ))}
             </div>
 
+            {/* Mic sits in the row with the field and the submit arrow.
+                Previously the field said "or type…" and a line underneath
+                said "or tap the microphone" — two "or"s for one decision.
+                One row, three ways to answer, no instructions needed. */}
             <form className="checkin__typed" onSubmit={submitTyped}>
               <input
                 type="text"
                 className="checkin__typed-input"
-                placeholder="or type what's going on…"
-                value={typed}
+                placeholder={listening ? 'Listening…' : "Type what's going on…"}
+                value={listening && heard ? heard : typed}
                 onChange={(e) => setTyped(e.target.value)}
                 aria-label="Type what you need help with"
               />
+              <button
+                type="button"
+                className={`checkin__typed-mic${listening ? ' checkin__typed-mic--live' : ''}`}
+                onClick={listening ? stopListening : startListening}
+                aria-pressed={listening}
+                aria-label={listening ? 'Stop listening' : 'Answer with your voice'}
+              >
+                <MicIcon />
+              </button>
               <button
                 type="submit"
                 className="checkin__typed-submit"
@@ -172,9 +185,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
               </button>
             </form>
 
-            <p className="checkin__compact-hint">
-              or tap the microphone to log your check-in with voice
-            </p>
+            {voiceError && <p className="checkin__compact-error">{voiceError}</p>}
           </>
         )}
       </div>
@@ -293,7 +304,7 @@ function CheckInPanel({ inline = false, onAnswered }) {
               <input
                 type="text"
                 className="checkin__typed-input"
-                placeholder="or type what's going on…"
+                placeholder="Type what's going on…"
                 value={typed}
                 onChange={(e) => setTyped(e.target.value)}
                 aria-label="Type what you need help with"

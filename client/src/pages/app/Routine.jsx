@@ -200,6 +200,10 @@ function Routine() {
       {showInlineCheckIn && (
         <section className="today-checkin">
           <h2>Today's check-in</h2>
+          <p className="page__section-lead">
+            Tell us what today actually needs and we'll point the day's reading at it. Takes a
+            few seconds.
+          </p>
           <div className="today-checkin__panel">
             <CheckInPanel inline onAnswered={() => setCheckInOpen(true)} />
           </div>

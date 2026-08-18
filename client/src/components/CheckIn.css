@@ -333,14 +333,14 @@
   border-color: var(--color-leaf);
 }
 
-/* Points at the floating mic rather than repeating it — one voice target,
-   not two. */
-.checkin__compact-hint {
+/* Voice failures surface here rather than in a toast — the control that
+   failed is right above it. */
+.checkin__compact-error {
   margin: var(--space-2) 0 0;
   font-family: var(--font-body);
   font-size: var(--text-caption);
   line-height: 1.35;
-  color: rgba(0, 0, 0, 0.42);
+  color: #9a3412;
 }
 
 .checkin__compact-reply {
@@ -421,6 +421,39 @@
   outline: none;
   border-color: var(--color-leaf);
   box-shadow: 0 0 0 2px rgba(27, 188, 60, 0.15);
+}
+
+/* Mic in the input row, sized to match the submit arrow beside it. The
+   full-size mic still lives in the sheet the floating button opens; this is
+   the same action at row scale. */
+.checkin__typed-mic {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(0, 70, 32, 0.2);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--color-seaweed);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.checkin__typed-mic:hover {
+  background: rgba(27, 188, 60, 0.1);
+}
+
+/* Live only while the browser is really listening — driven by the
+   recognition API's own events, not a timer. */
+.checkin__typed-mic--live {
+  border-color: var(--color-leaf);
+  background: var(--color-leaf);
+  color: #fff;
+  animation: checkin-pulse 1.4s ease-in-out infinite;
 }
 
 .checkin__typed-submit {
