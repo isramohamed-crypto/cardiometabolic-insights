@@ -14,6 +14,7 @@ import RoutineHabitCard from './RoutineHabitCard.jsx'
 import OwnedHabits from './OwnedHabits.jsx'
 import CheckInPanel from '../../components/CheckInPanel.jsx'
 import CheckInSheet from '../../components/CheckInSheet.jsx'
+import PeerQuotes from '../../components/PeerQuotes.jsx'
 import AddHabitFlow from './AddHabitFlow.jsx'
 import TrialPromptModal from './TrialPromptModal.jsx'
 import './page.css'
@@ -209,6 +210,11 @@ function Routine() {
           </div>
         </section>
       )}
+
+      {/* Directly under the check-in: it asks how today is going, and this
+          answers with how it went for someone else — no numbers involved.
+          Gated the same way, so neither shows on day one. */}
+      {showInlineCheckIn && <PeerQuotes />}
 
       {(activeHabits.length > 0 || nextSlotContent) && (
         <section>

@@ -1,0 +1,92 @@
+/* Quote cards under the daily check-in. Type-forward on the brand green,
+   with the publication's logo on a white plate as the only image — see
+   domain/peerQuotes.js for why there are no portraits. Narrower than the
+   story cards in the content row so the two rows don't read as the same
+   thing. */
+.peer-quotes__track {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: var(--space-1);
+}
+
+.peer-quotes__track::-webkit-scrollbar {
+  display: none;
+}
+
+.peer-quote {
+  position: relative;
+  flex: 0 0 62%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  min-height: 168px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-seaweed);
+  overflow: hidden;
+}
+
+/* Oversized quote mark, cropped by the card — carries the "this is someone
+   talking" signal that a portrait would otherwise do. */
+.peer-quote__mark {
+  position: absolute;
+  top: -18px;
+  right: 10px;
+  font-family: var(--font-heading);
+  font-size: 96px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.peer-quote__text {
+  position: relative;
+  margin: 0;
+  flex: 1;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+  color: #fff;
+}
+
+.peer-quote__who {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-small);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* White plate behind the masthead: most of these logos are dark and this
+   card is not. Same treatment the story cards use. */
+.peer-quote__brand {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: var(--space-3);
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.peer-quote__brand img {
+  display: block;
+  height: 13px;
+  width: auto;
+  max-width: 104px;
+  object-fit: contain;
+}
+
+.peer-quote__brand span {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-seaweed);
+}
