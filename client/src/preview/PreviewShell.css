@@ -1,0 +1,102 @@
+.preview-shell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  min-height: 100vh;
+  padding: var(--space-6);
+  background: #f2f3f5;
+}
+
+.preview-shell__tray {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 190px;
+  flex-shrink: 0;
+}
+
+.preview-shell__brand {
+  margin: 0 0 var(--space-1) var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-h5);
+  color: var(--color-seaweed);
+}
+
+.preview-shell__section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.preview-shell__heading {
+  margin: 0 0 2px var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(0, 70, 32, 0.5);
+}
+
+.preview-shell__item {
+  width: 100%;
+  border: 1px solid rgba(0, 70, 32, 0.15);
+  border-radius: var(--radius-pill);
+  background: var(--color-coconut);
+  color: var(--color-seaweed);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  text-align: left;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.preview-shell__item:hover {
+  border-color: var(--color-seaweed);
+}
+
+.preview-shell__item--active {
+  background: var(--color-seaweed);
+  border-color: var(--color-seaweed);
+  color: var(--color-coconut);
+}
+
+.preview-shell__frame {
+  position: relative;
+  flex-shrink: 0;
+  width: 402px;
+  height: min(874px, 92vh);
+  border-radius: 34px;
+  background: var(--color-coconut);
+  box-shadow:
+    0 40px 80px -30px rgba(30, 36, 24, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.preview-shell__home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.preview-shell__iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
