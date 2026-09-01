@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { listDemoProfiles as getDemoProfiles } from '../demo/profiles.js'
 import './PreviewShell.css'
 
@@ -13,12 +13,11 @@ import './PreviewShell.css'
 // The tray is a launcher, not a live-synced router: clicking an item
 // hard-navigates the iframe to that path (remounting it via `key` so
 // re-clicking the same demo profile re-seeds it instead of no-op'ing).
-// We poll the iframe's own location to keep the "App" section's active
-// state honest if someone navigates inside the phone itself (e.g. taps
-// its bottom tab bar), since that doesn't fire any event we can listen
-// to from the parent.
-const APP_TAB_PATHS = ['/today', '/read', '/collection', '/me']
-
+// It floats fixed over the page rather than sitting in flow next to the
+// frame, so collapsing/expanding it never shifts the frame's own
+// position — the frame is centered by its own independent container.
+// Getting around the rest of the app (its real tabs included) happens
+// inside the phone itself, same as on a real device.
 function buildNavSections() {
   const demoProfiles = getDemoProfiles()
   return [
@@ -34,15 +33,6 @@ function buildNavSections() {
     {
       heading: 'Flow',
       items: [{ key: 'onboarding', label: 'Onboarding', path: '/' }],
-    },
-    {
-      heading: 'App',
-      items: [
-        { key: 'today', label: 'Today', path: '/today' },
-        { key: 'read', label: 'Read', path: '/read' },
-        { key: 'collection', label: 'Collection', path: '/collection' },
-        { key: 'me', label: 'Me', path: '/me' },
-      ],
     },
   ]
 }
@@ -62,6 +52,7 @@ function PreviewShell() {
   const [framePath, setFramePath] = useState(initialPath)
   const [selectedPath, setSelectedPath] = useState(initialPath)
   const [frameKey, setFrameKey] = useState(0)
+  const [collapsed, setCollapsed] = useState(false)
   const iframeRef = useRef(null)
 
   const navigateFrame = (path) => {
@@ -72,48 +63,45 @@ function PreviewShell() {
     window.history.replaceState(null, '', path)
   }
 
-  // Watch the iframe's own navigation so the "App" section highlights
-  // correctly even when someone taps around inside the phone itself
-  // instead of using the tray.
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      try {
-        const win = iframeRef.current?.contentWindow
-        const path = win?.location?.pathname
-        if (path && APP_TAB_PATHS.includes(path) && path !== selectedPath) {
-          setSelectedPath(path)
-        }
-      } catch {
-        // Ignore — same-origin in practice, but never let a transient
-        // access error break the interval.
-      }
-    }, 600)
-    return () => window.clearInterval(id)
-  }, [selectedPath])
-
   return (
     <div className="preview-shell">
-      <nav className="preview-shell__tray" aria-label="Preview navigation">
-        <p className="preview-shell__brand">Vitalist</p>
-        {sections.map((section) => (
-          <div className="preview-shell__section" key={section.heading}>
-            <p className="preview-shell__heading">{section.heading}</p>
-            {section.items.map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                title={item.title}
-                className={
-                  'preview-shell__item' +
-                  (selectedPath === item.path ? ' preview-shell__item--active' : '')
-                }
-                onClick={() => navigateFrame(item.path)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        ))}
+      <nav
+        className={'preview-shell__tray' + (collapsed ? ' preview-shell__tray--collapsed' : '')}
+        aria-label="Preview navigation"
+      >
+        <div className="preview-shell__tray-header">
+          {!collapsed && <p className="preview-shell__brand">Vitalist</p>}
+          <button
+            type="button"
+            className="preview-shell__collapse-toggle"
+            aria-expanded={!collapsed}
+            aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+            onClick={() => setCollapsed((c) => !c)}
+          >
+            {collapsed ? '»' : '«'}
+          </button>
+        </div>
+
+        {!collapsed &&
+          sections.map((section) => (
+            <div className="preview-shell__section" key={section.heading}>
+              <p className="preview-shell__heading">{section.heading}</p>
+              {section.items.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  title={item.title}
+                  className={
+                    'preview-shell__item' +
+                    (selectedPath === item.path ? ' preview-shell__item--active' : '')
+                  }
+                  onClick={() => navigateFrame(item.path)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          ))}
       </nav>
 
       <div className="preview-shell__frame">
