@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Pill from '../../components/Pill.jsx'
 import { getPillarLabel } from '../../domain/pillars.js'
+import { getAclmIcon } from '../../domain/aclmIcons.js'
 import { getHabitVisual } from '../onboarding/recommendedHabits.js'
 import HabitDayTracker from './HabitDayTracker.jsx'
 import './RoutineHabitCard.css'
@@ -39,6 +40,7 @@ function RoutineHabitCard({ habit }) {
 
       <div className="routine-habit-card__content">
         <Pill
+          icon={habit.pillarId ? <img src={getAclmIcon(habit.pillarId)} alt="" /> : undefined}
           label={getPillarLabel(habit.pillarId)}
         />
         <h3 className="routine-habit-card__title">{habit.title}</h3>

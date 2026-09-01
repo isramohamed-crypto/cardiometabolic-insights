@@ -92,8 +92,7 @@ function Read() {
 
       {favorites.length > 0 && (
         <section>
-          <h2>Saved</h2>
-          <p className="page__section-lead">Everything you bookmarked, waiting for you.</p>
+          <h2>Favorites</h2>
           <div className="routine-habit-list">
             {favorites.map((item) => (
               <ContentCard
@@ -116,9 +115,6 @@ function Read() {
         return (
           <section key={habit.id}>
             <h2>For "{habit.title}"</h2>
-            <p className="page__section-lead">
-              Reading tied to this one, including what shows up on its own page.
-            </p>
             <div className="routine-habit-list">
               {items.map((item) => (
                 <ContentCard
@@ -144,9 +140,6 @@ function Read() {
       {otherContent.length > 0 && (
         <section>
           <h2>Other things you may find interesting</h2>
-          <p className="page__section-lead">
-            Outside what you're tracking — in case something catches you.
-          </p>
           <div className="routine-habit-list">
             {otherContent.map((item) => (
               <ContentCard
@@ -167,7 +160,6 @@ function Read() {
       {articles.length > 0 && (
         <section>
           <h2>More reading</h2>
-          <p className="page__section-lead">Fresh from the People Inc. newsrooms.</p>
           <div className="routine-habit-list">
             {articles.map((article) => (
               <ContentCard

@@ -1,9 +1,6 @@
-import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../content/FavoritesContext.jsx'
-import { useReactions } from '../content/ReactionsContext.jsx'
-import BookmarkIcon from './BookmarkIcon.jsx'
-import ThumbIcon from './ThumbIcon.jsx'
+import HeartIcon from './HeartIcon.jsx'
 import BrandLogo from './BrandLogo.jsx'
 import './ContentModal.css'
 
@@ -46,35 +43,23 @@ import './ContentModal.css'
 // a recognized brand.
 function ContentModal({ content, onClose }) {
   const { isFavorite, toggleFavorite } = useFavorites()
-  const { isLiked, isDisliked, toggleLike, toggleDislike } = useReactions()
-  const liked = isLiked(content.id)
-  const disliked = isDisliked(content.id)
 
   if (!content) return null
   const saved = isFavorite(content.id)
 
   // Keep the reader in-experience: instead of an external "Read the full
-  // article" link that leaves the app, point to the Read tab. Worded "See
-  // more in Read" rather than "Read more on Read", which the tab's rename
-  // turned into a stutter — and it matches the Today page's link to the
-  // same place.
+  // article" link that leaves the app, point to the Learn tab.
   const readMoreButton = (
     <Link
       to="/read"
       onClick={onClose}
       className="content-modal__fallback-link content-modal__fallback-link--primary"
     >
-      See more in Read →
+      Read more on Learn →
     </Link>
   )
 
-  // Rendered into document.body rather than in place. Its trigger now lives
-  // inside the Today page's horizontally-scrolling carousel — a scroll
-  // container with overflow: hidden and its own stacking context — which
-  // clipped the reader and buried it under the rest of the feed on scroll.
-  // A portal takes it out of that subtree entirely; position: fixed then
-  // means what it says.
-  return createPortal(
+  return (
     <div className="content-modal-scene">
       <div className="content-modal">
         <div className="content-modal__bar">
@@ -89,7 +74,7 @@ function ContentModal({ content, onClose }) {
             aria-pressed={saved}
             aria-label={saved ? 'Remove from Favorites' : 'Save to Favorites'}
           >
-            <BookmarkIcon filled={saved} />
+            <HeartIcon filled={saved} />
           </button>
         </div>
 
@@ -101,47 +86,18 @@ function ContentModal({ content, onClose }) {
         {/* Never iframe the source — many publishers refuse to be embedded
             (X-Frame-Options / CSP), which showed up as "refused to connect".
             We keep readers in-app: show the in-app copy (or a short default),
-            with "See more in Read" as the way onward. */}
+            with "Read more on Learn" as the way onward. */}
         <div className="content-modal__fallback">
           <div className="content-modal__thumb" style={{ backgroundImage: content.thumbnail }} />
           <p className="content-modal__text">
             {content.fullBody ||
               content.body ||
-              `A quick read from ${content.brand || 'our editors'}. Explore more like this in Read.`}
+              `A quick read from ${content.brand || 'our editors'}. Explore more like this on Learn.`}
           </p>
-          {/* Labelled here, icon-only on the card. In the reader there's room
-              for words, and "more/less like this" says what the thumbs
-              actually do — they tune what gets surfaced, they aren't a rating
-              of the article. Same store as the card's icons, so a reaction
-              made in either place shows in both. */}
-          <div className="content-modal__reactions">
-            <button
-              type="button"
-              className={`content-modal__reaction${liked ? ' content-modal__reaction--liked' : ''}`}
-              onClick={() => toggleLike(content.id)}
-              aria-pressed={liked}
-            >
-              <ThumbIcon direction="up" filled={liked} />
-              More like this
-            </button>
-            <button
-              type="button"
-              className={`content-modal__reaction${
-                disliked ? ' content-modal__reaction--disliked' : ''
-              }`}
-              onClick={() => toggleDislike(content.id)}
-              aria-pressed={disliked}
-            >
-              <ThumbIcon direction="down" filled={disliked} />
-              Less like this
-            </button>
-          </div>
-
           {readMoreButton}
         </div>
       </div>
-    </div>,
-    document.body,
+    </div>
   )
 }
 

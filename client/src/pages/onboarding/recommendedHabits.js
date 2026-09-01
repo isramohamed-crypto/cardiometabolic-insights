@@ -29,7 +29,7 @@ import { NONE_OPTION } from './pillars.js'
 // pipeline exists.
 export const RECOMMENDATIONS_BY_PILLAR = {
   eating: {
-    categoryLabel: 'Healthy eating',
+    categoryLabel: 'Optimal Nutrition',
     gradient: 'linear-gradient(160deg, #FF8C2F 0%, #7a4a10 100%)',
     habits: [
       {
@@ -347,25 +347,6 @@ export function getHabitVisual(pillarId, habitId) {
   if (!pillar) return null
   const habit = pillar.habits.find((h) => h.id === habitId)
   return habit?.image || pillar.gradient
-}
-
-// The catalog habit ids that belong to one pillar. Exposed so other domain
-// modules (e.g. insight snippets) can gather everything relevant to a pillar
-// without importing the whole recommendation tree.
-export function getPillarHabitIds(pillarId) {
-  return (RECOMMENDATIONS_BY_PILLAR[pillarId]?.habits || []).map((habit) => habit.id)
-}
-
-// A representative photo for a whole pillar: the first of its habits that
-// has one. Used by onboarding's focus-area tiles, which are per-pillar and
-// so have no single habit to borrow from — falls back to the pillar's flat
-// gradient when none of its habits has a photo yet, exactly as
-// getHabitVisual does for an unmatched habit id.
-export function getPillarVisual(pillarId) {
-  const pillar = RECOMMENDATIONS_BY_PILLAR[pillarId]
-  if (!pillar) return null
-  const withPhoto = pillar.habits.find((habit) => habit.image)
-  return withPhoto?.image || pillar.gradient
 }
 
 // Suggests a starting tier (index into a habit's `tiers` array) based on how

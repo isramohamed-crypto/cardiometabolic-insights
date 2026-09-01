@@ -21,38 +21,10 @@
   cursor: pointer;
 }
 
-/* Feed cards reserve room at the bottom for the reactions cluster; the
-   right-hand reserve is unchanged, since the save glyph sits in the same
-   top corner the heart always did. */
-.content-card:has(.content-card__reactions) .content-card__tap {
-  padding-bottom: 34px;
-}
-
-/* Icon cluster in the card's top-right corner. One item (the heart) for
-   an ordinary card; three (thumbs-up, thumbs-down, bookmark) on the Today
-   feed, where `actions` is passed — see ContentCard.jsx. Same corner, same
-   glyph size either way, so adding the reactions doesn't restyle the card. */
-.content-card__icons {
+.content-card__heart {
   position: absolute;
   top: var(--space-4);
   right: var(--space-4);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-/* The two thumbs, bottom-right. Separate cluster from the save glyph
-   above rather than one row of three — see ContentCard.jsx. */
-.content-card__reactions {
-  position: absolute;
-  bottom: var(--space-2);
-  right: var(--space-3);
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.content-card__icon {
   border: none;
   background: none;
   padding: var(--space-1);
@@ -60,34 +32,10 @@
   line-height: 1;
   color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: color 0.15s ease;
 }
 
-.content-card__icon:hover {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-/* Saved bookmarks are brand green — the pink here belonged to the heart
-   this replaced, and next to a green thumbs-up it read as a third,
-   unrelated state. */
-/* :hover is included so the base hover rule above (equal weight, declared
-   earlier, but with a pseudo-class it outranks a plain class) can't grey out
-   a bookmark that's already saved. */
-.content-card__icon--saved,
-.content-card__icon--saved:hover {
-  color: var(--color-seaweed);
-}
-
-
-
-.content-card__icon--liked,
-.content-card__icon--liked:hover {
-  color: var(--color-leaf);
-}
-
-.content-card__icon--disliked,
-.content-card__icon--disliked:hover {
-  color: rgba(0, 0, 0, 0.75);
+.content-card__heart--active {
+  color: #d6336c;
 }
 
 .content-card__thumb {

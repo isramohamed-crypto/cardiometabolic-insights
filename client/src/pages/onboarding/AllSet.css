@@ -102,10 +102,6 @@
   animation-delay: 0.78s;
 }
 
-.all-set__in--6 {
-  animation-delay: 0.9s;
-}
-
 @keyframes all-set-rise {
   from {
     opacity: 0;

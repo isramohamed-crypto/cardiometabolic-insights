@@ -5,7 +5,7 @@ import { useOnboarding } from '../../onboarding/OnboardingContext.jsx'
 
 // First of the post-summary questions — optional health context, not part
 // of "Existing habits" pillar sequence. Followed by FocusAreas.jsx (the
-// final onboarding question) before landing on /today.
+// final onboarding question) before landing on /routine.
 //
 // Two distinct opt-out chips rather than one: "None of the above" is a
 // real, informative answer (no conditions apply), while "Prefer not to
@@ -59,7 +59,7 @@ function HealthConditions() {
   return (
     <QuestionScreen
       eyebrow="Health profile"
-      headlineLines={['Anything else on your mind,', 'health-wise?']}
+      headlineLines={['What health conditions', 'are you currently monitoring?']}
       body="Totally optional — it helps us point things the right way."
       options={CONDITIONS}
       selected={selected}

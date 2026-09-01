@@ -38,7 +38,6 @@ function QuestionScreen({
   className,
   progressIcons,
   extraContent,
-  footer,
 }) {
   const canContinue = !requireSelection || selected.length > 0
 
@@ -174,10 +173,6 @@ function QuestionScreen({
         >
           {continueLabel}
         </button>
-
-        {/* Optional small print under the CTA — currently just the People Inc.
-            attribution on the brand-picker screen. */}
-        {footer && <p className="question-screen__footnote">{footer}</p>}
       </div>
     </main>
   )

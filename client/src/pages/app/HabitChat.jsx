@@ -118,14 +118,14 @@ function ChatCard({ card }) {
         <span className="habit-chat__card-title">{card.title}</span>
         <div className="habit-chat__card-actions">
           <Link to="/read" className="habit-chat__card-action">
-            View in Read
+            View in Learn
           </Link>
           <button
             type="button"
             className="habit-chat__card-action"
             onClick={() => toggleFavorite(card)}
           >
-            {saved ? 'Saved to Read' : 'Save to Read'}
+            {saved ? 'Saved to Learn' : 'Save to Learn'}
           </button>
         </div>
       </div>
@@ -195,7 +195,7 @@ function HabitChat() {
     return (
       <main className="habit-chat">
         <p className="habit-chat__intro">This habit couldn’t be found.</p>
-        <button type="button" className="habit-chat__back" onClick={() => navigate('/today')}>
+        <button type="button" className="habit-chat__back" onClick={() => navigate('/routine')}>
           <span aria-hidden="true">←</span> Back to Today
         </button>
       </main>

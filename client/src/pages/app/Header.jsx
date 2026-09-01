@@ -19,22 +19,18 @@ function countFoundationHabits(habitsWorking) {
   }, 0)
 }
 
-// Per-tab H1 phrase. Today's is dynamic (see computeStreak below) once
+// Per-tab H1 phrase. Routine's is dynamic (see computeStreak below) once
 // there's a streak to talk about; this is just the cold-start fallback.
 // The others fall back to a plain section title until their copy is set.
 const PHRASES = {
-  '/today': 'Getting started is the hardest part.',
+  '/routine': 'Getting started is the hardest part.',
 }
 
-// Fallback H1 per tab, matching the labels in the footer nav — "Routine"
-// and "Collection" were left over from before those tabs were renamed to
-// Today and Habits, and nothing calls this app's home screen a routine
-// anymore.
 const TITLES = {
-  '/today': 'Today',
+  '/routine': 'Routine',
   '/read': 'Read',
-  '/collection': 'Habits',
-  '/me': 'Progress',
+  '/collection': 'Collection',
+  '/me': 'Me',
 }
 
 function toKey(date) {
@@ -106,18 +102,13 @@ function Header() {
   }
 
   // Eyebrow no longer carries the name (that now lives in the headline).
-  // Names the product in the eyebrow rather than leaving a bare "Welcome" —
-  // the app's name appeared nowhere in the UI itself, only in the browser
-  // tab. No Vitalist mark exists in public/ (every logo asset in there
-  // belongs to a People Inc. title), so this is type only for now; drop an
-  // icon in and it can sit before the text.
-  const greeting = answers.name ? 'Welcome back to Vitalist' : 'Welcome to Vitalist'
+  const greeting = answers.name ? 'Welcome back' : 'Welcome'
 
   // Today's headline reflects how far along they are — a new user gets an
   // encouraging kickoff, someone mid-build or weeks in gets a message that
   // acknowledges the momentum — and it's signed off with their name.
   let phrase = PHRASES[pathname] || TITLES[pathname] || 'Vitalist'
-  if (pathname === '/today') {
+  if (pathname === '/routine') {
     const active = habits.filter((h) =>
       [OWNERSHIP_STATE.TRIALED, ...OWNED_STATES].includes(h.ownershipState),
     )
