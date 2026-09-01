@@ -47,8 +47,14 @@ function buildNavSections() {
   ]
 }
 
+// Default landing page for the frame — always the start of onboarding,
+// regardless of whatever path the outer (unframed) page happened to load
+// at (e.g. a bare domain hit, or a path with no matching route like
+// "/routine"). A deep link into a specific screen still works once
+// you're navigating via the tray — this only governs the very first
+// paint.
 function initialPath() {
-  return window.location.pathname + window.location.search
+  return '/'
 }
 
 function PreviewShell() {
